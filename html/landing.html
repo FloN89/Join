@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In</title>
+   
+    <link rel="stylesheet" href="../styles/landing.css"/>
+    
+  </head>
+
+  <body>
+    <header class="app-header">
+      <img class="app-logo" src="../assets/icons/join_logo_1.png" />
+      <div class="signup-area is-hidden">
+        <p>Not a Join user?</p>
+        <a class="signup-button" href="#">Sign up</a>
+      </div>
+    </header>
+
+    <main class="main-area">
+      <section class="login-panel">
+        <h1 class="panel-title">Log in</h1>
+
+        <div id="login-error-box" class="error-box" style="display: none;"></div>
+
+        <div class="form-fields">
+          <input
+            class="input input-email"
+            type="email"
+            name="email"
+            placeholder="E-Mail"
+            style="background-image: url(../assets/icons/mail.svg)"
+            required
+          />
+          <input
+            class="input input-password"
+            type="password"
+            name="password"
+            placeholder="Password"
+            style="background-image: url(../assets/icons/lock.svg)"
+            required
+          />
+        </div>
+
+        <div class="button-row">
+          <a class="btn btn-primary" href="#" onclick="startLogin()">Log in</a>
+          <a class="btn btn-ghost" href="#">Guest Log in</a>
+        </div>
+      </section>
+
+      <div class="signup-area-mobile">
+        <p>Not a Join user?</p>
+        <a class="signup-button" href="">Sign up</a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Legal notice</a>
+    </footer>
+
+    <script src="../js/landing.js"></script>
+  </body>
+</html>
