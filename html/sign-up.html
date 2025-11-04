@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up</title>
+
+  <link rel="stylesheet" href="../styles/sign-up.css">
+  <script src="../js/remoteStorage_sign-up.js"></script>
+</head>
+
+<body>
+  <img src="../assets/icons/Capa 2.svg" alt="" class="join-icon">
+  <div class="main">
+    <div class="sign-up-box">
+      <a href="../html/board.html">
+        <img src="../assets/icons/arrow-left-line.svg" alt="" class="arrow-left">
+      </a>
+      <h1 class="title">Sign up</h1>
+
+      <div class="input-group">
+        <label class="input-wrapper">
+          <input type="text" placeholder="Name" id="usernameInput" oninput="showSignUp()">
+          <img src="../assets/icons/person.svg" alt="" class="field-icon">
+        </label>
+
+        <label class="input-wrapper">
+          <input type="email" placeholder="Email" id="mailInput" oninput="showSignUp()">
+          <img src="../assets/icons/mail.svg" alt="" class="field-icon">
+        </label>
+
+        <label class="input-wrapper"> 
+          <input type="password" placeholder="Password" required id="passwordInput"
+            oninput="changeIcon('passwordInput', 'passwordIcon'), showSignUp()">
+          <img id="passwordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
+            onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
+        </label>
+
+        <label class="input-wrapper password-input-wrapper">
+          <input type="password" placeholder="Confirm Password" required id="confirmPasswordInput"
+            oninput="changeIcon('confirmPasswordInput', 'confirmPasswordIcon'), checkPasswordMatch(), showSignUp()"> 
+          <img id="confirmPasswordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
+            onclick="togglePasswordVisibility('confirmPasswordInput', 'confirmPasswordIcon')">
+            <small id="errorMessage" class="errorMessage"></small>
+        </label>
+
+        <label class="privacy">
+          <input type="checkbox" id="privacyCheckbox" onchange="showSignUp()">
+          <span>I accept the <a href="#">Privacy policy</a></span>
+        </label>
+      </div>
+
+      <div class="btn-wrap">
+        <button class="signUpButton d_none" id="signUpButton" onclick="signUp()">Sign up</button>
+      </div>
+    </div>
+
+    <footer class="privacy_legal">
+      <a href="../html/privacy-legacy_external">Privacy Policy </a>
+      <a href="../html/legal-notice_external">Legal notice</a>
+    </footer>
+  </div>
+
+  <script src="../js/sign-up.js"></script>
+</body>
+
+</html>
