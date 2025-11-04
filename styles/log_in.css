@@ -1,6 +1,7 @@
 body {
   background-color: #f6f7f8;
   margin: 0;
+  
 }
 
 .app-header {
@@ -96,6 +97,42 @@ body {
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;  
+  width: 100%;
+}
+
+.input-wrapper .input,
+.input-wrapper .input.input-password {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 48px !important;
+  background-image: none !important;
+}
+
+.icon-btn.password-toggle {
+  position: absolute;
+  right: 12px;             
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: transparent no-repeat center / 24px 24px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;               
+  opacity: .9;
+}
+
+.icon-btn.password-toggle.is-lock { background-image: url(../assets/icons/lock.svg); }
+.icon-btn.password-toggle.is-off  { background-image: url(../assets/icons/visibility_off.svg); }
+.icon-btn.password-toggle.is-on   { background-image: url(../assets/icons/visibility.svg); }
+
+.icon-btn.password-toggle:hover { opacity: 1; }
+
 
 .error-box {
   color: red;
@@ -281,11 +318,28 @@ body.page-loaded .app-header {
 }
 
 @media (max-width: 320px) {
-  .panel-title { font-size: 24px; }
-  .app-header { width: 20px; }
-  .login-panel { gap: 12px; }
-  .button-row { gap: 10px; }
-  .app-logo { width: 60px; }
-  .site-footer { padding-top: 40px; }
-  .signup-button { width: 80px; height: 36px; font-size: 12px; gap: 10px; }
+  .panel-title { 
+    font-size: 24px; 
+  }
+  .app-header { 
+    width: 20px; 
+  }
+  .login-panel { 
+    gap: 12px; 
+  }
+  .button-row { 
+    gap: 10px; 
+  }
+  .app-logo { 
+    width: 60px; 
+  }
+  .site-footer { 
+    padding-top: 40px; 
+  }
+  .signup-button { 
+    width: 80px; 
+    height: 36px; 
+    font-size: 12px; 
+    gap: 10px; 
+  }
 }
