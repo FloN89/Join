@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>contacts default</title>
+
+    <link rel="stylesheet" href="../styles/contacts_default.css">
+    <script src="../js/contacts_default.js"></script>
+</head>
+
+<body>
+    <button id="modal-btn" class="modal-btn" onclick="toggleModal()">Add new contact
+        <img src="../assets/icons/person_add.svg" alt="">
+    </button>
+
+    <div id="newContactModal" class="newContactModal d_none">
+        <div class="modal-content">
+
+            <header class="title">
+                <img src="../assets/icons/Capa 2_white.svg" alt="">
+                <h1>Add contact</h1>
+                <h2>Tasks are better with a team!</h2>
+            </header>
+
+            <div class="person">
+                <img src="../assets/icons/person_white.svg" alt="">
+            </div>
+
+            <span class="close">&times;</span>
+
+            <form class="input-group">
+                <label class="input-wrapper">
+                    <input type="text" placeholder="Name" id="usernameInput">
+                    <img src="../assets/icons/person.svg" alt="" class="field-icon">
+                </label>
+
+                <label class="input-wrapper">
+                    <input type="email" placeholder="Email" id="mailInput">
+                    <img src="../assets/icons/mail.svg" alt="" class="field-icon">
+                </label>
+
+                <label class="input-wrapper">
+                    <input type="tel" placeholder="Phone" id="phoneInput">
+                    <img src="../assets/icons/call.svg" alt="" class="field-icon">
+                </label>
+
+                <div class="buttons">
+                    <button type="button" class="cancel">
+                        Cancel
+                        <img src="../assets/icons/iconoir_cancel.svg" alt="">
+                    </button>
+
+                    <button type="submit" class="create">
+                        Create contact
+                        <img src="../assets/icons/check_white.svg" alt="">
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
