@@ -30,7 +30,7 @@
 
             <form class="input-group">
                 <div></div>
-                <span class="close">&times;</span>
+                <span class="close" onclick="toggleModal()">&times;</span>
                 <label class="input-wrapper">
                     <input type="text" placeholder="Name" id="usernameInput">
                     <img src="../assets/icons/person.svg" alt="" class="field-icon">
@@ -47,13 +47,13 @@
                 </label>
 
                 <div class="buttons">
-                    <button type="button" class="cancel-btn">
-                        Cancel
-                        <img src=" ../assets/icons/iconoir_cancel.svg" alt="" onclick="toggleModal()">
+                    <button type="button" class="cancel-btn" onclick="toggleModal()">
+                        <span>Cancel</span>
+                        <img src="../assets/icons/iconoir_cancel.svg" alt="">
                     </button>
 
-                    <button type=" submit" class="create">
-                        Create contact
+                    <button type="submit" class="create-btn">
+                        <span>Create contact</span>
                         <img src="../assets/icons/check_white.svg" alt="">
                     </button>
                 </div>
