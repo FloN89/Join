@@ -1,58 +1,68 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up</title>
+
+  <link rel="stylesheet" href="../styles/sign-up.css">
+  <script src="../js/remoteStorage_sign-up.js"></script>
 </head>
+
 <body>
+  <img src="../assets/icons/Capa 2.svg" alt="" class="join-icon">
+  <div class="main">
+    <div class="sign-up-box">
+      <a href="../html/board.html">
+        <img src="../assets/icons/arrow-left-line.svg" alt="" class="arrow-left">
+      </a>
+      <h1 class="title">Sign up</h1>
 
-<div class="nav-bar">
-    <img class="logo" src="assets/icons/join_logo_1.png"/>
-    <div class="nav-right hidden">
-        <p>Not a Join user?</p>
-        <a class="nav-button" href="">Sign up</a>
-    </div>
-</div> 
- <div class="login-content">
-        <div class="login-container">
+      <div class="input-group">
+        <label class="input-wrapper">
+          <input type="text" placeholder="Name" id="usernameInput" oninput="showSignUp()">
+          <img src="../assets/icons/person.svg" alt="" class="field-icon">
+        </label>
 
-          <h1>Log in</h1>
-          <div id="login-error" class="error-message" style="display: none;"></div>
-          <div class="input-login">
-            <input
-              class="email-icon"
-              type="email"
-              name="email"
-              placeholder="E-Mail"
-              style="background-image: url(assets/icons/mail.svg)"
-              required
-            />
-            <input
-              class="password-icon"
-              type="password"
-              name="password"
-              placeholder="Password"
-              style="background-image: url(assets/icons/lock.svg)"
-              required
-            />
-          </div>
+        <label class="input-wrapper">
+          <input type="email" placeholder="Email" id="mailInput" oninput="showSignUp()">
+          <img src="../assets/icons/mail.svg" alt="" class="field-icon">
+        </label>
 
-           <div class="login-button">
-            <a class="login" href="">Log in</a>
-            <a class="guest" href="">Guest Log in</a>
-          </div>
-        </div> 
+        <label class="input-wrapper"> 
+          <input type="password" placeholder="Password" required id="passwordInput"
+            oninput="changeIcon('passwordInput', 'passwordIcon'), showSignUp()">
+          <img id="passwordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
+            onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
+        </label>
+
+        <label class="input-wrapper password-input-wrapper">
+          <input type="password" placeholder="Confirm Password" required id="confirmPasswordInput"
+            oninput="changeIcon('confirmPasswordInput', 'confirmPasswordIcon'), checkPasswordMatch(), showSignUp()"> 
+          <img id="confirmPasswordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
+            onclick="togglePasswordVisibility('confirmPasswordInput', 'confirmPasswordIcon')">
+            <small id="errorMessage" class="errorMessage"></small>
+        </label>
+
+        <label class="privacy">
+          <input type="checkbox" id="privacyCheckbox" onchange="showSignUp()">
+          <span>I accept the <a href="#">Privacy policy</a></span>
+        </label>
       </div>
 
-      <div class="sidebar-footer">
-        <a href="">Privacy Policy</a>
-        <a href="">Legal notice</a>
+      <div class="btn-wrap">
+        <button class="signUpButton d_none" id="signUpButton" onclick="signUp()">Sign up</button>
+      </div>
     </div>
 
+    <footer class="privacy_legal">
+      <a href="../html/privacy-legacy_external">Privacy Policy </a>
+      <a href="../html/legal-notice_external">Legal notice</a>
+    </footer>
+  </div>
 
-    
+  <script src="../js/sign-up.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>contacts default</title>
+
+    <link rel="stylesheet" href="../styles/contacts_default.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <script src="../js/contacts_default.js"></script>
+    <script src="../js/remoteStorage_sign-up.js"></script>
+
+</head>
+
+<body>
+    <div id="sidebar-container"></div>
+    <div class="all-contacts">
+        <button id="modal-btn" class="modal-btn" onclick="toggleModal()">Add new contact
+            <img src="../assets/icons/person_add.svg" alt="">
+        </button>
+    </div>
+    <div id="newContactModal" class="newContactModal d_none">
+        <div class="modal-content">
+
+            <header class="title">
+                <img src="../assets/icons/Capa 2_white.svg" alt="">
+                <h1>Add contact</h1>
+                <h2>Tasks are better with a team!</h2>
+            </header>
+
+            <div class="person">
+                <img src="../assets/icons/person_white.svg" alt="">
+            </div>
+
+            <div class="input-group">
+                <div></div>
+                <span class="close" onclick="toggleModal()">&times;</span>
+                <label class="input-wrapper">
+                    <input type="text" placeholder="Name" required id="contactNameInput">
+                    <img src="../assets/icons/person.svg" alt="" class="field-icon">
+                </label>
+
+                <label class="input-wrapper">
+                    <input type="email" placeholder="Email" required id="contactMailInput">
+                    <img src="../assets/icons/mail.svg" alt="" class="field-icon">
+                </label>
+
+                <label class="input-wrapper">
+                    <input type="tel" placeholder="Phone" required id="contactPhoneInput">
+                    <img src="../assets/icons/call.svg" alt="" class="field-icon">
+                </label>
+
+                <div class="buttons">
+                    <button type="button" class="cancel-btn" onclick="toggleModal()">
+                        <span>Cancel</span>
+                        <span class="close-icon">&times;</span>
+                    </button>
+
+                    <button type="button" class="create-btn" onclick="createContact()">
+                        <span>Create contact</span>
+                        <img src="../assets/icons/check_white.svg" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../js/sidebar-loader.js"></script>
+
+</html>

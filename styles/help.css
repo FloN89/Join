@@ -1,0 +1,8 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 240px;
+  margin-top: 180px;
+  max-width: 1440px;
+}
