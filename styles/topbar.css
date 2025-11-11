@@ -9,7 +9,7 @@
   top: 0;
   position: fixed;
   margin-left: 220px;
-  width: 1440px;
+  max-width: 1440px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 #topbar_title {
