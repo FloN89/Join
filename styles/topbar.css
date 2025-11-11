@@ -9,15 +9,30 @@
   top: 0;
   position: fixed;
   margin-left: 220px;
+  width: 1440px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 #topbar_title {
   font-size: 1.5em;
   color: black;
 }
 
+#topbar_user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.user-icon {
+  width: 60px;
+  height: 60px;
+}
+
 @media (max-width: 768px) {
   #topbar {
     margin-left: 0;
     left: 0;
+    width: calc(100% - 20px);
   }
 }
