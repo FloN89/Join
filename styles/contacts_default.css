@@ -1,6 +1,6 @@
-.d_none {
+/* .d_none {
     display: none !important;
-}
+} */
 
 @font-face {
     font-family: 'Inter';
@@ -16,16 +16,45 @@ body {
     justify-content: center;
 }
 
+.modal-btn {
+    font-size: 21px;
+    font-weight: 700;
+    height: 48px;
+    width: 240px;
+    border-radius: 10px;
+    background-color: #2A3647;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.modal-btn:hover {
+    cursor: pointer;
+    background-color: #29ABE2;
+    border: 1px solid #29ABE2;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 .newContactModal {
     position: fixed;
     height: 100vh;
     width: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    /* background-color: rgba(0, 0, 0, 0.4); */
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateX(100%);
+    transition: transform 400ms ease;
+    will-change: transform;
+}
+
+.newContactModal.show {
+    transform: translateX(0);
 }
 
 .modal-content {
@@ -178,6 +207,17 @@ header h2 {
     gap: 4px;
 }
 
+.close-icon {
+    font-size: 26px;
+}
+
+.cancel-btn:hover {
+    cursor: pointer;
+    color: #29ABE2;
+    border: 1px solid #29ABE2;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 .create-btn {
     font-size: 20px;
     font-weight: 400;
@@ -187,4 +227,11 @@ header h2 {
     background-color: #2A3647;
     border: 1px solid #ffffff;
     color: #ffffff;
+}
+
+.create-btn:hover {
+    cursor: pointer;
+    background-color: #29ABE2;
+    border: 1px solid #29ABE2;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
