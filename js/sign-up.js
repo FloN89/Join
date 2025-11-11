@@ -75,6 +75,6 @@ async function checkUser(errorMessage, user) {
     } else {
         errorMessage.classList.remove("errorMessage")
         errorMessage.textContent = "";
-        return
+        return;
     }
 }

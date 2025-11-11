@@ -18,7 +18,6 @@ async function saveData(path = "", data = {}) { //Daten speichern
             "Content-Type": "application/json"
         },
         body: JSON.stringify(data),
-
     }
     );
     const responseToJson = await response.json();

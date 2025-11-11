@@ -7,14 +7,19 @@
     <title>contacts default</title>
 
     <link rel="stylesheet" href="../styles/contacts_default.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
     <script src="../js/contacts_default.js"></script>
+    <script src="../js/remoteStorage_sign-up.js"></script>
+
 </head>
 
 <body>
-    <button id="modal-btn" class="modal-btn" onclick="toggleModal()">Add new contact
-        <img src="../assets/icons/person_add.svg" alt="">
-    </button>
-
+    <div id="sidebar-container"></div>
+    <div class="all-contacts">
+        <button id="modal-btn" class="modal-btn" onclick="toggleModal()">Add new contact
+            <img src="../assets/icons/person_add.svg" alt="">
+        </button>
+    </div>
     <div id="newContactModal" class="newContactModal d_none">
         <div class="modal-content">
 
@@ -28,38 +33,39 @@
                 <img src="../assets/icons/person_white.svg" alt="">
             </div>
 
-            <form class="input-group">
+            <div class="input-group">
                 <div></div>
                 <span class="close" onclick="toggleModal()">&times;</span>
                 <label class="input-wrapper">
-                    <input type="text" placeholder="Name" id="usernameInput">
+                    <input type="text" placeholder="Name" required id="contactNameInput">
                     <img src="../assets/icons/person.svg" alt="" class="field-icon">
                 </label>
 
                 <label class="input-wrapper">
-                    <input type="email" placeholder="Email" id="mailInput">
+                    <input type="email" placeholder="Email" required id="contactMailInput">
                     <img src="../assets/icons/mail.svg" alt="" class="field-icon">
                 </label>
 
                 <label class="input-wrapper">
-                    <input type="tel" placeholder="Phone" id="phoneInput">
+                    <input type="tel" placeholder="Phone" required id="contactPhoneInput">
                     <img src="../assets/icons/call.svg" alt="" class="field-icon">
                 </label>
 
                 <div class="buttons">
                     <button type="button" class="cancel-btn" onclick="toggleModal()">
                         <span>Cancel</span>
-                        <img src="../assets/icons/iconoir_cancel.svg" alt="">
+                        <span class="close-icon">&times;</span>
                     </button>
 
-                    <button type="submit" class="create-btn">
+                    <button type="button" class="create-btn" onclick="createContact()">
                         <span>Create contact</span>
                         <img src="../assets/icons/check_white.svg" alt="">
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </body>
+<script src="../js/sidebar-loader.js"></script>
 
 </html>
