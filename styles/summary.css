@@ -9,10 +9,105 @@ html body {
   height: 100vh;
 }
 
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0 20px 0;
+}
+
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   max-width: 1440px;
   margin-left: 250px;
+  background-color: #f6f7f8;
+}
+
+.dashboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+  margin-top: 40px;
+  padding-left: 100px;
+}
+
+.metrics {
+  max-width: 700px;
+  flex: 2;
+}
+
+.metrics-header {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.greeting {
+  flex: 1;
+  align-self: center;
+  text-align: center;
+}
+
+.greeting p {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #444;
+}
+
+.greeting h2 {
+  font-size: 1.8rem;
+  margin: 5px 0;
+}
+
+.greeting .name {
+  color: #0078ff;
+  font-weight: 600;
+}
+
+.metrics-header {
+  margin-bottom: 20px;
+}
+
+.metrics-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.metrics-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  text-align: center;
+  height: 90px;
+}
+
+.metrics-row.top .card {
+  flex-basis: calc(50% - 10px);
+}
+
+.metrics-row.middle .card {
+  flex-basis: 100%;
+}
+
+.metrics-row.bottom .card {
+  flex-basis: calc(33.33% - 13.33px);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
 }
