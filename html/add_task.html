@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Task</title>
     <link rel="stylesheet" href="../styles/add_task.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/topbar.css"> 
+    <link rel="stylesheet" href="../styles/summary.css">
     
   </head>
 
   <body>
-    
-    <main class="main-area">
+    <div class="layout">
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+            <div id="topbar-container"></div>
+            <div class="main-section">
+                <main class="main-area">
       <section class="add-task-container">
         <h2 class="panel-title">Add Task</h2>
 
@@ -196,8 +203,16 @@
       </section>
     </main>
 
+                    
+                
+            </div>
+        </div>
+    </div>
+   
     
 
     <script src="../js/add_task.js"></script>
+    <script src="../js/sidebar-loader.js"></script>
+    <script src="../js/topbar-loader.js"></script>
   </body>
 </html>
