@@ -6,10 +6,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+
   top: 0;
-  position: fixed;
-  margin-left: 220px;
-  max-width: 1440px;
+
+  /* position: fixed; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 #topbar_title {

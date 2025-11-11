@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/sidebar.css">
     <link rel="stylesheet" href="/styles/topbar.css">
+    <link rel="stylesheet" href="/styles/summary.css">
     <title>Summary</title>
 </head>
 
 <body>
-    <div id="topbar-container"></div>
-    <div id="sidebar-container"></div>
-
-
+    <div class="layout">
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+            <div id="topbar-container"></div>
+            <div class="main-section"></div>
+        </div>
+    </div>
     <script src="/js/sidebar-loader.js"></script>
     <script src="/js/topbar-loader.js"></script>
 </body>

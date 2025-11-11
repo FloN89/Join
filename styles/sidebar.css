@@ -1,5 +1,5 @@
 #sidebar {
-  width: 230px;
+  width: 250px;
   height: 100vh;
   position: fixed;
   left: 0;
@@ -11,6 +11,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 80px 0;
+  position: fixed;
 }
 
 .sidebar-header {
