@@ -56,15 +56,25 @@ function showSignUp() {
     }
 }
 
-
-
 async function signUp() {
     const user = document.getElementById("usernameInput").value;
     const mail = document.getElementById("mailInput").value;
     const password = document.getElementById("passwordInput").value;
+    const errorMessage = document.getElementById("errorMessage");
 
-    let data = await loadData();
-    console.log(data);
-    
-    await saveData("user1", {"username": user, "mail": mail, "password": password});
+    checkUser(errorMessage, user);
+    await saveData("users/" + user, { "username": user, "mail": mail, "password": password });
+}
+
+async function checkUser(errorMessage, user) {
+    const existUser = await loadData("users/" + user);
+    if (existUser) {
+        errorMessage.classList.add("errorMessage")
+        errorMessage.textContent = "Your username is already taken. Please choose another one.";
+        return;
+    } else {
+        errorMessage.classList.remove("errorMessage")
+        errorMessage.textContent = "";
+        return;
+    }
 }
