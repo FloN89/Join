@@ -7,6 +7,9 @@ html body {
 .layout {
   display: flex;
   height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .divider {
@@ -21,7 +24,6 @@ html body {
   display: flex;
   flex-direction: column;
   max-width: 1440px;
-  margin-left: 250px;
   background-color: #f6f7f8;
 }
 
