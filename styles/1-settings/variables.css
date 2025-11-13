@@ -1,0 +1,35 @@
+:root {
+  /* === Colors === */
+  /* Brand & Primary */
+  --color-primary: #2a3647;
+  --color-primary-light: #29abe2;
+  --color-accent: #0078ff;
+  --color-accent-blue: #23a5e3;
+
+  /* Neutral */
+  --color-white: #ffffff;
+  --color-background: #f6f7f8;
+  --color-border: #d1d1d1;
+  --color-text-secondary: #a8a8a8;
+  --color-text-primary: #000000;
+
+  /* Priority & Status */
+  --color-priority-urgent: #ff3d00;
+  --color-priority-medium: #ffa800;
+  --color-priority-low: #7ae229;
+  --color-error: #e60026;
+
+  /* === Typography === */
+  --font-family-base: "Inter", sans-serif;
+
+  /* === Borders & Shadows === */
+  --border-radius-small: 8px;
+  --border-radius-medium: 10px;
+  --border-radius-large: 20px;
+  --border-radius-xl: 30px;
+  --shadow-light: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* === Layout === */
+  --max-width-layout: 1440px;
+}

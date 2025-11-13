@@ -1,16 +1,16 @@
 #topbar {
   width: 100%;
-  height: 80px;
-  background-color: white;
+  height: var(--height-topbar);
+  background-color: var(--color-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
   top: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-light);
 }
 #topbar_title {
   font-size: 1.5em;
-  color: black;
+  color: var(--color-text-primary);
 }
 
 #topbar_user {

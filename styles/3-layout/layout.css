@@ -1,0 +1,16 @@
+.layout {
+  display: flex;
+  max-width: var(--max-width-layout);
+  width: 100%;
+  margin: 0 auto; /* Center the layout container */
+  box-shadow: var(--shadow-light);
+  min-height: 100vh; /* Ensure it takes at least full viewport height */
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  min-height: 100%; /* Ensure main-content takes full height of .layout */
+}
