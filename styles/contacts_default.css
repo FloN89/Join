@@ -12,15 +12,63 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     background-color: #f6f7f8;
+}
+
+.main-section {
+    display: flex;
+
+}
+
+.all-contacts {
+    background-color: #FFFFFF;
+    width: 620px;
+    height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
+    box-shadow: 4px 0 6px rgba(0, 0, 0, 0.08);
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.contact-info-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -920px;
+    gap: 10px;
+    position: relative;
+}
+
+.contact-info-title h1 {
+    font-size: 61px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.line {
+    width: 3px;
+    height: 59px;
+    background: #23a5e3;
+    margin: 0 15px;
+    border-radius: 2px;
+}
+
+.contact-info-title h2 {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0;
+    color: rgba(42, 54, 71, 1);
 }
 
 .modal-btn {
     font-size: 21px;
     font-weight: 700;
-    height: 48px;
-    width: 240px;
+    height: 56px;
+    width: 332px;
     border-radius: 10px;
     background-color: #2A3647;
     border: 1px solid #ffffff;
@@ -29,6 +77,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 14px;
+    margin-top: 20px;
 }
 
 .modal-btn:hover {
@@ -44,7 +93,6 @@ body {
     width: 100%;
     top: 0;
     left: 0;
-    /* background-color: rgba(0, 0, 0, 0.4); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,6 +108,7 @@ body {
 .modal-content {
     display: flex;
     background-color: white;
+    position: relative;
     border-radius: 30px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #d1d1d1;
@@ -227,6 +276,10 @@ header h2 {
     background-color: #2A3647;
     border: 1px solid #ffffff;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .create-btn:hover {
@@ -234,4 +287,138 @@ header h2 {
     background-color: #29ABE2;
     border: 1px solid #29ABE2;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 400px) {
+
+    body {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    .newContactModal {
+        width: 100vw;
+        padding: 0;
+        overflow: hidden;
+        transform: translateY(100%);
+    }
+
+    .newContactModal.show {
+        transform: translateY(0);
+    }
+
+    .modal-content {
+        height: auto;
+        max-height: 90vh;
+        overflow: hidden;
+        width: 90%;
+        flex-direction: column;
+    }
+
+    .title {
+        width: 100%;
+        border-radius: 0;
+        padding: 16px;
+        text-align: center;
+        height: auto;
+        text-align: left;
+        flex-shrink: 0;
+        height: 300px;
+    }
+
+    .title::after {
+        margin-top: 12px;
+        width: 85px;
+        height: 3px;
+    }
+
+    header img {
+        display: none;
+    }
+
+    header h1 {
+        font-size: 47px;
+        margin: 6px 0;
+    }
+
+    header h2 {
+        font-size: 20px;
+    }
+
+    .person {
+        position: relative;
+        top: -55px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .person img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        padding: 26px;
+        background: #D1D1D1;
+        border: 2px solid white;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group {
+        width: 100%;
+        padding: 0px 16px 54px 16px;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        box-sizing: border-box;
+        gap: 6px;
+        margin-top: -30px;
+    }
+
+    .input-wrapper {
+        padding: 2px 0;
+    }
+
+    .input-wrapper input {
+        height: 41px;
+        font-size: 18px;
+    }
+
+    .buttons {
+        padding: 16px 0 0;
+        justify-content: center;
+        gap: 10px;
+        flex-shrink: 0;
+        margin-top: 0;
+    }
+
+    .cancel-btn {
+        display: none;
+    }
+
+    .create-btn {
+        width: 160px;
+        height: 44px;
+        border-radius: 10px;
+        font-size: 16px;
+        justify-content: center;
+        gap: 8px;
+        font-weight: bold;
+    }
+
+    .create-btn:active {
+        color: #29ABE2;
+        border: 1px solid #29ABE2;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 30px;
+    }
 }
