@@ -1,0 +1,77 @@
+/* Basic Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%; /* Explicitly set width to 100% */
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  line-height: 1.5; /* Improve readability */
+}
+
+/* Font-face definitions - consolidate here */
+@font-face {
+    font-family: 'Inter';
+    src: url('../../assets/fonts/static/inter/inter-v19-latin-regular.woff2') format('woff2');
+    font-weight: 400; /* Assuming regular is 400 */
+    font-style: normal;
+}
+/* Add other Inter font weights if used, e.g., 500, 600, 700 */
+@font-face {
+    font-family: 'Inter';
+    src: url('../../assets/fonts/static/inter/inter-v19-latin-500.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('../../assets/fonts/static/inter/inter-v19-latin-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('../../assets/fonts/static/inter/inter-v19-latin-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Remove default list styling */
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Basic link styling */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Image responsiveness */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Form element basic styling */
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}

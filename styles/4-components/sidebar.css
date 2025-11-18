@@ -1,7 +1,7 @@
 #sidebar {
-  width: 250px;
-  height: 100vh;
-  background-color: #2a3647;
+  width: var(--width-sidebar);
+  height: 100%; /* Take full height of its parent (#sidebar-container) */
+  background-color: var(--color-primary);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -15,9 +15,6 @@
 }
 
 nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -29,13 +26,10 @@ nav a {
   gap: 8px;
   text-decoration: none;
   padding: 12px;
-  color: #cdcdcd;
+  color: var(--color-grey-400);
 }
 
 .sidebar-footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -48,16 +42,11 @@ nav a {
   gap: 8px;
   text-decoration: none;
   padding: 12px;
-  color: #cdcdcd;
+  color: var(--color-grey-400);
 }
 
 @media (max-width: 768px) {
   #sidebar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
     width: 100%;
     height: 60px;
     flex-direction: row;
