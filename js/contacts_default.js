@@ -14,4 +14,10 @@ async function createContact() {
         "contactPhone": phone
     });
     //toggleModal();
+    toggleModal();
+    contactCreated();
+}
+
+function contactCreated() {
+
 }
