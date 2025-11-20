@@ -284,6 +284,8 @@ header h2 {
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
   display: flex;
   transition: right 400ms ease;
+  width: 346px;
+  height: 78px;
 }
 
 .successfulCreated span.show {
@@ -349,7 +351,7 @@ header h2 {
 
   .person {
     position: relative;
-    top: -55px;
+    top: -60px;
     left: 50%;
     transform: translateX(-50%);
     padding: 0;
@@ -357,10 +359,10 @@ header h2 {
   }
 
   .person img {
-    width: 64px;
-    height: 64px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    padding: 26px;
+    padding: 28px;
     background: var(--color-border);
     border: 2px solid white;
     box-shadow: var(--shadow-light);
@@ -423,10 +425,13 @@ header h2 {
   }
 
   .successfulCreated span {
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
     transition: bottom 400ms ease;
   }
 
   .successfulCreated span.show {
-    right: 500px;
+    bottom: 30px;
   }
 }
