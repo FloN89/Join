@@ -18,5 +18,9 @@ async function createContact() {
 }
 
 function contactCreated() {
-
+    let successRef = document.getElementById("successfulCreated");
+    successRef.classList.add("show");
+    setTimeout(() => {
+        successRef.classList.remove("show");
+    }, 1000);
 }
