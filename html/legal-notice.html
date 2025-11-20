@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>legal notice</title>
-    <link rel="stylesheet" href="../styles/1-settings/variables.css">
-    <link rel="stylesheet" href="../styles/2-base/base.css">
-    <link rel="stylesheet" href="../styles/3-layout/layout.css">
-    <link rel="stylesheet" href="../styles/5-pages/legal-notice.css">
+    <link rel="stylesheet" href="/styles/1-settings/variables.css">
+    <link rel="stylesheet" href="/styles/2-base/base.css">
+    <link rel="stylesheet" href="/styles/3-layout/layout.css">
+    <link rel="stylesheet" href="/styles/4-components/sidebar.css">
+    <link rel="stylesheet" href="/styles/4-components/topbar.css">
+    <link rel="stylesheet" href="/styles/5-pages/legal-notice.css">
+    <title>Legal Notice</title>
 </head>
+
 <body>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ex repellat dolorem aut deserunt atque inventore veniam, tempora maiores! Repudiandae aut modi cum dolores cupiditate et voluptas pariatur aliquam alias?</p>
+    <div class="layout">
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+            <div id="topbar-container"></div>
+            <div class="main-section">
+                <h1>Legal Notice</h1>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ex repellat dolorem aut deserunt atque inventore veniam, tempora maiores! Repudiandae aut modi cum dolores cupiditate et voluptas pariatur aliquam alias?</p>
+            </div>
+        </div>
+    </div>
+    <script src="/js/sidebar-loader.js"></script>
+    <script src="/js/topbar-loader.js"></script>
 </body>
+
 </html>

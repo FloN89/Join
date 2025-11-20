@@ -10,7 +10,7 @@
   --color-white: #ffffff;
   --color-background: #f6f7f8;
   --color-border: #d1d1d1;
-  --color-text-secondary: #a8a8a8;
+  --color-text-secondary: #cdcdcd;
   --color-text-primary: #000000;
 
   /* Priority & Status */
@@ -33,4 +33,9 @@
 
   /* === Layout === */
   --max-width-layout: 1440px;
+  --width-sidebar: 260px;
+
+  /* === Active States === */
+  --opacity-active-state: 0.8;
+  --font-color-active-state: #ffffff;
 }
