@@ -1,0 +1,77 @@
+/* ============================================
+   Mobile Layout Overrides (max-width: 768px)
+   ============================================
+   This file contains complex, cross-component
+   layout adjustments for mobile devices.
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* === Global Layout === */
+  .layout {
+    flex-direction: column;
+  }
+
+  /* === Main Content Area === */
+  .main-content {
+    margin-left: 0;
+    padding-top: var(--height-sidebar-mobile);
+  }
+
+  .main-section {
+    padding: var(--spacing-mobile);
+  }
+
+  /* === Sidebar Mobile Positioning === */
+  #sidebar-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+  }
+
+  /* === Topbar Mobile Adjustments === */
+  #topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 99;
+  }
+
+  #topbar_title {
+    padding-left: var(--spacing-mobile);
+    font-size: 1.2rem;
+  }
+
+  /* === Content Spacing for Fixed Elements === */
+  .main-content {
+    padding-top: var(--height-topbar-mobile);
+    padding-bottom: var(--height-sidebar-mobile);
+  }
+}
+
+/* === Small Mobile Devices (max-width: 480px) === */
+@media (max-width: 480px) {
+  #topbar_title {
+    font-size: 1rem;
+    padding-left: 15px;
+  }
+
+  .main-section {
+    padding: 15px;
+  }
+
+  /* Adjust user icons size on small screens */
+  .user-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .help-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

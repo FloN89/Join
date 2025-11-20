@@ -84,8 +84,81 @@
   flex-basis: calc(33.33% - 13.33px);
 }
 
+/* === Mobile Summary Page === */
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
+  }
+
+  .dashboard {
+    flex-direction: column;
+    padding-left: var(--spacing-mobile);
+    padding-right: var(--spacing-mobile);
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .metrics {
+    max-width: 100%;
+  }
+
+  .metrics-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .metrics-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .divider {
+    width: 40px;
+    height: 3px;
+  }
+
+  .greeting {
+    text-align: left;
+    align-self: flex-start;
+  }
+
+  .greeting p {
+    font-size: 1rem;
+  }
+
+  .greeting h1 {
+    font-size: 1.5rem;
+  }
+
+  .metrics-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .metrics-row.top .card,
+  .metrics-row.bottom .card {
+    flex-basis: 100%;
+  }
+}
+
+/* === Small Mobile Summary === */
+@media (max-width: 480px) {
+  .dashboard {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .metrics-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .card {
+    padding: 15px;
+    height: auto;
+    min-height: 80px;
   }
 }

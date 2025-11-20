@@ -1,0 +1,65 @@
+/* ============================================
+   Mobile Utility Classes
+   ============================================
+   Helper classes for responsive behavior.
+   ============================================ */
+
+/* === Visibility Utilities === */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop {
+    display: none !important;
+  }
+
+  .show-desktop {
+    display: block !important;
+  }
+}
+
+/* === Text Utilities === */
+@media (max-width: 768px) {
+  .text-center-mobile {
+    text-align: center;
+  }
+
+  .text-small-mobile {
+    font-size: 0.875rem;
+  }
+}
+
+/* === Spacing Utilities === */
+@media (max-width: 768px) {
+  .no-padding-mobile {
+    padding: 0 !important;
+  }
+
+  .padding-mobile {
+    padding: var(--spacing-mobile);
+  }
+
+  .no-margin-mobile {
+    margin: 0 !important;
+  }
+}
+
+/* === Flexbox Utilities === */
+@media (max-width: 768px) {
+  .flex-column-mobile {
+    flex-direction: column !important;
+  }
+
+  .flex-center-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

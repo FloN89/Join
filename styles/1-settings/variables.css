@@ -37,6 +37,21 @@
   --height-topbar: 90px;
   --main-content-padding: 120px;
 
+  /* === Breakpoints === */
+  --breakpoint-mobile-max: 480px;
+  --breakpoint-tablet-min: 481px;
+  --breakpoint-tablet-max: 768px;
+  --breakpoint-desktop-min: 769px;
+  --breakpoint-desktop-max: 1024px;
+  --breakpoint-wide-min: 1025px;
+
+  /* === Responsive Spacing === */
+  --spacing-mobile: 20px;
+  --spacing-tablet: 40px;
+  --spacing-desktop: 120px;
+  --height-topbar-mobile: 80px;
+  --height-sidebar-mobile: 80px;
+
   /* === Active States === */
   --opacity-active-state: 0.8;
   --font-color-active-state: #ffffff;

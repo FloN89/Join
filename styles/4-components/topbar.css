@@ -26,9 +26,28 @@
   height: 60px;
 }
 
+/* === Mobile Topbar === */
 @media (max-width: 768px) {
   #topbar {
+    height: var(--height-topbar-mobile);
     margin-left: 0;
     left: 0;
+    padding: 0 var(--spacing-mobile);
+  }
+
+  #topbar_user {
+    gap: 15px;
+    padding-right: 10px;
+  }
+}
+
+/* === Small Mobile === */
+@media (max-width: 480px) {
+  #topbar {
+    padding: 0 15px;
+  }
+
+  #topbar_user {
+    gap: 10px;
   }
 }
