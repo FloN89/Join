@@ -1,8 +1,7 @@
 .divider {
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-grey-200);
-  margin: 10px 0 20px 0;
+  width: 3px;
+  height: 40px;
+  background-color: var(--color-accent-blue);
 }
 
 .dashboard {
@@ -11,7 +10,7 @@
   align-items: flex-start;
   gap: 50px;
   margin-top: 40px;
-  padding-left: 100px;
+  padding-left: var(--main-content-padding);
 }
 
 .metrics {
@@ -21,9 +20,8 @@
 
 .metrics-header {
   display: flex;
-  gap: 40px;
+  gap: 20px;
   align-items: center;
-  margin-bottom: 30px;
 }
 
 .greeting {

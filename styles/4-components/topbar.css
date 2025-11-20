@@ -6,11 +6,12 @@
   justify-content: space-between;
   align-items: center;
   top: 0;
-  box-shadow: var(--shadow-light);
+  box-shadow: var(--shadow-medium);
 }
 #topbar_title {
   font-size: 1.5em;
   color: var(--color-text-primary);
+  padding-left: var(--main-content-padding);
 }
 
 #topbar_user {

@@ -34,6 +34,8 @@
   /* === Layout === */
   --max-width-layout: 1440px;
   --width-sidebar: 260px;
+  --height-topbar: 90px;
+  --main-content-padding: 120px;
 
   /* === Active States === */
   --opacity-active-state: 0.8;
