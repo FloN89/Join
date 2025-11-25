@@ -1,3 +1,19 @@
+async function loadContacts() {
+    const contacts = await loadData("contacts/");
+    const contactListRef = document.getElementById("contact-list");
+    contactListRef.innerHTML = "";
+
+    const id = Object.keys(contacts);
+
+    for (let i = 0; i < id.length; i++) {
+        const contactInfo = contacts[id[i]];
+        const contactIcon = await getInitals(i)
+
+        const contactHTML = generateContact(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon);
+        contactListRef.innerHTML += contactHTML;
+    }
+}
+
 function toggleModal() {
     let modalRef = document.getElementById("newContactModal");
     modalRef.classList.toggle("show");
@@ -11,26 +27,12 @@ async function createContact() {
     await saveData("contacts/" + name, {
         "contactName": name,
         "contactMail": mail,
-        "contactPhone": phone
+        "contactPhone": phone,
+        "color": randomColor()
     });
     toggleModal();
     contactCreated();
 }
-
-// async function checkContactExists(errorMessage, user) {
-//     const existName = await loadData("contacts/" + name);
-//     const existMail = await loadData("contacts/" + mail);
-//     const existPhone = await loadData("contacts/" + phone);
-//     if (existName || existMail || existPhone) {
-//         // errorMessage.classList.add("errorMessage")
-//         // errorMessage.textContent = "Your username is already taken. Please choose another one.";
-//         return;
-//     } else {
-//         // errorMessage.classList.remove("errorMessage")
-//         // errorMessage.textContent = "";
-//         return;
-//     }
-// }
 
 function contactCreated() {
     let successRef = document.getElementById("successfulCreated");
@@ -41,14 +43,23 @@ function contactCreated() {
 }
 
 
-async function getInitals() {
+async function getInitals(i) {
     const contacts = await loadData("contacts/");
-    const name = Object.keys(contacts)[0];
+    const firstKey = Object.keys(contacts)[i];
+    const name = contacts[firstKey].contactName;
+
     let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
     let initials = [...name.matchAll(rgx)] || [];
     initials = (
         (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
     ).toUpperCase();
 
-    console.log(initials);
+    return initials;
+}
+
+let color = ["#ff7a00", "#9327ff", "#6e52ff", "#fc71ff", "#ffbb2b", "#1fd7c1", "#462f8a", "#ff4646"]
+function randomColor() {
+    let getRandomColor = Math.floor(Math.random() * 9);
+    let pickedColor = color[getRandomColor];
+    document.documentElement.style.setProperty('--meine-farbe', pickedColor)
 }

@@ -7,8 +7,10 @@
   width: 620px;
   height: calc(100vh - 80px);
   display: flex;
-  justify-content: center;
+  justify-content: top;
+  align-items: center;
   box-shadow: 4px 0 6px rgba(0, 0, 0, 0.08);
+  flex-direction: column;
 }
 
 .contact-info {
@@ -68,6 +70,40 @@
   background-color: var(--color-primary-light);
   border: 1px solid var(--color-primary-light);
   box-shadow: var(--shadow-medium);
+}
+
+.contact-container {
+  width: 332px;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  justify-content: center;
+}
+
+.contact-icon-list {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  padding-left: 20px;
+  gap: 36px;
+}
+
+.contact-name {
+  font-size: 20px;
+}
+
+.contact-mail {
+  color: var(--color-mail);
+}
+
+.contact-icon {
+  background-color: var(--meine-farbe);
+  padding: 12px;
+  border-radius: 50%;
+  color: var(--color-white);
 }
 
 .newContactModal {
@@ -281,7 +317,7 @@ header h2 {
   right: -400px;
   padding: 24px 40px;
   border-radius: var(--border-radius-large);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-light-plus);
   display: flex;
   transition: right 400ms ease;
   width: 346px;
