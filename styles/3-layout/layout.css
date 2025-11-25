@@ -14,3 +14,9 @@
   background-color: var(--color-background);
   min-height: 100%; /* Ensure main-content takes full height of .layout */
 }
+
+.main-text {
+  margin-top: 40px;
+  padding-left: var(--main-content-padding);
+  max-width: 1100px;
+}

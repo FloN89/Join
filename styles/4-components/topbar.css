@@ -1,5 +1,4 @@
 #topbar {
-  width: 100%;
   height: var(--height-topbar);
   background-color: var(--color-white);
   display: flex;
@@ -7,6 +6,7 @@
   align-items: center;
   top: 0;
   box-shadow: var(--shadow-medium);
+  padding-right: 16px;
 }
 #topbar_title {
   font-size: 1.5em;
