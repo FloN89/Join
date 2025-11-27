@@ -16,3 +16,9 @@ function generateContact(name, mail, color, initials) {
             <div>
     `
 }
+
+function generateGroupHeader(letter) {
+    return `
+        <div class="contact-group-header">${letter}</div>
+    `;
+}

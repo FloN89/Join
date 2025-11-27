@@ -4,13 +4,18 @@ async function loadContacts() {
     contactListRef.innerHTML = "";
 
     const id = Object.keys(contacts);
+    let lastLetter = "";
 
     for (let i = 0; i < id.length; i++) {
         const contactInfo = contacts[id[i]];
         const contactIcon = await getInitals(i)
 
-        const contactHTML = generateContact(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon);
-        contactListRef.innerHTML += contactHTML;
+        let firstLetter = contactInfo.contactName.charAt(0).toUpperCase()
+        if (firstLetter !== lastLetter) {
+            contactListRef.innerHTML += generateGroupHeader(firstLetter)
+            lastLetter = firstLetter
+        }
+        contactListRef.innerHTML += generateContact(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon);
     }
 }
 
@@ -32,6 +37,7 @@ async function createContact() {
     });
     toggleModal();
     contactCreated();
+    loadContacts();
 }
 
 function contactCreated() {
@@ -59,7 +65,8 @@ async function getInitals(i) {
 
 let color = ["#ff7a00", "#9327ff", "#6e52ff", "#fc71ff", "#ffbb2b", "#1fd7c1", "#462f8a", "#ff4646"]
 function randomColor() {
-    let getRandomColor = Math.floor(Math.random() * 9);
+    let getRandomColor = Math.floor(Math.random() * 8);
     let pickedColor = color[getRandomColor];
     document.documentElement.style.setProperty('--meine-farbe', pickedColor)
+    return pickedColor;
 }
