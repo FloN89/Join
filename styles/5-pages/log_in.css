@@ -198,11 +198,11 @@
 }
 
 body.page-loaded .app-logo {
-  top: 20px;
-  left: 20px;
+  top: 30px;
+  left: 45px;
   right: auto;
   transform: none;
-  width: 80px;
+  width: 150px;
   height: auto;
   z-index: 10;
   padding: 0;        
