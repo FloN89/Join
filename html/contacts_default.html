@@ -18,7 +18,7 @@
     <script src="../js/firebase.js"></script>
 </head>
 
-<body onload="loadContacts()">
+<body onload="fetchContacts()">
     <div class="layout">
         <div id="sidebar-container"></div>
         <div class="main-content">
@@ -39,6 +39,7 @@
                         <div class="line"></div>
                         <h2>Better with a team</h2>
                     </div>
+                    <div class="contact-content" id="contact-content"></div>
                 </div>
                 <div id="newContactModal" class="newContactModal d_none">
                     <div class="modal-content">

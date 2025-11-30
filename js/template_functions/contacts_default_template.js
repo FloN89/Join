@@ -1,6 +1,6 @@
 function generateContact(name, mail, color, initials) {
     return `<div class="contact-first-letter" id="contact-first-letter">
-                <div class="contact-icon-list">
+                <div class="contact-icon-list" onclick="selectedContact()">
                     <div class="contact-icon" style="background-color: ${color}">
                         ${initials}
                     </div>
@@ -21,4 +21,9 @@ function generateGroupHeader(letter) {
     return `
         <div class="contact-group-header">${letter}</div>
     `;
+}
+
+function generateContactContent() {
+    return `
+        <h1>Contact Name</h1>`
 }
