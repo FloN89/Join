@@ -7,7 +7,7 @@ async function fetchContacts() {
     renderContacts();
 }
 
-async function renderContacts() {
+function renderContacts() {
     const contactListRef = document.getElementById("contact-list");
     contactListRef.innerHTML = "";
 
@@ -15,20 +15,22 @@ async function renderContacts() {
 
     for (let i = 0; i < id.length; i++) {
         const contactInfo = contacts[id[i]];
-        const contactIcon = await getInitals(i)
+        const contactIcon = getInitals(i)
 
         let firstLetter = contactInfo.contactName.charAt(0).toUpperCase()
         if (firstLetter !== lastLetter) {
             contactListRef.innerHTML += generateGroupHeader(firstLetter)
             lastLetter = firstLetter
         }
-        contactListRef.innerHTML += generateContact(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon);
+        contactListRef.innerHTML += generateContact(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon, id[i]);
     }
 }
 
-function selectedContact() {
+function selectedContact(contactId) {
+    const contactInfo = contacts[contactId];
+    const contactIcon = getInitals(id.indexOf(contactId));
     let selectContact = document.getElementById("contact-content");
-    selectContact.innerHTML = generateContactContent();
+    selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon);
     console.log("contact selected");
 }
 
@@ -62,8 +64,7 @@ function contactCreated() {
 }
 
 
-async function getInitals(i) {
-    const contacts = await loadData("contacts/");
+function getInitals(i) {
     const firstKey = Object.keys(contacts)[i];
     const name = contacts[firstKey].contactName;
 

@@ -103,6 +103,10 @@
   color: var(--color-white);
 }
 
+.highlight {
+  background: var(--color-primary);
+}
+
 .contact-name {
   font-size: 20px;
 }
@@ -359,6 +363,9 @@ header h2 {
   border-radius: 2px;
 }
 
+.contact-icon-large {
+  border-radius: 50%;
+}
 
 @media (max-width: 400px) {
   body {
