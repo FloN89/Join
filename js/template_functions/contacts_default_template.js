@@ -1,6 +1,6 @@
 function generateContact(name, mail, color, initials, contactId) {
     return `<div class="contact-first-letter" id="contact-first-letter">
-                <div class="contact-icon-list" onclick="selectedContact('${contactId}')">
+                <div class="contact-icon-list" onclick="selectedContact('${contactId}')" id="contact-icon-list-${contactId}">
                     <div class="contact-icon" style="background-color: ${color}">
                         ${initials}
                     </div>
@@ -23,11 +23,23 @@ function generateGroupHeader(letter) {
     `;
 }
 
-function generateContactContent(name, mail, color, initials) {
+function generateContactContent(name, mail, number, color, initials) {
     return `
         <div>
-            <div class="contact-icon-large" style="background-color: ${color}">
+            <div class="contact-content-header">
+                <div class="contact-icon-large" style="background-color: ${color}">
                 ${initials}
+                </div>
+                <div>
+                    <div class="contact-content-name">
+                        <div>${name}
+                        </div>
+                    </div>
+                    <div class="contact-content-edit-delete>
+                        <button class="contact-edit-button">Edit</button>
+                        <button class="contact-delete-button">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
         `

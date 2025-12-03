@@ -98,7 +98,7 @@
   cursor: pointer;
 }
 
-.contact-icon-list:active {
+.contact-icon-list-selected {
   background-color: var(--color-primary);
   color: var(--color-white);
 }

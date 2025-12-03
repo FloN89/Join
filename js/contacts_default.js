@@ -29,9 +29,22 @@ function renderContacts() {
 function selectedContact(contactId) {
     const contactInfo = contacts[contactId];
     const contactIcon = getInitals(id.indexOf(contactId));
+    changeBackgroundColor(contactId);
     let selectContact = document.getElementById("contact-content");
-    selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon);
-    console.log("contact selected");
+    selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon);
+}
+
+function changeBackgroundColor(contactId) {
+    removeBackgroundColor();
+    let backgroundColor = document.getElementById("contact-icon-list-" + contactId);
+    backgroundColor.classList.add("contact-icon-list-selected");
+}
+
+function removeBackgroundColor() {
+    for (let index = 0; index < id.length; index++) {
+        let backgroundColor = document.getElementById("contact-icon-list-" + id[index]);
+        backgroundColor.classList.remove("contact-icon-list-selected");
+    }
 }
 
 function toggleModal() {
