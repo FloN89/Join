@@ -123,6 +123,92 @@
   border: 1px solid var(--color-white);
 }
 
+.contact-content {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    font-family: sans-serif;
+    position: fixed;
+    top: 310px;
+}
+
+.contact-content-header {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.contact-icon-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    color: white;
+    font-size: 40px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-light);
+}
+
+.contact-header-info h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.contact-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+    align-items: center;
+}
+
+.contact-actions .action {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: #505050;
+}
+
+.contact-actions .action img {
+    width: 18px;
+    height: 18px;
+}
+
+.action {
+  display: flex;
+  gap: 8px
+  ;
+}
+
+.contact-info-section h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.info-block {
+    margin-bottom: 25px;
+}
+
+.info-block h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.contact-mail {
+    color: var(--color-mail);
+    text-decoration: none;
+}
+
+.contact-phone {
+    margin: 0;
+}
+
 .newContactModal {
   position: fixed;
   height: 100vh;
@@ -361,10 +447,6 @@ header h2 {
   height: 2px;
   background: rgba(209, 209, 209, 1);
   border-radius: 2px;
-}
-
-.contact-icon-large {
-  border-radius: 50%;
 }
 
 @media (max-width: 400px) {
