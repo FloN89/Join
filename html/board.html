@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Board</title>
     <link rel="stylesheet" href="../styles/1-settings/variables.css">
     <link rel="stylesheet" href="../styles/2-base/base.css">
     <link rel="stylesheet" href="../styles/3-layout/layout.css">
@@ -12,6 +12,52 @@
     <link rel="stylesheet" href="../styles/5-pages/board.css">
 </head>
 <body>
+    <div id="topbar">
+    <div id="topbar_title">Kanban Project Management Tool</div>
+    <div id="topbar_user">
+        <a href="/html/help.html"><img src="/assets/icons/help.svg" alt="Help Icon" class="help-icon" /></a>
+        <img src="/assets/icons/edit_bg.svg" alt="User Icon" class="user-icon" />
+
+    </div>
+</div>
+
+
+    <div class="find_and_create_task_container">
+                  <div id="searchInputWrapper" class="search_input_wrapper">
+                    <div class="search_field_row">
+                      <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="Search for task"
+                        oninput="onSearchInput()"
+                      />
+                      <div
+                        class="search_affix"
+                        onclick="focusSearchInputField()"
+                      >
+                        <div class="separator_input_field"></div>
+                        <button
+                          type="button"
+                          class="search_button"
+                          onclick="focusSearchInputField(); onSearchInput()"
+                        ></button>
+                      </div>
+                    </div>
+                    <div id="search_error" class="search_error">
+                      Results not found. Adjust your search.
+                    </div>
+                  </div>
+                  <button
+                    class="add_task_button toggle_button"
+                    onclick=""
+                  >
+                    <span class="add_task_lable">Add task</span>
+                    <img
+                      class="plus_sign"
+                      src="assets/icons/add_task_btn.svg"
+                    />
+                  </button>
+                </div>
     
 </body>
 </html>
