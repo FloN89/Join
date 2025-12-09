@@ -103,6 +103,10 @@
   color: var(--color-white);
 }
 
+.contact-icon-list-selected:hover {
+  background-color: var(--color-primary);
+}
+
 .highlight {
   background: var(--color-primary);
 }
@@ -132,8 +136,12 @@
   font-family: sans-serif;
   position: fixed;
   top: 310px;
-  /* transform: translateX(100%);
-  transition: transform 400ms ease; */
+  transform: translateX(500px);
+  transition: transform 400ms ease;
+}
+
+.contact-content.show {
+  transform: translateX(0);
 }
 
 .contact-content-header {

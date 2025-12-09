@@ -30,8 +30,11 @@ function selectedContact(contactId) {
     const contactInfo = contacts[contactId];
     const contactIcon = getInitals(id.indexOf(contactId));
     changeBackgroundColor(contactId);
+
     let selectContact = document.getElementById("contact-content");
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon);
+
+    selectContact.classList.add("show");
 }
 
 function changeBackgroundColor(contactId) {
