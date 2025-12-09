@@ -136,13 +136,13 @@
   font-family: sans-serif;
   position: fixed;
   top: 310px;
-  transform: translateX(500px);
-  transition: transform 400ms ease;
+  /* transform: translateX(500px);
+  transition: transform 400ms ease; */
 }
 
-.contact-content.show {
+/* .contact-content.show {
   transform: translateX(0);
-}
+} */
 
 .contact-content-header {
   display: flex;
