@@ -25,7 +25,7 @@
             <div id="topbar-container"></div>
             <div class="main-section">
                 <div class="all-contacts">
-                    <button id="modal-btn" class="modal-btn" onclick="toggleModal()">Add new contact
+                    <button id="modal-btn" class="modal-btn" onclick="openCreateModal()">Add new contact
                         <img src="../assets/icons/person_add.svg" alt="">
                     </button>
                     <div class="contact-container">
@@ -42,7 +42,7 @@
                     <div class="contact-content" id="contact-content"></div>
                 </div>
                 <div id="newContactModal" class="newContactModal d_none">
-                    <div class="modal-content">
+                    <!-- <div class="modal-content">
 
                         <header class="title">
                             <img src="../assets/icons/Capa 2_white.svg" alt="">
@@ -84,13 +84,16 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="successfulCreated">
                     <span id="successfulCreated">Contact succesfully created</span>
                 </div>
+                <div id="editContactModal" class="editContactModal d_none">
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 <script src="../js/sidebar-loader.js"></script>

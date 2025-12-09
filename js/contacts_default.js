@@ -47,9 +47,21 @@ function removeBackgroundColor() {
     }
 }
 
+function openCreateModal() {
+    const modal = document.getElementById("newContactModal");
+    modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!");
+    modal.classList.add("show");
+}
+
+function openEditContact() {
+    const modal = document.getElementById("newContactModal");
+    modal.innerHTML = generateModalContent("Edit contact", "Delete", "Save", "");
+    modal.classList.add("show");
+}
+
 function toggleModal() {
     let modalRef = document.getElementById("newContactModal");
-    modalRef.classList.toggle("show");
+    modalRef.classList.toggle('show');
 }
 
 async function createContact() {
@@ -65,7 +77,7 @@ async function createContact() {
     });
     toggleModal();
     contactCreated();
-    loadContacts();
+    renderContacts();
 }
 
 function contactCreated() {

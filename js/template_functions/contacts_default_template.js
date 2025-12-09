@@ -65,3 +65,49 @@ function generateContactContent(name, mail, number, color, initials) {
     </div>
         `
 }
+
+function generateModalContent(header, button1, button2, underheader) {
+    return `
+                <div class="modal-content">
+                    <header class="title">
+                        <img src="../assets/icons/Capa 2_white.svg" alt="">
+                        <h1>${header}</h1>
+                        <h2>${underheader}</h2>
+                    </header>
+
+                    <div class="person">
+                            <img src="../assets/icons/person_white.svg" alt="">
+                        </div>
+
+                        <div class="input-group">
+                            <div></div>
+                            <span class="close" onclick="toggleModal()">&times;</span>
+                            <label class="input-wrapper">
+                                <input type="text" placeholder="Name" required id="contactNameInput">
+                                <img src="../assets/icons/person.svg" alt="" class="field-icon">
+                            </label>
+
+                            <label class="input-wrapper">
+                                <input type="email" placeholder="Email" required id="contactMailInput">
+                                <img src="../assets/icons/mail.svg" alt="" class="field-icon">
+                            </label>
+
+                            <label class="input-wrapper">
+                                <input type="tel" placeholder="Phone" required id="contactPhoneInput">
+                                <img src="../assets/icons/call.svg" alt="" class="field-icon">
+                            </label>
+
+                            <div class="buttons">
+                                <button type="button" class="cancel-btn" onclick="toggleModal()">
+                                    <span>${button1}</span>
+                                    <span class="close-icon">&times;</span>
+                                </button>
+
+                                <button type="button" class="create-btn" onclick="createContact()">
+                                    ${button2}
+                                    <img src="../assets/icons/check_white.svg" alt="">
+                                </button>
+                            </div>
+                        </div>
+    `
+}
