@@ -57,31 +57,31 @@
 
 .panel-title {
   text-align: center;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 58px;
   margin: 0;
-  border-bottom: 3px solid var(--color-accent);
-  padding: 10px 20px;
+  margin-bottom: 8px;   
+  padding: 0 20px 6px;
+  border-bottom: none;
 }
 
 .panel-title::after {
+  content: "";
   display: block;
-  width: 120px;
-  height: 2px;
+  width: 80px;          
+  height: 3px;
   background: var(--color-primary-light);
   border-radius: 999px;
-  margin: 8px auto 0;
+  margin: 8px auto 0;   
 }
-
 
 .form-fields {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 70%;
-  margin: 0 auto;
+  margin: 16px auto 0;  
 }
-
 .input {
   border-radius: var(--border-radius-medium);
   border: 1px solid var(--color-border);
@@ -120,6 +120,8 @@
   z-index: 2;               
   opacity: .9;
 }
+
+
 
 .icon-btn.password-toggle.is-lock { background-image: url(../assets/icons/lock.svg); }
 .icon-btn.password-toggle.is-off  { background-image: url(../assets/icons/visibility_off.svg); }
@@ -196,15 +198,17 @@
 }
 
 body.page-loaded .app-logo {
-  left: 20px;
-  top: 20px;
-  width: 80px;
-  height: auto;
+  top: 30px;
+  left: 45px;
+  right: auto;
   transform: none;
+  width: 150px;
+  height: auto;
   z-index: 10;
-  padding-left: 350px;
-  padding-top: 30px;
+  padding: 0;        
 }
+
+
 
 .main-area,
 .site-footer,
