@@ -61,19 +61,27 @@ nav a {
   }
 
   .sidebar-nav .label {
-    display: none;
+    /* display: none; */
   }
 
   nav ul {
     flex-direction: row;
-    gap: 30px;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     max-width: 400px;
   }
 
   nav a {
     padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav a:hover {
+    background-color: var(--color-hover-background);
+    border-radius: var(--border-radius-small);
   }
 
   .icon {

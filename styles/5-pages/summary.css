@@ -208,8 +208,7 @@
   }
 
   .greeting {
-    text-align: left;
-    align-self: flex-start;
+    display: none;
   }
 
   .greeting p {
@@ -218,15 +217,6 @@
 
   .greeting h1 {
     font-size: 1.5rem;
-  }
-
-  .task-row {
-    grid-template-columns: 1fr;
-  }
-
-  .task-row-3 {
-    grid-template-columns: 1fr;
-    height: 130px;
   }
 }
 

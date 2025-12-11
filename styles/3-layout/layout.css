@@ -13,6 +13,7 @@
   flex-direction: column;
   background-color: var(--color-background);
   min-height: 100%; /* Ensure main-content takes full height of .layout */
+  min-width: 0;
 }
 
 .main-text {
