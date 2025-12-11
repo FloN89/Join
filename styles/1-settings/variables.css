@@ -4,11 +4,13 @@
   --color-primary: #2a3647;
   --color-primary-light: #29abe2;
   --color-accent: #0078ff;
-  --color-accent-blue: #23a5e3;
+  --color-accent-blue: rgb(35, 165, 227);
+  --color-mail: rgba(0, 124, 238, 1);
 
   /* Neutral */
   --color-white: #ffffff;
   --color-background: #f6f7f8;
+  --color-hover-background: #f9f9f9;
   --color-border: #d1d1d1;
   --color-text-secondary: #cdcdcd;
   --color-text-primary: #000000;
@@ -28,6 +30,7 @@
   --border-radius-large: 20px;
   --border-radius-xl: 30px;
   --shadow-light: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  --shadow-light-plus: 0px 0px 4px rgba(0, 0, 0, 0.15);
   --shadow-medium: 0px 4px 4px rgba(0, 0, 0, 0.25);
   --border-radius-round: 50%;
 
