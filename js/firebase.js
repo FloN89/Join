@@ -18,3 +18,25 @@ async function saveData(path = "", data = {}) { //Daten speichern
     const responseToJson = await response.json();
     return responseToJson;
 }
+
+async function editData(path = "", data = {}) { //Daten bearbeiten
+    let response = await fetch(BASE_URL + path + ".json", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    }
+    );
+    const responseToJson = await response.json();
+    return responseToJson;
+}
+
+async function deleteData(path = "") { //Daten löschen
+    let response = await fetch(BASE_UTL + path + ".json", {
+        method: "DELETE",
+    }
+    );
+    const responseToJson = await response.json();
+    return responseToJson;
+}
