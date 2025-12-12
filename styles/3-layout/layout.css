@@ -21,3 +21,14 @@
   padding-left: var(--main-content-padding);
   max-width: 1100px;
 }
+
+/* ============================================
+   Mobile Responsive Styles
+   ============================================ */
+
+/* === Mobile (max-width: 768px) === */
+@media (max-width: 768px) {
+  .main-text {
+    padding-left: 15px;
+  }
+}

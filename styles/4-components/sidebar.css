@@ -4,7 +4,7 @@
   background-color: var(--color-primary);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   padding: 80px 0;
   color: var(--color-text-secondary);
@@ -28,6 +28,14 @@ nav a {
   text-decoration: none;
   padding: 12px;
   color: var(--color-grey-400);
+}
+
+.sidebar-nav {
+  padding-top: 150px;
+}
+
+.sidebar-footer {
+  padding-top: 150px;
 }
 
 .sidebar-footer ul {
@@ -54,6 +62,14 @@ nav a {
     flex-direction: row;
     justify-content: center;
     padding: 15px 0;
+  }
+
+  .sidebar-nav {
+    padding-top: 0px;
+  }
+
+  .sidebar-footer {
+    padding-top: 0px;
   }
 
   .sidebar-header {

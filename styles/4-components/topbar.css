@@ -8,6 +8,11 @@
   box-shadow: var(--shadow-medium);
   padding-right: 16px;
 }
+
+#topbar-img {
+  display: none;
+}
+
 #topbar_title {
   font-size: 1.5em;
   color: var(--color-text-primary);
@@ -33,6 +38,18 @@
     margin-left: 0;
     left: 0;
     padding: 0 var(--spacing-mobile);
+  }
+
+  #topbar_title {
+    display: none;
+  }
+
+  #topbar-img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    padding-left: 15px;
   }
 
   #topbar_user {

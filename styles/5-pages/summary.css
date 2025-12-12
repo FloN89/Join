@@ -200,6 +200,15 @@
 
   .metrics-header h1 {
     font-size: 1.5rem;
+    order: 1;
+  }
+
+  .metrics-header p {
+    order: 2;
+  }
+
+  .metrics-header .divider {
+    order: 3;
   }
 
   .divider {

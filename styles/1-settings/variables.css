@@ -49,8 +49,8 @@
   --breakpoint-wide-min: 1025px;
 
   /* === Responsive Spacing === */
-  --spacing-mobile: 20px;
-  --spacing-tablet: 40px;
+  --spacing-mobile: 15px;
+  --spacing-tablet: 15px;
   --spacing-desktop: 120px;
   --height-topbar-mobile: 80px;
   --height-sidebar-mobile: 80px;
