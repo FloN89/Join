@@ -62,6 +62,12 @@ function openEditContact() {
     modal.classList.add("show");
 }
 
+async function deleteContact(name) {
+    console.log(name);
+    await deleteData("contacts/" + name);
+    await fetchContacts();
+}
+
 function toggleModal() {
     let modalRef = document.getElementById("newContactModal");
     modalRef.classList.toggle('show');
@@ -80,7 +86,7 @@ async function createContact() {
     });
     toggleModal();
     contactCreated();
-    renderContacts();
+    await fetchContacts();
 }
 
 function contactCreated() {
@@ -90,7 +96,6 @@ function contactCreated() {
         successRef.classList.remove("show");
     }, 1000);
 }
-
 
 function getInitals(i) {
     const firstKey = Object.keys(contacts)[i];
