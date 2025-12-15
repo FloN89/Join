@@ -23,7 +23,7 @@ function generateGroupHeader(letter) {
     `;
 }
 
-function generateContactContent(name, mail, number, color, initials) {
+function generateContactContent(name, mail, number, color, initials, contactId) {
     return `
         <div class="contact-content">
 
@@ -36,11 +36,11 @@ function generateContactContent(name, mail, number, color, initials) {
                 <h1 class="contact-name">${name}</h1>
 
                 <div class="contact-actions">
-                    <div class="action edit" onclick="openEditContact()">
+                    <div class="action edit" onclick="openEditContact('${contactId}')">
                         <img src="../assets/icons/edit.svg" alt="edit">
                         <span>Edit</span>
                     </div>
-                    <div class="action delete" onclick="deleteContact()">
+                    <div class="action delete" onclick="deleteContact('${name}')">
                         <img src="../assets/icons/delete.svg" alt="delete">
                         <span>Delete</span>
                     </div>
