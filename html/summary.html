@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="/styles/4-components/sidebar.css">
     <link rel="stylesheet" href="/styles/4-components/topbar.css">
     <link rel="stylesheet" href="/styles/5-pages/summary.css">
+    <link rel="stylesheet" href="/styles/6-responsive/layout-mobile.css">
+    <link rel="stylesheet" href="/styles/6-responsive/layout-tablet.css">
+    <link rel="stylesheet" href="/styles/6-responsive/utilities-mobile.css">
     <title>Summary</title>
 </head>
 
@@ -27,19 +30,61 @@
                             <p>Key Metrics at a Glance</p>
                         </div>
 
-                        <div class="metrics-row top">
-                            <div class="card">To-do</div>
-                            <div class="card">Done</div>
-                        </div>
+                        <div class="task-container">
+                            <!-- Obere Reihe: 2 Karten -->
+                            <div class="task-row">
+                                <div class="task-card task-card-small">
+                                    <div class="task-icon">
+                                        <img src="/assets/icons/edit_bg.svg" alt="">
+                                    </div>
+                                    <div class="task-info">
+                                        <div class="task-number">1</div>
+                                        <div class="task-label">To-do</div>
+                                    </div>
+                                </div>
 
-                        <div class="metrics-row middle">
-                            <div class="card">Urgent</div>
-                        </div>
+                                <div class="task-card task-card-small">
+                                    <div class="task-icon">
+                                        <img src="/assets/icons/check_bg.svg" alt="">
+                                    </div>
+                                    <div class="task-info">
+                                        <div class="task-number">1</div>
+                                        <div class="task-label">Done</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div class="metrics-row bottom">
-                            <div class="card">Tasks in Board</div>
-                            <div class="card">Tasks in Progress</div>
-                            <div class="card">Awaiting Feedback</div>
+                            <!-- Untere Reihe: 1 breite Karte -->
+                            <div class="task-card task-card-large">
+                                <div class="task-card-left">
+                                    <div class="task-icon">
+                                        <img src="/assets/icons/prio_alta_big.svg" alt="">
+                                    </div>
+                                    <div class="task-info">
+                                        <div class="task-number">1</div>
+                                        <div class="task-label">Urgent</div>
+                                    </div>
+                                </div>
+                                <div class="task-details">
+                                    <div class="task-date">October 16, 2022</div>
+                                    <div class="task-description">Upcoming Deadline</div>
+                                </div>
+                            </div>
+
+                            <div class="task-row task-row-3">
+                                <div class="task-card task-card-text">
+                                    <div class="task-number">1</div>
+                                    <div class="card-title">Tasks in Board</div>
+                                </div>
+                                <div class="task-card task-card-text">
+                                    <div class="task-number">1</div>
+                                    <div class="card-title">Tasks in Progress</div>
+                                </div>
+                                <div class="task-card task-card-text">
+                                    <div class="task-number">1</div>
+                                    <div class="card-title">Awaiting Feedback</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="greeting">
@@ -49,9 +94,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script src="/js/sidebar-loader.js"></script>
-    <script src="/js/topbar-loader.js"></script>
+        <script src="/js/sidebar-loader.js"></script>
+        <script src="/js/topbar-loader.js"></script>
 </body>
 
 
