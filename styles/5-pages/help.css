@@ -1,8 +1,10 @@
-main {
+.help-header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 240px;
-  margin-top: 180px;
-  max-width: var(--max-width-layout);
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+#topbar_user a {
+  display: none;
 }

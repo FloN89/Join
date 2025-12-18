@@ -1,16 +1,22 @@
 #topbar {
-  width: 100%;
   height: var(--height-topbar);
   background-color: var(--color-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
   top: 0;
-  box-shadow: var(--shadow-light);
+  box-shadow: var(--shadow-medium);
+  padding-right: 16px;
 }
+
+#topbar-img {
+  display: none;
+}
+
 #topbar_title {
   font-size: 1.5em;
   color: var(--color-text-primary);
+  padding-left: var(--main-content-padding);
 }
 
 #topbar_user {
@@ -25,9 +31,40 @@
   height: 60px;
 }
 
+/* === Mobile Topbar === */
 @media (max-width: 768px) {
   #topbar {
+    height: var(--height-topbar-mobile);
     margin-left: 0;
     left: 0;
+    padding: 0 var(--spacing-mobile);
+  }
+
+  #topbar_title {
+    display: none;
+  }
+
+  #topbar-img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    padding-left: 15px;
+  }
+
+  #topbar_user {
+    gap: 15px;
+    padding-right: 10px;
+  }
+}
+
+/* === Small Mobile === */
+@media (max-width: 480px) {
+  #topbar {
+    padding: 0 15px;
+  }
+
+  #topbar_user {
+    gap: 10px;
   }
 }
