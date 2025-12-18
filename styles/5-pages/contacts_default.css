@@ -139,8 +139,8 @@
   font-family: sans-serif;
   position: fixed;
   top: 310px;
-  /* transform: translateX(500px);
-  transition: transform 400ms ease; */
+  /* transform: translateX(100%);
+  transition: transform 300ms ease; */
 }
 
 /* .contact-content.show {
@@ -153,10 +153,30 @@
   gap: 40px;
 }
 
+.contact-icon-content {
+  width: 120px;
+  height: 120px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 3px solid var(--color-white);
+  overflow: hidden;
+  box-sizing: border-box;
+  color: var(--color-white);
+  font-size: 47px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-light);
+}
+
 .contact-icon-large {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  border: 3px solid var(--color-white);
+  overflow: hidden;
+  box-sizing: border-box;
   color: var(--color-white);
   font-size: 47px;
   font-weight: 500;

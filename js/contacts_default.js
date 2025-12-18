@@ -2,7 +2,7 @@ let contacts = {};
 let id = [];
 
 async function fetchContacts() {
-    contacts = await loadData("contacts/");
+    contacts = await loadData("contacts/") || {};
     id = Object.keys(contacts);
     renderContacts();
 }
@@ -32,7 +32,7 @@ function selectedContact(contactId) {
     changeBackgroundColor(contactId);
 
     let selectContact = document.getElementById("contact-content");
-    selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon);
+    selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
 
     selectContact.classList.add("show");
 }
@@ -52,20 +52,33 @@ function removeBackgroundColor() {
 
 function openCreateModal() {
     const modal = document.getElementById("newContactModal");
-    modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!");
+    modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!", "createContact()");
     modal.classList.add("show");
 }
 
-function openEditContact() {
+// Änderung speichern fehlt noch
+function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
-    modal.innerHTML = generateModalContent("Edit contact", "Delete", "Save", "");
+    const contactInfo = contacts[contactId];
+    modal.innerHTML = generateModalContent(
+        "Edit contact",
+        "Delete",
+        "Save",
+        "",
+        "saveEditedContact()");
     modal.classList.add("show");
+    document.getElementById("contactNameInput").value = contactInfo.contactName;
+    document.getElementById("contactMailInput").value = contactInfo.contactMail;
+    document.getElementById("contactPhoneInput").value = contactInfo.contactPhone;
+    const iconPreview = document.getElementById("icon-preview");
+    iconPreview.innerHTML = getInitalsImg(contactInfo.color, contactId);
 }
 
 async function deleteContact(name) {
-    console.log(name);
     await deleteData("contacts/" + name);
     await fetchContacts();
+    let content = document.getElementById("contact-content")
+    content.innerHTML = "";
 }
 
 function toggleModal() {
