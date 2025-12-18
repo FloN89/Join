@@ -28,7 +28,7 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
         <div class="contact-content">
 
         <div class="contact-content-header">
-            <div class="contact-icon-large" style="background-color: ${color}">
+            <div class="contact-icon-content" style="background-color: ${color}">
                 ${initials}
             </div>
 
@@ -66,7 +66,7 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
         `
 }
 
-function generateModalContent(header, button1, button2, underheader) {
+function generateModalContent(header, button1, button2, underheader, functionCall) {
     return `
                 <div class="modal-content">
                     <header class="title">
@@ -74,40 +74,46 @@ function generateModalContent(header, button1, button2, underheader) {
                         <h1>${header}</h1>
                         <h2>${underheader}</h2>
                     </header>
+                    
+                    <div class="person" id="icon-preview">
+                        <img src="../assets/icons/person_white.svg" alt="">
+                    </div>
+                    
+                    <div class="input-group">
+                        <span class="close" onclick="toggleModal()">&times;</span>
+                        <label class="input-wrapper">
+                            <input type="text" placeholder="Name" required id="contactNameInput">
+                            <img src="../assets/icons/person.svg" alt="" class="field-icon">
+                        </label>
 
-                    <div class="person">
-                            <img src="../assets/icons/person_white.svg" alt="">
+                        <label class="input-wrapper">
+                            <input type="email" placeholder="Email" required id="contactMailInput">
+                            <img src="../assets/icons/mail.svg" alt="" class="field-icon">
+                        </label>
+
+                        <label class="input-wrapper">
+                            <input type="tel" placeholder="Phone" required id="contactPhoneInput">
+                            <img src="../assets/icons/call.svg" alt="" class="field-icon">
+                        </label>
+
+                        <div class="buttons">
+                            <button type="button" class="cancel-btn" onclick="toggleModal()">
+                                <span>${button1}</span>
+                                <span class="close-icon">&times;</span>
+                            </button>
+
+                            <button type="button" class="create-btn" onclick="${functionCall}">
+                                ${button2}
+                                <img src="../assets/icons/check_white.svg" alt="">
+                            </button>
                         </div>
-
-                        <div class="input-group">
-                            <div></div>
-                            <span class="close" onclick="toggleModal()">&times;</span>
-                            <label class="input-wrapper">
-                                <input type="text" placeholder="Name" required id="contactNameInput">
-                                <img src="../assets/icons/person.svg" alt="" class="field-icon">
-                            </label>
-
-                            <label class="input-wrapper">
-                                <input type="email" placeholder="Email" required id="contactMailInput">
-                                <img src="../assets/icons/mail.svg" alt="" class="field-icon">
-                            </label>
-
-                            <label class="input-wrapper">
-                                <input type="tel" placeholder="Phone" required id="contactPhoneInput">
-                                <img src="../assets/icons/call.svg" alt="" class="field-icon">
-                            </label>
-
-                            <div class="buttons">
-                                <button type="button" class="cancel-btn" onclick="toggleModal()">
-                                    <span>${button1}</span>
-                                    <span class="close-icon">&times;</span>
-                                </button>
-
-                                <button type="button" class="create-btn" onclick="createContact()">
-                                    ${button2}
-                                    <img src="../assets/icons/check_white.svg" alt="">
-                                </button>
-                            </div>
-                        </div>
+                    </div>
     `
+}
+
+function getInitalsImg(color, contactId) {
+    return `
+    <div class="contact-icon-large" style = "background-color: ${color}">
+        ${getInitals(id.indexOf(contactId))}
+    </div > `
 }
