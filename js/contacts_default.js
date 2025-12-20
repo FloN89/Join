@@ -3,7 +3,10 @@ let id = [];
 
 async function fetchContacts() {
     contacts = await loadData("contacts/") || {};
-    id = Object.keys(contacts);
+    id = Object.keys(contacts).sort((a, b) => {
+        return contacts[a].contactName
+            .localeCompare(contacts[b].contactName);
+    });
     renderContacts();
 }
 
@@ -15,7 +18,7 @@ function renderContacts() {
 
     for (let i = 0; i < id.length; i++) {
         const contactInfo = contacts[id[i]];
-        const contactIcon = getInitals(i)
+        const contactIcon = getInitals(id[i]);
 
         let firstLetter = contactInfo.contactName.charAt(0).toUpperCase()
         if (firstLetter !== lastLetter) {
@@ -28,7 +31,7 @@ function renderContacts() {
 
 function selectedContact(contactId) {
     const contactInfo = contacts[contactId];
-    const contactIcon = getInitals(id.indexOf(contactId));
+    const contactIcon = getInitals((contactId));
     changeBackgroundColor(contactId);
 
     let selectContact = document.getElementById("contact-content");
@@ -46,7 +49,9 @@ function changeBackgroundColor(contactId) {
 function removeBackgroundColor() {
     for (let index = 0; index < id.length; index++) {
         let backgroundColor = document.getElementById("contact-icon-list-" + id[index]);
-        backgroundColor.classList.remove("contact-icon-list-selected");
+        if (backgroundColor) {
+            backgroundColor.classList.remove("contact-icon-list-selected");
+        }
     }
 }
 
@@ -65,7 +70,8 @@ function openEditContact(contactId) {
         "Delete",
         "Save",
         "",
-        "saveEditedContact()");
+        `saveEditedContact('${contactId}')`
+    );
     modal.classList.add("show");
     document.getElementById("contactNameInput").value = contactInfo.contactName;
     document.getElementById("contactMailInput").value = contactInfo.contactMail;
@@ -74,8 +80,24 @@ function openEditContact(contactId) {
     iconPreview.innerHTML = getInitalsImg(contactInfo.color, contactId);
 }
 
-async function deleteContact(name) {
-    await deleteData("contacts/" + name);
+async function saveEditedContact(contactId) {
+    const name = document.getElementById("contactNameInput").value;
+    const mail = document.getElementById("contactMailInput").value;
+    const phone = document.getElementById("contactPhoneInput").value;
+
+    await saveData("contacts/" + contactId, {
+        "contactName": name,
+        "contactMail": mail,
+        "contactPhone": phone,
+        "color": contacts[contactId].color
+    });
+    toggleModal();
+    await fetchContacts();
+    selectedContact(contactId);
+}
+
+async function deleteContact(contactId) {
+    await deleteData("contacts/" + contactId);
     await fetchContacts();
     let content = document.getElementById("contact-content")
     content.innerHTML = "";
@@ -91,7 +113,7 @@ async function createContact() {
     const mail = document.getElementById("contactMailInput").value;
     const phone = document.getElementById("contactPhoneInput").value;
 
-    await saveData("contacts/" + name, {
+    await postData("contacts/", {
         "contactName": name,
         "contactMail": mail,
         "contactPhone": phone,
@@ -110,9 +132,8 @@ function contactCreated() {
     }, 1000);
 }
 
-function getInitals(i) {
-    const firstKey = Object.keys(contacts)[i];
-    const name = contacts[firstKey].contactName;
+function getInitals(contactId) {
+    const name = contacts[contactId].contactName;
 
     let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
     let initials = [...name.matchAll(rgx)] || [];

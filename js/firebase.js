@@ -6,6 +6,19 @@ async function loadData(path = "") { //Daten bekommen
     return responseToJson;
 }
 
+async function postData(path = "", data = {}) { //Daten posten
+    let response = await fetch(BASE_URL + path + ".json", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    }
+    );
+    const responseToJson = await response.json();
+    return responseToJson;
+}
+
 async function saveData(path = "", data = {}) { //Daten speichern
     let response = await fetch(BASE_URL + path + ".json", {
         method: "PUT",
@@ -18,19 +31,6 @@ async function saveData(path = "", data = {}) { //Daten speichern
     const responseToJson = await response.json();
     return responseToJson;
 }
-
-// async function editData(path = "", data = {}) { //Daten bearbeiten
-//     let response = await fetch(BASE_URL + path + ".json", {
-//         method: "PATCH",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(data),
-//     }
-//     );
-//     const responseToJson = await response.json();
-//     return responseToJson;
-// }
 
 async function deleteData(path = "") { //Daten löschen
     let response = await fetch(BASE_URL + path + ".json", {

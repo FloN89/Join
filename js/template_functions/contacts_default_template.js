@@ -40,7 +40,7 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
                         <img src="../assets/icons/edit.svg" alt="edit">
                         <span>Edit</span>
                     </div>
-                    <div class="action delete" onclick="deleteContact('${name}')">
+                    <div class="action delete" onclick="deleteContact('${contactId}')">
                         <img src="../assets/icons/delete.svg" alt="delete">
                         <span>Delete</span>
                     </div>
@@ -114,6 +114,6 @@ function generateModalContent(header, button1, button2, underheader, functionCal
 function getInitalsImg(color, contactId) {
     return `
     <div class="contact-icon-large" style = "background-color: ${color}">
-        ${getInitals(id.indexOf(contactId))}
+        ${getInitals((contactId))}
     </div > `
 }
