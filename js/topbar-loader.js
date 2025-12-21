@@ -18,3 +18,13 @@ fetch("/templates/topbar_template.html")
   .catch((error) => {
     console.error("Error loading topbar:", error);
   });
+
+function setUserInitial() {
+  const userInitial = localStorage.getItem("userInitial");
+  console.log(userInitial);
+
+  const userInitialElement = document.getElementById("user-initial");
+
+  userInitialElement.innerText = userInitial;
+  console.log(userInitialElement);
+}
