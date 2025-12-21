@@ -1,4 +1,5 @@
-const databaseBaseAddress = "https://join-db-473d0-default-rtdb.europe-west1.firebasedatabase.app/";
+const databaseBaseAddress =
+  "https://join-db-473d0-default-rtdb.europe-west1.firebasedatabase.app/";
 
 function startLogin() {
   hideErrorMessage();
@@ -33,21 +34,26 @@ function verifyLogin(emailValue, passwordValue) {
       handleLoginResponse(usersFromDatabase, emailValue, passwordValue);
     },
     function () {
-      showErrorMessage("Ein Fehler ist aufgetreten. Bitte später erneut versuchen.");
+      showErrorMessage(
+        "Ein Fehler ist aufgetreten. Bitte später erneut versuchen."
+      );
     }
   );
 }
 
 function handleLoginResponse(usersFromDatabase, emailValue, passwordValue) {
-  var matchingUser = findMatchingUser(usersFromDatabase, emailValue, passwordValue);
+  var matchingUser = findMatchingUser(
+    usersFromDatabase,
+    emailValue,
+    passwordValue
+  );
   if (!matchingUser) {
     showErrorMessage("E-Mail oder Passwort ist falsch.");
     return;
   }
-  saveUserSession(matchingUser.userId, matchingUser.user.name);
+  saveUserSession(matchingUser.userId, matchingUser.user.username);
   redirectToSummaryPage();
 }
-
 
 function saveUserSession(userId, fullName) {
   var fullNameText = fullName || "";
@@ -67,8 +73,6 @@ function redirectToSummaryPage() {
   window.location.href = "summary.html";
 }
 
-
-
 function showErrorMessage(messageText) {
   var errorBoxElement = document.getElementById("login-error-box");
   if (!errorBoxElement) {
@@ -86,8 +90,6 @@ function hideErrorMessage() {
   errorBoxElement.innerText = "";
   errorBoxElement.style.display = "none";
 }
-
-
 
 function makeElementVisible(targetElement) {
   if (!targetElement) {
@@ -110,18 +112,14 @@ function initializePage() {
   document.body.classList.add("page-loaded");
   var logoElement = document.querySelector(".app-logo");
   if (logoElement) {
-    logoElement.addEventListener(
-      "transitionend",
-      handleLogoTransition,
-      { once: true }
-    );
+    logoElement.addEventListener("transitionend", handleLogoTransition, {
+      once: true,
+    });
   } else {
     handleLogoTransition();
   }
   initializePasswordToggle();
 }
-
-
 
 function initializePasswordToggle() {
   var passwordInputElement = document.querySelector(".input-password");
@@ -135,7 +133,10 @@ function initializePasswordToggle() {
   });
 }
 
-function togglePasswordVisibility(passwordInputElement, passwordToggleButtonElement) {
+function togglePasswordVisibility(
+  passwordInputElement,
+  passwordToggleButtonElement
+) {
   var isCurrentlyHidden = passwordInputElement.type === "password";
   if (isCurrentlyHidden) {
     passwordInputElement.type = "text";
@@ -158,8 +159,6 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
   }
 }
 
-
-
 function loadUsersFromDatabase(onSuccess, onError) {
   fetch(databaseBaseAddress + "/users.json")
     .then(function (response) {
@@ -168,8 +167,12 @@ function loadUsersFromDatabase(onSuccess, onError) {
       }
       return response.json();
     })
-    .then(function (data) { onSuccess(data); })
-    .catch(function () { onError(); });
+    .then(function (data) {
+      onSuccess(data);
+    })
+    .catch(function () {
+      onError();
+    });
 }
 
 function findMatchingUser(allUsers, emailValue, passwordValue) {
@@ -177,15 +180,15 @@ function findMatchingUser(allUsers, emailValue, passwordValue) {
   for (var index = 0; index < userIds.length; index++) {
     var userId = userIds[index];
     var currentUser = allUsers[userId];
-    if (currentUser &&
-        currentUser.email === emailValue &&
-        currentUser.password === passwordValue) {
+    if (
+      currentUser &&
+      currentUser.email === emailValue &&
+      currentUser.password === passwordValue
+    ) {
       return { userId: userId, user: currentUser };
     }
   }
   return null;
 }
-
-
 
 window.addEventListener("load", initializePage);
