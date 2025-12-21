@@ -14,6 +14,7 @@ fetch("/templates/topbar_template.html")
   .then((html) => {
     topbarContainer.innerHTML = html;
     console.log("Topbar: loaded");
+    setUserInitial();
   })
   .catch((error) => {
     console.error("Error loading topbar:", error);
@@ -24,6 +25,11 @@ function setUserInitial() {
   console.log(userInitial);
 
   const userInitialElement = document.getElementById("user-initial");
+
+  if (!userInitialElement) {
+    console.error("User initial element not found");
+    return;
+  }
 
   userInitialElement.innerText = userInitial;
   console.log(userInitialElement);
