@@ -22,7 +22,6 @@ fetch("/templates/topbar_template.html")
 
 function setUserInitial() {
   const userInitial = localStorage.getItem("userInitial");
-  console.log(userInitial);
 
   const userInitialElement = document.getElementById("user-initial");
 
@@ -32,5 +31,4 @@ function setUserInitial() {
   }
 
   userInitialElement.innerText = userInitial;
-  console.log(userInitialElement);
 }
