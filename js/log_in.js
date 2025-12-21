@@ -182,7 +182,7 @@ function findMatchingUser(allUsers, emailValue, passwordValue) {
     var currentUser = allUsers[userId];
     if (
       currentUser &&
-      currentUser.email === emailValue &&
+      currentUser.mail === emailValue &&
       currentUser.password === passwordValue
     ) {
       return { userId: userId, user: currentUser };
