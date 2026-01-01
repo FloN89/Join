@@ -10,17 +10,23 @@ function initAddTaskPage() {
 
 
 function openAddTaskOverlay() {
-  var overlay = document.getElementById("add-task-overlay");
-  if (overlay) {
-    overlay.classList.add("active");
-  }
+  const overlay = document.getElementById("add-task-overlay");
+  if (!overlay) return;
+
+  overlay.classList.add("active");
+  document.body.classList.add("overlay-open");
 }
 
 function closeAddTaskOverlay() {
-  var overlay = document.getElementById("add-task-overlay");
-  if (overlay) {
-    overlay.classList.remove("active");
-  }
+  const overlay = document.getElementById("add-task-overlay");
+  if (!overlay) return;
+
+  overlay.classList.remove("active");
+  document.body.classList.remove("overlay-open");
+}
+
+function stopOverlayClick(event) {
+  event.stopPropagation();
 }
 
 function setMinDateToday() {
@@ -199,22 +205,5 @@ function handleClear() {
   document.getElementById("selected-category-placeholder").textContent = "Select category";
 }
 
-function openAddTaskOverlay() {
-  var overlay = document.getElementById("add-task-overlay");
-  if (!overlay) return;
-  overlay.classList.add("active");
-  overlay.setAttribute("aria-hidden", "false");
-  document.body.classList.add("overlay-open");
-}
 
-function closeAddTaskOverlay() {
-  var overlay = document.getElementById("add-task-overlay");
-  if (!overlay) return;
-  overlay.classList.remove("active");
-  overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("overlay-open");
-}
 
-function stopOverlayClick(event) {
-  event.stopPropagation();
-}
