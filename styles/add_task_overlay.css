@@ -31,21 +31,53 @@ body {
 
 .add-task-overlay {
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 420px;
-  height: 100vh;
-  background: #ffffff;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
+  inset: 0;                 
   z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.add-task-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.add-task-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(520px, 92vw);
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  overflow-y: auto;
+  transform: translate(100vw, -50%);
+  transition: transform 300ms ease;
 }
 
 .add-task-overlay.active {
-  transform: translateX(0);
+  pointer-events: auto;
+  opacity: 1;
 }
 
+.add-task-overlay.active .add-task-panel {
+   transform: translate(-50%, -50%);
+}
+
+.add-task-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+}
+
+body.overlay-open {
+  overflow: hidden;
+}
 
 .form-grid-add {
   display: flex;
