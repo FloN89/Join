@@ -8,6 +8,21 @@ function initAddTaskPage() {
   renderAssigneeOptions();
 }
 
+
+function openAddTaskOverlay() {
+  var overlay = document.getElementById("add-task-overlay");
+  if (overlay) {
+    overlay.classList.add("active");
+  }
+}
+
+function closeAddTaskOverlay() {
+  var overlay = document.getElementById("add-task-overlay");
+  if (overlay) {
+    overlay.classList.remove("active");
+  }
+}
+
 function setMinDateToday() {
   var input = document.getElementById("due-date");
   if (!input) return;
@@ -182,4 +197,24 @@ function handleClear() {
 
   document.getElementById("category").value = "";
   document.getElementById("selected-category-placeholder").textContent = "Select category";
+}
+
+function openAddTaskOverlay() {
+  var overlay = document.getElementById("add-task-overlay");
+  if (!overlay) return;
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("overlay-open");
+}
+
+function closeAddTaskOverlay() {
+  var overlay = document.getElementById("add-task-overlay");
+  if (!overlay) return;
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("overlay-open");
+}
+
+function stopOverlayClick(event) {
+  event.stopPropagation();
 }

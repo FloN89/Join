@@ -29,6 +29,22 @@ body {
   color: #2a3647;
 }
 
+.add-task-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 420px;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.add-task-overlay.active {
+  transform: translateX(0);
+}
 
 
 .form-grid-add {
@@ -139,8 +155,8 @@ input#priority-low:checked + label.low {
 }
 
 .dropdown-icon {
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
 }
 
 .multiselect-dropdown {

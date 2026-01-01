@@ -123,8 +123,8 @@ input#priority-low:checked + label.low {
 }
 
 .dropdown-icon {
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
 }
 
 .multiselect-dropdown {
