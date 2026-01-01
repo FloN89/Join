@@ -7,11 +7,16 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding-top: 62px;
   padding-right: 50px;
   gap: 32px;
   
 }
 
+.board-headline {
+  font-size: 58px;
+  padding-right: 350px;
+}
 .search_input_wrapper {
   position: relative;
   display: inline-flex;
@@ -75,22 +80,14 @@
   pointer-events: auto;
   all: unset;
   cursor: pointer;
-  width: 26px;
-  height: 26px;
-  background-image: url("/assets/img/icons/search/search.svg");
+  width: 34px;
+  height: 34px;
+  background-image: url("/assets/icons/search.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
 
-
-.separator_input_field {
-  height: 32px;
-  width: 1px;
-  background-color: #d1d1d1;
-  pointer-events: none;
-  cursor: pointer;
-}
 
 .add_task_button {
   display: flex;
@@ -126,7 +123,7 @@
 }
 
 .plus_sign {
-  height: 32px;
-  width: 32px;
+  height: 22px;
+  width: 22px;
 }
 
