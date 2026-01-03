@@ -30,14 +30,17 @@ function renderContacts() {
 }
 
 function selectedContact(contactId) {
+    let selectContact = document.getElementById("contact-content");
+    selectContact.classList.remove("show");
     const contactInfo = contacts[contactId];
     const contactIcon = getInitals((contactId));
     changeBackgroundColor(contactId);
 
-    let selectContact = document.getElementById("contact-content");
+    
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
-
-    selectContact.classList.add("show");
+    setTimeout(() => {
+        selectContact.classList.add("show");
+    }, 300);
 }
 
 function changeBackgroundColor(contactId) {
