@@ -94,7 +94,7 @@
 }
 
 .contact-icon-list:hover {
-  background-color: var(--color-hover-background);
+  background-color: var(--color-hover-contact);
   cursor: pointer;
 }
 
@@ -130,7 +130,6 @@
   text-align: center;
 }
 
-/* slide effect hinzufügen */
 .contact-content {
   padding: 40px;
   display: flex;
@@ -139,13 +138,13 @@
   font-family: sans-serif;
   position: fixed;
   top: 310px;
-  /* transform: translateX(100%);
-  transition: transform 300ms ease; */
+  transform: translateX(1000px);
+  transition: transform 300ms ease;
 }
 
-/* .contact-content.show {
+.contact-content.show {
   transform: translateX(0);
-} */
+}
 
 .contact-content-header {
   display: flex;

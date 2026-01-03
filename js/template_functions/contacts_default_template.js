@@ -25,8 +25,6 @@ function generateGroupHeader(letter) {
 
 function generateContactContent(name, mail, number, color, initials, contactId) {
     return `
-        <div class="contact-content">
-
         <div class="contact-content-header">
             <div class="contact-icon-content" style="background-color: ${color}">
                 ${initials}
@@ -61,8 +59,6 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
                 <p class="contact-phone">${number}</p>
             </div>
         </div>
-
-    </div>
         `
 }
 
