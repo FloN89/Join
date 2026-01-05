@@ -138,7 +138,7 @@
   font-family: sans-serif;
   position: fixed;
   top: 310px;
-  transform: translateX(1000px);
+  transform: translateX(2000px);
   transition: transform 300ms ease;
 }
 
@@ -214,6 +214,16 @@
 .action {
   display: flex;
   gap: 8px;
+  width: 50px;
+}
+
+.action:hover {
+  color: var(--color-light-blue);
+  font-weight: 700;
+}
+
+.action:hover img {
+  filter: invert(73%) sepia(33%) saturate(6403%) hue-rotate(165deg) brightness(94%) contrast(87%);
 }
 
 .contact-info-section h2 {
