@@ -61,20 +61,31 @@ async function signUp() {
     const mail = document.getElementById("mailInput").value;
     const password = document.getElementById("passwordInput").value;
     const errorMessage = document.getElementById("errorMessage");
+    const initials = getInitials(user);
 
-    checkUser(errorMessage, user);
-    await saveData("users/" + user, { "username": user, "mail": mail, "password": password });
+    const exists = await checkUser(errorMessage, user);
+    if (exists) return;
+
+    await postData("users/", { "username": user, "mail": mail, "password": password, "initials": initials });
 }
 
 async function checkUser(errorMessage, user) {
-    const existUser = await loadData("users/" + user);
-    if (existUser) {
-        errorMessage.classList.add("errorMessage")
+    const users = await loadData("users");
+    if (!users) return false;
+
+    const exists = Object.values(users)
+        .some(u => u.username === user);
+
+    if (exists) {
+        errorMessage.classList.add("errorMessage");
         errorMessage.textContent = "Your username is already taken. Please choose another one.";
-        return;
-    } else {
-        errorMessage.classList.remove("errorMessage")
-        errorMessage.textContent = "";
-        return;
+        return true;
     }
+
+    errorMessage.textContent = "";
+    return false;
+}
+
+function getInitials(fullName = "") {
+    return fullName.trim().split(" ").map(part => part[0]).join("").toUpperCase();
 }

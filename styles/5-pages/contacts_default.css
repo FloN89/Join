@@ -94,7 +94,7 @@
 }
 
 .contact-icon-list:hover {
-  background-color: var(--color-hover-background);
+  background-color: var(--color-hover-contact);
   cursor: pointer;
 }
 
@@ -130,7 +130,6 @@
   text-align: center;
 }
 
-/* slide effect hinzufügen */
 .contact-content {
   padding: 40px;
   display: flex;
@@ -139,13 +138,13 @@
   font-family: sans-serif;
   position: fixed;
   top: 310px;
-  /* transform: translateX(100%);
-  transition: transform 300ms ease; */
+  transform: translateX(2000px);
+  transition: transform 300ms ease;
 }
 
-/* .contact-content.show {
+.contact-content.show {
   transform: translateX(0);
-} */
+}
 
 .contact-content-header {
   display: flex;
@@ -215,6 +214,16 @@
 .action {
   display: flex;
   gap: 8px;
+  width: 50px;
+}
+
+.action:hover {
+  color: var(--color-light-blue);
+  font-weight: 700;
+}
+
+.action:hover img {
+  filter: invert(73%) sepia(33%) saturate(6403%) hue-rotate(165deg) brightness(94%) contrast(87%);
 }
 
 .contact-info-section h2 {
@@ -622,5 +631,30 @@ header h2 {
 
   .successfulCreated span.show {
     bottom: 30px;
+  }
+
+  /* testweise */
+  .contact-info {
+    display: none;
+  }
+
+  .modal-btn {
+    width: 56px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    box-shadow: var(--shadow-medium);
+    border: none;
+  }
+
+  .modal-btn span {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-section {
+    padding: 0;
   }
 }

@@ -6,6 +6,7 @@
   --color-accent: #0078ff;
   --color-accent-blue: rgb(35, 165, 227);
   --color-mail: rgba(0, 124, 238, 1);
+  --color-light-blue: #29abe2;
 
   /* Neutral */
   --color-white: #ffffff;
@@ -14,6 +15,7 @@
   --color-border: #d1d1d1;
   --color-text-secondary: #cdcdcd;
   --color-text-primary: #000000;
+  --color-hover-contact: #f0f0f0;
 
   /* Priority & Status */
   --color-priority-urgent: #ff3d00;

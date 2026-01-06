@@ -25,8 +25,6 @@ function generateGroupHeader(letter) {
 
 function generateContactContent(name, mail, number, color, initials, contactId) {
     return `
-        <div class="contact-content">
-
         <div class="contact-content-header">
             <div class="contact-icon-content" style="background-color: ${color}">
                 ${initials}
@@ -40,7 +38,7 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
                         <img src="../assets/icons/edit.svg" alt="edit">
                         <span>Edit</span>
                     </div>
-                    <div class="action delete" onclick="deleteContact('${name}')">
+                    <div class="action delete" onclick="deleteContact('${contactId}')">
                         <img src="../assets/icons/delete.svg" alt="delete">
                         <span>Delete</span>
                     </div>
@@ -61,8 +59,6 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
                 <p class="contact-phone">${number}</p>
             </div>
         </div>
-
-    </div>
         `
 }
 
@@ -114,6 +110,6 @@ function generateModalContent(header, button1, button2, underheader, functionCal
 function getInitalsImg(color, contactId) {
     return `
     <div class="contact-icon-large" style = "background-color: ${color}">
-        ${getInitals(id.indexOf(contactId))}
+        ${getInitals((contactId))}
     </div > `
 }

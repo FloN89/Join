@@ -3,7 +3,10 @@ let id = [];
 
 async function fetchContacts() {
     contacts = await loadData("contacts/") || {};
-    id = Object.keys(contacts);
+    id = Object.keys(contacts).sort((a, b) => {
+        return contacts[a].contactName
+            .localeCompare(contacts[b].contactName);
+    });
     renderContacts();
 }
 
@@ -15,7 +18,7 @@ function renderContacts() {
 
     for (let i = 0; i < id.length; i++) {
         const contactInfo = contacts[id[i]];
-        const contactIcon = getInitals(i)
+        const contactIcon = getInitals(id[i]);
 
         let firstLetter = contactInfo.contactName.charAt(0).toUpperCase()
         if (firstLetter !== lastLetter) {
@@ -27,14 +30,17 @@ function renderContacts() {
 }
 
 function selectedContact(contactId) {
+    let selectContact = document.getElementById("contact-content");
+    selectContact.classList.remove("show");
     const contactInfo = contacts[contactId];
-    const contactIcon = getInitals(id.indexOf(contactId));
+    const contactIcon = getInitals((contactId));
     changeBackgroundColor(contactId);
 
-    let selectContact = document.getElementById("contact-content");
+    
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
-
-    selectContact.classList.add("show");
+    setTimeout(() => {
+        selectContact.classList.add("show");
+    }, 300);
 }
 
 function changeBackgroundColor(contactId) {
@@ -46,7 +52,9 @@ function changeBackgroundColor(contactId) {
 function removeBackgroundColor() {
     for (let index = 0; index < id.length; index++) {
         let backgroundColor = document.getElementById("contact-icon-list-" + id[index]);
-        backgroundColor.classList.remove("contact-icon-list-selected");
+        if (backgroundColor) {
+            backgroundColor.classList.remove("contact-icon-list-selected");
+        }
     }
 }
 
@@ -56,7 +64,6 @@ function openCreateModal() {
     modal.classList.add("show");
 }
 
-// Änderung speichern fehlt noch
 function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
     const contactInfo = contacts[contactId];
@@ -65,7 +72,8 @@ function openEditContact(contactId) {
         "Delete",
         "Save",
         "",
-        "saveEditedContact()");
+        `saveEditedContact('${contactId}')`
+    );
     modal.classList.add("show");
     document.getElementById("contactNameInput").value = contactInfo.contactName;
     document.getElementById("contactMailInput").value = contactInfo.contactMail;
@@ -74,8 +82,24 @@ function openEditContact(contactId) {
     iconPreview.innerHTML = getInitalsImg(contactInfo.color, contactId);
 }
 
-async function deleteContact(name) {
-    await deleteData("contacts/" + name);
+async function saveEditedContact(contactId) {
+    const name = document.getElementById("contactNameInput").value;
+    const mail = document.getElementById("contactMailInput").value;
+    const phone = document.getElementById("contactPhoneInput").value;
+
+    await saveData("contacts/" + contactId, {
+        "contactName": name,
+        "contactMail": mail,
+        "contactPhone": phone,
+        "color": contacts[contactId].color
+    });
+    toggleModal();
+    await fetchContacts();
+    selectedContact(contactId);
+}
+
+async function deleteContact(contactId) {
+    await deleteData("contacts/" + contactId);
     await fetchContacts();
     let content = document.getElementById("contact-content")
     content.innerHTML = "";
@@ -91,7 +115,7 @@ async function createContact() {
     const mail = document.getElementById("contactMailInput").value;
     const phone = document.getElementById("contactPhoneInput").value;
 
-    await saveData("contacts/" + name, {
+    await postData("contacts/", {
         "contactName": name,
         "contactMail": mail,
         "contactPhone": phone,
@@ -108,25 +132,4 @@ function contactCreated() {
     setTimeout(() => {
         successRef.classList.remove("show");
     }, 1000);
-}
-
-function getInitals(i) {
-    const firstKey = Object.keys(contacts)[i];
-    const name = contacts[firstKey].contactName;
-
-    let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
-    let initials = [...name.matchAll(rgx)] || [];
-    initials = (
-        (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
-    ).toUpperCase();
-
-    return initials;
-}
-
-let color = ["#ff7a00", "#9327ff", "#6e52ff", "#fc71ff", "#ffbb2b", "#1fd7c1", "#462f8a", "#ff4646"]
-function randomColor() {
-    let getRandomColor = Math.floor(Math.random() * color.length);
-    let pickedColor = color[getRandomColor];
-    document.documentElement.style.setProperty('--meine-farbe', pickedColor)
-    return pickedColor;
 }
