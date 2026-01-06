@@ -632,4 +632,29 @@ header h2 {
   .successfulCreated span.show {
     bottom: 30px;
   }
+
+  /* testweise */
+  .contact-info {
+    display: none;
+  }
+
+  .modal-btn {
+    width: 56px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    box-shadow: var(--shadow-medium);
+    border: none;
+  }
+
+  .modal-btn span {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-section {
+    padding: 0;
+  }
 }
