@@ -17,10 +17,6 @@
     padding-top: var(--height-sidebar-mobile);
   }
 
-  .main-section {
-    padding: var(--spacing-mobile);
-  }
-
   /* === Sidebar Mobile Positioning === */
   #sidebar-container {
     position: fixed;
