@@ -127,3 +127,122 @@
   width: 22px;
 }
 
+/* Kanban Board Styles */
+.kanban-board {
+  display: flex;
+  gap: 24px;
+  padding: 32px 50px;
+  height: calc(100vh - 200px);
+  overflow-x: auto;
+}
+
+.kanban-column {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.column-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2a3647;
+}
+
+.add-column-task-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: #2a3647;
+  color: white;
+  font-size: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 125ms ease, transform 125ms ease;
+}
+
+.add-column-task-btn:hover {
+  background-color: #29abe2;
+  transform: scale(1.1);
+}
+
+.task-list {
+  flex: 1;
+  background-color: #f6f7f8;
+  border-radius: 10px;
+  padding: 16px;
+  min-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Drag & Drop Styles */
+.task-list.drag-over {
+  background-color: #e7f0ff;
+  border: 2px dashed #29abe2;
+}
+
+/* Task Card Styles */
+.task-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: move;
+  transition: transform 125ms ease, box-shadow 125ms ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.task-card.dragging {
+  opacity: 0.5;
+  transform: rotate(3deg);
+}
+
+.task-category {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.task-category.user-story {
+  background-color: #0038ff;
+  color: white;
+}
+
+.task-category.technical-task {
+  background-color: #1fd7c1;
+  color: white;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2a3647;
+  margin-bottom: 8px;
+}
+
+.task-description {
+  font-size: 14px;
+  color: #a8a8a8;
+  line-height: 1.5;
+}
+
