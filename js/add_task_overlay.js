@@ -9,9 +9,11 @@ function initAddTaskPage() {
 }
 
 
-function openAddTaskOverlay() {
+async function openAddTaskOverlay() {
   const overlay = document.getElementById("add-task-overlay");
   if (!overlay) return;
+
+  await loadAddTaskContentOnce(); 
 
   overlay.classList.add("active");
   document.body.classList.add("overlay-open");
@@ -27,6 +29,24 @@ function closeAddTaskOverlay() {
 
 function stopOverlayClick(event) {
   event.stopPropagation();
+}
+async function loadAddTaskContentOnce() {
+  const target = document.querySelector(".add-task-content");
+  if (!target || target.dataset.loaded === "true") return;
+
+  const res = await fetch("/html/add_task_overlay.html");
+  const html = await res.text();
+
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const container = doc.querySelector(".add-task-container");
+
+  if (!container) return;
+
+  target.innerHTML = container.outerHTML;
+  target.dataset.loaded = "true";
+
+  
+  initAddTaskPage();
 }
 
 function setMinDateToday() {

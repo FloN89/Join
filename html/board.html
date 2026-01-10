@@ -46,9 +46,7 @@
       </div>
     </div>
   </div>
-  <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true">
-  <div class="add-task-backdrop" onclick="closeAddTaskOverlay()"></div>
-
+ <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true" onclick="closeAddTaskOverlay()">
   <div class="add-task-panel" onclick="stopOverlayClick(event)">
     <img
       src="/assets/icons/close.svg"
@@ -56,11 +54,10 @@
       class="add-task-close"
       onclick="closeAddTaskOverlay()"
     />
-
-    <h2>Add Task</h2>
     <div class="add-task-content"></div>
   </div>
 </div>
+
 
 </body>
 <script src="../js/sidebar-loader.js"></script>
