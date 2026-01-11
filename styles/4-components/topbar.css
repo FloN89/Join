@@ -35,6 +35,52 @@
   height: 60px;
 }
 
+#user-initial {
+  cursor: pointer;
+}
+
+/* User Overlay Styles */
+.user-overlay {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 200px;
+  background-color: var(--color-primary);
+  box-shadow: var(--shadow-overlay);
+  border-radius: var(--border-radius-large) 0 var(--border-radius-large) var(--border-radius-large);
+  transform: translateX(120%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.user-overlay.active {
+  transform: translateX(0);
+}
+
+.overlay-content {
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.overlay-content h3 {
+  display: none;
+}
+
+.overlay-content a {
+  padding: 12px 15px;
+  color: var(--color-white);
+  text-decoration: none;
+  border-radius: var(--border-radius-small);
+  transition: background-color 0.2s;
+  font-size: 16px;
+}
+
+.overlay-content a:hover {
+  background-color: var(--color-overlay-hover);
+}
+
 /* === Mobile Topbar === */
 @media (max-width: 768px) {
   #topbar {

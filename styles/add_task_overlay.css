@@ -48,10 +48,13 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: min(520px, 92vw);
+  max-height: 90vh;
   background: #fff;
   border-radius: 24px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
-  overflow:hidden;
+  padding: 24px;
+  overflow-y: auto;
   transform: translate(100vw, -50%);
   transition: transform 300ms ease;
 }
@@ -63,12 +66,6 @@ body {
 
 .add-task-overlay.active .add-task-panel {
    transform: translate(-50%, -50%);
-}
-.add-task-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  cursor: pointer; 
 }
 
 .add-task-close {

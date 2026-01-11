@@ -43,10 +43,58 @@
             <img class="plus_sign" src="/assets/icons/plus_white.svg" />
           </button>
         </div>
+
+        <!-- Kanban Board Spalten -->
+        <div class="kanban-board">
+          <!-- To do Spalte -->
+          <div class="kanban-column">
+            <div class="column-header">
+              <h2>To do</h2>
+              <button class="add-column-task-btn" onclick="openAddTaskOverlay('todo')">+</button>
+            </div>
+            <div class="task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)">
+              <!-- Hier kommen die Tasks rein -->
+            </div>
+          </div>
+
+          <!-- In progress Spalte -->
+          <div class="kanban-column">
+            <div class="column-header">
+              <h2>In progress</h2>
+              <button class="add-column-task-btn" onclick="openAddTaskOverlay('in-progress')">+</button>
+            </div>
+            <div class="task-list" id="in-progress" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)">
+              <!-- Hier kommen die Tasks rein -->
+            </div>
+          </div>
+
+          <!-- Await feedback Spalte -->
+          <div class="kanban-column">
+            <div class="column-header">
+              <h2>Await feedback</h2>
+              <button class="add-column-task-btn" onclick="openAddTaskOverlay('await-feedback')">+</button>
+            </div>
+            <div class="task-list" id="await-feedback" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)">
+              <!-- Hier kommen die Tasks rein -->
+            </div>
+          </div>
+
+          <!-- Done Spalte -->
+          <div class="kanban-column">
+            <div class="column-header">
+              <h2>Done</h2>
+            </div>
+            <div class="task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)">
+              <!-- Hier kommen die Tasks rein -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
- <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true" onclick="closeAddTaskOverlay()">
+  <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true">
+  <div class="add-task-backdrop" onclick="closeAddTaskOverlay()"></div>
+
   <div class="add-task-panel" onclick="stopOverlayClick(event)">
     <img
       src="/assets/icons/close.svg"
@@ -54,13 +102,15 @@
       class="add-task-close"
       onclick="closeAddTaskOverlay()"
     />
+
+    <h2>Add Task</h2>
     <div class="add-task-content"></div>
   </div>
 </div>
-
 
 </body>
 <script src="../js/sidebar-loader.js"></script>
 <script src="/js/topbar-loader.js"></script>
 <script src="../js/add_task_overlay.js"></script>
+<script src="../js/board.js"></script>
 </html>

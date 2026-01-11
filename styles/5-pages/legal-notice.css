@@ -1,3 +1,7 @@
 #topbar_user a {
   display: none;
 }
+
+.highlight-join {
+  color: var(--color-light-blue);
+}

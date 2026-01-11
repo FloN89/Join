@@ -3,7 +3,6 @@
   /* Brand & Primary */
   --color-primary: #2a3647;
   --color-primary-light: #29abe2;
-  --color-accent: #0078ff;
   --color-accent-blue: rgb(35, 165, 227);
   --color-mail: rgba(0, 124, 238, 1);
   --color-light-blue: #29abe2;
@@ -13,7 +12,9 @@
   --color-background: #f6f7f8;
   --color-hover-background: #0c1541;
   --color-border: #d1d1d1;
+  --color-border-gray: #e5e7eb;
   --color-text-secondary: #cdcdcd;
+  --color-text-gray: #6b7280;
   --color-text-primary: #000000;
   --color-hover-contact: #f0f0f0;
 
@@ -34,6 +35,8 @@
   --shadow-light: 0px 0px 4px rgba(0, 0, 0, 0.1);
   --shadow-light-plus: 0px 0px 4px rgba(0, 0, 0, 0.15);
   --shadow-medium: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0px 4px 8px rgba(0, 0, 0, 0.16);
+  --shadow-overlay: 0px 4px 10px rgba(0, 0, 0, 0.3);
   --border-radius-round: 50%;
 
   /* === Layout === */
@@ -42,22 +45,10 @@
   --height-topbar: 90px;
   --main-content-padding: 120px;
 
-  /* === Breakpoints === */
-  --breakpoint-mobile-max: 480px;
-  --breakpoint-tablet-min: 481px;
-  --breakpoint-tablet-max: 768px;
-  --breakpoint-desktop-min: 769px;
-  --breakpoint-desktop-max: 1024px;
-  --breakpoint-wide-min: 1025px;
-
   /* === Responsive Spacing === */
   --spacing-mobile: 15px;
   --spacing-tablet: 15px;
   --spacing-desktop: 120px;
   --height-topbar-mobile: 80px;
   --height-sidebar-mobile: 80px;
-
-  /* === Active States === */
-  --opacity-active-state: 0.8;
-  --font-color-active-state: #ffffff;
 }
