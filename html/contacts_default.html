@@ -27,23 +27,30 @@
         <div class="main-content">
             <div id="topbar-container"></div>
             <div class="main-section">
-                <div class="all-contacts">
-                    <button id="modal-btn" class="modal-btn" onclick="openCreateModal()">
-                        <span>Add new contact</span>
-                        <img src="../assets/icons/person_add.svg" alt="">
-                    </button>
-                    <div class="contact-container">
-                        <div class="contact-list" id="contact-list">
+                <div class="contact-wrapper">
+                    <div class="all-contacts">
+                        <button id="modal-btn" class="modal-btn" onclick="openCreateModal()">
+                            <span>Add new contact</span>
+                            <img src="../assets/icons/person_add.svg" alt="">
+                        </button>
+                        <div class="contact-container">
+                            <div class="contact-list" id="contact-list">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="contact-info">
-                    <div class="contact-info-title">
-                        <h1>Contacts</h1>
-                        <div class="line"></div>
-                        <h2>Better with a team</h2>
+                    <div class="contact-info">
+                        <div class="contact-info-title-wrapper">
+                            <div class="contact-info-title">
+                                <h1>Contacts</h1>
+                                <div class="line-vertical"></div>
+                                <h2>Better with a team</h2>
+                                <div class="line-horizontal"></div>
+                            </div>
+                            <img class="back-arrow" src="../assets/icons/arrow-left-line.svg" alt=""
+                                onclick="backToContacts()">
+                        </div>
+                        <div class="contact-content" id="contact-content"></div>
                     </div>
-                    <div class="contact-content" id="contact-content"></div>
                 </div>
                 <div id="newContactModal" class="newContactModal d_none">
                 </div>
