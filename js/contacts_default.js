@@ -13,7 +13,6 @@ async function fetchContacts() {
 function renderContacts() {
     const contactListRef = document.getElementById("contact-list");
     contactListRef.innerHTML = "";
-
     let lastLetter = "";
 
     for (let i = 0; i < id.length; i++) {
@@ -31,16 +30,27 @@ function renderContacts() {
 
 function selectedContact(contactId) {
     let selectContact = document.getElementById("contact-content");
+    const wrapper = document.querySelector(".contact-wrapper");
     selectContact.classList.remove("show");
     const contactInfo = contacts[contactId];
     const contactIcon = getInitals((contactId));
     changeBackgroundColor(contactId);
 
-    
+
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
+
+    if (window.innerWidth <= 400) {
+        wrapper.classList.add("show-detail")
+    }
+
     setTimeout(() => {
         selectContact.classList.add("show");
     }, 300);
+}
+
+function backToContacts() {
+    const wrapper = document.querySelector(".contact-wrapper");
+    wrapper.classList.remove("show-detail");
 }
 
 function changeBackgroundColor(contactId) {
@@ -132,4 +142,8 @@ function contactCreated() {
     setTimeout(() => {
         successRef.classList.remove("show");
     }, 1000);
+}
+
+function openContactinMobile(contactId) {
+
 }
