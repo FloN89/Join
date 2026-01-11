@@ -59,9 +59,7 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
                 <p class="contact-phone">${number}</p>
             </div>
         </div>
-        <div class="actionButtonEditDelete modal-btn">
-            <img src="../assets/icons/more_vert.svg" alt="" onlick="openActionMenu()">
-        </div>
+        
         `
 }
 

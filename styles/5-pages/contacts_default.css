@@ -498,6 +498,11 @@ header h2 {
   border-radius: 2px;
 }
 
+.actionButtonEditDelete {
+  display: none;
+}
+
+
 @media (max-width: 400px) {
   body {
     overflow: hidden;
@@ -730,7 +735,7 @@ header h2 {
     height: 30px;
     cursor: pointer;
   }
-  
+
   .contact-content {
     padding: 20px;
     gap: 20px;
@@ -750,6 +755,12 @@ header h2 {
 
   .contact-actions {
     display: none;
+  }
+
+  .actionButtonEditDelete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
