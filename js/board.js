@@ -1,6 +1,12 @@
 let task = {};
 let taskId = [];
 
+async function fetchTasks() {
+  task = (await loadData("task/")) || {};
+  taskId = Object.keys(task);
+  console.log("Fetched tasks:", task);
+}
+
 // Speichert, welche Karte gerade gezogen wird
 let currentDraggedElement;
 
@@ -41,7 +47,7 @@ function removeDragOver(dragEvent) {
 
 // Erstellt eine Beispiel-Karte
 
-function createTaskCard(title, description, category) {
+function createTaskCard() {
   const card = document.createElement("div");
   card.className = "task-card";
   card.draggable = true; // Mache die Karte ziehbar
@@ -50,60 +56,28 @@ function createTaskCard(title, description, category) {
   card.ondragstart = startDragging;
   card.ondragend = endDragging;
 
-  card.innerHTML = `
-    <div class="task-category ${category
+  for (let i = 0; i < taskId.length; i++) {
+    const id = taskId[i];
+    const taskData = task[id];
+
+    console.log("Creating card for task:", taskData);
+
+    card.innerHTML = `
+    <div class="task-category ${taskData.category
       .toLowerCase()
-      .replace(" ", "-")}">${category}</div>
-    <h3 class="task-title">${title}</h3>
-    <p class="task-description">${description}</p>
+      .replace(" ", "-")}">${taskData.category}</div>
+    <h3 class="task-title">${taskData.title}</h3>
+    <p class="task-description">${taskData.description}</p>
   `;
 
-  return card;
+    return card;
+  }
 }
 
 function loadExampleTasks() {
   const todoList = document.getElementById("todo");
-  todoList.appendChild(
-    createTaskCard(
-      "Kochwelt Page & Recipe Recommender",
-      "Build start page with recipe recommendation...",
-      "User Story"
-    )
-  );
-
-  const inProgressList = document.getElementById("in-progress");
-  inProgressList.appendChild(
-    createTaskCard(
-      "HTML Base Template Creation",
-      "Create reusable HTML base templates...",
-      "Technical Task"
-    )
-  );
-
-  const awaitFeedbackList = document.getElementById("await-feedback");
-  awaitFeedbackList.appendChild(
-    createTaskCard(
-      "Daily Kochwelt Recipe",
-      "Implement daily recipe and portion calculator...",
-      "User Story"
-    )
-  );
-
-  const doneList = document.getElementById("done");
-  doneList.appendChild(
-    createTaskCard(
-      "CSS Architecture Planning",
-      "Define CSS naming conventions and structure...",
-      "Technical Task"
-    )
-  );
+  todoList.appendChild(createTaskCard());
 }
 
-// Lade Beispiel-Karten, wenn die Seite fertig geladen ist
-document.addEventListener("DOMContentLoaded", fetchContacts);
-
-async function fetchContacts() {
-  task = (await loadData("task/")) || {};
-  taskId = Object.keys(task);
-  console.log("Fetched tasks:", task);
-}
+// Lade Karten, wenn die Seite fertig geladen ist
+document.addEventListener("DOMContentLoaded", loadExampleTasks);
