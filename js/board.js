@@ -4,7 +4,8 @@ let taskId = [];
 async function fetchTasks() {
   task = (await loadData("task/")) || {};
   taskId = Object.keys(task);
-  console.log("Fetched tasks:", task);
+
+  dataToCard();
 }
 
 // Speichert, welche Karte gerade gezogen wird
@@ -45,10 +46,20 @@ function removeDragOver(dragEvent) {
   dragEvent.currentTarget.classList.remove("drag-over"); // Entferne blauen Rahmen
 }
 
-// Erstellt eine Beispiel-Karte
+function dataToCard() {
+  for (let i = 0; i < taskId.length; i++) {
+    const id = taskId[i];
+    const taskData = task[id];
+    console.log("Task Data:", taskData);
+    createTaskCard(taskData.category, taskData.title, taskData.description);
+  }
+}
 
-function createTaskCard() {
-  const card = document.createElement("div");
+function createTaskCard(category, title, description) {
+  const card = document
+    .getElementById("todo")
+    .appendChild(document.createElement("div"));
+
   card.className = "task-card";
   card.draggable = true; // Mache die Karte ziehbar
 
@@ -56,28 +67,16 @@ function createTaskCard() {
   card.ondragstart = startDragging;
   card.ondragend = endDragging;
 
-  for (let i = 0; i < taskId.length; i++) {
-    const id = taskId[i];
-    const taskData = task[id];
+  console.log("Creating card for task:", taskId.length);
 
-    console.log("Creating card for task:", taskData);
-
-    card.innerHTML = `
-    <div class="task-category ${taskData.category
-      .toLowerCase()
-      .replace(" ", "-")}">${taskData.category}</div>
-    <h3 class="task-title">${taskData.title}</h3>
-    <p class="task-description">${taskData.description}</p>
+  card.innerHTML += `
+    <div>
+    <div class="task-category">${category}</div>
+    <h3 class="task-title">${title}</h3>
+    <p class="task-description">${description}</p>
+    </div>
   `;
-
-    return card;
-  }
-}
-
-function loadExampleTasks() {
-  const todoList = document.getElementById("todo");
-  todoList.appendChild(createTaskCard());
 }
 
 // Lade Karten, wenn die Seite fertig geladen ist
-document.addEventListener("DOMContentLoaded", loadExampleTasks);
+document.addEventListener("DOMContentLoaded", fetchTasks);
