@@ -1,3 +1,6 @@
+let task = {};
+let taskId = [];
+
 // Speichert, welche Karte gerade gezogen wird
 let currentDraggedElement;
 
@@ -97,4 +100,10 @@ function loadExampleTasks() {
 }
 
 // Lade Beispiel-Karten, wenn die Seite fertig geladen ist
-document.addEventListener("DOMContentLoaded", loadExampleTasks);
+document.addEventListener("DOMContentLoaded", fetchContacts);
+
+async function fetchContacts() {
+  task = (await loadData("task/")) || {};
+  taskId = Object.keys(task);
+  console.log("Fetched tasks:", task);
+}
