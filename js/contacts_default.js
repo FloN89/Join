@@ -68,6 +68,10 @@ function removeBackgroundColor() {
     }
 }
 
+function openActionButton() {
+console.log("test");
+}
+
 function openCreateModal() {
     const modal = document.getElementById("newContactModal");
     modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!", "createContact()");

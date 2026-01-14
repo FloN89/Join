@@ -26,6 +26,11 @@
         <div id="sidebar-container"></div>
         <div class="main-content">
             <div id="topbar-container"></div>
+            <div class="overlay-edit-delete">
+                <div class="overlay-content">
+                    <p>TEST</p>
+                </div>
+            </div>
             <div class="main-section">
                 <div class="contact-wrapper">
                     <div class="all-contacts">
@@ -39,8 +44,8 @@
                         </div>
                     </div>
                     <div class="contact-info">
-                        <div class="actionButtonEditDelete modal-btn">
-                            <img src="../assets/icons/more_vert.svg" alt="" onlick="openActionMenu()">
+                        <div class="actionButtonEditDelete modal-btn" onclick="openActionButton()">
+                            <img src="../assets/icons/more_vert.svg" alt="">
                         </div>
                         <div class="contact-info-title-wrapper">
                             <div class="contact-info-title">
@@ -69,6 +74,5 @@
 </body>
 <script src="../js/sidebar-loader.js"></script>
 <script src="../js/topbar-loader.js"></script>
-<script src="../js/contacts_default.js"></script>
 
 </html>

@@ -1,5 +1,5 @@
 function generateContact(name, mail, color, initials, contactId) {
-    return `<div class="contact-first-letter" id="contact-first-letter">
+    return `<div class="contact-first-letter">
                 <div class="contact-icon-list" onclick="selectedContact('${contactId}')" id="contact-icon-list-${contactId}">
                     <div class="contact-icon" style="background-color: ${color}">
                         ${initials}
