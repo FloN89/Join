@@ -1,6 +1,8 @@
 let contacts = {};
 let id = [];
 
+//Kontaktinfo anpassen (scrollt mit)
+
 async function fetchContacts() {
     contacts = await loadData("contacts/") || {};
     id = Object.keys(contacts).sort((a, b) => {

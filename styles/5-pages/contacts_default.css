@@ -150,8 +150,8 @@
   flex-direction: column;
   gap: 40px;
   font-family: sans-serif;
-  position: fixed;
-  top: 310px;
+  position: relative;
+  top: 150px;
   transform: translateX(2000px);
   transition: transform 300ms ease;
 }
