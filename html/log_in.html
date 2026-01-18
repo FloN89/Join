@@ -17,7 +17,7 @@
       <img class="app-logo" src="../assets/icons/join_logo_1.png" />
       <div class="signup-area is-hidden">
         <p>Not a Join user?</p>
-        <a class="signup-button" href="#">Sign up</a>
+        <a class="signup-button" href="sign-up.html">Sign up</a>
       </div>
     </header>
 
@@ -27,34 +27,41 @@
 
         <div id="login-error-box" class="error-box" style="display: none;"></div>
 
-        <div class="form-fields">
-          <input
-            class="input input-email"
-            type="email"
-            name="email"
-            placeholder="E-Mail"
-            style="background-image: url(../assets/icons/mail.svg)"
-            required
-          />
-          <input
-            class="input input-password"
-            type="password"
-            name="password"
-            placeholder="Password"
-            style="background-image: url(../assets/icons/lock.svg)"
-            required
-          />
-        </div>
+       <div class="form-fields">
+  <input
+    class="input input-email"
+    type="email"
+    name="email"
+    placeholder="E-Mail"
+    required
+  />
+
+  <div class="input-wrapper">
+    <input
+      class="input input-password"
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+    />
+    <button
+      type="button"
+      class="icon-btn password-toggle is-lock"
+      aria-label="Passwort anzeigen"
+    ></button>
+  </div>
+</div>
+
 
         <div class="button-row">
-          <a class="btn btn-primary" href="#" onclick="startLogin()">Log in</a>
-          <a class="btn btn-ghost" href="#">Guest Log in</a>
+          <a class="btn btn-primary" href="summary.html" onclick="startLogin()">Log in</a>
+          <a class="btn btn-ghost" href="summary.html">Guest Log in</a>
         </div>
       </section>
 
       <div class="signup-area-mobile">
         <p>Not a Join user?</p>
-        <a class="signup-button" href="#">Sign up</a>
+        <a class="signup-button" href="sign-up.html">Sign up</a>
       </div>
     </main>
 
