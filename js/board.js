@@ -98,3 +98,24 @@ function loadExampleTasks() {
 
 // Lade Beispiel-Karten, wenn die Seite fertig geladen ist
 document.addEventListener("DOMContentLoaded", loadExampleTasks);
+
+async function openAddTaskOverlay() {
+  const overlay = document.getElementById("add-task-overlay");
+  const content = document.getElementById("add-task-content");
+
+  if (!content.innerHTML.trim()) {
+    const response = await fetch("add_task_overlay.html");
+    content.innerHTML = await response.text();
+  }
+
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("overlay-open");
+}
+
+function closeAddTaskOverlay() {
+  const overlay = document.getElementById("add-task-overlay");
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("overlay-open");
+}

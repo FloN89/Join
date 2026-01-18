@@ -92,20 +92,14 @@
       </div>
     </div>
   </div>
-  <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true">
+ <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true">
   <div class="add-task-backdrop" onclick="closeAddTaskOverlay()"></div>
 
-  <div class="add-task-panel" onclick="stopOverlayClick(event)">
-    <img
-      src="../assets/icons/close.svg"
-      alt="Close"
-      class="add-task-close"
-      onclick="closeAddTaskOverlay()"
-    />
-
-    
+  <div class="add-task-panel" onclick="event.stopPropagation()">
+    <div id="add-task-content"></div>
   </div>
 </div>
+
 <script src="../js/sidebar-loader.js"></script>
 <script src="../js/topbar-loader.js"></script>
 <script src="../js/add_task_overlay.js"></script>
