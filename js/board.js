@@ -1,6 +1,13 @@
 let task = {};
 let taskId = [];
 
+async function fetchTasks() {
+  task = (await loadData("task/")) || {};
+  taskId = Object.keys(task);
+
+  dataToCard();
+}
+
 // Speichert, welche Karte gerade gezogen wird
 let currentDraggedElement;
 
@@ -39,10 +46,20 @@ function removeDragOver(dragEvent) {
   dragEvent.currentTarget.classList.remove("drag-over"); // Entferne blauen Rahmen
 }
 
-// Erstellt eine Beispiel-Karte
+function dataToCard() {
+  for (let i = 0; i < taskId.length; i++) {
+    const id = taskId[i];
+    const taskData = task[id];
+    console.log("Task Data:", taskData);
+    createTaskCard(taskData.category, taskData.title, taskData.description);
+  }
+}
 
-function createTaskCard(title, description, category) {
-  const card = document.createElement("div");
+function createTaskCard(category, title, description) {
+  const card = document
+    .getElementById("todo")
+    .appendChild(document.createElement("div"));
+
   card.className = "task-card";
   card.draggable = true; // Mache die Karte ziehbar
 
@@ -50,75 +67,16 @@ function createTaskCard(title, description, category) {
   card.ondragstart = startDragging;
   card.ondragend = endDragging;
 
-  card.innerHTML = `
-    <div class="task-category ${category
-      .toLowerCase()
-      .replace(" ", "-")}">${category}</div>
+  console.log("Creating card for task:", taskId.length);
+
+  card.innerHTML += `
+    <div>
+    <div class="task-category">${category}</div>
     <h3 class="task-title">${title}</h3>
     <p class="task-description">${description}</p>
+    </div>
   `;
-
-  return card;
 }
 
-function loadExampleTasks() {
-  const todoList = document.getElementById("todo");
-  todoList.appendChild(
-    createTaskCard(
-      "Kochwelt Page & Recipe Recommender",
-      "Build start page with recipe recommendation...",
-      "User Story"
-    )
-  );
-
-  const inProgressList = document.getElementById("in-progress");
-  inProgressList.appendChild(
-    createTaskCard(
-      "HTML Base Template Creation",
-      "Create reusable HTML base templates...",
-      "Technical Task"
-    )
-  );
-
-  const awaitFeedbackList = document.getElementById("await-feedback");
-  awaitFeedbackList.appendChild(
-    createTaskCard(
-      "Daily Kochwelt Recipe",
-      "Implement daily recipe and portion calculator...",
-      "User Story"
-    )
-  );
-
-  const doneList = document.getElementById("done");
-  doneList.appendChild(
-    createTaskCard(
-      "CSS Architecture Planning",
-      "Define CSS naming conventions and structure...",
-      "Technical Task"
-    )
-  );
-}
-
-// Lade Beispiel-Karten, wenn die Seite fertig geladen ist
-document.addEventListener("DOMContentLoaded", loadExampleTasks);
-
-async function openAddTaskOverlay() {
-  const overlay = document.getElementById("add-task-overlay");
-  const content = document.getElementById("add-task-content");
-
-  if (!content.innerHTML.trim()) {
-    const response = await fetch("add_task_overlay.html");
-    content.innerHTML = await response.text();
-  }
-
-  overlay.classList.add("active");
-  overlay.setAttribute("aria-hidden", "false");
-  document.body.classList.add("overlay-open");
-}
-
-function closeAddTaskOverlay() {
-  const overlay = document.getElementById("add-task-overlay");
-  overlay.classList.remove("active");
-  overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("overlay-open");
-}
+// Lade Karten, wenn die Seite fertig geladen ist
+document.addEventListener("DOMContentLoaded", fetchTasks);
