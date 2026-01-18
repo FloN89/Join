@@ -123,11 +123,19 @@
 
 
 
-.icon-btn.password-toggle.is-lock { background-image: url(../assets/icons/lock.svg); }
-.icon-btn.password-toggle.is-off  { background-image: url(../assets/icons/visibility_off.svg); }
-.icon-btn.password-toggle.is-on   { background-image: url(../assets/icons/visibility.svg); }
+.icon-btn.password-toggle.is-lock { 
+  background-image: url(/assets/icons/lock.svg); 
+}
+.icon-btn.password-toggle.is-off  { 
+  background-image: url(/assets/icons/visibility_off.svg); 
+}
+.icon-btn.password-toggle.is-on   {
+   background-image: url(/assets/icons/visibility.svg); 
+  }
 
-.icon-btn.password-toggle:hover { opacity: 1; }
+.icon-btn.password-toggle:hover { 
+  opacity: 1; 
+}
 
 
 .error-box {
