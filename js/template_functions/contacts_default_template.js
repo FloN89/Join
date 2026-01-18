@@ -1,5 +1,5 @@
 function generateContact(name, mail, color, initials, contactId) {
-    return `<div class="contact-first-letter" id="contact-first-letter">
+    return `<div class="contact-first-letter">
                 <div class="contact-icon-list" onclick="selectedContact('${contactId}')" id="contact-icon-list-${contactId}">
                     <div class="contact-icon" style="background-color: ${color}">
                         ${initials}
@@ -59,7 +59,6 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
                 <p class="contact-phone">${number}</p>
             </div>
         </div>
-        
         `
 }
 
@@ -106,6 +105,27 @@ function generateModalContent(header, button1, button2, underheader, functionCal
                         </div>
                     </div>
     `
+}
+
+function generateOverlayEditDelete(contactId) {
+    return `
+            <div class="overlay-content" onclick="openEditContact('${contactId}')">
+                <img src="../assets/icons/edit.svg" alt="Edit icon">
+                <p>Edit</p>
+            </div>
+            <div class="overlay-content" onclick="deleteContact('${contactId}')">
+                <img src="../assets/icons/delete.svg" alt="Delete icon">
+                <p>Delete</p>
+            </div>
+        `
+}
+
+function generateActionButton(contactId) {
+    return `
+            <div class="actionButtonEditDelete" id="action-button" onclick="toggleOverlay('${contactId}')">
+                <img src="../assets/icons/more_vert.svg" alt="">
+            </div>
+            `
 }
 
 function getInitalsImg(color, contactId) {
