@@ -122,16 +122,31 @@ function initializePage() {
 }
 
 function initializePasswordToggle() {
-  var passwordInputElement = document.querySelector(".input-password");
-  var passwordToggleButtonElement = document.querySelector(".password-toggle");
-  if (!passwordInputElement || !passwordToggleButtonElement) {
+  var passwordInput = document.querySelector(".input-password");
+  var toggleBtn = document.querySelector(".password-toggle");
+
+  if (!passwordInput || !toggleBtn) {
     return;
   }
-  setPasswordIconMode("locked", passwordToggleButtonElement);
-  passwordToggleButtonElement.addEventListener("click", function () {
-    togglePasswordVisibility(passwordInputElement, passwordToggleButtonElement);
+
+  
+  passwordInput.addEventListener("input", function () {
+    if (passwordInput.value.length > 0 && passwordInput.type === "password") {
+      setPasswordIconMode("hidden", toggleBtn);
+    }
+  });
+
+  passwordInput.addEventListener("focus", function () {
+    if (passwordInput.value.length > 0 && passwordInput.type === "password") {
+      setPasswordIconMode("hidden", toggleBtn);
+    }
+  });
+
+  toggleBtn.addEventListener("click", function () {
+    togglePasswordVisibility(passwordInput, toggleBtn);
   });
 }
+
 
 function togglePasswordVisibility(
   passwordInputElement,
