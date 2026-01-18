@@ -26,16 +26,7 @@
         <div id="sidebar-container"></div>
         <div class="main-content">
             <div id="topbar-container"></div>
-            <div class="overlay-edit-delete">
-                <div class="overlay-content">
-                    <img src="../assets/icons/edit.svg" alt="Edit icon">
-                    <p>Edit</p>
-                </div>
-                <div class="overlay-content">
-                    <img src="../assets/icons/delete.svg" alt="Delete icon">
-                    <p>Delete</p>
-                </div>
-            </div>
+
             <div class="main-section">
                 <div class="contact-wrapper">
                     <div class="all-contacts">
@@ -49,9 +40,6 @@
                         </div>
                     </div>
                     <div class="contact-info">
-                        <div class="actionButtonEditDelete modal-btn" onclick="openActionButton()">
-                            <img src="../assets/icons/more_vert.svg" alt="">
-                        </div>
                         <div class="contact-info-title-wrapper">
                             <div class="contact-info-title">
                                 <h1>Contacts</h1>
@@ -63,6 +51,9 @@
                                 onclick="backToContacts()">
                         </div>
                         <div class="contact-content" id="contact-content"></div>
+                    </div>
+                    <div id="action-button-container">
+                        <div class="overlay-edit-delete" id="overlay-edit-delete"></div>
                     </div>
                 </div>
                 <div id="newContactModal" class="newContactModal d_none">

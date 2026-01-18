@@ -31,13 +31,16 @@ function renderContacts() {
 function selectedContact(contactId) {
     let selectContact = document.getElementById("contact-content");
     const wrapper = document.querySelector(".contact-wrapper");
+    const actionButtonContainer = document.getElementById("action-button-container");
+
     selectContact.classList.remove("show");
     const contactInfo = contacts[contactId];
     const contactIcon = getInitals((contactId));
     changeBackgroundColor(contactId);
 
-
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
+    actionButtonContainer.innerHTML = generateActionButton(contactId);
+    renderActionButton(contactId);
 
     if (window.innerWidth <= 400) {
         wrapper.classList.add("show-detail")
@@ -46,6 +49,11 @@ function selectedContact(contactId) {
     setTimeout(() => {
         selectContact.classList.add("show");
     }, 300);
+}
+
+function renderActionButton(contactId) {
+    const actionButton = document.getElementById("action-button");
+    actionButton.innerHTML = generateActionButton(contactId);
 }
 
 function backToContacts() {
@@ -66,10 +74,6 @@ function removeBackgroundColor() {
             backgroundColor.classList.remove("contact-icon-list-selected");
         }
     }
-}
-
-function openActionButton() {
-console.log("test");
 }
 
 function openCreateModal() {
@@ -117,11 +121,28 @@ async function deleteContact(contactId) {
     await fetchContacts();
     let content = document.getElementById("contact-content")
     content.innerHTML = "";
+
+    if (window.innerWidth <= 400) {
+        backToContacts();
+    }
 }
 
 function toggleModal() {
     let modalRef = document.getElementById("newContactModal");
     modalRef.classList.toggle('show');
+}
+
+function toggleOverlay(contactId) {
+    const overlayRef = document.getElementById("overlay-edit-delete");
+
+    if (overlayRef.classList.contains("active")) {
+        overlayRef.classList.remove("active");
+        overlayRef.innerHTML = "";
+    }
+    else {
+        overlayRef.innerHTML = generateOverlayEditDelete(contactId);
+        overlayRef.classList.add("active");
+    }
 }
 
 async function createContact() {
@@ -146,8 +167,4 @@ function contactCreated() {
     setTimeout(() => {
         successRef.classList.remove("show");
     }, 1000);
-}
-
-function openContactinMobile(contactId) {
-
 }

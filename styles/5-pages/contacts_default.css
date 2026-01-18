@@ -1,3 +1,7 @@
+.d_none {
+  display: none;
+}
+
 .main-section {
   display: flex;
 }
@@ -769,11 +773,21 @@ header h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 1000;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: var(--shadow-medium);
+    cursor: pointer;
   }
 
   .overlay-edit-delete {
     position: fixed;
-    bottom: 95px;
+    bottom: 90px;
     right: 10px;
     width: 120px;
     background-color: var(--color-white);
