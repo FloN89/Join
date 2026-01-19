@@ -33,7 +33,6 @@ function renderContacts() {
 function selectedContact(contactId) {
     let selectContact = document.getElementById("contact-content");
     const wrapper = document.querySelector(".contact-wrapper");
-    const actionButtonContainer = document.getElementById("action-button-container");
 
     selectContact.classList.remove("show");
     const contactInfo = contacts[contactId];
@@ -41,7 +40,6 @@ function selectedContact(contactId) {
     changeBackgroundColor(contactId);
 
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
-    actionButtonContainer.innerHTML = generateActionButton(contactId);
     renderActionButton(contactId);
 
     if (window.innerWidth <= 400) {
@@ -60,7 +58,10 @@ function renderActionButton(contactId) {
 
 function backToContacts() {
     const wrapper = document.querySelector(".contact-wrapper");
+    const actionButton = document.getElementById("action-button-edit-delete");
+
     wrapper.classList.remove("show-detail");
+    actionButton.innerHTML = "";
 }
 
 function changeBackgroundColor(contactId) {
@@ -87,6 +88,8 @@ function openCreateModal() {
 function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
     const contactInfo = contacts[contactId];
+    console.log(contactInfo);
+
     modal.innerHTML = generateModalContent(
         "Edit contact",
         "Delete",
@@ -95,9 +98,19 @@ function openEditContact(contactId) {
         `saveEditedContact('${contactId}')`
     );
     modal.classList.add("show");
-    document.getElementById("contactNameInput").value = contactInfo.contactName;
-    document.getElementById("contactMailInput").value = contactInfo.contactMail;
-    document.getElementById("contactPhoneInput").value = contactInfo.contactPhone;
+
+    const nameInput = document.getElementById("contactNameInput");
+    const mailInput = document.getElementById("contactMailInput");
+    const phoneInput = document.getElementById("contactPhoneInput");
+
+    nameInput.value = "";
+    mailInput.value = "";
+    phoneInput.value = "";
+
+    nameInput.value = contactInfo.contactName;
+    mailInput.value = contactInfo.contactMail;
+    phoneInput.value = contactInfo.contactPhone;
+
     const iconPreview = document.getElementById("icon-preview");
     iconPreview.innerHTML = getInitalsImg(contactInfo.color, contactId);
 }

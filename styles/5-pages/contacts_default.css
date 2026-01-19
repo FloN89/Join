@@ -276,6 +276,7 @@
   transform: translateX(100%);
   transition: transform 400ms ease;
   will-change: transform;
+  z-index: 1000;
 }
 
 .newContactModal.show {
@@ -524,6 +525,7 @@ header h2 {
     padding: 0;
     overflow: hidden;
     transform: translateY(100%);
+    z-index: 1002;
   }
 
   .newContactModal.show {
@@ -536,6 +538,7 @@ header h2 {
     overflow: hidden;
     width: 90%;
     flex-direction: column;
+    z-index: 1002;
   }
 
   .title {
@@ -651,7 +654,7 @@ header h2 {
   }
 
   .successfulCreated span.show {
-    bottom: 30px;
+    bottom: 180px;
   }
 
   .modal-btn {
@@ -793,7 +796,7 @@ header h2 {
     background-color: var(--color-white);
     box-shadow: var(--shadow-medium);
     border-radius: var(--border-radius-large) var(--border-radius-large) 0 var(--border-radius-large);
-    /* transform: translateX(120%); */
+    transform: translateX(120%);
     transition: transform 0.3s ease-in-out;
     z-index: 1001;
     padding: 8px 0;
