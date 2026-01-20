@@ -301,7 +301,7 @@ function collectTaskData() {
 
 // Speichert einen Task in der Firebase Realtime Database
 async function saveTaskToFirebase(task) {
-  await postData("tasks", task);
+  await postData("task", task);
 }
 
 // Wird beim Absenden des Formulars aufgerufen und speichert den Task in Firebase
@@ -329,34 +329,4 @@ async function handleFormSubmit(event) {
     alert("Saving failed. Check console/network tab.");
   }
 }
-// Sammelt alle Eingabedaten aus dem Formular und baut ein Task-Objekt
-function collectTaskData() {
-  const title = document.getElementById("title").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const dueDate = document.getElementById("due-date").value;
-  const category = document.getElementById("category").value;
-  const assignees = getSelectedAssignees();
 
-  const priority =
-    document.querySelector('input[name="priority"]:checked')?.value || "medium";
-
-  const subtasks = [];
-  document.querySelectorAll("#subtask-list .subtask-item").forEach((li) => {
-    subtasks.push({
-      title: li.textContent.replace("• ", ""),
-      done: false,
-    });
-  });
-
-  return {
-    title,
-    description,
-    dueDate,
-    category,
-    priority,
-    assignees,
-    subtasks,
-    status: "todo",
-    createdAt: Date.now(),
-  };
-}
