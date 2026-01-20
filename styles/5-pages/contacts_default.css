@@ -509,6 +509,10 @@ header h2 {
   display: none;
 }
 
+#action-button-container {
+  display: none;
+}
+
 @media (max-width: 400px) {
   body {
     position: fixed;
@@ -823,6 +827,10 @@ header h2 {
     z-index: 1000;
     background: transparent;
     display: none;
+  }
+
+  #action-button-container {
+    display: block;
   }
 }
 
