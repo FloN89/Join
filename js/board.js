@@ -55,7 +55,7 @@ function dataToCard() {
   }
 }
 
-function createTaskCard(category, title, description) {
+function createTaskCard(category, title, description, user, priority) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
@@ -74,6 +74,8 @@ function createTaskCard(category, title, description) {
     <div class="task-category">${category}</div>
     <h3 class="task-title">${title}</h3>
     <p class="task-description">${description}</p>
+    <div class="subTaskProgressbar"></div><p class="subTaskCounter"></p>
+    <div class="assignedUser">${user}</div><div class="priority">${priority}</div>
     </div>
   `;
 }
