@@ -1,152 +1,214 @@
-document.addEventListener("DOMContentLoaded", initAddTaskPage);
+// Wartet, bis das DOM vollständig geladen ist, und initialisiert die Add-Task-Seite
+ 
+document.addEventListener("DOMContentLoaded", initializeAddTaskPage);
 
-var contacts = ["Enrico Hof", "Osman A", "Florian Narr"];
+// Liste aller verfügbaren Kontakte für die Zuweisung
+ 
+const contacts = ["Enrico Hof", "Osman A", "Florian Narr"];
 
-function initAddTaskPage() {
-  setMinDateToday();
-  initFormEvents();
+// Initialisiert alle notwendigen Funktionen auf der Seite
+ 
+function initializeAddTaskPage() {
+  setMinimumDateToToday();
+  initializeFormEvents();
   renderAssigneeOptions();
 }
 
-function setMinDateToday() {
-  var input = document.getElementById("due-date");
-  if (!input) return;
-  var today = new Date().toISOString().split("T")[0];
-  input.min = today;
+// Setzt das minimale auswählbare Datum im Datumsfeld auf heute
+ 
+function setMinimumDateToToday() {
+  const dateInput = document.getElementById("due-date");
+  if (!dateInput) return;
+
+  const todayDate = new Date().toISOString().split("T")[0];
+  dateInput.min = todayDate;
 }
 
-function initFormEvents() {
-  var form = document.getElementById("taskForm");
-  if (!form) return;
-  form.addEventListener("submit", handleFormSubmit);
+// Registriert alle Formular-Events
+ 
+function initializeFormEvents() {
+  const taskForm = document.getElementById("taskForm");
+  if (!taskForm) return;
+
+  taskForm.addEventListener("submit", handleFormSubmit);
 }
 
-function handleFormSubmit(event) {
-  event.preventDefault();
-  if (validateForm()) {
-    alert("Task created successfully!");
-    var form = document.getElementById("taskForm");
-    form.reset();
-    document.getElementById("subtask-list").innerHTML = "";
-  }
-}
 
+// Validiert das gesamte Formular
+ 
 function validateForm() {
-  var ok = true;
-  if (!checkRequiredField("title", "error-title")) ok = false;
-  if (!checkRequiredField("due-date", "error-due-date")) ok = false;
-  if (!validateCategoryField()) ok = false;
-  return ok;
+  let isFormValid = true;
+
+  if (!checkRequiredField("title", "error-title")) isFormValid = false;
+  if (!checkRequiredField("due-date", "error-due-date")) isFormValid = false;
+  if (!validateCategoryField()) isFormValid = false;
+
+  return isFormValid;
 }
 
+// Prüft, ob eine Kategorie ausgewählt wurde
+ 
 function validateCategoryField() {
-  var category = document.getElementById("category");
-  var error = document.getElementById("error-category");
-  if (!category.value.trim()) {
-    error.classList.add("active");
+  const categoryInput = document.getElementById("category");
+  const categoryError = document.getElementById("error-category");
+
+  if (!categoryInput.value.trim()) {
+    categoryError.classList.add("active");
     return false;
   }
-  error.classList.remove("active");
+
+  categoryError.classList.remove("active");
   return true;
 }
 
+// Prüft ein Pflichtfeld anhand seiner ID
+ 
 function checkRequiredField(inputId, errorId) {
-  var input = document.getElementById(inputId);
-  var error = document.getElementById(errorId);
-  if (!input.value.trim()) {
-    input.classList.add("input-error");
-    error.classList.add("active");
+  const inputElement = document.getElementById(inputId);
+  const errorElement = document.getElementById(errorId);
+
+  if (!inputElement.value.trim()) {
+    inputElement.classList.add("input-error");
+    errorElement.classList.add("active");
     return false;
   }
-  input.classList.remove("input-error");
-  error.classList.remove("active");
+
+  inputElement.classList.remove("input-error");
+  errorElement.classList.remove("active");
   return true;
 }
 
+// Rendert alle verfügbaren Assignee-Optionen
+ 
 function renderAssigneeOptions() {
-  var container = document.getElementById("assignee-dropdown");
-  if (!container) return;
-  container.innerHTML = "";
-  for (var i = 0; i < contacts.length; i++) {
-    var label = createAssigneeLabel(contacts[i]);
-    container.appendChild(label);
+  const assigneeDropdown = document.getElementById("assignee-dropdown");
+  if (!assigneeDropdown) return;
+
+  assigneeDropdown.innerHTML = "";
+
+  for (let index = 0; index < contacts.length; index++) {
+    const assigneeLabel = createAssigneeLabel(contacts[index]);
+    assigneeDropdown.appendChild(assigneeLabel);
   }
 }
 
-function createAssigneeLabel(name) {
-  var label = document.createElement("label");
-  label.className = "checkbox-label";
-  var html = "<span>" + name + "</span>";
-  html += '<input type="checkbox" value="' + name + '"';
-  html += ' onchange="updateAssigneeDisplay()">';
-  label.innerHTML = html;
-  return label;
+// Erstellt ein Label mit Checkbox für einen Assignee
+ 
+function createAssigneeLabel(assigneeName) {
+  const labelElement = document.createElement("label");
+  labelElement.className = "checkbox-label";
+
+  labelElement.innerHTML = `
+    <span>${assigneeName}</span>
+    <input type="checkbox" value="${assigneeName}" onchange="updateAssigneeDisplay()">
+  `;
+
+  return labelElement;
 }
 
+// Aktualisiert die Anzeige der ausgewählten Assignees
+ 
 function updateAssigneeDisplay() {
-  var names = getSelectedAssignees();
-  var placeholder = document.getElementById("selected-assignees-placeholder");
-  var box = document.getElementById("selected-assignee-avatars");
-  box.innerHTML = "";
-  if (names.length === 0) {
-    placeholder.textContent = "Select contacts";
+  const selectedAssignees = getSelectedAssignees();
+  const placeholderText = document.getElementById("selected-assignees-placeholder");
+  const avatarContainer = document.getElementById("selected-assignee-avatars");
+
+  avatarContainer.innerHTML = "";
+
+  if (selectedAssignees.length === 0) {
+    placeholderText.textContent = "Select contacts";
     return;
   }
-  placeholder.textContent = names.join(", ");
-  renderAssigneeAvatars(names, box);
+
+  placeholderText.textContent = selectedAssignees.join(", ");
+  renderAssigneeAvatars(selectedAssignees, avatarContainer);
 }
 
+// Gibt alle aktuell ausgewählten Assignees zurück
+ 
 function getSelectedAssignees() {
-  var checks = document.querySelectorAll("#assignee-dropdown input");
-  var selected = [];
-  for (var i = 0; i < checks.length; i++) {
-    if (checks[i].checked) selected.push(checks[i].value);
+  const checkboxElements = document.querySelectorAll("#assignee-dropdown input");
+  const selectedNames = [];
+
+  for (let index = 0; index < checkboxElements.length; index++) {
+    if (checkboxElements[index].checked) {
+      selectedNames.push(checkboxElements[index].value);
+    }
   }
-  return selected;
+
+  return selectedNames;
 }
 
-function renderAssigneeAvatars(names, box) {
-  for (var i = 0; i < names.length; i++) {
-    var div = document.createElement("div");
-    div.className = "avatar";
-    div.textContent = getInitials(names[i]);
-    box.appendChild(div);
+// Rendert Initialen-Avatare für ausgewählte Assignees
+ 
+function renderAssigneeAvatars(names, container) {
+  for (let index = 0; index < names.length; index++) {
+    const avatarElement = document.createElement("div");
+    avatarElement.className = "avatar";
+    avatarElement.textContent = getInitials(names[index]);
+    container.appendChild(avatarElement);
   }
 }
 
-function getInitials(name) {
-  var parts = name.split(" ");
-  var initials = "";
-  for (var i = 0; i < parts.length; i++) {
-    if (parts[i].length > 0) initials += parts[i][0].toUpperCase();
+// Erstellt Initialen aus einem vollständigen Namen
+ 
+function getInitials(fullName) {
+  const nameParts = fullName.split(" ");
+  let initials = "";
+
+  for (let index = 0; index < nameParts.length; index++) {
+    if (nameParts[index].length > 0) {
+      initials += nameParts[index][0].toUpperCase();
+    }
   }
+
   return initials;
 }
 
+// Öffnet oder schließt das Assignee-Dropdown
+ 
 function toggleAssigneeDropdown() {
-  var box = document.getElementById("assignee-dropdown");
-  box.classList.toggle("d-none");
-  var cat = document.getElementById("category-dropdown");
-  if (cat && !cat.classList.contains("d-none")) cat.classList.add("d-none");
+  const assigneeDropdown = document.getElementById("assignee-dropdown");
+  assigneeDropdown.classList.toggle("d-none");
+
+  const categoryDropdown = document.getElementById("category-dropdown");
+  if (categoryDropdown && !categoryDropdown.classList.contains("d-none")) {
+    categoryDropdown.classList.add("d-none");
+  }
 }
 
+// Öffnet oder schließt das Kategorie-Dropdown
+ 
 function toggleCategoryDropdown() {
-  var box = document.getElementById("category-dropdown");
-  box.classList.toggle("d-none");
-  var ass = document.getElementById("assignee-dropdown");
-  if (ass && !ass.classList.contains("d-none")) ass.classList.add("d-none");
+  const categoryDropdown = document.getElementById("category-dropdown");
+  categoryDropdown.classList.toggle("d-none");
+
+  const assigneeDropdown = document.getElementById("assignee-dropdown");
+  if (assigneeDropdown && !assigneeDropdown.classList.contains("d-none")) {
+    assigneeDropdown.classList.add("d-none");
+  }
 }
 
-function selectCategory(value) {
-  var hidden = document.getElementById("category");
-  var text = document.getElementById("selected-category-placeholder");
-  hidden.value = value;
-  if (value === "technical-task") text.textContent = "Technical Task";
-  else if (value === "user-story") text.textContent = "User Story";
+// Setzt die ausgewählte Kategorie
+ 
+function selectCategory(categoryValue) {
+  const hiddenCategoryInput = document.getElementById("category");
+  const categoryPlaceholder = document.getElementById("selected-category-placeholder");
+
+  hiddenCategoryInput.value = categoryValue;
+
+  if (categoryValue === "technical-task") {
+    categoryPlaceholder.textContent = "Technical Task";
+  } else if (categoryValue === "user-story") {
+    categoryPlaceholder.textContent = "User Story";
+  }
+
   document.getElementById("category-dropdown").classList.add("d-none");
   document.getElementById("error-category").classList.remove("active");
 }
 
+// Reagiert auf die Enter-Taste im Subtask-Feld
+ 
 function handleSubtaskKey(event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -154,32 +216,147 @@ function handleSubtaskKey(event) {
   }
 }
 
+// Fügt einen neuen Subtask hinzu
+ 
 function addSubtask() {
-  var input = document.getElementById("subtask");
-  var text = input.value.trim();
-  if (!text) return;
-  var li = document.createElement("li");
-  li.className = "subtask-item";
-  li.textContent = "• " + text;
-  li.addEventListener("click", function () {
-    li.remove();
+  const subtaskInput = document.getElementById("subtask");
+  const subtaskText = subtaskInput.value.trim();
+
+  if (!subtaskText) return;
+
+  const listItem = document.createElement("li");
+  listItem.className = "subtask-item";
+  listItem.textContent = "• " + subtaskText;
+
+  listItem.addEventListener("click", () => {
+    listItem.remove();
   });
-  document.getElementById("subtask-list").appendChild(li);
-  input.value = "";
+
+  document.getElementById("subtask-list").appendChild(listItem);
+  subtaskInput.value = "";
 }
 
+// Setzt das komplette Formular zurück
+ 
 function handleClear() {
-  var form = document.getElementById("taskForm");
-  form.reset();
+  const taskForm = document.getElementById("taskForm");
+  taskForm.reset();
 
   document.getElementById("subtask-list").innerHTML = "";
 
-  var checks = document.querySelectorAll('#assignee-dropdown input[type="checkbox"]');
-  checks.forEach(function (c) { c.checked = false; });
+  const checkboxElements = document.querySelectorAll(
+    '#assignee-dropdown input[type="checkbox"]'
+  );
+
+  checkboxElements.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
 
   document.getElementById("selected-assignee-avatars").innerHTML = "";
-  document.getElementById("selected-assignees-placeholder").textContent = "Select contacts";
+  document.getElementById("selected-assignees-placeholder").textContent =
+    "Select contacts";
 
   document.getElementById("category").value = "";
-  document.getElementById("selected-category-placeholder").textContent = "Select category";
+  document.getElementById("selected-category-placeholder").textContent =
+    "Select category";
+}
+
+// Sammelt alle Eingabedaten aus dem Add-Task-Formular
+function collectTaskData() {
+  const title = document.getElementById("title").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date").value;
+  const category = document.getElementById("category").value;
+
+  // Ausgewählte Kontakte ermitteln
+  const assignees = getSelectedAssignees();
+
+  // Aktive Priorität aus den Radio-Buttons holen
+  const priority = document.querySelector(
+    'input[name="priority"]:checked'
+  )?.value || "medium";
+
+  // Subtasks aus der Liste sammeln
+  const subtasks = [];
+  document.querySelectorAll("#subtask-list .subtask-item").forEach(li => {
+    subtasks.push({
+      title: li.textContent.replace("• ", ""),
+      done: false
+    });
+  });
+
+  // Task-Objekt für Firebase zurückgeben
+  return {
+    title,
+    description,
+    dueDate,
+    category,
+    priority,
+    assignees,
+    subtasks,
+    status: "todo",       // Startstatus für das Board
+    createdAt: Date.now()
+  };
+}
+
+// Speichert einen Task in der Firebase Realtime Database
+async function saveTaskToFirebase(task) {
+  await postData("tasks", task);
+}
+
+// Wird beim Absenden des Formulars aufgerufen und speichert den Task in Firebase
+async function handleFormSubmit(event) {
+  event.preventDefault();
+
+  // Formular validieren
+  if (!validateForm()) return;
+
+  // Task-Daten sammeln
+  const task = collectTaskData();
+
+  try {
+    // Task in Firebase speichern (Realtime DB)
+    const result = await postData("tasks", task);
+
+    // Erfolg anzeigen (Firebase gibt z.B. { name: "-Ns..." } zurück)
+    alert("Task saved to Firebase! ID: " + result.name);
+
+    // Formular zurücksetzen
+    document.getElementById("taskForm").reset();
+    document.getElementById("subtask-list").innerHTML = "";
+  } catch (err) {
+    console.error("Firebase save failed:", err);
+    alert("Saving failed. Check console/network tab.");
+  }
+}
+// Sammelt alle Eingabedaten aus dem Formular und baut ein Task-Objekt
+function collectTaskData() {
+  const title = document.getElementById("title").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date").value;
+  const category = document.getElementById("category").value;
+  const assignees = getSelectedAssignees();
+
+  const priority =
+    document.querySelector('input[name="priority"]:checked')?.value || "medium";
+
+  const subtasks = [];
+  document.querySelectorAll("#subtask-list .subtask-item").forEach((li) => {
+    subtasks.push({
+      title: li.textContent.replace("• ", ""),
+      done: false,
+    });
+  });
+
+  return {
+    title,
+    description,
+    dueDate,
+    category,
+    priority,
+    assignees,
+    subtasks,
+    status: "todo",
+    createdAt: Date.now(),
+  };
 }

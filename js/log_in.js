@@ -1,33 +1,47 @@
 const databaseBaseAddress =
   "https://join-db-473d0-default-rtdb.europe-west1.firebasedatabase.app/";
 
-function startLogin() {
+// Startet den Login-Vorgang
+function startLogin(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
   hideErrorMessage();
-  var emailValue = readInputValue('input[name="email"]');
-  var passwordValue = readInputValue('input[name="password"]');
+
+  const emailValue = readInputValue('input[name="email"]');
+  const passwordValue = readInputValue('input[name="password"]');
+
   if (!areInputsValid(emailValue, passwordValue)) {
     return;
   }
+
   verifyLogin(emailValue, passwordValue);
 }
 
+// Liest und trimmt den Wert eines Input-Feldes
 function readInputValue(selectorText) {
-  var inputElement = document.querySelector(selectorText);
+  const inputElement = document.querySelector(selectorText);
+
   if (!inputElement) {
     return "";
   }
-  var rawValue = inputElement.value || "";
+
+  const rawValue = inputElement.value || "";
   return rawValue.trim();
 }
 
+// Prüft ob E-Mail und Passwort vorhanden sind
 function areInputsValid(emailValue, passwordValue) {
   if (!emailValue || !passwordValue) {
     showErrorMessage("Bitte E-Mail und Passwort eingeben.");
     return false;
   }
+
   return true;
 }
 
+// Startet die Überprüfung der Login-Daten
 function verifyLogin(emailValue, passwordValue) {
   loadUsersFromDatabase(
     function (usersFromDatabase) {
@@ -41,76 +55,96 @@ function verifyLogin(emailValue, passwordValue) {
   );
 }
 
+// Verarbeitet die Antwort aus der Datenbank
 function handleLoginResponse(usersFromDatabase, emailValue, passwordValue) {
-  var matchingUser = findMatchingUser(
+  const matchingUser = findMatchingUser(
     usersFromDatabase,
     emailValue,
     passwordValue
   );
+
   if (!matchingUser) {
     showErrorMessage("E-Mail oder Passwort ist falsch.");
     return;
   }
+
   saveUserSession(matchingUser.userId, matchingUser.user.username);
   redirectToSummaryPage();
 }
 
+// Speichert Benutzerdaten in der Session
 function saveUserSession(userId, fullName) {
-  var fullNameText = fullName || "";
-  var nameParts = fullNameText.split(" ");
-  var userInitials = "";
-  for (var index = 0; index < nameParts.length; index++) {
-    var currentPart = nameParts[index];
+  const fullNameText = fullName || "";
+  const nameParts = fullNameText.split(" ");
+  let userInitials = "";
+
+  for (let index = 0; index < nameParts.length; index++) {
+    const currentPart = nameParts[index];
     if (currentPart) {
       userInitials += currentPart[0];
     }
   }
+
   localStorage.setItem("userInitial", userInitials.toUpperCase());
   localStorage.setItem("userId", userId);
 }
 
+// Leitet zur Summary-Seite weiter
 function redirectToSummaryPage() {
   window.location.href = "summary.html";
 }
 
+// Zeigt eine Fehlermeldung an
 function showErrorMessage(messageText) {
-  var errorBoxElement = document.getElementById("login-error-box");
+  const errorBoxElement = document.getElementById("login-error-box");
+
   if (!errorBoxElement) {
     return;
   }
+
   errorBoxElement.innerText = messageText;
   errorBoxElement.style.display = "block";
 }
 
+// Blendet die Fehlermeldung aus
 function hideErrorMessage() {
-  var errorBoxElement = document.getElementById("login-error-box");
+  const errorBoxElement = document.getElementById("login-error-box");
+
   if (!errorBoxElement) {
     return;
   }
+
   errorBoxElement.innerText = "";
   errorBoxElement.style.display = "none";
 }
 
+// Macht ein Element sichtbar (Animation)
 function makeElementVisible(targetElement) {
   if (!targetElement) {
     return;
   }
+
   targetElement.style.opacity = "1";
   targetElement.classList.add("is-visible");
 }
 
+// Führt die Logo-Übergangsanimation aus
 function handleLogoTransition() {
-  var mainAreaElement = document.querySelector(".main-area");
-  var footerElement = document.querySelector(".site-footer");
-  var signupAreaElement = document.querySelector(".signup-area");
+  const mainAreaElement = document.querySelector(".main-area");
+  const footerElement = document.querySelector(".site-footer");
+  const signupAreaElement = document.querySelector(".signup-area");
+
   makeElementVisible(mainAreaElement);
   makeElementVisible(footerElement);
   makeElementVisible(signupAreaElement);
 }
 
+// Initialisiert die Seite nach dem Laden
 function initializePage() {
   document.body.classList.add("page-loaded");
-  var logoElement = document.querySelector(".app-logo");
+
+  const logoElement = document.querySelector(".app-logo");
+
   if (logoElement) {
     logoElement.addEventListener("transitionend", handleLogoTransition, {
       once: true,
@@ -118,41 +152,60 @@ function initializePage() {
   } else {
     handleLogoTransition();
   }
+
   initializePasswordToggle();
 }
 
+// Initialisiert den Passwort-Sichtbarkeits-Button
 function initializePasswordToggle() {
-  var passwordInput = document.querySelector(".input-password");
-  var toggleBtn = document.querySelector(".password-toggle");
+  const passwordInputElement = document.querySelector(".input-password");
+  const passwordToggleButtonElement =
+    document.querySelector(".password-toggle");
 
-  if (!passwordInput || !toggleBtn) {
+  if (!passwordInputElement || !passwordToggleButtonElement) {
     return;
   }
 
-  
-  passwordInput.addEventListener("input", function () {
-    if (passwordInput.value.length > 0 && passwordInput.type === "password") {
-      setPasswordIconMode("hidden", toggleBtn);
-    }
+  setPasswordIconMode("locked", passwordToggleButtonElement);
+
+  passwordToggleButtonElement.addEventListener("click", function () {
+    togglePasswordVisibility(
+      passwordInputElement,
+      passwordToggleButtonElement
+    );
   });
 
-  passwordInput.addEventListener("focus", function () {
-    if (passwordInput.value.length > 0 && passwordInput.type === "password") {
-      setPasswordIconMode("hidden", toggleBtn);
-    }
-  });
-
-  toggleBtn.addEventListener("click", function () {
-    togglePasswordVisibility(passwordInput, toggleBtn);
+  // Reagiert auf Eingaben im Passwortfeld
+  passwordInputElement.addEventListener("input", function () {
+    updatePasswordIconOnInput(
+      passwordInputElement,
+      passwordToggleButtonElement
+    );
   });
 }
 
 
+// Aktualisiert das Passwort-Icon abhängig vom Eingabestatus
+function updatePasswordIconOnInput(
+  passwordInputElement,
+  passwordToggleButtonElement
+) {
+  if (passwordInputElement.value.length === 0) {
+    passwordInputElement.type = "password";
+    setPasswordIconMode("locked", passwordToggleButtonElement);
+  } else if (passwordInputElement.type === "password") {
+    setPasswordIconMode("hidden", passwordToggleButtonElement);
+  }
+}
+
+
+// Wechselt zwischen sichtbarem und verstecktem Passwort
 function togglePasswordVisibility(
   passwordInputElement,
   passwordToggleButtonElement
 ) {
-  var isCurrentlyHidden = passwordInputElement.type === "password";
+  const isCurrentlyHidden = passwordInputElement.type === "password";
+
   if (isCurrentlyHidden) {
     passwordInputElement.type = "text";
     setPasswordIconMode("visible", passwordToggleButtonElement);
@@ -160,11 +213,18 @@ function togglePasswordVisibility(
     passwordInputElement.type = "password";
     setPasswordIconMode("hidden", passwordToggleButtonElement);
   }
+
   passwordInputElement.focus();
 }
 
+// Setzt das passende Icon für den Passwortstatus
 function setPasswordIconMode(mode, passwordToggleButtonElement) {
-  passwordToggleButtonElement.classList.remove("is-lock", "is-off", "is-on");
+  passwordToggleButtonElement.classList.remove(
+    "is-lock",
+    "is-off",
+    "is-on"
+  );
+
   if (mode === "visible") {
     passwordToggleButtonElement.classList.add("is-on");
   } else if (mode === "hidden") {
@@ -174,6 +234,7 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
   }
 }
 
+// Lädt alle Benutzer aus der Datenbank
 function loadUsersFromDatabase(onSuccess, onError) {
   fetch(databaseBaseAddress + "/users.json")
     .then(function (response) {
@@ -190,11 +251,14 @@ function loadUsersFromDatabase(onSuccess, onError) {
     });
 }
 
+// Sucht einen passenden Benutzer anhand der Login-Daten
 function findMatchingUser(allUsers, emailValue, passwordValue) {
-  var userIds = Object.keys(allUsers || {});
-  for (var index = 0; index < userIds.length; index++) {
-    var userId = userIds[index];
-    var currentUser = allUsers[userId];
+  const userIds = Object.keys(allUsers || {});
+
+  for (let index = 0; index < userIds.length; index++) {
+    const userId = userIds[index];
+    const currentUser = allUsers[userId];
+
     if (
       currentUser &&
       currentUser.mail === emailValue &&
@@ -203,7 +267,9 @@ function findMatchingUser(allUsers, emailValue, passwordValue) {
       return { userId: userId, user: currentUser };
     }
   }
+
   return null;
 }
 
+// Startpunkt beim Laden der Seite
 window.addEventListener("load", initializePage);
