@@ -1,144 +1,209 @@
-// Firebase Realtime Database URL mit allen registrierten Usern
-const databaseUrl =
-  "https://join-8b0fa-default-rtdb.europe-west1.firebasedatabase.app/users.json";
+const databaseBaseAddress =
+  "https://join-db-473d0-default-rtdb.europe-west1.firebasedatabase.app/";
 
-// Startet den Login-Vorgang beim Klick auf den Login-Button
 function startLogin() {
   hideErrorMessage();
-
-  const usernameValue = readInputValue('input[name="username"]');
-  const passwordValue = readInputValue('input[name="password"]');
-
-  if (!areInputsValid(usernameValue, passwordValue)) {
+  var emailValue = readInputValue('input[name="email"]');
+  var passwordValue = readInputValue('input[name="password"]');
+  if (!areInputsValid(emailValue, passwordValue)) {
     return;
   }
-
-  verifyLogin(usernameValue, passwordValue);
+  verifyLogin(emailValue, passwordValue);
 }
 
-// Liest den Wert eines Input-Feldes anhand eines CSS-Selectors aus
-function readInputValue(selector) {
-  const inputElement = document.querySelector(selector);
-  return inputElement ? inputElement.value.trim() : "";
+function readInputValue(selectorText) {
+  var inputElement = document.querySelector(selectorText);
+  if (!inputElement) {
+    return "";
+  }
+  var rawValue = inputElement.value || "";
+  return rawValue.trim();
 }
 
-// Prüft, ob Username und Passwort eingegeben wurden
-function areInputsValid(usernameValue, passwordValue) {
-  if (usernameValue === "" || passwordValue === "") {
-    showErrorMessage("Bitte Username und Passwort eingeben.");
+function areInputsValid(emailValue, passwordValue) {
+  if (!emailValue || !passwordValue) {
+    showErrorMessage("Bitte E-Mail und Passwort eingeben.");
     return false;
   }
   return true;
 }
 
-// Startet die Überprüfung der Login-Daten mit den Daten aus Firebase
-function verifyLogin(usernameValue, passwordValue) {
+function verifyLogin(emailValue, passwordValue) {
   loadUsersFromDatabase(
     function (usersFromDatabase) {
-      handleLoginResponse(usersFromDatabase, usernameValue, passwordValue);
+      handleLoginResponse(usersFromDatabase, emailValue, passwordValue);
     },
     function () {
-      showErrorMessage("Fehler beim Laden der Benutzerdaten.");
+      showErrorMessage(
+        "Ein Fehler ist aufgetreten. Bitte später erneut versuchen."
+      );
     }
   );
 }
 
-// Lädt alle User aus der Firebase Realtime Database
+function handleLoginResponse(usersFromDatabase, emailValue, passwordValue) {
+  var matchingUser = findMatchingUser(
+    usersFromDatabase,
+    emailValue,
+    passwordValue
+  );
+  if (!matchingUser) {
+    showErrorMessage("E-Mail oder Passwort ist falsch.");
+    return;
+  }
+  saveUserSession(matchingUser.userId, matchingUser.user.username);
+  redirectToSummaryPage();
+}
+
+function saveUserSession(userId, fullName) {
+  var fullNameText = fullName || "";
+  var nameParts = fullNameText.split(" ");
+  var userInitials = "";
+  for (var index = 0; index < nameParts.length; index++) {
+    var currentPart = nameParts[index];
+    if (currentPart) {
+      userInitials += currentPart[0];
+    }
+  }
+  localStorage.setItem("userInitial", userInitials.toUpperCase());
+  localStorage.setItem("userId", userId);
+}
+
+function redirectToSummaryPage() {
+  window.location.href = "summary.html";
+}
+
+function showErrorMessage(messageText) {
+  var errorBoxElement = document.getElementById("login-error-box");
+  if (!errorBoxElement) {
+    return;
+  }
+  errorBoxElement.innerText = messageText;
+  errorBoxElement.style.display = "block";
+}
+
+function hideErrorMessage() {
+  var errorBoxElement = document.getElementById("login-error-box");
+  if (!errorBoxElement) {
+    return;
+  }
+  errorBoxElement.innerText = "";
+  errorBoxElement.style.display = "none";
+}
+
+function makeElementVisible(targetElement) {
+  if (!targetElement) {
+    return;
+  }
+  targetElement.style.opacity = "1";
+  targetElement.classList.add("is-visible");
+}
+
+function handleLogoTransition() {
+  var mainAreaElement = document.querySelector(".main-area");
+  var footerElement = document.querySelector(".site-footer");
+  var signupAreaElement = document.querySelector(".signup-area");
+  makeElementVisible(mainAreaElement);
+  makeElementVisible(footerElement);
+  makeElementVisible(signupAreaElement);
+}
+
+function initializePage() {
+  document.body.classList.add("page-loaded");
+  var logoElement = document.querySelector(".app-logo");
+  if (logoElement) {
+    logoElement.addEventListener("transitionend", handleLogoTransition, {
+      once: true,
+    });
+  } else {
+    handleLogoTransition();
+  }
+  initializePasswordToggle();
+}
+
+function initializePasswordToggle() {
+  var passwordInput = document.querySelector(".input-password");
+  var toggleBtn = document.querySelector(".password-toggle");
+
+  if (!passwordInput || !toggleBtn) {
+    return;
+  }
+
+  
+  passwordInput.addEventListener("input", function () {
+    if (passwordInput.value.length > 0 && passwordInput.type === "password") {
+      setPasswordIconMode("hidden", toggleBtn);
+    }
+  });
+
+  passwordInput.addEventListener("focus", function () {
+    if (passwordInput.value.length > 0 && passwordInput.type === "password") {
+      setPasswordIconMode("hidden", toggleBtn);
+    }
+  });
+
+  toggleBtn.addEventListener("click", function () {
+    togglePasswordVisibility(passwordInput, toggleBtn);
+  });
+}
+
+
+function togglePasswordVisibility(
+  passwordInputElement,
+  passwordToggleButtonElement
+) {
+  var isCurrentlyHidden = passwordInputElement.type === "password";
+  if (isCurrentlyHidden) {
+    passwordInputElement.type = "text";
+    setPasswordIconMode("visible", passwordToggleButtonElement);
+  } else {
+    passwordInputElement.type = "password";
+    setPasswordIconMode("hidden", passwordToggleButtonElement);
+  }
+  passwordInputElement.focus();
+}
+
+function setPasswordIconMode(mode, passwordToggleButtonElement) {
+  passwordToggleButtonElement.classList.remove("is-lock", "is-off", "is-on");
+  if (mode === "visible") {
+    passwordToggleButtonElement.classList.add("is-on");
+  } else if (mode === "hidden") {
+    passwordToggleButtonElement.classList.add("is-off");
+  } else {
+    passwordToggleButtonElement.classList.add("is-lock");
+  }
+}
+
 function loadUsersFromDatabase(onSuccess, onError) {
-  fetch(databaseUrl)
+  fetch(databaseBaseAddress + "/users.json")
     .then(function (response) {
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
       return response.json();
     })
-    .then(function (usersFromDatabase) {
-      onSuccess(usersFromDatabase);
+    .then(function (data) {
+      onSuccess(data);
     })
     .catch(function () {
       onError();
     });
 }
 
-// Verarbeitet das Ergebnis der Login-Prüfung
-function handleLoginResponse(usersFromDatabase, usernameValue, passwordValue) {
-  const matchingUser = findMatchingUser(
-    usersFromDatabase,
-    usernameValue,
-    passwordValue
-  );
-
-  if (!matchingUser) {
-    showErrorMessage("Username oder Passwort ist falsch.");
-    return; // ❗ KEINE Weiterleitung bei falschen Daten
-  }
-
-  saveUserSession(
-    matchingUser.userId,
-    matchingUser.user.username,
-    matchingUser.user.initials
-  );
-
-  redirectToSummaryPage(); // ✅ Nur bei korrektem Login
-}
-
-// Sucht einen User mit passendem Username und Passwort
-function findMatchingUser(usersObject, usernameValue, passwordValue) {
-  const userIds = Object.keys(usersObject || {});
-
-  for (let index = 0; index < userIds.length; index++) {
-    const currentUserId = userIds[index];
-    const currentUser = usersObject[currentUserId];
-
+function findMatchingUser(allUsers, emailValue, passwordValue) {
+  var userIds = Object.keys(allUsers || {});
+  for (var index = 0; index < userIds.length; index++) {
+    var userId = userIds[index];
+    var currentUser = allUsers[userId];
     if (
-      currentUser.username === usernameValue &&
+      currentUser &&
+      currentUser.mail === emailValue &&
       currentUser.password === passwordValue
     ) {
-      return { userId: currentUserId, user: currentUser };
+      return { userId: userId, user: currentUser };
     }
   }
-
   return null;
 }
 
-// Speichert wichtige User-Daten für die aktuelle Sitzung im LocalStorage
-function saveUserSession(userId, username, initialsFromDatabase) {
-  const userInitials = getUserInitials(username, initialsFromDatabase);
-  localStorage.setItem("userId", userId);
-  localStorage.setItem("userInitial", userInitials);
-}
-
-// Ermittelt die Initialen des Users (aus DB oder berechnet)
-function getUserInitials(username, initialsFromDatabase) {
-  if (initialsFromDatabase && initialsFromDatabase.trim() !== "") {
-    return initialsFromDatabase.toUpperCase();
-  }
-
-  let initials = "";
-  const nameParts = username.split(" ");
-
-  for (let index = 0; index < nameParts.length; index++) {
-    initials += nameParts[index][0];
-  }
-
-  return initials.toUpperCase();
-}
-
-// Leitet den User zur Summary-Seite weiter
-function redirectToSummaryPage() {
-  window.location.href = "../html/summary.html";
-}
-
-// Zeigt eine Fehlermeldung unter dem Login-Formular an
-function showErrorMessage(messageText) {
-  const errorElement = document.getElementById("error-message");
-  if (errorElement) {
-    errorElement.innerText = messageText;
-    errorElement.classList.remove("d-none");
-  }
-}
-
-// Versteckt die Fehlermeldung (z. B. beim neuen Login-Versuch)
-function hideErrorMessage() {
-  const errorElement = document.getElementById("error-message");
-  if (errorElement) {
-    errorElement.classList.add("d-none");
-  }
-}
+window.addEventListener("load", initializePage);
