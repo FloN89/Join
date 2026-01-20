@@ -299,11 +299,6 @@ function collectTaskData() {
   };
 }
 
-// Speichert einen Task in der Firebase Realtime Database
-async function saveTaskToFirebase(task) {
-  await postData("task", task);
-}
-
 // Wird beim Absenden des Formulars aufgerufen und speichert den Task in Firebase
 async function handleFormSubmit(event) {
   event.preventDefault();
@@ -316,7 +311,7 @@ async function handleFormSubmit(event) {
 
   try {
     // Task in Firebase speichern (Realtime DB)
-    const result = await postData("tasks", task);
+    const result = await postData("task", task);
 
     // Erfolg anzeigen (Firebase gibt z.B. { name: "-Ns..." } zurück)
     alert("Task saved to Firebase! ID: " + result.name);
