@@ -150,8 +150,8 @@
   flex-direction: column;
   gap: 40px;
   font-family: sans-serif;
-  position: fixed;
-  top: 310px;
+  position: relative;
+  top: 150px;
   transform: translateX(2000px);
   transition: transform 300ms ease;
 }
@@ -276,6 +276,7 @@
   transform: translateX(100%);
   transition: transform 400ms ease;
   will-change: transform;
+  z-index: 1000;
 }
 
 .newContactModal.show {
@@ -508,6 +509,10 @@ header h2 {
   display: none;
 }
 
+#action-button-container {
+  display: none;
+}
+
 @media (max-width: 400px) {
   body {
     position: fixed;
@@ -524,6 +529,7 @@ header h2 {
     padding: 0;
     overflow: hidden;
     transform: translateY(100%);
+    z-index: 1002;
   }
 
   .newContactModal.show {
@@ -536,6 +542,7 @@ header h2 {
     overflow: hidden;
     width: 90%;
     flex-direction: column;
+    z-index: 1002;
   }
 
   .title {
@@ -651,7 +658,7 @@ header h2 {
   }
 
   .successfulCreated span.show {
-    bottom: 30px;
+    bottom: 180px;
   }
 
   .modal-btn {
@@ -793,7 +800,7 @@ header h2 {
     background-color: var(--color-white);
     box-shadow: var(--shadow-medium);
     border-radius: var(--border-radius-large) var(--border-radius-large) 0 var(--border-radius-large);
-    /* transform: translateX(120%); */
+    transform: translateX(120%);
     transition: transform 0.3s ease-in-out;
     z-index: 1001;
     padding: 8px 0;
@@ -814,6 +821,17 @@ header h2 {
     height: 20px;
   }
 
+  .overlay-background {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: transparent;
+    display: none;
+  }
+
+  #action-button-container {
+    display: block;
+  }
 }
 
 @media (max-width: 768px) {}

@@ -20,7 +20,7 @@
     <script src="../js/contacts_default.js"></script>
     <script src="../js/firebase.js"></script>
     <script src="../js/template_functions/contacts_default_template.js"></script>
-    
+
 </head>
 
 <body onload="fetchContacts()">
@@ -55,6 +55,8 @@
                         <div class="contact-content" id="contact-content"></div>
                     </div>
                     <div id="action-button-container">
+                        <div class="overlay-background" onclick="closeOverlay()"></div>
+                        <div id="action-button"></div>
                         <div class="overlay-edit-delete" id="overlay-edit-delete"></div>
                     </div>
                 </div>

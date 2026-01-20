@@ -122,7 +122,7 @@ function generateOverlayEditDelete(contactId) {
 
 function generateActionButton(contactId) {
     return `
-            <div class="actionButtonEditDelete" id="action-button" onclick="toggleOverlay('${contactId}')">
+            <div class="actionButtonEditDelete" onclick="toggleOverlay('${contactId}')">
                 <img src="../assets/icons/more_vert.svg" alt="">
             </div>
             `
