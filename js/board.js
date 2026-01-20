@@ -51,11 +51,11 @@ function dataToCard() {
     const id = taskId[i];
     const taskData = task[id];
     console.log("Task Data:", taskData);
-    createTaskCard(taskData.category, taskData.title, taskData.description);
+    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.date, taskData.subtasks);
   }
 }
 
-function createTaskCard(category, title, description, userInitial, priority) {
+function createTaskCard(category, title, description, assignedTo, priority, date, substasks) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
@@ -71,11 +71,11 @@ function createTaskCard(category, title, description, userInitial, priority) {
 
   card.innerHTML += `
     <div>
-    <div class="task-category">${category}</div>
+    <div class="task-category ${category}">${category}</div>
     <h3 class="task-title">${title}</h3>
     <p class="task-description">${description}</p>
     <div class="subTaskProgressbar"></div><p class="subTaskCounter"></p>
-    <div class="assignedUser">${userInitial}</div><img src="../assets/icons/priority-${priority}.svg" class="priority"></img>
+    <div class="assignedUser">${assignedTo}</div><img src="../assets/icons/${priority}_red.svg" class="priority">
     </div>
   `;
 }
