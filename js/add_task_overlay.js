@@ -59,20 +59,6 @@ function initializeFormEvents() {
   taskForm.addEventListener("submit", handleFormSubmit);
 }
 
-// Behandelt das Absenden des Formulars
- 
-function handleFormSubmit(event) {
-  event.preventDefault();
-
-  if (validateForm()) {
-    alert("Task created successfully!");
-
-    const taskForm = document.getElementById("taskForm");
-    taskForm.reset();
-    document.getElementById("subtask-list").innerHTML = "";
-  }
-}
-
 // Validiert das gesamte Formular
  
 function validateForm() {
@@ -296,4 +282,68 @@ function handleClear() {
 
   document.getElementById("category").value = "";
   document.getElementById("selected-category-placeholder").textContent = "Select category";
+}
+
+// Sammelt alle Eingabedaten aus dem Add-Task-Formular
+function collectTaskData() {
+  const title = document.getElementById("title").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date").value;
+  const category = document.getElementById("category").value;
+
+  // Ausgewählte Kontakte ermitteln
+  const assignees = getSelectedAssignees();
+
+  // Aktive Priorität aus den Radio-Buttons holen
+  const priority = document.querySelector(
+    'input[name="priority"]:checked'
+  )?.value || "medium";
+
+  // Subtasks aus der Liste sammeln
+  const subtasks = [];
+  document.querySelectorAll("#subtask-list .subtask-item").forEach(li => {
+    subtasks.push({
+      title: li.textContent.replace("• ", ""),
+      done: false
+    });
+  });
+
+  // Task-Objekt für Firebase zurückgeben
+  return {
+    title,
+    description,
+    dueDate,
+    category,
+    priority,
+    assignees,
+    subtasks,
+    status: "todo",       // Startstatus für das Board
+    createdAt: Date.now()
+  };
+}
+
+// Speichert einen Task in der Firebase Realtime Database
+async function saveTaskToFirebase(task) {
+  await postData("tasks", task);
+}
+
+// Wird beim Absenden des Formulars aufgerufen
+async function handleFormSubmit(event) {
+  event.preventDefault();
+
+  // Formular validieren
+  if (!validateForm()) return;
+
+  // Task-Daten sammeln
+  const task = collectTaskData();
+
+  // Task in Firebase speichern
+  await saveTaskToFirebase(task);
+
+  // Erfolgsfeedback
+  alert("Task successfully saved!");
+
+  // Formular und Subtasks zurücksetzen
+  document.getElementById("taskForm").handleClear();
+  document.getElementById("subtask-list").innerHTML = "";
 }
