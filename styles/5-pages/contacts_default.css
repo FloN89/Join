@@ -817,6 +817,13 @@ header h2 {
     height: 20px;
   }
 
+  .overlay-background {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: transparent;
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {}
