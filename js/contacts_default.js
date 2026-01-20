@@ -56,7 +56,7 @@ function renderActionButton(contactId) {
 
 function backToContacts() {
     const wrapper = document.querySelector(".contact-wrapper");
-    const actionButton = document.getElementById("action-button-edit-delete");
+    const actionButton = document.getElementById("action-button");
 
     wrapper.classList.remove("show-detail");
     actionButton.innerHTML = "";
@@ -86,8 +86,6 @@ function openCreateModal() {
 function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
     const contactInfo = contacts[contactId];
-    console.log(contactInfo);
-
     modal.innerHTML = generateModalContent(
         "Edit contact",
         "Delete",
@@ -96,19 +94,9 @@ function openEditContact(contactId) {
         `saveEditedContact('${contactId}')`
     );
     modal.classList.add("show");
-
-    const nameInput = document.getElementById("contactNameInput");
-    const mailInput = document.getElementById("contactMailInput");
-    const phoneInput = document.getElementById("contactPhoneInput");
-
-    nameInput.value = "";
-    mailInput.value = "";
-    phoneInput.value = "";
-
-    nameInput.value = contactInfo.contactName;
-    mailInput.value = contactInfo.contactMail;
-    phoneInput.value = contactInfo.contactPhone;
-
+    document.getElementById("contactNameInput").value = contactInfo.contactName;
+    document.getElementById("contactMailInput").value = contactInfo.contactMail;
+    document.getElementById("contactPhoneInput").value = contactInfo.contactPhone;
     const iconPreview = document.getElementById("icon-preview");
     iconPreview.innerHTML = getInitalsImg(contactInfo.color, contactId);
 }
@@ -138,23 +126,33 @@ async function deleteContact(contactId) {
     if (window.innerWidth <= 400) {
         backToContacts();
     }
+    closeOverlay()
 }
 
 function toggleModal() {
     let modalRef = document.getElementById("newContactModal");
-    modalRef.classList.toggle('show');
+    modalRef.classList.toggle("show");
+}
+
+function closeOverlay() {
+    const overlayRef = document.getElementById("overlay-edit-delete");
+    const backgroundRef = document.querySelector(".overlay-background");
+
+    overlayRef.classList.remove("active");
+    backgroundRef.style.display = "none";
 }
 
 function toggleOverlay(contactId) {
     const overlayRef = document.getElementById("overlay-edit-delete");
+    const backgroundRef = document.querySelector(".overlay-background");
 
     if (overlayRef.classList.contains("active")) {
-        overlayRef.classList.remove("active");
-        overlayRef.innerHTML = "";
+        closeOverlay();
     }
     else {
         overlayRef.innerHTML = generateOverlayEditDelete(contactId);
         overlayRef.classList.add("active");
+        backgroundRef.style.display = "block";
     }
 }
 
@@ -180,4 +178,8 @@ function contactCreated() {
     setTimeout(() => {
         successRef.classList.remove("show");
     }, 1000);
+}
+
+function eventBubbling(event) {
+    event.stopPropagation();
 }

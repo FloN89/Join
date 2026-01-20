@@ -150,8 +150,8 @@
   flex-direction: column;
   gap: 40px;
   font-family: sans-serif;
-  position: fixed;
-  top: 310px;
+  position: relative;
+  top: 150px;
   transform: translateX(2000px);
   transition: transform 300ms ease;
 }
@@ -509,6 +509,10 @@ header h2 {
   display: none;
 }
 
+#action-button-container {
+  display: none;
+}
+
 @media (max-width: 400px) {
   body {
     position: fixed;
@@ -817,6 +821,17 @@ header h2 {
     height: 20px;
   }
 
+  .overlay-background {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: transparent;
+    display: none;
+  }
+
+  #action-button-container {
+    display: block;
+  }
 }
 
 @media (max-width: 768px) {}
