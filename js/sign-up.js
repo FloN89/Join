@@ -1,5 +1,6 @@
-function togglePasswordVisibility(inputId, icon) {
+function togglePasswordVisibility(inputId, iconId) {
     const password = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
     if (password.type === "password") {
         password.type = "text";
         if (password.value) {
@@ -31,11 +32,13 @@ function checkPasswordMatch() {
     if (password.value === confirmPassword.value) {
         errorMessage.classList.remove("errorMessage")
         errorMessage.textContent = "";
+        confirmPassword.classList.remove("borderRed");
         return;
 
     } else {
         errorMessage.classList.add("errorMessage")
         errorMessage.textContent = "Your passwords don't match. Please try again.";
+        confirmPassword.classList.add("borderRed");
         return;
     }
 }
@@ -50,10 +53,23 @@ function showSignUp() {
 
     if (user.value.length > 0 && mail.value.length > 0 && password.value.length > 0 && confirmPassword.value.length > 0
         && password.value === confirmPassword.value && checkbox.checked) {
-        signUpButton.classList.remove("d_none");
+        signUpButton.disabled = false;
     } else {
-        signUpButton.classList.add("d_none");
+        signUpButton.disabled = true;
     }
+}
+
+function successfulSignUp() {
+    const successRef = document.getElementById("successfulSignUp");
+    const overlayRef = document.getElementById("overlaySuccessful");
+    successRef.classList.add("show");
+    overlayRef.classList.add("show");
+
+    setTimeout(() => {
+        successRef.classList.remove("show");
+        overlayRef.classList.remove("show");
+        // window.location.href = ".html/log_in.html"; //richtigen Link einfügen
+    }, 1500);
 }
 
 async function signUp() {
@@ -67,6 +83,7 @@ async function signUp() {
     if (exists) return;
 
     await postData("users/", { "username": user, "mail": mail, "password": password, "initials": initials });
+    successfulSignUp();
 }
 
 async function checkUser(errorMessage, user) {

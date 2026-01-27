@@ -18,6 +18,7 @@
     width: 100%;
     margin: 0 auto;
     max-width: var(--max-width-layout);
+    overflow: hidden;
 }
 
 .sign-up-box {
@@ -172,7 +173,7 @@ input[type="password"] {
 }
 
 .signUpButton {
-    padding: 15px 24px;
+    padding: 0 24px;
     width: 126px;
     height: 55px;
     background: var(--color-primary);
@@ -215,9 +216,48 @@ input[type="password"] {
 .errorMessage {
     color: var(--color-error);
     font-size: 14px;
-    margin-top: 4px;
+    padding-left: 8px;
     display: block;
     text-align: left;
+}
+
+.borderRed {
+    border: 1px solid var(--color-error) !important;
+}
+
+.successfulSignUp {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    box-shadow: var(--shadow-light);
+    font-size: 20px;
+    border-radius: 20px;
+    padding: 17px 24px;
+    text-align: center;
+    transition: bottom 0.4s ease-in-out;
+    z-index: 1000;
+}
+
+.successfulSignUp.show {
+    bottom: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.overlaySuccessful {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    z-index: 999;
+    pointer-events: none;
+}
+
+.overlaySuccessful.show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 @media (max-width: 1000px) {
