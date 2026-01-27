@@ -32,7 +32,7 @@
               id="description"
               name="description"
               rows="4"
-              placeholder="Enter a description"
+              placeholder="Enter a Description"
             ></textarea>
 
             <label for="due-date">
@@ -75,7 +75,7 @@
                 class="priority-button medium"
               >
                 Medium
-                <img src="../assets/icons/medium_white.svg"/>
+                <img src="../assets/icons/medium_yellow.svg"/>
               </label>
 
               <input
@@ -97,7 +97,7 @@
                 onclick="toggleAssigneeDropdown()"
               >
                 <span id="selected-assignees-placeholder">
-                  Select contacts
+                  Select contacts to assign
                 </span>
                 <img
                   src="../assets/icons/arrow_drop_down.svg"
@@ -179,14 +179,12 @@
           </div>
           <div class="task-buttons">
             <button type="button" class="btn btn-ghost clear-btn" onclick="handleClear()">
-              Clear <span class="x-icon">X</span>
+              Cancel <span class="x-icon">X</span>
             </button>
             <button type="submit" class="btn btn-primary create-btn">
               Create Task
               <img
-                src=""
-                
-              />
+                src="../assets/icons/create_check.svg"/>
             </button>
           </div>
         </div>
