@@ -91,6 +91,10 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
+.input-email {
+  background-image: url(/assets/icons/mail.svg);
+
+}
 
 .input-wrapper {
   position: relative;
