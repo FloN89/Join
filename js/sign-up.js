@@ -68,7 +68,7 @@ function successfulSignUp() {
     setTimeout(() => {
         successRef.classList.remove("show");
         overlayRef.classList.remove("show");
-        // window.location.href = ".html/log_in.html"; //richtigen Link einfügen
+        window.location.href = "./log_in.html";
     }, 1500);
 }
 
