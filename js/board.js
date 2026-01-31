@@ -212,15 +212,62 @@ function createTaskCard(category, title, description, assignedTo, priority, date
   card.addEventListener('touchmove', handleTouchMove);
   card.addEventListener('touchend', handleTouchEnd);
 
-  card.innerHTML += `
-    <div>
-    <div class="task-category ${category}">${category}</div>
-    <h3 class="task-title">${title}</h3>
-    <p class="task-description">${description}</p>
-    <div class="subTaskProgressbar"></div><p class="subTaskCounter"></p>
-    <div class="assignedUser">${assignedTo}</div><img src="../assets/icons/${priority}_red.svg" class="priority">
+  const subtasksHTML = createSubtasksHTML(substasks);
+  const usersHTML = createUsersHTML(assignedTo);
+
+  card.innerHTML = `
+    <div class="task-card-content">
+      <div class="task-category ${category}">${category}</div>
+      <h3 class="task-title">${title}</h3>
+      <p class="task-description">${description}</p>
+      ${subtasksHTML}
+      <div class="task-footer">
+        <div class="assigned-users">${usersHTML}</div>
+        <img src="../assets/icons/${priority}_red.svg" class="priority-icon" alt="${priority}">
+      </div>
     </div>
   `;
+}
+
+function createSubtasksHTML(subtasks) {
+  if (!subtasks || subtasks.length === 0) {
+    return '';
+  }
+
+  const completedCount = subtasks.filter(function(subtask) {
+    return subtask.completed === true;
+  }).length;
+  const totalCount = subtasks.length;
+  const progressPercentage = (completedCount / totalCount) * 100;
+
+  return `
+    <div class="subtasks-container">
+      <div class="subtask-progress-bar">
+        <div class="subtask-progress-fill" style="width: ${progressPercentage}%"></div>
+      </div>
+      <span class="subtask-counter">${completedCount}/${totalCount} Subtasks</span>
+    </div>
+  `;
+}
+
+function createUsersHTML(assignedTo) {
+  if (!assignedTo || assignedTo.length === 0) {
+    return '';
+  }
+
+  return assignedTo.map(function(user) {
+    const initials = getInitials(user.name);
+    const backgroundColor = user.color || '#CCCCCC';
+    return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
+  }).join('');
+}
+
+function getInitials(name) {
+  const nameParts = name.split(' ');
+  if (nameParts.length >= 2) {
+    return nameParts[0][0] + nameParts[1][0];
+  }
+  return nameParts[0][0];
 }
 
 // Lade Karten, wenn die Seite fertig geladen ist

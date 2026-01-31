@@ -244,6 +244,64 @@
   font-size: 14px;
   color: #a8a8a8;
   line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.subtasks-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.subtask-progress-bar {
+  flex: 1;
+  height: 8px;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.subtask-progress-fill {
+  height: 100%;
+  background-color: #2a3647;
+  transition: width 300ms ease;
+}
+
+.subtask-counter {
+  font-size: 12px;
+  color: #2a3647;
+  white-space: nowrap;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.assigned-users {
+  display: flex;
+  gap: 4px;
+}
+
+.user-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  border: 2px solid white;
+}
+
+.priority-icon {
+  width: 20px;
+  height: 20px;
 }
 
 /* ============================================
@@ -355,6 +413,21 @@
 
   .task-description {
     font-size: 12px;
+  }
+
+  .subtask-counter {
+    font-size: 11px;
+  }
+
+  .user-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .priority-icon {
+    width: 18px;
+    height: 18px;
   }
 }
 
