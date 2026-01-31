@@ -188,6 +188,19 @@
   gap: 16px;
 }
 
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  border: 2px dashed #d1d1d1;
+  border-radius: 10px;
+  background-color: #f6f7f8;
+  color: #a8a8a8;
+  font-size: 16px;
+  text-align: center;
+}
+
 /* Drag & Drop Styles */
 .task-list.drag-over {
   background-color: #e7f0ff;
@@ -428,6 +441,12 @@
   .priority-icon {
     width: 18px;
     height: 18px;
+  }
+
+  .empty-state {
+    padding: 24px 12px;
+    font-size: 14px;
+    min-width: 100%;
   }
 }
 

@@ -41,6 +41,8 @@ function drop(dropEvent) {
   const taskList = dropEvent.currentTarget;
   taskList.appendChild(currentDraggedElement);
 
+  updateEmptyStates();
+
   // TODO: Status in Datenbank updaten
   // updateTaskStatus(currentDraggedElement.id, taskList.id);
 }
@@ -175,6 +177,7 @@ function handleTouchEnd(touchEvent) {
         const targetTaskList = elementAtDropPosition.closest('.task-list');
         if (targetTaskList && currentDraggedElement) {
           targetTaskList.appendChild(currentDraggedElement);
+          updateEmptyStates();
           // TODO: Status in Datenbank updaten
         }
       }
@@ -193,6 +196,33 @@ function dataToCard() {
     console.log("Task Data:", taskData);
     createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.date, taskData.subtasks);
   }
+  updateEmptyStates();
+}
+
+function updateEmptyStates() {
+  const categories = [
+    { id: 'todo', name: 'To do' },
+    { id: 'in-progress', name: 'In progress' },
+    { id: 'await-feedback', name: 'Await feedback' },
+    { id: 'done', name: 'Done' }
+  ];
+
+  categories.forEach(function(category) {
+    const taskList = document.getElementById(category.id);
+    const existingPlaceholder = taskList.querySelector('.empty-state');
+
+    if (existingPlaceholder) {
+      existingPlaceholder.remove();
+    }
+
+    const taskCards = taskList.querySelectorAll('.task-card');
+    if (taskCards.length === 0) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'empty-state';
+      placeholder.textContent = 'No tasks ' + category.name;
+      taskList.appendChild(placeholder);
+    }
+  });
 }
 
 function createTaskCard(category, title, description, assignedTo, priority, date, substasks) {
