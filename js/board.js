@@ -14,6 +14,9 @@ let touchClone = null;
 let touchOffsetX = 0;
 let touchOffsetY = 0;
 let autoScrollInterval = null;
+let touchStartX = 0;
+let touchStartY = 0;
+let isDragging = false;
 
 // === Desktop Drag & Drop ===
 
@@ -51,31 +54,54 @@ function removeDragOver(dragEvent) {
 function handleTouchStart(touchEvent) {
   currentTouchElement = touchEvent.currentTarget;
   currentDraggedElement = currentTouchElement;
-  currentTouchElement.classList.add("dragging");
 
-  // Erstelle eine sichtbare Kopie der Karte, die dem Finger folgt
-  touchClone = currentTouchElement.cloneNode(true);
-  touchClone.classList.add("touch-clone");
-  touchClone.classList.remove("dragging");
-  document.body.appendChild(touchClone);
+  const touch = touchEvent.touches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+  isDragging = false;
 
   const cardPosition = currentTouchElement.getBoundingClientRect();
-  const touch = touchEvent.touches[0];
   touchOffsetX = touch.clientX - cardPosition.left;
   touchOffsetY = touch.clientY - cardPosition.top;
-
-  touchClone.style.left = (touch.clientX - touchOffsetX) + 'px';
-  touchClone.style.top = (touch.clientY - touchOffsetY) + 'px';
 }
 
 function handleTouchMove(touchEvent) {
-  if (!currentTouchElement || !touchClone) return;
-
-  touchEvent.preventDefault();
+  if (!currentTouchElement) return;
 
   const touch = touchEvent.touches[0];
   const fingerX = touch.clientX;
   const fingerY = touch.clientY;
+
+  const deltaX = Math.abs(fingerX - touchStartX);
+  const deltaY = Math.abs(fingerY - touchStartY);
+
+  // Wenn noch nicht im Drag-Modus, prüfe ob Bewegung starten soll
+  if (!isDragging) {
+    // Schwellenwert: 10px Bewegung
+    if (deltaX < 10 && deltaY < 10) return;
+
+    // Wenn mehr horizontal als vertikal: normales Scrollen (kein Drag)
+    if (deltaX > deltaY) {
+      return; // Erlaube horizontales Scrollen
+    }
+
+    // Vertikale Bewegung: starte Drag
+    isDragging = true;
+    currentTouchElement.classList.add("dragging");
+
+    // Erstelle jetzt die Kopie
+    touchClone = currentTouchElement.cloneNode(true);
+    touchClone.classList.add("touch-clone");
+    touchClone.classList.remove("dragging");
+    document.body.appendChild(touchClone);
+
+    touchClone.style.left = (fingerX - touchOffsetX) + 'px';
+    touchClone.style.top = (fingerY - touchOffsetY) + 'px';
+  }
+
+  if (!isDragging || !touchClone) return;
+
+  touchEvent.preventDefault();
 
   touchClone.style.left = (fingerX - touchOffsetX) + 'px';
   touchClone.style.top = (fingerY - touchOffsetY) + 'px';
@@ -126,34 +152,38 @@ function handleTouchEnd(touchEvent) {
     autoScrollInterval = null;
   }
 
-  currentTouchElement.classList.remove("dragging");
+  // Nur wenn tatsächlich ein Drag stattgefunden hat
+  if (isDragging) {
+    currentTouchElement.classList.remove("dragging");
 
-  const touch = touchEvent.changedTouches[0];
-  const fingerX = touch.clientX;
-  const fingerY = touch.clientY;
+    const touch = touchEvent.changedTouches[0];
+    const fingerX = touch.clientX;
+    const fingerY = touch.clientY;
 
-  if (touchClone) {
-    touchClone.style.display = 'none';
-    const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
-    touchClone.remove();
-    touchClone = null;
+    if (touchClone) {
+      touchClone.style.display = 'none';
+      const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
+      touchClone.remove();
+      touchClone = null;
 
-    const allTaskLists = document.querySelectorAll('.task-list');
-    allTaskLists.forEach(function(list) {
-      list.classList.remove('drag-over');
-    });
+      const allTaskLists = document.querySelectorAll('.task-list');
+      allTaskLists.forEach(function(list) {
+        list.classList.remove('drag-over');
+      });
 
-    if (elementAtDropPosition) {
-      const targetTaskList = elementAtDropPosition.closest('.task-list');
-      if (targetTaskList && currentDraggedElement) {
-        targetTaskList.appendChild(currentDraggedElement);
-        // TODO: Status in Datenbank updaten
+      if (elementAtDropPosition) {
+        const targetTaskList = elementAtDropPosition.closest('.task-list');
+        if (targetTaskList && currentDraggedElement) {
+          targetTaskList.appendChild(currentDraggedElement);
+          // TODO: Status in Datenbank updaten
+        }
       }
     }
   }
 
   currentTouchElement = null;
   currentDraggedElement = null;
+  isDragging = false;
 }
 
 function dataToCard() {

@@ -147,7 +147,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .column-header h2 {
@@ -180,7 +180,7 @@
   flex: 1;
   background-color: #f6f7f8;
   border-radius: 10px;
-  padding: 16px;
+  padding: 8px 16px 16px 16px;
   min-height: 200px;
   overflow-y: auto;
   display: flex;
@@ -280,15 +280,7 @@
   }
 
   .add_task_button {
-    position: fixed;
-    bottom: 90px;
-    right: 16px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    padding: 0;
-    z-index: 50;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none;
   }
 
   .add_task_lable {
@@ -322,6 +314,15 @@
   .task-list {
     min-height: 150px;
     padding: 12px;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .task-card {
+    min-width: 280px;
+    max-width: 280px;
+    flex-shrink: 0;
   }
 
   /* Task Card Mobile Optimizations */
@@ -375,12 +376,6 @@
     gap: 20px;
   }
 
-  .add_task_button {
-    bottom: 85px;
-    right: 12px;
-    width: 52px;
-    height: 52px;
-  }
 
   .plus_sign {
     height: 24px;
