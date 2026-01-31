@@ -238,9 +238,9 @@ function createTaskCard(category, title, description, assignedTo, priority, date
   card.ondragend = endDragging;
 
   // Mobile Touch Events
-  card.addEventListener('touchstart', handleTouchStart);
-  card.addEventListener('touchmove', handleTouchMove);
-  card.addEventListener('touchend', handleTouchEnd);
+  card.addEventListener('touchstart', handleTouchStart, { passive: false });
+  card.addEventListener('touchmove', handleTouchMove, { passive: false });
+  card.addEventListener('touchend', handleTouchEnd, { passive: false });
 
   const subtasksHTML = createSubtasksHTML(substasks);
   const usersHTML = createUsersHTML(assignedTo);
