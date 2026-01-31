@@ -214,6 +214,7 @@ function createTaskCard(category, title, description, assignedTo, priority, date
 
   const subtasksHTML = createSubtasksHTML(substasks);
   const usersHTML = createUsersHTML(assignedTo);
+  const priorityColor = getPriorityColor(priority);
 
   card.innerHTML = `
     <div class="task-card-content">
@@ -223,7 +224,7 @@ function createTaskCard(category, title, description, assignedTo, priority, date
       ${subtasksHTML}
       <div class="task-footer">
         <div class="assigned-users">${usersHTML}</div>
-        <img src="../assets/icons/${priority}_red.svg" class="priority-icon" alt="${priority}">
+        <img src="../assets/icons/${priority}_${priorityColor}.svg" class="priority-icon" alt="${priority}">
       </div>
     </div>
   `;
@@ -268,6 +269,19 @@ function getInitials(name) {
     return nameParts[0][0] + nameParts[1][0];
   }
   return nameParts[0][0];
+}
+
+function getPriorityColor(priority) {
+  if (priority === 'low') {
+    return 'green';
+  } else if (priority === 'medium') {
+    return 'yellow';
+  } else if (priority === 'high') {
+    return 'red';
+  } else if (priority === 'urgent') {
+    return 'red';
+  }
+  return 'red';
 }
 
 // Lade Karten, wenn die Seite fertig geladen ist
