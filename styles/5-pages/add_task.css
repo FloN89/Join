@@ -93,21 +93,21 @@ input#priority-urgent:checked + label.urgent {
   background-color: var(--color-priority-urgent);
   border-color: var(--color-priority-urgent);
   color: var(--color-white);
-  background-image: url(/assets/icons/urgent_white.svg);
+ 
 }
 
 input#priority-medium:checked + label.medium {
   background-color: var(--color-priority-medium);
   border-color: var(--color-priority-medium);
   color: var(--color-white);
-  background-image: url(/assets/icons/medium_white.svg);
+
 }
 
 input#priority-low:checked + label.low {
   background-color: var(--color-priority-low);
   border-color: var(--color-priority-low);
   color: var(--color-white);
-  background-image: url(/assets/icons/low_white.svg);
+  
 }
 
 .custom-multiselect {

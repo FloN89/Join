@@ -329,3 +329,29 @@ async function handleFormSubmit(event) {
     alert("Saving failed. Check console/network tab.");
   }
 }
+// ändert die img Farben
+document.addEventListener("DOMContentLoaded", function () {
+  var priorityRadios = document.querySelectorAll('input[name="priority"]');
+  priorityRadios.forEach(function (radio) {
+    radio.addEventListener("change", updatePriorityIcons);
+  });
+
+  updatePriorityIcons();
+});
+
+function updatePriorityIcons() {
+  document.getElementById("icon-urgent").src =
+    document.getElementById("priority-urgent").checked
+      ? "../assets/icons/urgent_white.svg"
+      : "../assets/icons/urgent_red.svg";
+
+  document.getElementById("icon-medium").src =
+    document.getElementById("priority-medium").checked
+      ? "../assets/icons/medium_white.svg"
+      : "../assets/icons/medium_orange.svg";
+
+  document.getElementById("icon-low").src =
+    document.getElementById("priority-low").checked
+      ? "../assets/icons/low_white.svg"
+      : "../assets/icons/low_green.svg";
+}
