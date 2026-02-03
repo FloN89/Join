@@ -234,6 +234,18 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
   }
 }
 
+function guestLogin() {
+  // Initiale für Guest setzen
+  localStorage.setItem("userInitial", "G");
+
+  // Optional: Guest-ID setzen
+  localStorage.setItem("userId", "guest");
+
+  // Weiterleitung zur Guest Summary
+  window.location.href = "summary_guest.html";
+}
+
+
 // Lädt alle Benutzer aus der Datenbank
 function loadUsersFromDatabase(onSuccess, onError) {
   fetch(databaseBaseAddress + "/users.json")

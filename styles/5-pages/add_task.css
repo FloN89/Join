@@ -93,18 +93,21 @@ input#priority-urgent:checked + label.urgent {
   background-color: var(--color-priority-urgent);
   border-color: var(--color-priority-urgent);
   color: var(--color-white);
+ 
 }
 
 input#priority-medium:checked + label.medium {
   background-color: var(--color-priority-medium);
   border-color: var(--color-priority-medium);
   color: var(--color-white);
+
 }
 
 input#priority-low:checked + label.low {
   background-color: var(--color-priority-low);
   border-color: var(--color-priority-low);
   color: var(--color-white);
+  
 }
 
 .custom-multiselect {

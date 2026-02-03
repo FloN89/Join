@@ -1,0 +1,42 @@
+body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* Vollflächige "Fade"-Ebene (fadet weg) */
+    .splash-fade {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      opacity: 1;
+      transition: opacity 0.8s ease-in-out;
+      z-index: 0;
+    }
+    .splash-fade.fade-out {
+      opacity: 0;
+    }
+
+    /* Logo startet mittig groß */
+    .app-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 300px;
+      height: auto;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: all 0.8s ease-in-out;
+    }
+
+    /* Exakt gleicher Zielzustand wie in deiner Login-Seite */
+    .app-logo.to-login-position {
+      top: 30px;
+      left: 45px;
+      right: auto;
+      width: 150px;
+      height: auto;
+      transform: none;
+      padding: 0;
+    }

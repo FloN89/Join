@@ -46,7 +46,7 @@
               id="description"
               name="description"
               rows="4"
-              placeholder="Enter a description"
+              placeholder="Enter a Description"
             ></textarea>
 
             <label for="due-date">
@@ -74,7 +74,7 @@
                 class="priority-button urgent"
               >
                 Urgent
-                <img src="../assets/icons/urgent_red.svg"/>
+                <img  id="icon-urgent" src="../assets/icons/urgent_red.svg"/>
               </label>
 
               <input
@@ -89,7 +89,7 @@
                 class="priority-button medium"
               >
                 Medium
-                <img src="../assets/icons/medium_white.svg"/>
+                <img id="icon-medium" src="../assets/icons/medium_yellow.svg"/>
               </label>
 
               <input
@@ -100,7 +100,7 @@
               />
               <label for="priority-low" class="priority-button low">
                 Low
-                <img src="../assets/icons/low_green.svg"/>
+                <img id="icon-low" src="../assets/icons/low_green.svg"/>
               </label>
             </div>
 
@@ -111,7 +111,7 @@
                 onclick="toggleAssigneeDropdown()"
               >
                 <span id="selected-assignees-placeholder">
-                  Select contacts
+                  Select contacts to assign
                 </span>
                 <img
                   src="../assets/icons/arrow_drop_down.svg"
