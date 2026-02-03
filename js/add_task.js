@@ -329,7 +329,7 @@ async function handleFormSubmit(event) {
     alert("Saving failed. Check console/network tab.");
   }
 }
-// ändert die img Farben
+// ändert die img Farben der Priority buttons
 document.addEventListener("DOMContentLoaded", function () {
   var priorityRadios = document.querySelectorAll('input[name="priority"]');
   priorityRadios.forEach(function (radio) {
