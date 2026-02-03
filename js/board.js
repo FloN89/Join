@@ -50,12 +50,12 @@ function dataToCard() {
   for (let i = 0; i < taskId.length; i++) {
     const id = taskId[i];
     const taskData = task[id];
-    console.log("Task Data:", taskData);
-    createTaskCard(taskData.category, taskData.title, taskData.description);
+    // console.log("Task Data:", taskData);
+    createTaskCard(taskData.category, taskData.title, taskData.description, id);
   }
 }
 
-function createTaskCard(category, title, description) {
+function createTaskCard(category, title, description, id) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
@@ -67,13 +67,14 @@ function createTaskCard(category, title, description) {
   card.ondragstart = startDragging;
   card.ondragend = endDragging;
 
-  console.log("Creating card for task:", taskId.length);
+  // console.log("Creating card for task:", taskId.length);
 
+  //Osman: onclick hinzugefügt, damit große Karte öffnet -> in der Funktion muss id übergeben werden
   card.innerHTML += `
-    <div>
-    <div class="task-category">${category}</div>
-    <h3 class="task-title">${title}</h3>
-    <p class="task-description">${description}</p>
+    <div onclick="openTaskOverlay('${id}')">
+      <div class="task-category">${category}</div>
+      <h3 class="task-title">${title}</h3>
+      <p class="task-description">${description}</p>
     </div>
   `;
 }
@@ -100,4 +101,32 @@ function closeAddTaskOverlay() {
   overlay.classList.remove("active");
   overlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("overlay-open");
+}
+
+function openTaskOverlay(id) {
+  const overlay = document.getElementById("task_overlay");
+  overlay.innerHTML = "";
+  overlay.innerHTML = generateTaskOverlay(task[id].category, task[id].title, task[id].description,
+    task[id].dueDate, task[id].priority, task[id].assignees, task[id].subtasks, id);
+  overlay.classList.add("active");
+  // console.log(id);
+  // console.log(task[id].subtasks);
+  console.log(task[id].subtasks[0]);
+}
+
+function assignees(assignedTo) {
+  if (assignedTo && assignedTo.length > 0) {
+    return assignedTo.map(person => `<div>${person}</div>`).join("");
+  }
+  return "";
+}
+
+async function deleteTask(contactId) {
+  await deleteData("task/" + contactId);
+  closeTaskOverlay();
+}
+
+function closeTaskOverlay() {
+  const overlay = document.getElementById("task_overlay");
+  overlay.classList.remove("active");
 }
