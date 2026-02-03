@@ -1,0 +1,293 @@
+/* ============================================
+   Summary Page Styles
+   ============================================ */
+
+/* === Hide Help link in user overlay on summary page === */
+.user-overlay .overlay-content a[href="/html/help.html"] {
+  display: none;
+}
+
+/* === Header Section === */
+.metrics-header h1 {
+  font-size: 61px;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.metrics-header p {
+  font-size: 27px;
+  margin: 0;
+  color: var(--color-primary);
+}
+
+.divider {
+  width: 3px;
+  height: 59px;
+  background-color: var(--color-accent-blue);
+}
+
+/* === Dashboard Layout === */
+.dashboard {
+  display: flex;
+  margin-top: 40px;
+  padding-left: var(--main-content-padding);
+}
+
+.metrics {
+  max-width: 580px;
+  flex: 2;
+}
+
+.metrics-header {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+/* === Greeting Section === */
+.greeting {
+  flex: 1;
+  align-self: center;
+  text-align: center;
+}
+
+.greeting p {
+  font-size: 47px;
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+.greeting h1 {
+  font-size: 64px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.greeting .name {
+  color: var(--color-light-blue);
+  font-weight: 700;
+}
+
+/* === Task Container (Grid Layout) === */
+.task-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* === Task Rows === */
+.task-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: 150px;
+}
+
+.task-row-3 {
+  grid-template-columns: repeat(3, 1fr);
+  height: 180px;
+}
+
+/* === Task Cards === */
+.task-card {
+  display: grid;
+  padding: 28px 24px;
+  background: var(--color-white);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-light);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.task-card:hover {
+  background-color: var(--color-primary);
+  box-shadow: var(--shadow-hover);
+}
+
+.task-card:hover .task-number,
+.task-card:hover .task-label,
+.task-card:hover .card-title,
+.task-card:hover .task-date,
+.task-card:hover .task-description {
+  color: var(--color-white);
+}
+
+.task-card-small {
+  grid-template-columns: 48px auto;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-card-large {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: center;
+  height: 130px;
+}
+
+.task-card-left {
+  display: grid;
+  grid-template-columns: 48px auto;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  border-right: 2px solid var(--color-border-gray);
+  padding-right: 24px;
+}
+
+.task-card-text {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* === Task Icon === */
+.task-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.task-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* === Task Info === */
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-number {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.task-label {
+  font-size: 16px;
+  color: var(--color-text-primary);
+  font-weight: 400;
+}
+
+/* === Task Details === */
+.task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding-left: 24px;
+}
+
+.task-date {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.task-description {
+  font-size: 14px;
+  color: var(--color-text-gray);
+}
+
+/* === Card Title === */
+.card-title {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+}
+
+.task-card-text .task-number {
+  font-size: 64px;
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   Mobile Responsive Styles
+   ============================================ */
+
+/* === Mobile (max-width: 768px) === */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .dashboard {
+    flex-direction: column;
+    padding-left: var(--spacing-mobile);
+    padding-right: var(--spacing-mobile);
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .metrics {
+    max-width: 100%;
+  }
+
+  .metrics-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .metrics-header h1 {
+    font-size: 1.5rem;
+    order: 1;
+  }
+
+  .metrics-header p {
+    order: 2;
+  }
+
+  .metrics-header .divider {
+    order: 3;
+  }
+
+  .divider {
+    width: 40px;
+    height: 3px;
+  }
+
+  .greeting {
+    display: none;
+  }
+
+  .greeting p {
+    font-size: 1rem;
+  }
+
+  .greeting h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* === Small Mobile (max-width: 480px) === */
+@media (max-width: 480px) {
+  .dashboard {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .metrics-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .task-card {
+    padding: 15px;
+  }
+
+  .task-card-text {
+    padding: 30px 15px;
+  }
+}
