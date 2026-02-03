@@ -225,7 +225,7 @@ function updateEmptyStates() {
   });
 }
 
-function createTaskCard(category, title, description, assignedTo, priority, date, substasks) {
+function createTaskCard(category, title, description, assignedTo, priority, date, substasks, id) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
