@@ -8,42 +8,185 @@ async function fetchTasks() {
   dataToCard();
 }
 
-// Speichert, welche Karte gerade gezogen wird
 let currentDraggedElement;
+let currentTouchElement = null;
+let touchClone = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+let autoScrollInterval = null;
+let touchStartX = 0;
+let touchStartY = 0;
+let isDragging = false;
 
-// Wird aufgerufen, wenn eine Karte zu ziehen beginnt
+// === Desktop Drag & Drop ===
+
 function startDragging(dragEvent) {
-  currentDraggedElement = dragEvent.target; // Speichere die Karte, die gezogen wird
-  dragEvent.target.classList.add("dragging"); // Füge CSS-Klasse hinzu (macht Karte transparent)
+  currentDraggedElement = dragEvent.target;
+  dragEvent.target.classList.add("dragging");
 }
 
-// Wird aufgerufen, wenn das Ziehen beendet wird
 function endDragging(dragEvent) {
-  dragEvent.target.classList.remove("dragging"); // Entferne CSS-Klasse wieder
+  dragEvent.target.classList.remove("dragging");
 }
 
-// Erlaubt das Ablegen einer Karte
 function allowDrop(dragEvent) {
-  dragEvent.preventDefault(); // Wichtig! Ohne diese Zeile funktioniert Drag & Drop nicht
-  dragEvent.currentTarget.classList.add("drag-over"); // Zeige blauen Rahmen an
+  dragEvent.preventDefault();
+  dragEvent.currentTarget.classList.add("drag-over");
 }
 
-// Wird aufgerufen, wenn eine Karte abgelegt wird
 function drop(dropEvent) {
-  dropEvent.preventDefault(); // Verhindere Standard-Verhalten des Browsers
-  dropEvent.currentTarget.classList.remove("drag-over"); // Entferne blauen Rahmen
+  dropEvent.preventDefault();
+  dropEvent.currentTarget.classList.remove("drag-over");
 
-  // Füge die gezogene Karte in die neue Spalte ein
-  const taskList = dropEvent.currentTarget; // Die Spalte, wo die Karte abgelegt wird
-  taskList.appendChild(currentDraggedElement); // Verschiebe die Karte in die Spalte
+  const taskList = dropEvent.currentTarget;
+  taskList.appendChild(currentDraggedElement);
 
-  // Status der Karte in der Datenbank updaten
-  // z.B. updateTaskStatus(currentDraggedElement.id, taskList.id);
+  updateEmptyStates();
+
+  // TODO: Status in Datenbank updaten
+  // updateTaskStatus(currentDraggedElement.id, taskList.id);
 }
 
-// Entfernt das "drag-over" Styling, wenn die Karte die Spalte verlässt
 function removeDragOver(dragEvent) {
-  dragEvent.currentTarget.classList.remove("drag-over"); // Entferne blauen Rahmen
+  dragEvent.currentTarget.classList.remove("drag-over");
+}
+
+// === Mobile Touch Drag & Drop ===
+
+function handleTouchStart(touchEvent) {
+  currentTouchElement = touchEvent.currentTarget;
+  currentDraggedElement = currentTouchElement;
+
+  const touch = touchEvent.touches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+  isDragging = false;
+
+  const cardPosition = currentTouchElement.getBoundingClientRect();
+  touchOffsetX = touch.clientX - cardPosition.left;
+  touchOffsetY = touch.clientY - cardPosition.top;
+}
+
+function handleTouchMove(touchEvent) {
+  if (!currentTouchElement) return;
+
+  const touch = touchEvent.touches[0];
+  const fingerX = touch.clientX;
+  const fingerY = touch.clientY;
+
+  const deltaX = Math.abs(fingerX - touchStartX);
+  const deltaY = Math.abs(fingerY - touchStartY);
+
+  // Wenn noch nicht im Drag-Modus, prüfe ob Bewegung starten soll
+  if (!isDragging) {
+    // Schwellenwert: 10px Bewegung
+    if (deltaX < 10 && deltaY < 10) return;
+
+    // Wenn mehr horizontal als vertikal: normales Scrollen (kein Drag)
+    if (deltaX > deltaY) {
+      return; // Erlaube horizontales Scrollen
+    }
+
+    // Vertikale Bewegung: starte Drag
+    isDragging = true;
+    currentTouchElement.classList.add("dragging");
+
+    // Erstelle jetzt die Kopie
+    touchClone = currentTouchElement.cloneNode(true);
+    touchClone.classList.add("touch-clone");
+    touchClone.classList.remove("dragging");
+    document.body.appendChild(touchClone);
+
+    touchClone.style.left = (fingerX - touchOffsetX) + 'px';
+    touchClone.style.top = (fingerY - touchOffsetY) + 'px';
+  }
+
+  if (!isDragging || !touchClone) return;
+
+  touchEvent.preventDefault();
+
+  touchClone.style.left = (fingerX - touchOffsetX) + 'px';
+  touchClone.style.top = (fingerY - touchOffsetY) + 'px';
+
+  // Automatisches Scrollen wenn Finger am Bildschirmrand
+  const scrollZone = 100;
+  const scrollSpeed = 10;
+  const windowHeight = window.innerHeight;
+
+  if (autoScrollInterval) {
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = null;
+  }
+
+  if (fingerY < scrollZone) {
+    autoScrollInterval = setInterval(function() {
+      window.scrollBy(0, -scrollSpeed);
+    }, 20);
+  } else if (fingerY > windowHeight - scrollZone) {
+    autoScrollInterval = setInterval(function() {
+      window.scrollBy(0, scrollSpeed);
+    }, 20);
+  }
+
+  // Kopie kurz verstecken, um Element darunter zu finden
+  touchClone.style.display = 'none';
+  const elementUnderFinger = document.elementFromPoint(fingerX, fingerY);
+  touchClone.style.display = 'block';
+
+  const allTaskLists = document.querySelectorAll('.task-list');
+  allTaskLists.forEach(function(list) {
+    list.classList.remove('drag-over');
+  });
+
+  if (elementUnderFinger) {
+    const taskListUnderFinger = elementUnderFinger.closest('.task-list');
+    if (taskListUnderFinger) {
+      taskListUnderFinger.classList.add('drag-over');
+    }
+  }
+}
+
+function handleTouchEnd(touchEvent) {
+  if (!currentTouchElement) return;
+
+  if (autoScrollInterval) {
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = null;
+  }
+
+  // Nur wenn tatsächlich ein Drag stattgefunden hat
+  if (isDragging) {
+    currentTouchElement.classList.remove("dragging");
+
+    const touch = touchEvent.changedTouches[0];
+    const fingerX = touch.clientX;
+    const fingerY = touch.clientY;
+
+    if (touchClone) {
+      touchClone.style.display = 'none';
+      const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
+      touchClone.remove();
+      touchClone = null;
+
+      const allTaskLists = document.querySelectorAll('.task-list');
+      allTaskLists.forEach(function(list) {
+        list.classList.remove('drag-over');
+      });
+
+      if (elementAtDropPosition) {
+        const targetTaskList = elementAtDropPosition.closest('.task-list');
+        if (targetTaskList && currentDraggedElement) {
+          targetTaskList.appendChild(currentDraggedElement);
+          updateEmptyStates();
+          // TODO: Status in Datenbank updaten
+        }
+      }
+    }
+  }
+
+  currentTouchElement = null;
+  currentDraggedElement = null;
+  isDragging = false;
 }
 
 function dataToCard() {
@@ -51,32 +194,125 @@ function dataToCard() {
     const id = taskId[i];
     const taskData = task[id];
     // console.log("Task Data:", taskData);
-    createTaskCard(taskData.category, taskData.title, taskData.description, id);
+    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.date, taskData.subtasks, id);
   }
+  updateEmptyStates();
 }
 
-function createTaskCard(category, title, description, id) {
+function updateEmptyStates() {
+  const categories = [
+    { id: 'todo', name: 'To do' },
+    { id: 'in-progress', name: 'In progress' },
+    { id: 'await-feedback', name: 'Await feedback' },
+    { id: 'done', name: 'Done' }
+  ];
+
+  categories.forEach(function(category) {
+    const taskList = document.getElementById(category.id);
+    const existingPlaceholder = taskList.querySelector('.empty-state');
+
+    if (existingPlaceholder) {
+      existingPlaceholder.remove();
+    }
+
+    const taskCards = taskList.querySelectorAll('.task-card');
+    if (taskCards.length === 0) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'empty-state';
+      placeholder.textContent = 'No tasks ' + category.name;
+      taskList.appendChild(placeholder);
+    }
+  });
+}
+
+function createTaskCard(category, title, description, assignedTo, priority, date, substasks) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
 
   card.className = "task-card";
-  card.draggable = true; // Mache die Karte ziehbar
+  card.draggable = true;
 
-  // Verbinde die Drag & Drop Funktionen mit der Karte
+  // Desktop Drag & Drop
   card.ondragstart = startDragging;
   card.ondragend = endDragging;
 
-  // console.log("Creating card for task:", taskId.length);
+  // Mobile Touch Events
+  card.addEventListener('touchstart', handleTouchStart, { passive: false });
+  card.addEventListener('touchmove', handleTouchMove, { passive: false });
+  card.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+  const subtasksHTML = createSubtasksHTML(substasks);
+  const usersHTML = createUsersHTML(assignedTo);
+  const priorityColor = getPriorityColor(priority);
 
   //Osman: onclick hinzugefügt, damit große Karte öffnet -> in der Funktion muss id übergeben werden
-  card.innerHTML += `
-    <div onclick="openTaskOverlay('${id}')">
-      <div class="task-category">${category}</div>
-      <h3 class="task-title">${title}</h3>
-      <p class="task-description">${description}</p>
+  card.innerHTML = `
+    <div onclick="openTaskOverlay('${id}')" class="task-card-content">
+        <div class="task-category ${category}">${category}</div>
+        <h3 class="task-title">${title}</h3>
+        <p class="task-description">${description}</p>
+      ${subtasksHTML}
+      <div class="task-footer">
+        <div class="assigned-users">${usersHTML}</div>
+        <img src="../assets/icons/${priority}_${priorityColor}.svg" class="priority-icon" alt="${priority}">
+      </div>
     </div>
   `;
+}
+
+function createSubtasksHTML(subtasks) {
+  if (!subtasks || subtasks.length === 0) {
+    return '';
+  }
+
+  const completedCount = subtasks.filter(function(subtask) {
+    return subtask.completed === true;
+  }).length;
+  const totalCount = subtasks.length;
+  const progressPercentage = (completedCount / totalCount) * 100;
+
+  return `
+    <div class="subtasks-container">
+      <div class="subtask-progress-bar">
+        <div class="subtask-progress-fill" style="width: ${progressPercentage}%"></div>
+      </div>
+      <span class="subtask-counter">${completedCount}/${totalCount} Subtasks</span>
+    </div>
+  `;
+}
+
+function createUsersHTML(assignedTo) {
+  if (!assignedTo || assignedTo.length === 0) {
+    return '';
+  }
+
+  return assignedTo.map(function(user) {
+    const initials = getInitials(user.name);
+    const backgroundColor = user.color || '#CCCCCC';
+    return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
+  }).join('');
+}
+
+function getInitials(name) {
+  const nameParts = name.split(' ');
+  if (nameParts.length >= 2) {
+    return nameParts[0][0] + nameParts[1][0];
+  }
+  return nameParts[0][0];
+}
+
+function getPriorityColor(priority) {
+  if (priority === 'low') {
+    return 'green';
+  } else if (priority === 'medium') {
+    return 'yellow';
+  } else if (priority === 'high') {
+    return 'red';
+  } else if (priority === 'urgent') {
+    return 'red';
+  }
+  return 'red';
 }
 
 // Lade Karten, wenn die Seite fertig geladen ist
