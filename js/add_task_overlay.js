@@ -347,3 +347,62 @@ async function handleFormSubmit(event) {
   document.getElementById("taskForm").handleClear();
   document.getElementById("subtask-list").innerHTML = "";
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const priorities = {
+    urgent: {
+      radio: "priority-urgent",
+      icon: "icon-urgent",
+      active: "../assets/icons/urgent_white.svg",
+      inactive: "../assets/icons/urgent_red.svg"
+    },
+    medium: {
+      radio: "priority-medium",
+      icon: "icon-medium",
+      active: "../assets/icons/medium_white.svg",
+      inactive: "../assets/icons/medium_orange.svg"
+    },
+    low: {
+      radio: "priority-low",
+      icon: "icon-low",
+      active: "../assets/icons/low_white.svg",
+      inactive: "../assets/icons/low_green.svg"
+    }
+  };
+
+  Object.values(priorities).forEach(p => {
+    document
+      .getElementById(p.radio)
+      .addEventListener("change", updatePriorityIcons);
+  });
+
+  updatePriorityIcons();
+});
+
+function updatePriorityIcons() {
+  const priorities = {
+    urgent: {
+      radio: "priority-urgent",
+      icon: "icon-urgent",
+      active: "../assets/icons/urgent_white.svg",
+      inactive: "../assets/icons/urgent_red.svg"
+    },
+    medium: {
+      radio: "priority-medium",
+      icon: "icon-medium",
+      active: "../assets/icons/medium_white.svg",
+      inactive: "../assets/icons/medium_orange.svg"
+    },
+    low: {
+      radio: "priority-low",
+      icon: "icon-low",
+      active: "../assets/icons/low_white.svg",
+      inactive: "../assets/icons/low_green.svg"
+    }
+  };
+
+  Object.values(priorities).forEach(p => {
+    const radio = document.getElementById(p.radio);
+    const img = document.getElementById(p.icon);
+    img.src = radio.checked ? p.active : p.inactive;
+  });
+}
