@@ -400,18 +400,24 @@
   /* Task Card Mobile Optimizations */
   .task-card {
     padding: 12px;
-    user-select: none; /* Verhindert, dass Text ausgewählt wird beim Ziehen */
+    user-select: none;
+    /* Verhindert, dass Text ausgewählt wird beim Ziehen */
   }
 
   /* Kopie der Karte, die dem Finger folgt */
   .touch-clone {
     position: fixed;
-    pointer-events: none; /* Die Kopie blockiert keine Touch-Events */
-    z-index: 1000; /* Über allem anderen */
+    pointer-events: none;
+    /* Die Kopie blockiert keine Touch-Events */
+    z-index: 1000;
+    /* Über allem anderen */
     opacity: 0.9;
-    transform: rotate(3deg); /* Leichte Drehung wie beim Desktop */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Größerer Schatten */
-    transition: none; /* Keine Animationen beim Bewegen */
+    transform: rotate(3deg);
+    /* Leichte Drehung wie beim Desktop */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Größerer Schatten */
+    transition: none;
+    /* Keine Animationen beim Bewegen */
   }
 
   .task-category {
@@ -475,6 +481,7 @@
     width: 24px;
   }
 }
+
 .task_overlay {
   position: fixed;
   top: 0;
@@ -491,9 +498,8 @@
 }
 
 .task_overlay.active {
-  pointer-events: auto;
+  pointer-events: none;
   transform: translateX(0);
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .big-card-background {
@@ -506,8 +512,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
   cursor: pointer;
+  display: none;
+  z-index: 998;
 }
 
 .big-card {
@@ -518,6 +525,7 @@
   box-shadow: var(--shadow-light-plusplus);
   padding: 24px;
   font-size: 20px;
+  pointer-events: auto;
 }
 
 .overlay-header {
@@ -550,18 +558,24 @@
 
 .task-description-big {
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin: 8px 0 8px 0;;
   display: flex;
 }
 
 .due-date-container {
   display: flex;
   gap: 16px;
-  margin-bottom: 16px;
+  margin: 8px 0 8px 0;;
+}
+
+.priority-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 
 .task-priority {
-  margin-bottom: 16px;
+  margin: 8px 0 8px 0;;
 }
 
 .task-subtasks {

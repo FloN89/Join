@@ -119,11 +119,11 @@ function handleTouchMove(touchEvent) {
   }
 
   if (fingerY < scrollZone) {
-    autoScrollInterval = setInterval(function() {
+    autoScrollInterval = setInterval(function () {
       window.scrollBy(0, -scrollSpeed);
     }, 20);
   } else if (fingerY > windowHeight - scrollZone) {
-    autoScrollInterval = setInterval(function() {
+    autoScrollInterval = setInterval(function () {
       window.scrollBy(0, scrollSpeed);
     }, 20);
   }
@@ -134,7 +134,7 @@ function handleTouchMove(touchEvent) {
   touchClone.style.display = 'block';
 
   const allTaskLists = document.querySelectorAll('.task-list');
-  allTaskLists.forEach(function(list) {
+  allTaskLists.forEach(function (list) {
     list.classList.remove('drag-over');
   });
 
@@ -169,7 +169,7 @@ function handleTouchEnd(touchEvent) {
       touchClone = null;
 
       const allTaskLists = document.querySelectorAll('.task-list');
-      allTaskLists.forEach(function(list) {
+      allTaskLists.forEach(function (list) {
         list.classList.remove('drag-over');
       });
 
@@ -194,7 +194,7 @@ function dataToCard() {
     const id = taskId[i];
     const taskData = task[id];
     // console.log("Task Data:", taskData);
-    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.date, taskData.subtasks, id);
+    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.subtasks, id);
   }
   updateEmptyStates();
 }
@@ -207,7 +207,7 @@ function updateEmptyStates() {
     { id: 'done', name: 'Done' }
   ];
 
-  categories.forEach(function(category) {
+  categories.forEach(function (category) {
     const taskList = document.getElementById(category.id);
     const existingPlaceholder = taskList.querySelector('.empty-state');
 
@@ -225,7 +225,7 @@ function updateEmptyStates() {
   });
 }
 
-function createTaskCard(category, title, description, assignedTo, priority, date, substasks, id) {
+function createTaskCard(category, title, description, assignedTo, priority, substasks, id) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
@@ -246,9 +246,8 @@ function createTaskCard(category, title, description, assignedTo, priority, date
   const usersHTML = createUsersHTML(assignedTo);
   const priorityColor = getPriorityColor(priority);
 
-  //Osman: onclick hinzugefügt, damit große Karte öffnet -> in der Funktion muss id übergeben werden
   card.innerHTML = `
-    <div onclick="openTaskOverlay('${id}')" class="task-card-content">
+    <div onclick="openTaskOverlay('${id}', '${priorityColor}')" class="task-card-content">
         <div class="task-category ${category}">${category}</div>
         <h3 class="task-title">${title}</h3>
         <p class="task-description">${description}</p>
@@ -266,7 +265,7 @@ function createSubtasksHTML(subtasks) {
     return '';
   }
 
-  const completedCount = subtasks.filter(function(subtask) {
+  const completedCount = subtasks.filter(function (subtask) {
     return subtask.completed === true;
   }).length;
   const totalCount = subtasks.length;
@@ -287,7 +286,7 @@ function createUsersHTML(assignedTo) {
     return '';
   }
 
-  return assignedTo.map(function(user) {
+  return assignedTo.map(function (user) {
     const initials = getInitials(user.name);
     const backgroundColor = user.color || '#CCCCCC';
     return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
@@ -339,20 +338,30 @@ function closeAddTaskOverlay() {
   document.body.classList.remove("overlay-open");
 }
 
-function openTaskOverlay(id) {
+function openTaskOverlay(id, priorityColor) {
   const overlay = document.getElementById("task_overlay");
+  const background = document.getElementById("big-card-background")
+
   overlay.innerHTML = "";
   overlay.innerHTML = generateTaskOverlay(task[id].category, task[id].title, task[id].description,
-    task[id].dueDate, task[id].priority, task[id].assignees, task[id].subtasks, id);
+    task[id].dueDate, task[id].priority, priorityColor, task[id].assignees, task[id].subtasks, id);
+
   overlay.classList.add("active");
-  // console.log(id);
-  // console.log(task[id].subtasks);
-  console.log(task[id].subtasks[0]);
+  background.style.display = "block";
 }
 
-function assignees(assignedTo) {
+function renderAssignees(assignedTo) {
   if (assignedTo && assignedTo.length > 0) {
     return assignedTo.map(person => `<div>${person}</div>`).join("");
+  }
+  return "";
+}
+
+function renderSubtasks(subtasks) {
+  if (subtasks && subtasks.length > 0) {
+    return subtasks.map(subtask =>
+      `<li><input class="subtaskCheckbox" type="checkbox" disabled ${subtask.completed ? "checked" : ""}> ${subtask.title}</li>`
+    ).join("");
   }
   return "";
 }
@@ -364,5 +373,7 @@ async function deleteTask(contactId) {
 
 function closeTaskOverlay() {
   const overlay = document.getElementById("task_overlay");
+  const background = document.getElementById("big-card-background")
   overlay.classList.remove("active");
+  background.style.display = "none";
 }
