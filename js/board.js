@@ -357,13 +357,25 @@ function renderAssignees(assignedTo) {
   return "";
 }
 
-function renderSubtasks(subtasks) {
+//separate Id für jeden Task erstellen?
+function renderSubtasks(subtasks, id) {
   if (subtasks && subtasks.length > 0) {
-    return subtasks.map(subtask =>
-      `<li><input class="subtaskCheckbox" type="checkbox" disabled ${subtask.completed ? "checked" : ""}> ${subtask.title}</li>`
+    return subtasks.map((subtask, index) =>
+      `<li>
+        <input class="subtaskCheckbox" 
+          id="subtaskCheckbox-${index}" 
+          type="checkbox" ${subtask.completed ? "checked" : ""}
+          onchange="toggleSubtaskCompletuion('${id}', ${index})"> 
+        <label for="subtaskCheckbox-${index}">${subtask.title}</label>
+      </li>`
     ).join("");
   }
   return "";
+}
+
+async function toggleSubtaskCompletuion(id, subtaskIndex) {
+  console.log(id);
+  console.log(subtaskIndex);
 }
 
 async function deleteTask(contactId) {

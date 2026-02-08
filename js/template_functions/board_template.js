@@ -25,7 +25,7 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
                     </div>
                     <div class="task-subtasks">
                         <h3>Subtasks:</h3>
-                        <ul>${renderSubtasks(subtasks)}</ul>
+                        <ul>${renderSubtasks(subtasks, id)}</ul>
                     </div>
 
                     <div class="overlay-buttons">

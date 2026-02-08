@@ -558,14 +558,16 @@
 
 .task-description-big {
   margin-top: 16px;
-  margin: 8px 0 8px 0;;
+  margin: 8px 0 8px 0;
+  ;
   display: flex;
 }
 
 .due-date-container {
   display: flex;
   gap: 16px;
-  margin: 8px 0 8px 0;;
+  margin: 8px 0 8px 0;
+  ;
 }
 
 .priority-container {
@@ -575,7 +577,8 @@
 }
 
 .task-priority {
-  margin: 8px 0 8px 0;;
+  margin: 8px 0 8px 0;
+  ;
 }
 
 .task-subtasks {
@@ -594,4 +597,42 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+
+.subtaskCheckbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.subtaskCheckbox + label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.subtaskCheckbox + label::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 1px solid #c3c3c3;
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.subtaskCheckbox:checked + label::before {
+  border: none;
+  background-size: 150% 150%;
+  background-image: url("../../assets/icons/Property 1=checked.svg");
 }
