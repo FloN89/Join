@@ -400,18 +400,24 @@
   /* Task Card Mobile Optimizations */
   .task-card {
     padding: 12px;
-    user-select: none; /* Verhindert, dass Text ausgewählt wird beim Ziehen */
+    user-select: none;
+    /* Verhindert, dass Text ausgewählt wird beim Ziehen */
   }
 
   /* Kopie der Karte, die dem Finger folgt */
   .touch-clone {
     position: fixed;
-    pointer-events: none; /* Die Kopie blockiert keine Touch-Events */
-    z-index: 1000; /* Über allem anderen */
+    pointer-events: none;
+    /* Die Kopie blockiert keine Touch-Events */
+    z-index: 1000;
+    /* Über allem anderen */
     opacity: 0.9;
-    transform: rotate(3deg); /* Leichte Drehung wie beim Desktop */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Größerer Schatten */
-    transition: none; /* Keine Animationen beim Bewegen */
+    transform: rotate(3deg);
+    /* Leichte Drehung wie beim Desktop */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Größerer Schatten */
+    transition: none;
+    /* Keine Animationen beim Bewegen */
   }
 
   .task-category {
@@ -475,6 +481,7 @@
     width: 24px;
   }
 }
+
 .task_overlay {
   position: fixed;
   top: 0;
@@ -491,9 +498,8 @@
 }
 
 .task_overlay.active {
-  pointer-events: auto;
+  pointer-events: none;
   transform: translateX(0);
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .big-card-background {
@@ -506,8 +512,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
   cursor: pointer;
+  display: none;
+  z-index: 998;
 }
 
 .big-card {
@@ -518,6 +525,7 @@
   box-shadow: var(--shadow-light-plusplus);
   padding: 24px;
   font-size: 20px;
+  pointer-events: auto;
 }
 
 .overlay-header {
@@ -550,18 +558,27 @@
 
 .task-description-big {
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin: 8px 0 8px 0;
+  ;
   display: flex;
 }
 
 .due-date-container {
   display: flex;
   gap: 16px;
-  margin-bottom: 16px;
+  margin: 8px 0 8px 0;
+  ;
+}
+
+.priority-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 
 .task-priority {
-  margin-bottom: 16px;
+  margin: 8px 0 8px 0;
+  ;
 }
 
 .task-subtasks {
@@ -580,4 +597,75 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+
+.subtaskCheckbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.subtaskCheckbox+label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.subtaskCheckbox+label::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 1px solid #c3c3c3;
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.subtaskCheckbox:checked+label::before {
+  border: none;
+  background-size: 150% 150%;
+  background-image: url("../../assets/icons/Property 1=checked.svg");
+}
+
+.edit_task_overlay {
+  transform: none;
+}
+
+.edit-overlay-header,
+.edit-overlay-footer {
+  flex-shrink: 0;
+}
+
+.edit-overlay-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.edit-overlay-footer {
+  text-align: end;
+}
+
+.save-changes {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  display: flex;
+  padding: 8px;
+  gap: 4px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.save-changes:hover {
+  background-color: var(--color-primary-light);
+  box-shadow: var(--shadow-medium);
 }
