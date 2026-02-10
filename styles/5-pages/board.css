@@ -605,7 +605,7 @@
   opacity: 0;
 }
 
-.subtaskCheckbox + label {
+.subtaskCheckbox+label {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -616,7 +616,7 @@
   user-select: none;
 }
 
-.subtaskCheckbox + label::before {
+.subtaskCheckbox+label::before {
   content: '';
   display: inline-block;
   width: 1em;
@@ -631,8 +631,41 @@
   background-size: contain;
 }
 
-.subtaskCheckbox:checked + label::before {
+.subtaskCheckbox:checked+label::before {
   border: none;
   background-size: 150% 150%;
   background-image: url("../../assets/icons/Property 1=checked.svg");
+}
+
+.edit_task_overlay {
+  transform: none;
+}
+
+.edit-overlay-header,
+.edit-overlay-footer {
+  flex-shrink: 0;
+}
+
+.edit-overlay-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.edit-overlay-footer {
+  text-align: end;
+}
+
+.save-changes {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  display: flex;
+  padding: 8px;
+  gap: 4px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.save-changes:hover {
+  background-color: var(--color-primary-light);
+  box-shadow: var(--shadow-medium);
 }
