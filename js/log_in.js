@@ -141,20 +141,12 @@ function handleLogoTransition() {
 
 // Initialisiert die Seite nach dem Laden
 function initializePage() {
-  document.body.classList.add("page-loaded");
-
-  const logoElement = document.querySelector(".app-logo");
-
-  if (logoElement) {
-    logoElement.addEventListener("transitionend", handleLogoTransition, {
-      once: true,
-    });
-  } else {
-    handleLogoTransition();
-  }
-
+  // KEINE Logo-Animation mehr
+  
+  handleLogoTransition();
   initializePasswordToggle();
 }
+
 
 // Initialisiert den Passwort-Sichtbarkeits-Button
 function initializePasswordToggle() {
