@@ -14,7 +14,18 @@
 }
 
 #user-initial {
-  color: black;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid var(--color-primary-light);
 }
 
 #topbar_title {
@@ -28,15 +39,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-}
-
-.user-icon {
-  width: 60px;
-  height: 60px;
-}
-
-#user-initial {
-  cursor: pointer;
 }
 
 /* User Overlay Styles */
