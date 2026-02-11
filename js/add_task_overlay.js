@@ -12,6 +12,7 @@ function initializeAddTaskPage() {
   setMinimumDateToToday();
   initializeFormEvents();
   renderAssigneeOptions();
+  initPriorityIconHandlers();
 }
 
 // Öffnet das Add-Task-Overlay und verhindert Scrollen im Hintergrund
@@ -347,7 +348,7 @@ async function handleFormSubmit(event) {
   document.getElementById("taskForm").handleClear();
   document.getElementById("subtask-list").innerHTML = "";
 }
-document.addEventListener("DOMContentLoaded", () => {
+function initPriorityIconHandlers() {
   const priorities = {
     urgent: {
       radio: "priority-urgent",
@@ -359,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
       radio: "priority-medium",
       icon: "icon-medium",
       active: "../assets/icons/medium_white.svg",
-      inactive: "../assets/icons/medium_orange.svg"
+      inactive: "../assets/icons/medium_yellow.svg"
     },
     low: {
       radio: "priority-low",
@@ -369,14 +370,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Wenn Overlay-HTML noch nicht im DOM ist: raus
+  if (!document.getElementById(priorities.urgent.radio)) return;
+
   Object.values(priorities).forEach(p => {
-    document
-      .getElementById(p.radio)
-      .addEventListener("change", updatePriorityIcons);
+    const radio = document.getElementById(p.radio);
+    if (!radio.dataset.iconListener) {
+      radio.addEventListener("change", updatePriorityIcons);
+      radio.dataset.iconListener = "true";
+    }
   });
 
   updatePriorityIcons();
-});
+}
 
 function updatePriorityIcons() {
   const priorities = {
@@ -390,7 +396,7 @@ function updatePriorityIcons() {
       radio: "priority-medium",
       icon: "icon-medium",
       active: "../assets/icons/medium_white.svg",
-      inactive: "../assets/icons/medium_orange.svg"
+      inactive: "../assets/icons/medium_yellow.svg"
     },
     low: {
       radio: "priority-low",
