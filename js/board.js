@@ -2,9 +2,16 @@ let task = {};
 let taskId = [];
 
 async function fetchTasks() {
-  task = (await loadData("task/")) || {};
-  taskId = Object.keys(task);
+  let userId = sessionStorage.getItem("userId");
 
+  if (userId === "guest") {
+    await seedGuestTasks();
+    task = (await loadData("guest-tasks/")) || {};
+  } else {
+    task = (await loadData("task/")) || {};
+  }
+
+  taskId = Object.keys(task);
   dataToCard();
 }
 
@@ -191,10 +198,10 @@ function handleTouchEnd(touchEvent) {
 
 function dataToCard() {
   for (let i = 0; i < taskId.length; i++) {
-    const id = taskId[i];
-    const taskData = task[id];
-    // console.log("Task Data:", taskData);
-    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.subtasks, id);
+    let id = taskId[i];
+    let taskData = task[id];
+    let status = taskData.status || "todo";
+    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.subtasks, id, status);
   }
   updateEmptyStates();
 }
@@ -225,10 +232,13 @@ function updateEmptyStates() {
   });
 }
 
-function createTaskCard(category, title, description, assignedTo, priority, substasks, id) {
-  const card = document
-    .getElementById("todo")
-    .appendChild(document.createElement("div"));
+function createTaskCard(category, title, description, assignedTo, priority, substasks, id, status) {
+  let columnId = status || "todo";
+  let column = document.getElementById(columnId);
+  if (!column) {
+    column = document.getElementById("todo");
+  }
+  let card = column.appendChild(document.createElement("div"));
 
   card.className = "task-card";
   card.draggable = true;
