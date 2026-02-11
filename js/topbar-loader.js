@@ -42,6 +42,9 @@ async function setUserInitial() {
   const user = await loadData("users/" + userId);
   if (user && user.initials) {
     userInitialElement.innerText = user.initials;
+    if (user.color) {
+      userInitialElement.style.backgroundColor = user.color;
+    }
   }
 }
 

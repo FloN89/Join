@@ -18,14 +18,14 @@
   height: 42px;
   border-radius: 50%;
   background-color: var(--color-primary);
-  color: var(--color-white);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
-  border: 2px solid var(--color-primary-light);
+  border: 2px solid white;
 }
 
 #topbar_title {

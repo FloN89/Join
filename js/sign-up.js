@@ -82,7 +82,8 @@ async function signUp() {
     const exists = await checkUser(errorMessage, user);
     if (exists) return;
 
-    await postData("users/", { "username": user, "mail": mail, "password": password, "initials": initials });
+    const userColor = randomColor();
+    await postData("users/", { "username": user, "mail": mail, "password": password, "initials": initials, "color": userColor });
     successfulSignUp();
 }
 
