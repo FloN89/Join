@@ -68,25 +68,13 @@ function handleLoginResponse(usersFromDatabase, emailValue, passwordValue) {
     return;
   }
 
-  saveUserSession(matchingUser.userId, matchingUser.user.username);
+  saveUserSession(matchingUser.userId);
   redirectToSummaryPage();
 }
 
-// Speichert Benutzerdaten in der Session
-function saveUserSession(userId, fullName) {
-  const fullNameText = fullName || "";
-  const nameParts = fullNameText.split(" ");
-  let userInitials = "";
-
-  for (let index = 0; index < nameParts.length; index++) {
-    const currentPart = nameParts[index];
-    if (currentPart) {
-      userInitials += currentPart[0];
-    }
-  }
-
-  localStorage.setItem("userInitial", userInitials.toUpperCase());
-  localStorage.setItem("userId", userId);
+// Speichert Benutzer-ID in der Session
+function saveUserSession(userId) {
+  sessionStorage.setItem("userId", userId);
 }
 
 // Leitet zur Summary-Seite weiter
@@ -227,13 +215,7 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
 }
 
 function guestLogin() {
-  // Initiale für Guest setzen
-  localStorage.setItem("userInitial", "G");
-
-  // Optional: Guest-ID setzen
-  localStorage.setItem("userId", "guest");
-
-  // Weiterleitung zur Guest Summary
+  sessionStorage.setItem("userId", "guest");
   window.location.href = "summary_guest.html";
 }
 

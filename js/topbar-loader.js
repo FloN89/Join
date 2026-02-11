@@ -21,17 +21,28 @@ fetch("/templates/topbar_template.html")
     console.error("Error loading topbar:", error);
   });
 
-function setUserInitial() {
-  const userInitial = localStorage.getItem("userInitial");
-
+async function setUserInitial() {
   const userInitialElement = document.getElementById("user-initial");
-
   if (!userInitialElement) {
     console.error("User initial element not found");
     return;
   }
 
-  userInitialElement.innerText = userInitial;
+  const userId = sessionStorage.getItem("userId");
+  if (!userId) {
+    window.location.href = "../html/log_in.html";
+    return;
+  }
+
+  if (userId === "guest") {
+    userInitialElement.innerText = "G";
+    return;
+  }
+
+  const user = await loadData("users/" + userId);
+  if (user && user.initials) {
+    userInitialElement.innerText = user.initials;
+  }
 }
 
 function initUserOverlay() {
