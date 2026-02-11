@@ -216,7 +216,7 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
 
 function guestLogin() {
   sessionStorage.setItem("userId", "guest");
-  window.location.href = "summary_guest.html";
+  window.location.href = "summary.html";
 }
 
 
