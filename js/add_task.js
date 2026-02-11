@@ -345,7 +345,7 @@ function updatePriorityIcons() {
   document.getElementById("icon-medium").src =
     document.getElementById("priority-medium").checked
       ? "../assets/icons/medium_white.svg"
-      : "../assets/icons/medium_orange.svg";
+      : "../assets/icons/medium_yellow.svg";
 
   document.getElementById("icon-low").src =
     document.getElementById("priority-low").checked

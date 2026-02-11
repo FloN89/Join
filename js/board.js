@@ -332,10 +332,14 @@ async function openAddTaskOverlay() {
   const content = document.getElementById("add-task-content");
 
   if (!content.innerHTML.trim()) {
-    const response = await fetch("add_task_overlay.html");
-    content.innerHTML = await response.text();
-  }
+  const response = await fetch("add_task_overlay.html");
+  content.innerHTML = await response.text();
 
+  // NACH dem Inject initialisieren:
+  if (typeof initializeAddTaskPage === "function") {
+    initializeAddTaskPage();
+  }
+}
   overlay.classList.add("active");
   overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("overlay-open");
