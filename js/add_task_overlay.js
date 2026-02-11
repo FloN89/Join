@@ -360,7 +360,7 @@ function initPriorityIconHandlers() {
       radio: "priority-medium",
       icon: "icon-medium",
       active: "../assets/icons/medium_white.svg",
-      inactive: "../assets/icons/medium_yellow.svg"
+      inactive: "../assets/icons/medium_yellow.svg",
     },
     low: {
       radio: "priority-low",
