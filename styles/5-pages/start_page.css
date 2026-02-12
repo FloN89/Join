@@ -46,39 +46,57 @@ html, body {
   -webkit-user-drag: none;
 }
 
-
 .app-logo.to-login-position {
-  top: 40px;
-  left: 40px;
+  top: 80px; 
+  left: calc(max(0px, (100vw - 1440px) / 2)); 
   transform: none;
-  width: 160px;
+  width: 150px; 
 }
 
 
+
+@media (max-width: 1360px) {
+  .app-logo.to-login-position {
+    left: 150px;
+  }
+}
+
 @media (max-width: 1024px) {
+  .app-logo.to-login-position {
+    left: 50px;
+  }
+}
+
+@media (max-width: 480px) {
 
   html, body {
-    background: var(--join-dark) !important;
+    background: var(--join-dark);
   }
 
   .splash-fade {
-    background: var(--join-dark) !important;
+    background: var(--join-dark);
   }
 
   .app-logo {
-    width: clamp(120px, 32vw, 220px);
+    content: url(/assets/icons/join_white.svg);
+    width: clamp(140px, 35vw, 240px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
+ 
   .app-logo.to-login-position {
-    top: calc(16px + env(safe-area-inset-top));
-    left: calc(16px + env(safe-area-inset-left));
-    width: clamp(90px, 18vw, 150px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(140px, 35vw, 240px);
   }
 }
 
 
-@media (max-width: 480px) {
-  .app-logo {
-    width: clamp(110px, 40vw, 180px);
+@media (max-width: 320px) {
+  .app-logo.to-login-position {
+    width: 60px;
   }
 }

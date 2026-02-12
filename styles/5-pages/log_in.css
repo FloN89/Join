@@ -315,33 +315,49 @@ body.page-loaded .app-header {
   }
   .app-logo { 
     width: 80px; 
-    height: 80px; 
+    
   }
 }
 
-@media (max-width: 320px) {
-  .panel-title { 
-    font-size: 24px; 
-  }
+@media (max-width: 480px) {
   .app-header { 
-    width: 20px; 
+    flex-direction: column; 
+    gap: 30px; 
   }
-  .login-panel { 
-    gap: 12px; 
+  .signup-area { 
+    display: none; 
   }
-  .button-row { 
-    gap: 10px; 
+  .signup-area-mobile {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-top: 30px;
+  }
+
+  .signup-button { 
+    font-size: 12px; 
+  }
+  .login-panel {
+     width: 80%; 
+     padding: 10px; 
+     border-radius: var(--border-radius-large); 
+    }
+  .form-fields { 
+    width: 80%; 
+  }
+  .button-row {
+     width: 100%; 
+     gap: 5px; 
+  }
+  .panel-title { 
+    font-size: 28px;
+  }
+  .panel-title::after { 
+    width: 60px; 
   }
   .app-logo { 
     width: 60px; 
-  }
-  .site-footer { 
-    padding-top: 40px; 
-  }
-  .signup-button { 
-    width: 80px; 
-    height: 36px; 
-    font-size: 12px; 
-    gap: 10px; 
+    margin-left: 50px;
   }
 }

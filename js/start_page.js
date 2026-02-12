@@ -13,6 +13,6 @@
       // Nach Ende der Animation -> direkt zur Login-Seite
       // 300ms warten + 800ms Animation = 1100ms
       setTimeout(() => {
-        window.location.href = "log_in.html";
+       window.location.href = "log_in.html";
       }, 1100);
     });
