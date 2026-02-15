@@ -1,21 +1,22 @@
 // Wartet, bis das DOM vollständig geladen ist, und initialisiert die Add-Task-Seite
- 
 document.addEventListener("DOMContentLoaded", initializeAddTaskPage);
 
-// Liste aller verfügbaren Kontakte für die Zuweisung
- 
-const contacts = ["Enrico Hof", "Osman A", "Florian Narr"];
+// Liste aller verfügbaren Kontakte für die Zuweisung (Name + Farbe)
+const contacts = [
+  { name: "Anton Mayer", color: "#FF7A00" },
+  { name: "Evelyne Meyer", color: "#1FD7C1" },
+  { name: "Marcel Bauer", color: "#462F8A" }
+];
 
 // Initialisiert alle notwendigen Funktionen auf der Seite
- 
 function initializeAddTaskPage() {
   setMinimumDateToToday();
   initializeFormEvents();
   renderAssigneeOptions();
+  initPriorityIconHandlers();
 }
 
-// Setzt das minimale auswählbare Datum im Datumsfeld auf heute
- 
+// Setzt das minimale auswählbare Datum im Datumsfeld auf heute (UI-only)
 function setMinimumDateToToday() {
   const dateInput = document.getElementById("due-date");
   if (!dateInput) return;
@@ -25,7 +26,6 @@ function setMinimumDateToToday() {
 }
 
 // Registriert alle Formular-Events
- 
 function initializeFormEvents() {
   const taskForm = document.getElementById("taskForm");
   if (!taskForm) return;
@@ -33,21 +33,18 @@ function initializeFormEvents() {
   taskForm.addEventListener("submit", handleFormSubmit);
 }
 
-
 // Validiert das gesamte Formular
- 
 function validateForm() {
   let isFormValid = true;
 
   if (!checkRequiredField("title", "error-title")) isFormValid = false;
-  if (!checkRequiredField("due-date", "error-due-date")) isFormValid = false;
+  // due-date wird NICHT mehr für Firebase gebraucht -> nicht als Pflichtfeld validieren
   if (!validateCategoryField()) isFormValid = false;
 
   return isFormValid;
 }
 
 // Prüft, ob eine Kategorie ausgewählt wurde
- 
 function validateCategoryField() {
   const categoryInput = document.getElementById("category");
   const categoryError = document.getElementById("error-category");
@@ -62,7 +59,6 @@ function validateCategoryField() {
 }
 
 // Prüft ein Pflichtfeld anhand seiner ID
- 
 function checkRequiredField(inputId, errorId) {
   const inputElement = document.getElementById(inputId);
   const errorElement = document.getElementById(errorId);
@@ -79,94 +75,95 @@ function checkRequiredField(inputId, errorId) {
 }
 
 // Rendert alle verfügbaren Assignee-Optionen
- 
 function renderAssigneeOptions() {
   const assigneeDropdown = document.getElementById("assignee-dropdown");
   if (!assigneeDropdown) return;
 
   assigneeDropdown.innerHTML = "";
 
-  for (let index = 0; index < contacts.length; index++) {
-    const assigneeLabel = createAssigneeLabel(contacts[index]);
+  for (let i = 0; i < contacts.length; i++) {
+    const assigneeLabel = createAssigneeLabel(contacts[i]);
     assigneeDropdown.appendChild(assigneeLabel);
   }
 }
 
-// Erstellt ein Label mit Checkbox für einen Assignee
- 
-function createAssigneeLabel(assigneeName) {
+// Erstellt ein Label mit Checkbox für einen Assignee (Name + Farbe als data-Attribute)
+function createAssigneeLabel(contact) {
   const labelElement = document.createElement("label");
   labelElement.className = "checkbox-label";
 
   labelElement.innerHTML = `
-    <span>${assigneeName}</span>
-    <input type="checkbox" value="${assigneeName}" onchange="updateAssigneeDisplay()">
+    <span>${contact.name}</span>
+    <input
+      type="checkbox"
+      data-name="${contact.name}"
+      data-color="${contact.color}"
+      onchange="updateAssigneeDisplay()"
+    >
   `;
 
   return labelElement;
 }
 
 // Aktualisiert die Anzeige der ausgewählten Assignees
- 
 function updateAssigneeDisplay() {
-  const selectedAssignees = getSelectedAssignees();
+  const assignedTo = getSelectedAssignees();
   const placeholderText = document.getElementById("selected-assignees-placeholder");
   const avatarContainer = document.getElementById("selected-assignee-avatars");
 
   avatarContainer.innerHTML = "";
 
-  if (selectedAssignees.length === 0) {
+  if (assignedTo.length === 0) {
     placeholderText.textContent = "Select contacts";
     return;
   }
 
-  placeholderText.textContent = selectedAssignees.join(", ");
-  renderAssigneeAvatars(selectedAssignees, avatarContainer);
+  placeholderText.textContent = assignedTo.map((a) => a.name).join(", ");
+  renderAssigneeAvatars(assignedTo, avatarContainer);
 }
 
-// Gibt alle aktuell ausgewählten Assignees zurück
- 
+// Gibt alle aktuell ausgewählten Assignees zurück (als Objekte)
 function getSelectedAssignees() {
   const checkboxElements = document.querySelectorAll("#assignee-dropdown input");
-  const selectedNames = [];
+  const selected = [];
 
-  for (let index = 0; index < checkboxElements.length; index++) {
-    if (checkboxElements[index].checked) {
-      selectedNames.push(checkboxElements[index].value);
+  for (let i = 0; i < checkboxElements.length; i++) {
+    const cb = checkboxElements[i];
+    if (cb.checked) {
+      selected.push({
+        name: cb.dataset.name,
+        color: cb.dataset.color
+      });
     }
   }
 
-  return selectedNames;
+  return selected;
 }
 
-// Rendert Initialen-Avatare für ausgewählte Assignees
- 
-function renderAssigneeAvatars(names, container) {
-  for (let index = 0; index < names.length; index++) {
+// Rendert Initialen-Avatare für ausgewählte Assignees (mit Farbe)
+function renderAssigneeAvatars(assignedTo, container) {
+  for (let i = 0; i < assignedTo.length; i++) {
     const avatarElement = document.createElement("div");
     avatarElement.className = "avatar";
-    avatarElement.textContent = getInitials(names[index]);
+    avatarElement.textContent = getInitials(assignedTo[i].name);
+    avatarElement.style.backgroundColor = assignedTo[i].color;
     container.appendChild(avatarElement);
   }
 }
 
 // Erstellt Initialen aus einem vollständigen Namen
- 
 function getInitials(fullName) {
   const nameParts = fullName.split(" ");
   let initials = "";
 
-  for (let index = 0; index < nameParts.length; index++) {
-    if (nameParts[index].length > 0) {
-      initials += nameParts[index][0].toUpperCase();
-    }
+  for (let i = 0; i < nameParts.length; i++) {
+    if (nameParts[i].length > 0) initials += nameParts[i][0].toUpperCase();
   }
 
   return initials;
 }
 
 // Öffnet oder schließt das Assignee-Dropdown
- 
 function toggleAssigneeDropdown() {
   const assigneeDropdown = document.getElementById("assignee-dropdown");
   assigneeDropdown.classList.toggle("d-none");
@@ -178,7 +175,6 @@ function toggleAssigneeDropdown() {
 }
 
 // Öffnet oder schließt das Kategorie-Dropdown
- 
 function toggleCategoryDropdown() {
   const categoryDropdown = document.getElementById("category-dropdown");
   categoryDropdown.classList.toggle("d-none");
@@ -190,25 +186,20 @@ function toggleCategoryDropdown() {
 }
 
 // Setzt die ausgewählte Kategorie
- 
 function selectCategory(categoryValue) {
   const hiddenCategoryInput = document.getElementById("category");
   const categoryPlaceholder = document.getElementById("selected-category-placeholder");
 
   hiddenCategoryInput.value = categoryValue;
 
-  if (categoryValue === "technical-task") {
-    categoryPlaceholder.textContent = "Technical Task";
-  } else if (categoryValue === "user-story") {
-    categoryPlaceholder.textContent = "User Story";
-  }
+  if (categoryValue === "technical-task") categoryPlaceholder.textContent = "Technical Task";
+  if (categoryValue === "user-story") categoryPlaceholder.textContent = "User Story";
 
   document.getElementById("category-dropdown").classList.add("d-none");
   document.getElementById("error-category").classList.remove("active");
 }
 
 // Reagiert auf die Enter-Taste im Subtask-Feld
- 
 function handleSubtaskKey(event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -216,86 +207,69 @@ function handleSubtaskKey(event) {
   }
 }
 
-// Fügt einen neuen Subtask hinzu
- 
+// Fügt einen neuen Subtask hinzu (click = remove)
 function addSubtask() {
   const subtaskInput = document.getElementById("subtask");
   const subtaskText = subtaskInput.value.trim();
-
   if (!subtaskText) return;
 
   const listItem = document.createElement("li");
   listItem.className = "subtask-item";
   listItem.textContent = "• " + subtaskText;
 
-  listItem.addEventListener("click", () => {
-    listItem.remove();
-  });
+  listItem.addEventListener("click", () => listItem.remove());
 
   document.getElementById("subtask-list").appendChild(listItem);
   subtaskInput.value = "";
 }
 
 // Setzt das komplette Formular zurück
- 
 function handleClear() {
   const taskForm = document.getElementById("taskForm");
   taskForm.reset();
 
   document.getElementById("subtask-list").innerHTML = "";
 
-  const checkboxElements = document.querySelectorAll(
-    '#assignee-dropdown input[type="checkbox"]'
-  );
-
-  checkboxElements.forEach((checkbox) => {
-    checkbox.checked = false;
-  });
+  document
+    .querySelectorAll('#assignee-dropdown input[type="checkbox"]')
+    .forEach((checkbox) => (checkbox.checked = false));
 
   document.getElementById("selected-assignee-avatars").innerHTML = "";
-  document.getElementById("selected-assignees-placeholder").textContent =
-    "Select contacts";
+  document.getElementById("selected-assignees-placeholder").textContent = "Select contacts";
 
   document.getElementById("category").value = "";
-  document.getElementById("selected-category-placeholder").textContent =
-    "Select category";
+  document.getElementById("selected-category-placeholder").textContent = "Select category";
+
+  // Priority Icons sauber neu setzen
+  updatePriorityIcons();
 }
 
-// Sammelt alle Eingabedaten aus dem Add-Task-Formular
+// Sammelt alle Eingabedaten aus dem Add-Task-Formular (EXAKT deine Firebase-Struktur)
 function collectTaskData() {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
-  const dueDate = document.getElementById("due-date").value;
   const category = document.getElementById("category").value;
 
-  // Ausgewählte Kontakte ermitteln
-  const assignees = getSelectedAssignees();
+  const priority =
+    document.querySelector('input[name="priority"]:checked')?.value || "medium";
 
-  // Aktive Priorität aus den Radio-Buttons holen
-  const priority = document.querySelector(
-    'input[name="priority"]:checked'
-  )?.value || "medium";
+  const assignedTo = getSelectedAssignees();
 
-  // Subtasks aus der Liste sammeln
   const subtasks = [];
-  document.querySelectorAll("#subtask-list .subtask-item").forEach(li => {
+  document.querySelectorAll("#subtask-list .subtask-item").forEach((li) => {
     subtasks.push({
-      title: li.textContent.replace("• ", ""),
-      done: false
+      title: li.textContent.replace("• ", "").trim(),
+      completed: false
     });
   });
 
-  // Task-Objekt für Firebase zurückgeben
   return {
+    category,
     title,
     description,
-    dueDate,
-    category,
     priority,
-    assignees,
-    subtasks,
-    status: "todo",       // Startstatus für das Board
-    createdAt: Date.now()
+    assignedTo,
+    subtasks
   };
 }
 
@@ -303,52 +277,50 @@ function collectTaskData() {
 async function handleFormSubmit(event) {
   event.preventDefault();
 
-  // Formular validieren
   if (!validateForm()) return;
 
-  // Task-Daten sammeln
   const task = collectTaskData();
 
   try {
-    // Task in Firebase speichern (Realtime DB)
-    const result = await postData("task", task);
+    // Einheitlich: "tasks" als Collection/Path
+    const result = await postData("tasks", task);
 
-    // Erfolg anzeigen (Firebase gibt z.B. { name: "-Ns..." } zurück)
-    alert("Task saved to Firebase! ID: " + result.name);
+    alert("Task saved to Firebase! ID: " + (result?.name ?? "(no id returned)"));
 
-    // Formular zurücksetzen
-    document.getElementById("taskForm").reset();
-    document.getElementById("subtask-list").innerHTML = "";
+    handleClear();
   } catch (err) {
     console.error("Firebase save failed:", err);
     alert("Saving failed. Check console/network tab.");
   }
 }
 
-
-// ändert die img Farben der Priority buttons
-document.addEventListener("DOMContentLoaded", function () {
-  var priorityRadios = document.querySelectorAll('input[name="priority"]');
-  priorityRadios.forEach(function (radio) {
-    radio.addEventListener("change", updatePriorityIcons);
-  });
-
+// PRIORITY ICONS 
+function initPriorityIconHandlers() {
+  const radios = document.querySelectorAll('input[name="priority"]');
+  radios.forEach((radio) => radio.addEventListener("change", updatePriorityIcons));
   updatePriorityIcons();
-});
+}
 
 function updatePriorityIcons() {
-  document.getElementById("icon-urgent").src =
-    document.getElementById("priority-urgent").checked
-      ? "../assets/icons/urgent_white.svg"
-      : "../assets/icons/urgent_red.svg";
+  const urgent = document.getElementById("priority-urgent");
+  const medium = document.getElementById("priority-medium");
+  const low = document.getElementById("priority-low");
 
-  document.getElementById("icon-medium").src =
-    document.getElementById("priority-medium").checked
-      ? "../assets/icons/medium_white.svg"
-      : "../assets/icons/medium_yellow.svg";
+  const iconUrgent = document.getElementById("icon-urgent");
+  const iconMedium = document.getElementById("icon-medium");
+  const iconLow = document.getElementById("icon-low");
 
-  document.getElementById("icon-low").src =
-    document.getElementById("priority-low").checked
-      ? "../assets/icons/low_white.svg"
-      : "../assets/icons/low_green.svg";
+  if (!urgent || !medium || !low || !iconUrgent || !iconMedium || !iconLow) return;
+
+  iconUrgent.src = urgent.checked
+    ? "../assets/icons/urgent_white.svg"
+    : "../assets/icons/urgent_red.svg";
+
+  iconMedium.src = medium.checked
+    ? "../assets/icons/medium_white.svg"
+    : "../assets/icons/medium_yellow.svg";
+
+  iconLow.src = low.checked
+    ? "../assets/icons/low_white.svg"
+    : "../assets/icons/low_green.svg";
 }
