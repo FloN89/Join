@@ -318,7 +318,7 @@ async function handleFormSubmit(event) {
   }
 }
 
-// PRIORITY ICONS (konsolidiert)
+// PRIORITY ICONS 
 function initPriorityIconHandlers() {
   const radios = document.querySelectorAll('input[name="priority"]');
   radios.forEach((radio) => radio.addEventListener("change", updatePriorityIcons));
