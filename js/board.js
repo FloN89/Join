@@ -234,7 +234,7 @@ function updateEmptyStates() {
   });
 }
 
-function createTaskCard(category, title, description, assignedTo, priority, substasks, id, status) {
+function createTaskCard(category, title, description, assignedTo, priority, subtasks, id, status) {
   let columnId = status || "todo";
   let column = document.getElementById(columnId);
   if (!column) {
@@ -562,7 +562,6 @@ function closeTaskOverlay() {
 
   taskOverlay.classList.remove("active");
   background.style.display = "none";
-  // editOverlay.style.display = "none"
   editOverlay.innerHTML = "";
 }
 

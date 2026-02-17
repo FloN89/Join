@@ -283,7 +283,7 @@ async function handleFormSubmit(event) {
 
   try {
     // Einheitlich: "tasks" als Collection/Path
-    const result = await postData("tasks", task);
+    const result = await postData("task", task);
 
     alert("Task saved to Firebase! ID: " + (result?.name ?? "(no id returned)"));
 
