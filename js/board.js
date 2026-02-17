@@ -419,7 +419,7 @@ function openEditTaskOverlay(id) {
   document
     .querySelector(`input[name="priority"][value="${task[id].priority}"]`)
     ?.setAttribute("checked", "true");
-  updatePriorityIcons();
+  initPriorityIconHandlers();
   renderEditAssignees(task[id].assignees || []);
 }
 
@@ -464,7 +464,7 @@ function renderEditSubtasks(subtasks = []) {
       </div>
       <div class="subtask-actions">
         <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-        <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+        <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
         <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
       </div>
     `;
@@ -496,7 +496,7 @@ function addEditSubtask() {
     </div>
     <div class="subtask-actions">
       <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-      <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+      <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
       <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
     </div>
   `;
@@ -610,7 +610,7 @@ function enableSubtaskEdit(li) {
   // Icons wechseln: Edit -> Haken + Müllbecher
   actionsDiv.innerHTML = `
     <img src="../assets/icons/check.svg" class="save-subtask-btn" title="Save">
-    <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+    <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
     <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
   `;
 
@@ -622,7 +622,7 @@ function enableSubtaskEdit(li) {
     // Icons zurücksetzen zu Edit + Delete
     actionsDiv.innerHTML = `
       <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-      <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+      <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
       <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
     `;
     const newEditBtn = actionsDiv.querySelector(".edit-subtask-btn");
@@ -644,7 +644,7 @@ function saveSubtaskEdit(li) {
 
   actions.innerHTML = `
     <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-    <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+    <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
     <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
   `;
 }
