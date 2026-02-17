@@ -244,7 +244,7 @@ function handleClear() {
   updatePriorityIcons();
 }
 
-// Sammelt alle Eingabedaten aus dem Add-Task-Formular (EXAKT deine Firebase-Struktur)
+// Sammelt alle Eingabedaten aus dem Add-Task-Formular 
 function collectTaskData() {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
