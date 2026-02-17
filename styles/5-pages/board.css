@@ -502,6 +502,12 @@
   transform: translateX(0);
 }
 
+.task_overlay .big-card,
+.edit_task_overlay .big-card {
+  display: flex;
+  flex-direction: column;
+}
+
 .big-card-background {
   position: fixed;
   top: 0;
@@ -518,6 +524,7 @@
 }
 
 .big-card {
+  display: none;
   width: 400px;
   height: auto;
   background-color: var(--color-white);
@@ -532,7 +539,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
 }
 
 .close-icon {
@@ -567,22 +573,29 @@
   display: flex;
   gap: 16px;
   margin: 8px 0 8px 0;
-  ;
 }
 
 .priority-container {
   display: flex;
   gap: 16px;
   align-items: center;
+  margin: 8px 0 8px 0;
 }
 
-.task-priority {
-  margin: 8px 0 8px 0;
-  ;
+.priority-container h3 {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color-menu);
 }
 
 .task-subtasks {
   margin-top: 16px;
+}
+
+.task-subtasks h3 {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color-menu);
 }
 
 .overlay-buttons {
@@ -597,6 +610,17 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+
+.delete-task-button:hover,
+.edit-task-button:hover {
+  color: var(--color-primary-light);
+  font-weight: 600;
+}
+
+.delete-task-button:hover img,
+.edit-task-button:hover img {
+  filter: invert(73%) sepia(33%) saturate(6403%) hue-rotate(165deg) brightness(94%) contrast(87%);
 }
 
 .subtaskCheckbox {
@@ -638,12 +662,22 @@
 }
 
 .edit_task_overlay {
-  transform: none;
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.edit_task_overlay.active {
+  display: flex;
 }
 
 .edit-overlay-header,
 .edit-overlay-footer {
   flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .edit-overlay-body {
@@ -668,4 +702,90 @@
 .save-changes:hover {
   background-color: var(--color-primary-light);
   box-shadow: var(--shadow-medium);
+}
+
+.edit-subtask-btn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.delete-subtask-btn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  justify-content: space-between;
+  padding: 4px 0;
+  background-color: var(--color-white) !important;
+}
+
+.subtask-item:hover {
+  background-color: var(--color-background) !important;
+}
+
+.subtask-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.subtask-item:hover .subtask-actions {
+  opacity: 1;
+}
+
+
+.edit-title-container h3 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.edit-description-container h3 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.edit-due-date-container {
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-right {
+  gap: 0 !important;
+}
+
+label {
+  font-size: 16px !important;
+}
+
+.edit-assignee-container,
+.edit-priority-container,
+.edit-title-container,
+.edit-description-container,
+.edit-subtasks-container {
+  padding: 8px 0;
+}
+
+.edit-title-container input,
+.edit-description-container input {
+  width: 100%;
+}
+
+.assignees {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.task-assigned-to {
+  color: var(--color-menu);
 }

@@ -324,7 +324,7 @@ function collectTaskData() {
 
 // Speichert einen Task in der Firebase Realtime Database
 async function saveTaskToFirebase(task) {
-  await postData("tasks", task);
+  await postData("task/", task);
 }
 
 // Wird beim Absenden des Formulars aufgerufen

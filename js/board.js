@@ -5,6 +5,7 @@ async function fetchTasks() {
   task = (await loadData("task/")) || {};
   taskId = Object.keys(task);
 
+  clearBoard();
   dataToCard();
 }
 
@@ -225,7 +226,7 @@ function updateEmptyStates() {
   });
 }
 
-function createTaskCard(category, title, description, assignedTo, priority, substasks, id) {
+function createTaskCard(category, title, description, assignedTo, priority, subtasks, id) {
   const card = document
     .getElementById("todo")
     .appendChild(document.createElement("div"));
@@ -242,7 +243,7 @@ function createTaskCard(category, title, description, assignedTo, priority, subs
   card.addEventListener('touchmove', handleTouchMove, { passive: false });
   card.addEventListener('touchend', handleTouchEnd, { passive: false });
 
-  const subtasksHTML = createSubtasksHTML(substasks);
+  const subtasksHTML = createSubtasksHTML(subtasks);
   const usersHTML = createUsersHTML(assignedTo);
   const priorityColor = getPriorityColor(priority);
 
@@ -351,9 +352,9 @@ function openTaskOverlay(id, priorityColor) {
   background.style.display = "block";
 }
 
-function renderAssignees(assignedTo) {
-  if (assignedTo && assignedTo.length > 0) {
-    return assignedTo.map(person => `<div>${person}</div>`).join("");
+function renderAssignees(assignees) {
+  if (assignees && assignees.length > 0) {
+    return assignees.map(person => `<div>${person}</div>`).join("");
   }
   return "";
 }
@@ -365,7 +366,7 @@ function renderSubtasks(subtasks, id) {
         <input class="subtaskCheckbox" 
           id="subtaskCheckbox-${index}" 
           type="checkbox" ${subtask.done ? "checked" : ""}
-          onchange="toggleSubtaskCompletuion('${id}', ${index})"> 
+          onchange="toggleSubtaskCompletion('${id}', ${index})"> 
         <label for="subtaskCheckbox-${index}">${subtask.title}</label>
       </li>`
     ).join("");
@@ -373,7 +374,7 @@ function renderSubtasks(subtasks, id) {
   return "";
 }
 
-async function toggleSubtaskCompletuion(id, subtaskIndex) {
+async function toggleSubtaskCompletion(id, subtaskIndex) {
   const subtasks = task[id].subtasks || []; //aktuelle Subtasks holen
   subtasks[subtaskIndex].done = !subtasks[subtaskIndex].done; //Boolean umkehren
   await saveData("task/" + id, {
@@ -388,34 +389,150 @@ function openEditTaskOverlay(id) {
   const taskOverlay = document.getElementById("task_overlay");
   const background = document.getElementById("big-card-background")
 
-  editOverlay.style.display = "flex";
+  editOverlay.classList.add("active");
   taskOverlay.style.display = "none";
   background.style.display = "block";
 
   editOverlay.innerHTML = "";
   editOverlay.innerHTML = generateEditTaskOverlay(task[id].title, task[id].description,
-    task[id].dueDate, task[id].priority, task[id].assignedTo, task[id].subtasks, id);
+    task[id].dueDate, task[id].priority, task[id].assignees, task[id].subtasks, id);
+
+
+  renderAssigneeOptions(task[id].assignees || []);
+  renderEditSubtasks(task[id].subtasks || []);
+
+  document
+    .querySelector(`input[name="priority"][value="${task[id].priority}"]`)
+    ?.setAttribute("checked", "true");
+
+  renderEditAssignees(task[id].assignees || []);
 }
 
-function saveChanges(id) {
+async function saveChanges(id) {
   const title = document.getElementById("edit-title").value;
   const description = document.getElementById("edit-description").value;
-  const dueDate = document.getElementById("edit-dueDate").value;
-  const priority = document.getElementById("edit-priority").value;
-  const assignedTo = document.getElementById("edit-assignedTo").value;
-  const subtasks = document.getElementById("edit-subtasks").value;
-  console.log(id);
+  const dueDate = document.getElementById("edit-due-date").value;
 
-  // saveData("task/" + id, {
-  //   "assignees" : assignedTo,
-  //   "description" : description,
-  //   "dueDate" : dueDate,
-  //   "priority" priority: 
-  //   "subtasks" : subtasks,
-  //   "title" : title
-  // })
+  const priority = document.querySelector('input[name="priority"]:checked')?.value;
 
+  const assignees = getSelectedAssignees();
+  const subtasks = getEditedSubtasks();
+
+  await saveData("task/" + id, {
+    ...task[id],
+    title: title,
+    description: description,
+    dueDate: dueDate,
+    priority: priority,
+    assignees: assignees,
+    subtasks: subtasks
+  });
+
+  await fetchTasks();
   closeTaskOverlay();
+}
+
+function renderEditSubtasks(subtasks = []) {
+  const list = document.getElementById("edit-subtask-list");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  subtasks.forEach(subtask => {
+    const li = document.createElement("li");
+    li.className = "subtask-item";
+
+    li.innerHTML = `
+      <div class="subtask-item-content">
+        <span class="subtask-bullet">•</span>
+        <span class="subtask-title" contenteditable="false">${subtask.title}</span>
+      </div>
+      <div class="subtask-actions">
+        <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
+        <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+        <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
+      </div>
+    `;
+
+    list.appendChild(li);
+
+    const editBtn = li.querySelector(".edit-subtask-btn");
+    const deleteBtn = li.querySelector(".delete-subtask-btn");
+
+    editBtn.addEventListener("click", () => enableSubtaskEdit(li));
+    deleteBtn.addEventListener("click", () => li.remove());
+  });
+}
+
+function addEditSubtask() {
+  const input = document.getElementById("subtask");
+  const text = input.value.trim();
+  if (!text) return;
+
+  const list = document.getElementById("edit-subtask-list");
+
+  const li = document.createElement("li");
+  li.className = "subtask-item";
+
+  li.innerHTML = `
+    <div class="subtask-item-content">
+      <span class="subtask-bullet">•</span>
+      <span class="subtask-title" contenteditable="false">${text}</span>
+    </div>
+    <div class="subtask-actions">
+      <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
+      <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+      <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
+    </div>
+  `;
+
+  list.appendChild(li);
+
+  const editBtn = li.querySelector(".edit-subtask-btn");
+  const deleteBtn = li.querySelector(".delete-subtask-btn");
+
+  editBtn.addEventListener("click", () => enableSubtaskEdit(li));
+  deleteBtn.addEventListener("click", () => li.remove());
+
+  input.value = "";
+}
+
+function getEditedSubtasks() {
+  const subtasks = [];
+
+  document.querySelectorAll("#edit-subtask-list li").forEach(li => {
+    const titleElement = li.querySelector(".subtask-title");
+    const title = titleElement.textContent.trim();
+
+    if (title !== "") {
+      subtasks.push({
+        title: title,
+        done: false
+      });
+    }
+  });
+
+  return subtasks;
+}
+
+function renderEditAssignees(taskAssignees = []) {
+  const assigneeDropdown = document.getElementById("assignee-dropdown");
+  if (!assigneeDropdown) return;
+
+  assigneeDropdown.innerHTML = "";
+
+  contacts.forEach(contact => {
+    const assigneeLabel = createAssigneeLabel(contact);
+    const checkbox = assigneeLabel.querySelector("input");
+
+    if (taskAssignees.includes(contact)) {
+      checkbox.checked = true;
+    }
+
+    assigneeDropdown.appendChild(assigneeLabel);
+  });
+
+  updateAssigneeDisplay();
 }
 
 async function deleteTask(contactId) {
@@ -430,6 +547,90 @@ function closeTaskOverlay() {
 
   taskOverlay.classList.remove("active");
   background.style.display = "none";
-  editOverlay.style.display = "none"
+  // editOverlay.style.display = "none"
   editOverlay.innerHTML = "";
+}
+
+function clearBoard() {
+  document.querySelectorAll('.task-list').forEach(list => {
+    list.innerHTML = '';
+  });
+}
+
+document.addEventListener("click", function (e) {
+
+  // Delete
+  if (e.target.classList.contains("delete-subtask-btn")) {
+    const li = e.target.closest("li");
+    if (li) li.remove();
+  }
+
+  // Edit
+  if (e.target.classList.contains("edit-subtask-btn")) {
+    const li = e.target.closest("li");
+    if (!li) return;
+
+    const title = li.querySelector(".subtask-title");
+
+    const isEditing = title.getAttribute("contenteditable") === "true";
+
+    if (isEditing) {
+      title.setAttribute("contenteditable", "false");
+      title.blur();
+    } else {
+      title.setAttribute("contenteditable", "true");
+      title.focus();
+    }
+  }
+
+});
+
+function enableSubtaskEdit(li) {
+  const titleSpan = li.querySelector(".subtask-title");
+  const actionsDiv = li.querySelector(".subtask-actions");
+
+  // Text editierbar machen
+  titleSpan.setAttribute("contenteditable", "true");
+  titleSpan.focus();
+
+  // Icons wechseln: Edit -> Haken + Müllbecher
+  actionsDiv.innerHTML = `
+    <img src="../assets/icons/check.svg" class="save-subtask-btn" title="Save">
+    <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+    <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
+  `;
+
+  const saveBtn = actionsDiv.querySelector(".save-subtask-btn");
+  const deleteBtn = actionsDiv.querySelector(".delete-subtask-btn");
+
+  saveBtn.addEventListener("click", () => {
+    titleSpan.setAttribute("contenteditable", "false");
+    // Icons zurücksetzen zu Edit + Delete
+    actionsDiv.innerHTML = `
+      <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
+      <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+      <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
+    `;
+    const newEditBtn = actionsDiv.querySelector(".edit-subtask-btn");
+    const newDeleteBtn = actionsDiv.querySelector(".delete-subtask-btn");
+
+    newEditBtn.addEventListener("click", () => enableSubtaskEdit(li));
+    newDeleteBtn.addEventListener("click", () => li.remove());
+  });
+
+  deleteBtn.addEventListener("click", () => li.remove());
+}
+
+function saveSubtaskEdit(li) {
+  const title = li.querySelector(".subtask-title");
+  const actions = li.querySelector(".subtask-actions");
+
+  title.setAttribute("contenteditable", "false");
+  title.blur();
+
+  actions.innerHTML = `
+    <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
+    <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+    <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
+  `;
 }

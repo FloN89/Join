@@ -1,4 +1,4 @@
-function generateTaskOverlay(category, title, description, dueDate, priority, priorityColor, assignedTo, subtasks, id) {
+function generateTaskOverlay(category, title, description, dueDate, priority, priorityColor, assignees, subtasks, id) {
     return `
             <div class="big-card">
                 <div class="overlay-header">
@@ -20,7 +20,7 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
                 <div class="assigned-to-container">
                     <p class="task-assigned-to">Assigned to:</p>
                     <div class="assignees">
-                     ${renderAssignees(assignedTo)}
+                        ${renderAssignees(assignees)}
                     </div>
                 </div>
                 <div class="task-subtasks">
@@ -43,10 +43,10 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
         `;
 }
 
-function generateEditTaskOverlay(title, description, dueDate, priority, assignedTo, subtasks, id) {
+function generateEditTaskOverlay(title, description, dueDate, priority, assignee, subtasks, id) {
     return `
             <div class="big-card edit-overlay">
-            
+
                 <div class="edit-overlay-header">
                     <img src="../assets/icons/close.svg" alt="Close" class="close-icon" onclick="closeTaskOverlay()">
                 </div>
@@ -60,30 +60,75 @@ function generateEditTaskOverlay(title, description, dueDate, priority, assigned
                         <h3>Description</h3>
                         <input id="edit-description" type="text" placeholder="Enter a description" value="${description}">
                     </div>
-                    <div class="edit-dueDate-container">
-                        <h3>Due date</h3>
-                        <input id="edit-dueDate" type="text" placeholder="dd/mm/yyyy" value="${dueDate}">
+
+                    <div class="edit-due-date-container">
+                        <label for="due-date">Due Date</label>
+                        <input type="date" id="edit-due-date" name="due-date" value="${dueDate}"/>
                     </div>
-                    <div class="edit-priority-container">
-                        <h3>Priority</h3>
-                        <input id="edit-priority" type="text" placeholder="" value="${priority}">
+
+                    <div class="form-right">
+                        <div class="edit-priority-container">
+                            <label>Priority</label>
+                            <div class="priority-options">
+                                <input type="radio" id="priority-urgent" name="priority" value="urgent" />
+                                <label for="priority-urgent" class="priority-button urgent">
+                                    Urgent
+                                    <img id="icon-urgent" src="../assets/icons/urgent_red.svg" />
+                                </label>
+
+                                <input type="radio" id="priority-medium" name="priority" value="medium" checked />
+                                <label for="priority-medium" class="priority-button medium">
+                                    Medium
+                                    <img id="icon-medium" src="../assets/icons/medium_yellow.svg" />
+                                </label>
+
+                                <input type="radio" id="priority-low" name="priority" value="low" />
+                                <label for="priority-low" class="priority-button low">
+                                    Low
+                                    <img id="icon-low" src="../assets/icons/low_green.svg" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="edit-assignee-container">
+                            <label>Assigned to</label>
+                            <div class="custom-multiselect">
+                                <div class="multiselect-header" onclick="toggleAssigneeDropdown()">
+                                    <span id="selected-assignees-placeholder">
+                                    Select contacts to assign
+                                    </span>
+                                <img src="../assets/icons/arrow_drop_down.svg" class="dropdown-icon" />
+                                </div>
+                                <div class="multiselect-dropdown d-none" id="assignee-dropdown"></div>
+                                <div class="selected-assignee-avatars" id="selected-assignee-avatars"></div>
+                            </div>
+                        </div>
+
+                        <div class="edit-subtasks-container">
+                            <label for="subtask">Subtasks</label>
+                            <div class="subtask-input-container">
+                                <input type="text" id="subtask" placeholder="Add new subtask" onkeydown="handleSubtaskKey(event)" />
+                                <button type="button" onclick="addEditSubtask()" class="subtask-add-btn">
+                                  +
+                                </button>
+                            </div>
+                            <ul id="edit-subtask-list"></ul>
+                        </div>
                     </div>
-                    <div class="edit-assignedTo-container">
-                        <h3>Assigned to</h3>
-                        <input id="edit-assignedTo" type="text" placeholder="" value="${assignedTo}">
-                    </div>
-                    <div class="edit-subtasks-container">
-                        <h3>Subtasks</h3>
-                        <input id="edit-subtasks" type="text" placeholder="Add new subtask" value="${subtasks}">
+
+                    <div class="edit-overlay-footer">
+                        <button class="save-changes" onclick="saveChanges('${id}')">Ok
+                            <img src="../assets/icons/check_white.svg" alt="Save" class="save-icon">
+                        </button>
                     </div>
                 </div>
-
-                <div class="edit-overlay-footer">
-                    <button class="save-changes" onclick="saveChanges('${id}')">Ok
-                        <img src="../assets/icons/check_white.svg" alt="Save" class="save-icon">
-                    </button>
-                </div>
-
             </div>
         `;
+}
+
+function getInitalsImgTaskOverlay(color, contactId) {
+    return `
+    <div class="assigne-icon-large" style = "background-color: ${color}">
+        ${getInitals((contactId))}
+    </div > `
 }

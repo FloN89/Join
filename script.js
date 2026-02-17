@@ -17,3 +17,7 @@ function randomColor() {
     document.documentElement.style.setProperty('--meine-farbe', pickedColor)
     return pickedColor;
 }
+
+function eventBubbling(event) {
+    event.stopPropagation();
+}
