@@ -38,7 +38,7 @@ function validateForm() {
   let isFormValid = true;
 
   if (!checkRequiredField("title", "error-title")) isFormValid = false;
-  // due-date wird NICHT mehr für Firebase gebraucht -> nicht als Pflichtfeld validieren
+  // datum in firebase laden
   if (!validateCategoryField()) isFormValid = false;
 
   return isFormValid;
