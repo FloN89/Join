@@ -33,7 +33,7 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
                         <img src="../assets/icons/delete.svg" alt="Delete" class="delete-icon">
                         Delete
                         </div>
-                    <img class="divider" src="../assets/icons/vector 3.svg" alt="Divider">
+                    <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
                     <div class="edit-task-button" onclick="openEditTaskOverlay('${id}')">
                         <img src="../assets/icons/edit.svg" alt="Edit" class="edit-icon">
                         Edit
