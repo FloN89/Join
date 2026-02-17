@@ -262,6 +262,7 @@ body.page-loaded .app-header {
   }
   .app-header { 
     padding-right: 150px; 
+    padding-left: 150px;
   }
 }
 
@@ -269,14 +270,15 @@ body.page-loaded .app-header {
   .app-header { 
     display: flex; 
     flex-direction: row; 
-    padding-right: 50px; 
+  
   }
   body.page-loaded .app-logo { 
     padding-left: 50px; 
+    
   }
 }
-  
-@media (max-width: 480px) {
+
+@media (max-width: 680px) {
   .app-header { 
     flex-direction: column; 
     gap: 30px; 
@@ -286,14 +288,12 @@ body.page-loaded .app-header {
   }
   .signup-area-mobile {
     display: inline-flex;
-    flex-direction: row;
     align-items: center;
     gap: 10px;
-    padding-top: 30px;
   }
 
   .signup-button { 
-    font-size: 12px; 
+    font-size: 20px; 
   }
   .login-panel {
      width: 80%; 
@@ -314,7 +314,7 @@ body.page-loaded .app-header {
     width: 60px; 
   }
   .app-logo { 
-    width: 80px; 
+    width: 150px; 
     
   }
 }
@@ -357,7 +357,50 @@ body.page-loaded .app-header {
     width: 60px; 
   }
   .app-logo { 
+    width: 150px; 
+    
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header { 
+    flex-direction: column; 
+    gap: 30px; 
+  }
+  .signup-area { 
+    display: none; 
+  }
+  .signup-area-mobile {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-top: 30px;
+  }
+
+  .signup-button { 
+    font-size: 12px; 
+  }
+  .login-panel {
+     width: 80%; 
+     padding: 10px; 
+     border-radius: var(--border-radius-large); 
+    }
+  .form-fields { 
+    width: 80%; 
+  }
+  .button-row {
+     width: 100%; 
+     gap: 5px; 
+  }
+  .panel-title { 
+    font-size: 28px;
+  }
+  .panel-title::after { 
     width: 60px; 
-    margin-left: 50px;
+  }
+  .app-logo { 
+    width: 80px; 
+    
   }
 }
