@@ -3,9 +3,10 @@
   /* Brand & Primary */
   --color-primary: #2a3647;
   --color-primary-light: #29abe2;
-  --color-accent-blue: rgb(35, 165, 227);
-  --color-mail: rgba(0, 124, 238, 1);
+  --color-accent-blue: #23a5e3;
+  --color-mail: #007cee;
   --color-light-blue: #29abe2;
+  --color-menu: #42526E;
 
   /* Neutral */
   --color-white: #ffffff;

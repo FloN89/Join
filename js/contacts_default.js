@@ -179,7 +179,3 @@ function contactCreated() {
         successRef.classList.remove("show");
     }, 1000);
 }
-
-function eventBubbling(event) {
-    event.stopPropagation();
-}
