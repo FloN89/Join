@@ -43,7 +43,8 @@ label {
   color: var(--color-text-primary);
 }
 
-input,
+input[type="text"],
+input[type="date"],
 textarea {
   font-family: inherit;
   font-size: 14px;
@@ -52,7 +53,6 @@ textarea {
   border: 1px solid var(--color-border);
   box-sizing: border-box;
 }
-
 textarea {
   resize: vertical;
   min-height: 80px;
@@ -152,20 +152,21 @@ input#priority-low:checked + label.low {
 
 .checkbox-label input[type="checkbox"] {
   appearance: none;
+  width: 16px;
+  height: 16px;
   border: 2px solid #2A3647;
   border-radius: 4px;
   cursor: pointer;
-  position: relative;
+  box-sizing: border-box;
+  padding: 0; 
 }
-
 .checkbox-label input[type="checkbox"]:checked {
-  background-image: url("/assets/icons/Property\ 1=hover\ checked.svg");
+  border: none;
+  background-image: url("/assets/icons/Property 1=hover checked.svg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 20px 20px; 
+   background-size: 20px 20px;
 }
-
-
 
 .selected-assignee-avatars {
   display: flex;
