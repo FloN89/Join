@@ -43,7 +43,7 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
         `;
 }
 
-function generateEditTaskOverlay(title, description, dueDate, priority, assignee, subtasks, id) {
+function generateEditTaskOverlay(title, description, dueDate, id) {
     return `
             <div class="big-card edit-overlay">
 

@@ -789,3 +789,19 @@ label {
 .task-assigned-to {
   color: var(--color-menu);
 }
+
+.task-overlay-assignee {
+  display: flex;
+  gap: 20px;
+  padding-left: 20px;
+}
+
+.assigned-to-container {
+  margin: 8px 0 8px 0;
+}
+
+@media (max-width: 400px) {
+  .big-card {
+    width: calc(100vw - 25px);
+  }
+}

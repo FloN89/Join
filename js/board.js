@@ -313,6 +313,12 @@ function getInitials(name) {
   return nameParts[0][0];
 }
 
+function createUserBadge(user) {
+  const initials = getInitials(user.name);
+  const backgroundColor = user.color || '#CCCCCC';
+  return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
+}
+
 function getPriorityColor(priority) {
   if (priority === 'low') {
     return 'green';
@@ -361,7 +367,7 @@ function openTaskOverlay(id, priorityColor) {
 
   overlay.innerHTML = "";
   overlay.innerHTML = generateTaskOverlay(task[id].category, task[id].title, task[id].description,
-    task[id].dueDate, task[id].priority, priorityColor, task[id].assignees, task[id].subtasks, id);
+    task[id].dueDate, task[id].priority, priorityColor, task[id].assignedTo, task[id].subtasks, id);
 
   overlay.classList.add("active");
   background.style.display = "block";
@@ -369,7 +375,13 @@ function openTaskOverlay(id, priorityColor) {
 
 function renderAssignees(assignees) {
   if (assignees && assignees.length > 0) {
-    return assignees.map(person => `<div>${person}</div>`).join("");
+    return assignees.map(person =>
+      `<div class="task-overlay-assignee">
+        ${createUserBadge(person)}
+        ${person.name}
+       </div>
+       `
+    ).join("");
   }
   return "";
 }
@@ -409,18 +421,16 @@ function openEditTaskOverlay(id) {
   background.style.display = "block";
 
   editOverlay.innerHTML = "";
-  editOverlay.innerHTML = generateEditTaskOverlay(task[id].title, task[id].description,
-    task[id].dueDate, task[id].priority, task[id].assignees, task[id].subtasks, id);
+  editOverlay.innerHTML = generateEditTaskOverlay(task[id].title, task[id].description, task[id].dueDate, id);
 
-
-  renderAssigneeOptions(task[id].assignees || []);
+  renderAssigneeOptions(task[id].assignedTo || []);
   renderEditSubtasks(task[id].subtasks || []);
 
   document
     .querySelector(`input[name="priority"][value="${task[id].priority}"]`)
     ?.setAttribute("checked", "true");
   initPriorityIconHandlers();
-  renderEditAssignees(task[id].assignees || []);
+  renderEditAssignees(task[id].assignedTo || []);
 }
 
 async function saveChanges(id) {
@@ -439,7 +449,7 @@ async function saveChanges(id) {
     description: description,
     dueDate: dueDate,
     priority: priority,
-    assignees: assignees,
+    assignedTo: assignees,
     subtasks: subtasks
   });
 
@@ -550,9 +560,10 @@ function renderEditAssignees(taskAssignees = []) {
   updateAssigneeDisplay();
 }
 
-async function deleteTask(contactId) {
-  await deleteData("task/" + contactId);
+async function deleteTask(taskId) {
+  await deleteData("task/" + taskId);
   closeTaskOverlay();
+  await fetchTasks();
 }
 
 function closeTaskOverlay() {
