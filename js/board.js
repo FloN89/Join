@@ -557,10 +557,12 @@ async function deleteTask(contactId) {
 
 function closeTaskOverlay() {
   const taskOverlay = document.getElementById("task_overlay");
-  const background = document.getElementById("big-card-background")
-  const editOverlay = document.getElementById("edit_task_overlay")
+  const background = document.getElementById("big-card-background");
+  const editOverlay = document.getElementById("edit_task_overlay");
 
   taskOverlay.classList.remove("active");
+  taskOverlay.style.display = "none";  
+
   background.style.display = "none";
   editOverlay.innerHTML = "";
 }
