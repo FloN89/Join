@@ -2,9 +2,9 @@
 
 ### Desktop
 #### Login Page (Florian)
-- Logo muss einfliegen
-- Alle buttons Schrift Bold, sowie beide Links unten
-- Blauer Rahmen beim ausgewaehlten feld
+- Logo muss einfliegen (Done)
+- Alle buttons Schrift Bold, sowie beide Links unten(done)
+- Blauer Rahmen beim ausgewaehlten feld (done)
 
 #### Sign Up (Osman)
 - Checkbox braucht hover
@@ -23,11 +23,11 @@
 
 
 #### Add Task (Florian)
-- Headline bold
+- Headline bold (done)
 - Schriftgroesse pruefen
 - hover effect bei dropdowns und priority buttons
-- ausgewaehlte priority box hat schrift bold
-- Initialien fehlen im Dropdown menu
+- ausgewaehlte priority box hat schrift bold(done)
+- Initialien fehlen im Dropdown menu bei assigned to vor den namen
 - Divider fehlt
 - fliessender uebergang beim dropdown menu oeffnen
 - subtask fehlt x zum loeschen und haken zum akzeptieren
@@ -68,8 +68,8 @@
 
 #### Login Page
 - Join Logo muss links oben hin
--  Headline muss etwas nach unten
-- Ausgewaehlte feld blauer rahmen bitte
+- Headline muss etwas nach unten(done)
+- Ausgewaehlte feld blauer rahmen bitte(done)
 - Buttons Login und Guest Login untereinander
 - Not a Join User? auserhalb vom weissen kasten
 - Links ganzen unten ein stueck hoeher

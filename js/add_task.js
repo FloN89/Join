@@ -174,6 +174,8 @@ function toggleAssigneeDropdown() {
   }
 }
 
+
+
 // Öffnet oder schließt das Kategorie-Dropdown
 function toggleCategoryDropdown() {
   const categoryDropdown = document.getElementById("category-dropdown");

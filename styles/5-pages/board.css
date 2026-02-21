@@ -88,7 +88,6 @@
   background-size: contain;
 }
 
-
 .add_task_button {
   display: flex;
   justify-content: space-between;
@@ -122,11 +121,14 @@
   box-shadow: none;
 }
 
-/* add Task overlay*/
+/* add Task overlay */
 .task_overlay {
   position: fixed;
   inset: 0;
-  display: flex;
+
+  /* WICHTIG: standardmäßig komplett aus */
+  display: none;
+
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -136,13 +138,45 @@
   transform: translateX(100%);
   transition: transform 400ms ease, opacity 200ms ease;
 }
-.big-card.edit-overlay {
+
+/* Backdrop hinter der Big Card */
+.big-card-background {
+  position: fixed;
+  inset: 0;
   display: none;
+  background: rgba(0, 0, 0, 0.25); /* leicht dunkler */
+  z-index: 999;
 }
+
+/* aktiv */
 .task_overlay.active {
+  display: flex;
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
+}
+
+/* die weiße Big Card */
+.big-card {
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 48px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* edit overlay war vorher hidden – das lassen wir */
+.big-card.edit-overlay {
+  display: none;
+}
+
+/* optional: close icon klickbar */
+.close-icon {
+  cursor: pointer;
 }
 .plus_sign {
   height: 22px;
@@ -350,7 +384,6 @@
    ================= RESPONSIVE ========================
    ===================================================== */
 
-/* <= 1360px: Header darf umbrechen, Board kann horizontal scrollen */
 @media (max-width: 1360px) {
 
   .find_and_create_task_container {
@@ -361,7 +394,6 @@
     align-items: center;
   }
 
-  /* WICHTIG: kein "in Sidebar drücken" durch große Padding-Rechts */
   .board-headline {
     padding-right: 0;
     width: auto;
@@ -382,12 +414,10 @@
     padding-right: 52px;
   }
 
-  /* Button bleibt sichtbar (nicht mehr display:none!) */
   .add_task_button {
     display: flex;
   }
 
-  /* Board: horizontal scroll ist ok, nicht in Spalte zwingen */
   .kanban-board {
     padding: 16px;
     overflow-x: auto;
@@ -403,8 +433,6 @@
   }
 }
 
-
-/* <= 1100px: Add Task nur als Icon (Plus) */
 @media (max-width: 1100px) {
 
   .add_task_button {
@@ -428,8 +456,6 @@
   }
 }
 
-
-/* <= 768px: Spalten untereinander + Cards horizontal scrollbar */
 @media (max-width: 768px) {
 
   .kanban-board {
@@ -450,7 +476,6 @@
     font-size: 18px;
   }
 
-  /* Taskliste: horizontal scroll (wie Screenshot-Style) */
   .task-list {
     display: flex;
     flex-direction: row;
@@ -471,14 +496,11 @@
     min-width: 100%;
   }
 
-  /* Button darf auch hier NICHT verschwinden */
   .add_task_button {
     display: flex;
   }
 }
 
-
-/* <= 500px: exakt Screenshot (Header oben, Suche darunter, Tasklist “frei”) */
 @media (max-width: 500px) {
 
   .find_and_create_task_container {
@@ -492,14 +514,12 @@
     margin: 0;
   }
 
-  /* Suche volle Breite unter dem Header */
   .search_input_wrapper {
     width: 100%;
     flex: 0 0 100%;
     order: 3;
   }
 
-  /* Tasklist ohne Box */
   .task-list {
     background: transparent;
     padding: 0;

@@ -25,7 +25,7 @@ body {
 .panel-title {
   margin: 0 0 24px;
   font-size: 32px;
-  font-weight: 400;
+  font-weight: 700;
   color: #2a3647;
 }
 
@@ -105,7 +105,7 @@ input[type="text"],
 input[type="date"],
 textarea {
   font-family: inherit;
-  font-size: 14px;
+  font-size: 20px;
   padding: 10px 12px;
   border-radius: var(--border-radius-medium);
   border: 1px solid var(--color-border);
@@ -151,24 +151,35 @@ textarea {
 }
 
 input#priority-urgent:checked + label.urgent {
-  background-color: #ff3d00;
-  border-color: #ff3d00;
-  color: #fff;
+  background-color: var(--color-priority-urgent);
+  border-color: var(--color-priority-urgent);
+  color: var(--color-white);
+  font-weight: 700; 
 }
 
 input#priority-medium:checked + label.medium {
-  background-color: #ffa800;
-  border-color: #ffa800;
-  color: #fff;
+  background-color: var(--color-priority-medium);
+  border-color: var(--color-priority-medium);
+  color: var(--color-white);
+  font-weight: 700; 
 }
 
 input#priority-low:checked + label.low {
-  background-color: #7ae229;
-  border-color: #7ae229;
-  color: #fff;
+  background-color: var(--color-priority-low);
+  border-color: var(--color-priority-low);
+  color: var(--color-white);
+  font-weight: 700; 
+}
+
+.priority-button:hover { 
+  box-shadow: var(--shadow-medium); 
 }
 
 
+.multiselect-header:hover,
+.category-select-header:hover { 
+  box-shadow: var(--shadow-medium); 
+}
 
 .custom-multiselect {
   position: relative;
