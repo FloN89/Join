@@ -40,7 +40,7 @@ function selectedContact(contactId) {
     selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
     renderActionButton(contactId);
 
-    if (window.innerWidth <= 400) {
+    if (window.innerWidth <= 768) {
         wrapper.classList.add("show-detail")
     }
 
@@ -123,7 +123,7 @@ async function deleteContact(contactId) {
     let content = document.getElementById("contact-content")
     content.innerHTML = "";
 
-    if (window.innerWidth <= 400) {
+    if (window.innerWidth <= 768) {
         backToContacts();
     }
     closeOverlay()
