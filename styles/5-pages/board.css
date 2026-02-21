@@ -297,7 +297,14 @@
 
 .assigned-users {
   display: flex;
-  gap: 4px;
+}
+
+.assigned-users .user-badge {
+  margin-left: -8px;
+}
+
+.assigned-users .user-badge:first-child {
+  margin-left: 0;
 }
 
 .user-badge {
@@ -316,6 +323,145 @@
 .priority-icon {
   width: 20px;
   height: 20px;
+}
+
+/* ============================================
+   Mobile Responsive Styles (max-width: 1360px)
+   ============================================ */
+
+@media (max-width: 1360px) {
+  .find_and_create_task_container {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px 16px 16px 16px;
+    gap: 16px;
+  }
+
+  .board-headline {
+    font-size: 32px;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .search_input_wrapper {
+    width: 100%;
+  }
+
+  .search_input_wrapper input {
+    width: 100%;
+    font-size: 16px;
+    height: 40px;
+    padding-right: 48px;
+  }
+
+  .search_input_wrapper input::placeholder {
+    font-size: 14px;
+  }
+
+  .add_task_button {
+    display: none;
+  }
+
+  .add_task_lable {
+    display: none;
+  }
+
+  .plus_sign {
+    height: 28px;
+    width: 28px;
+  }
+
+  /* Kanban Board Mobile Layout */
+  .kanban-board {
+    flex-direction: column;
+    padding: 16px;
+    height: auto;
+    gap: 24px;
+    overflow-x: visible;
+    padding-bottom: 100px;
+  }
+
+  .kanban-column {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .column-header h2 {
+    font-size: 18px;
+  }
+
+  .task-list {
+    min-height: 150px;
+    padding: 12px;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .task-card {
+    min-width: 280px;
+    max-width: 280px;
+    flex-shrink: 0;
+  }
+
+  /* Task Card Mobile Optimizations */
+  .task-card {
+    padding: 12px;
+    user-select: none;
+    /* Verhindert, dass Text ausgewählt wird beim Ziehen */
+  }
+
+  /* Kopie der Karte, die dem Finger folgt */
+  .touch-clone {
+    position: fixed;
+    pointer-events: none;
+    /* Die Kopie blockiert keine Touch-Events */
+    z-index: 1000;
+    /* Über allem anderen */
+    opacity: 0.9;
+    transform: rotate(3deg);
+    /* Leichte Drehung wie beim Desktop */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Größerer Schatten */
+    transition: none;
+    /* Keine Animationen beim Bewegen */
+  }
+
+  .task-category {
+    font-size: 12px;
+    padding: 3px 12px;
+    margin-bottom: 8px;
+  }
+
+  .task-title {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .task-description {
+    font-size: 12px;
+  }
+
+  .subtask-counter {
+    font-size: 11px;
+  }
+
+  .user-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .priority-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .empty-state {
+    padding: 24px 12px;
+    font-size: 14px;
+    min-width: 100%;
+  }
 }
 
 /* ============================================
