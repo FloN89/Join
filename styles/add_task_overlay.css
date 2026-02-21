@@ -101,13 +101,14 @@ label {
   color: #333;
 }
 
-input,
+input[type="text"],
+input[type="date"],
 textarea {
   font-family: inherit;
   font-size: 14px;
   padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #d1d1d1;
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-border);
   box-sizing: border-box;
 }
 
@@ -212,6 +213,24 @@ input#priority-low:checked + label.low {
 
 .checkbox-label:hover {
   background-color: #f5f5f5;
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #2A3647;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0; 
+}
+.checkbox-label input[type="checkbox"]:checked {
+  border: none;
+  background-image: url("/assets/icons/Property 1=hover checked.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+   background-size: 20px 20px;
 }
 
 .selected-assignee-avatars {
