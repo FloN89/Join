@@ -8,11 +8,11 @@
 
 #### Sign Up (Osman)
 - Checkbox braucht hover
-- Blauer Rahmen beim ausgewaehlten feld
-- Haken desing
-- Link zu Privacy Policie funktioniert nicht
-- Zurueck Pfeil muss zu  Login page zeigen
-- Links ganzen unten blauer hover plus bold und zur seite verlinken
+- Blauer Rahmen beim ausgewaehlten feld -> DONE
+- Haken design
+- Link zu Privacy Policie funktioniert nicht -> ich brauche dafür die externen Seiten zum verlinken, die noch nicht existieren
+- Zurueck Pfeil muss zu  Login page zeigen -> DONE
+- Links ganzen unten blauer hover plus bold und zur seite verlinken -> DONE
 
 
 #### Summary (Enrico)
