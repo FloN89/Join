@@ -101,13 +101,14 @@
   background: var(--color-white);
   border-radius: var(--border-radius-large);
   box-shadow: var(--shadow-light);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   cursor: pointer;
 }
 
 .task-card:hover {
   background-color: var(--color-primary);
   box-shadow: var(--shadow-hover);
+  transform: scale(1.05);
 }
 
 .task-card:hover .task-number,
