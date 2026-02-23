@@ -1,3 +1,9 @@
-#topbar_user a {
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#topbar_user > a {
   display: none;
 }

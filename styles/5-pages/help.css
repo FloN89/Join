@@ -5,7 +5,7 @@
   justify-content: space-between;
 }
 
-#topbar_user a {
+#topbar_user > a {
   display: none;
 }
 

@@ -19,6 +19,7 @@
 .main-text {
   margin-top: 40px;
   padding-left: var(--main-content-padding);
+  padding-right: var(--main-content-padding);
   max-width: 1100px;
 }
 
@@ -30,5 +31,6 @@
 @media (max-width: 768px) {
   .main-text {
     padding-left: 15px;
+    padding-right: 15px;
   }
 }
