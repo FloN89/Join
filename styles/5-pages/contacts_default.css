@@ -464,6 +464,7 @@ header h2 {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  gap: 8px;
 }
 
 .create-btn:hover {
@@ -1171,6 +1172,3 @@ header h2 {
     z-index: 100;
   }
 }
-
-
-

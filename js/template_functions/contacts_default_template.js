@@ -62,7 +62,7 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
         `
 }
 
-function generateModalContent(header, button1, button2, underheader, functionCall) {
+function generateModalContent(header, button1, button2, underheader, contactId, functionCall) {
     return `
                 <div class="modal-content">
                     <header class="title">
@@ -93,9 +93,8 @@ function generateModalContent(header, button1, button2, underheader, functionCal
                         </label>
 
                         <div class="buttons">
-                            <button type="button" class="cancel-btn" onclick="toggleModal()">
+                            <button type="button" class="cancel-btn" onclick="deleteContact('${contactId}')">
                                 <span>${button1}</span>
-                                <span class="close-icon">&times;</span>
                             </button>
 
                             <button type="button" class="create-btn" onclick="${functionCall}">
