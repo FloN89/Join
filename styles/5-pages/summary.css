@@ -19,12 +19,14 @@
   font-size: 27px;
   margin: 0;
   color: var(--color-primary);
+  white-space: nowrap;
 }
 
 .divider {
   width: 3px;
-  height: 59px;
+  min-height: 59px;
   background-color: var(--color-accent-blue);
+  flex-shrink: 0;
 }
 
 /* === Dashboard Layout === */
@@ -41,6 +43,7 @@
 
 .metrics-header {
   display: flex;
+  flex-wrap: nowrap;
   gap: 30px;
   align-items: center;
   margin-bottom: 40px;
@@ -254,7 +257,7 @@
   }
 
   .metrics-header h1 {
-    font-size: 1.5rem;
+    font-size: 61px;
     order: 1;
   }
 
@@ -267,8 +270,9 @@
   }
 
   .divider {
-    width: 40px;
+    width: 90px;
     height: 3px;
+    min-height: unset;
   }
 
   .greeting {
@@ -292,7 +296,7 @@
   }
 
   .metrics-header h1 {
-    font-size: 1.3rem;
+    font-size: 61px;
   }
 
   .task-card {
