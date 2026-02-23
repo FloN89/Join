@@ -60,24 +60,24 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  position: relative;
 }
 
 /* User Overlay Styles */
 .user-overlay {
-  position: fixed;
-  top: 60px;
-  right: 20px;
+  position: absolute;
+  top: 100%;
+  right: 0;
   width: 200px;
   background-color: var(--color-primary);
   box-shadow: var(--shadow-overlay);
   border-radius: var(--border-radius-large) 0 var(--border-radius-large) var(--border-radius-large);
-  transform: translateX(120%);
-  transition: transform 0.3s ease-in-out;
+  display: none;
   z-index: 1000;
 }
 
 .user-overlay.active {
-  transform: translateX(0);
+  display: block;
 }
 
 .overlay-content {
