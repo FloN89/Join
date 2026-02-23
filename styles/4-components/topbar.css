@@ -41,6 +41,14 @@
   background-color: var(--color-border-gray);
 }
 
+.help-icon {
+  transition: transform 0.2s ease;
+}
+
+.help-icon:hover {
+  transform: scale(1.2);
+}
+
 #topbar_title {
   font-size: 1.5em;
   color: var(--color-text-primary);
