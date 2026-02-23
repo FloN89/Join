@@ -42,10 +42,9 @@ nav a {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  padding: 12px 20px;
+  padding: 12px 0 12px 72px;
   color: var(--color-grey-400);
   width: 100%;
-  max-width: 220px;
   justify-content: flex-start;
 }
 
@@ -78,16 +77,16 @@ nav a {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  padding: 12px 20px;
+  padding: 12px 0 12px 72px;
   color: var(--color-grey-400);
   transition: color 0.2s ease;
   width: 100%;
-  max-width: 220px;
   justify-content: flex-start;
 }
 
 .sidebar-footer li:hover a {
   color: var(--color-light-blue);
+  font-weight: 700;
 }
 
 .sidebar-footer li:has(a.active) a {
