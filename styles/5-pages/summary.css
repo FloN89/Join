@@ -115,6 +115,18 @@
   color: var(--color-white);
 }
 
+.task-card .icon-hover {
+  display: none;
+}
+
+.task-card:hover .icon-default {
+  display: none;
+}
+
+.task-card:hover .icon-hover {
+  display: block;
+}
+
 .task-card-small {
   grid-template-columns: 48px auto;
   gap: 16px;
