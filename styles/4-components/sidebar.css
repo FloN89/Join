@@ -84,13 +84,17 @@ nav a {
   justify-content: flex-start;
 }
 
-.sidebar-footer li:hover a {
+.sidebar-footer li:not(:has(a.active)):hover a {
   color: var(--color-light-blue);
   font-weight: 700;
 }
 
+.sidebar-footer li:has(a.active) {
+  background-color: var(--color-hover-background);
+}
+
 .sidebar-footer li:has(a.active) a {
-  color: var(--color-light-blue);
+  color: var(--color-white);
 }
 
 /* === Mobile Sidebar (Bottom Navigation) === */
