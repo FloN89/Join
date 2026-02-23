@@ -36,6 +36,7 @@ async function setUserInitial() {
 
   if (userId === "guest") {
     userInitialElement.innerText = "G";
+    userInitialElement.classList.add("guest-badge");
     return;
   }
 

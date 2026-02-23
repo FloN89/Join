@@ -26,6 +26,19 @@
   font-weight: 400;
   cursor: pointer;
   border: 2px solid white;
+  transition: background-color 0.2s ease;
+}
+
+#user-initial.guest-badge {
+  background-color: var(--color-white);
+  color: var(--color-light-blue);
+  border: 2px solid var(--color-primary);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#user-initial.guest-badge:hover {
+  background-color: var(--color-border-gray);
 }
 
 #topbar_title {
