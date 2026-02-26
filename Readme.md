@@ -67,12 +67,13 @@
 ### Mobile
 
 #### Login Page
-- Join Logo muss links oben hin
+- Join Logo muss links oben hin(done)
 - Headline muss etwas nach unten(done)
 - Ausgewaehlte feld blauer rahmen bitte(done)
-- Buttons Login und Guest Login untereinander
-- Not a Join User? auserhalb vom weissen kasten
-- Links ganzen unten ein stueck hoeher
+- Buttons Login und Guest Login untereinander(done)
+- Not a Join User? auserhalb vom weissen kasten(done)
+- Links ganzen unten ein stueck hoeher(done)
+
 - Links ganzen unten muessen zur external variante zeigen
 - Bei Guest Login in wird ein paar sekunden good morining angezeigt und dann gehts zur summary
 - Bei Login mit User kurz welcome message
