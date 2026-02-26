@@ -51,9 +51,7 @@ function drop(dropEvent) {
   taskList.appendChild(currentDraggedElement);
 
   updateEmptyStates();
-
-  // TODO: Status in Datenbank updaten
-  // updateTaskStatus(currentDraggedElement.id, taskList.id);
+  updateTaskStatus(currentDraggedElement, taskList.id);
 }
 
 function removeDragOver(dragEvent) {
@@ -187,7 +185,7 @@ function handleTouchEnd(touchEvent) {
         if (targetTaskList && currentDraggedElement) {
           targetTaskList.appendChild(currentDraggedElement);
           updateEmptyStates();
-          // TODO: Status in Datenbank updaten
+          updateTaskStatus(currentDraggedElement, targetTaskList.id);
         }
       }
     }
@@ -196,6 +194,17 @@ function handleTouchEnd(touchEvent) {
   currentTouchElement = null;
   currentDraggedElement = null;
   isDragging = false;
+}
+
+async function updateTaskStatus(taskElement, newStatus) {
+  const id = taskElement.dataset.taskId;
+  if (!id || !task[id]) return;
+
+  task[id].status = newStatus;
+
+  const userId = sessionStorage.getItem("userId");
+  const path = userId === "guest" ? "guest-tasks/" + id : "task/" + id;
+  await saveData(path, task[id]);
 }
 
 function dataToCard() {
@@ -244,6 +253,7 @@ function createTaskCard(category, title, description, assignedTo, priority, subt
 
   card.className = "task-card";
   card.draggable = true;
+  card.dataset.taskId = id;
 
   // Desktop Drag & Drop
   card.ondragstart = startDragging;
