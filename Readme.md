@@ -46,6 +46,8 @@
 - Lupe hovereffect
 - Status in Datenbank updaten beim Karten verschieben Zeile 190 in board.js
 - große Karte: subtasks blauer rahmen
+- Osman: große karte gibt fehlermeldung auf
+- Osman: Save Button funktioniert nicht
 
 #### Contacts (Osman)
 - Edit  Contact, im dunkelblauen bereich muss der weisser rand weg und das markierte eingabe feld braucht einen hellblauen rahmen -> DONE
