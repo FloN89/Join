@@ -303,24 +303,44 @@ function collectTaskData() {
   };
 }
 
+function getSelectedAssignees() {
+  const selected = [];
+
+  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]:checked')
+    .forEach((checkbox) => {
+      selected.push({
+        name: checkbox.dataset.name,
+        color: checkbox.dataset.color
+      });
+    });
+
+  return selected;
+}
+
 // Wird beim Absenden des Formulars aufgerufen und speichert den Task in Firebase
 async function handleFormSubmit(event) {
   event.preventDefault();
+
+  console.log("✅ handleFormSubmit fired"); // <-- MUSS im Console-Log erscheinen
 
   if (!validateForm()) return;
 
   const task = collectTaskData();
 
   try {
-    // Einheitlich: "tasks" als Collection/Path
     const result = await postData("task", task);
-
-    alert("Task saved to Firebase! ID: " + (result?.name ?? "(no id returned)"));
+    console.log("✅ saved:", result);
 
     handleClear();
+    showSuccessAndRedirect();
   } catch (err) {
-    console.error("Firebase save failed:", err);
-    alert("Saving failed. Check console/network tab.");
+    console.error("❌ Firebase save failed:", err);
+    // Zum Testen auch bei Fehler kurz anzeigen:
+    const toast = ensureSuccessToast();
+    toast.textContent = "Saving failed";
+    toast.classList.remove("show");
+    void toast.offsetWidth;
+    toast.classList.add("show");
   }
 }
 
@@ -353,4 +373,27 @@ function updatePriorityIcons() {
   iconLow.src = low.checked
     ? "../assets/icons/low_white.svg"
     : "../assets/icons/low_green.svg";
+}
+
+function ensureSuccessToast() {
+  let el = document.getElementById("task-success");
+  if (el) return el;
+
+  el = document.createElement("div");
+  el.id = "task-success";
+  el.className = "task-success";
+  el.textContent = "Task added to board";
+  document.body.appendChild(el);
+  return el;
+}
+
+function showSuccessAndRedirect() {
+  const toast = ensureSuccessToast();
+  toast.classList.remove("show");         // reset, falls schon mal gezeigt
+  void toast.offsetWidth;                 // reflow -> Animation triggert sicher
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    window.location.href = "board.html";  // ggf. Pfad anpassen
+  }, 2500);
 }
