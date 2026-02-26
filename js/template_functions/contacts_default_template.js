@@ -62,9 +62,9 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
         `
 }
 
-function generateModalContent(header, button1, button2, underheader, contactId, functionCall) {
+function generateModalContent(header, button1, button2, underheader, contactId, functionCall, cancelCall = "toggleModal()") {
     return `
-                <div class="modal-content">
+                <div class="modal-content" onclick="event.stopPropagation()">
                     <header class="title">
                         <img src="../assets/icons/Capa 2_white.svg" alt="">
                         <h1>${header}</h1>
@@ -93,7 +93,7 @@ function generateModalContent(header, button1, button2, underheader, contactId, 
                         </label>
 
                         <div class="buttons">
-                            <button type="button" class="cancel-btn" onclick="deleteContact('${contactId}')">
+                            <button type="button" class="cancel-btn" onclick="${cancelCall}">
                                 <span>${button1}</span>
                             </button>
 
@@ -103,6 +103,7 @@ function generateModalContent(header, button1, button2, underheader, contactId, 
                             </button>
                         </div>
                     </div>
+                </div>
     `
 }
 

@@ -7,9 +7,9 @@
 - Blauer Rahmen beim ausgewaehlten feld (done)
 
 #### Sign Up (Osman)
-- Checkbox braucht hover
+- Checkbox braucht hover -> DONE
 - Blauer Rahmen beim ausgewaehlten feld -> DONE
-- Haken design
+- Haken design -> DONE
 - Link zu Privacy Policie funktioniert nicht -> ich brauche dafür die externen Seiten zum verlinken, die noch nicht existieren
 - Zurueck Pfeil muss zu  Login page zeigen -> DONE
 - Links ganzen unten blauer hover plus bold und zur seite verlinken -> DONE
@@ -48,14 +48,14 @@
 - große Karte: subtasks blauer rahmen
 
 #### Contacts (Osman)
-- Edit  Contact, im dunkelblauen bereich muss der weisser rand weg und das markierte eingabe feld braucht einen hellblauen rahmen
-- Edit Contact: Overlay schließen bei Klick außerhalb
+- Edit  Contact, im dunkelblauen bereich muss der weisser rand weg und das markierte eingabe feld braucht einen hellblauen rahmen -> DONE
+- Edit Contact: Overlay schließen bei Klick außerhalb -> DONE
 - Bei delete button kein x -> DONE
 - Beim Save Button haken weiter nach rechts -> DONE
 - Delte Button im Edit muss Contact loeschen -> DONE
-- Add Contact auch weisser rand weg und blauer rahmen siehe oben
+- Add Contact auch weisser rand weg und blauer rahmen siehe oben -> DONE
 - Create Contact haken weiter rechts -> DONE
-- Create Contact: Hintergrund wird abgedunkelt
+- Create Contact: Hintergrund wird abgedunkelt -> DONE
 
 #### Sidebar (Enrico)
 - menu Punkte mehr zentriert -> DONE

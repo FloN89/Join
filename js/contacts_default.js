@@ -79,12 +79,23 @@ function removeBackgroundColor() {
 
 function openCreateModal() {
     const modal = document.getElementById("newContactModal");
-    modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!", "", "createContact()");
+    const backgroundRef = document.querySelector(".add-contact-overlay-background");
+    modal.innerHTML = generateModalContent(
+        "Add contact",
+        "Cancel",
+        "Create contact",
+        "Tasks are better with a team!",
+        "",
+        "createContact()",
+        "toggleModal()"
+    );
     modal.classList.add("show");
+    backgroundRef.classList.add("show");
 }
 
 function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
+    const backgroundRef = document.querySelector(".add-contact-overlay-background");
     const contactInfo = contacts[contactId];
     modal.innerHTML = generateModalContent(
         "Edit contact",
@@ -92,9 +103,11 @@ function openEditContact(contactId) {
         "Save",
         "",
         `${contactId}`,
-        `saveEditedContact('${contactId}')`
+        `saveEditedContact('${contactId}')`,
+        `deleteContact('${contactId}')`
     );
     modal.classList.add("show");
+    backgroundRef.classList.add("show");
     document.getElementById("contactNameInput").value = contactInfo.contactName;
     document.getElementById("contactMailInput").value = contactInfo.contactMail;
     document.getElementById("contactPhoneInput").value = contactInfo.contactPhone;
@@ -120,10 +133,12 @@ async function saveEditedContact(contactId) {
 
 async function deleteContact(contactId) {
     closeOverlay();
-    
+
     const modalRef = document.getElementById("newContactModal");
+    const backgroundRef = document.querySelector(".add-contact-overlay-background");
     if (modalRef.classList.contains("show")) {
         modalRef.classList.remove("show");
+        backgroundRef.classList.remove("show");
     }
     await deleteData("contacts/" + contactId);
     await fetchContacts();
@@ -136,8 +151,11 @@ async function deleteContact(contactId) {
 }
 
 function toggleModal() {
-    let modalRef = document.getElementById("newContactModal");
-    modalRef.classList.toggle("show");
+    const modalRef = document.getElementById("newContactModal");
+    const backgroundRef = document.querySelector(".add-contact-overlay-background");
+
+    modalRef.classList.remove("show");
+    backgroundRef.classList.remove("show");
 }
 
 function closeOverlay() {
