@@ -29,7 +29,15 @@ async function setUserInitial() {
   }
 
   const userId = sessionStorage.getItem("userId");
+  const isPublic = document.body.dataset.public === "true";
+
   if (!userId) {
+    if (isPublic) {
+      userInitialElement.style.display = "none";
+      const overlay = document.getElementById("user-overlay");
+      if (overlay) overlay.style.display = "none";
+      return;
+    }
     window.location.href = "../html/log_in.html";
     return;
   }
