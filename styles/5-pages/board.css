@@ -190,10 +190,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 16px;
+  padding: 16px 16px;
   border: 2px dashed #d1d1d1;
   border-radius: 10px;
-  background-color: #f6f7f8;
+  background-color: #bfc9cf38;
   color: #a8a8a8;
   font-size: 16px;
   text-align: center;
