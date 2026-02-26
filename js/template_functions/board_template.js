@@ -14,7 +14,10 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
                     <div class="date">${dueDate}</div>
                 </div>
                 <div class="priority-container">
-                    <p class="task-priority">Priority: ${priority}</p>
+                    <div class="priority-label">
+                        <p class="task-priority">Priority:</p>
+                        <p>${priority}</p>
+                    </div>
                     <img src="../assets/icons/${priority}_${priorityColor}.svg" class="priority-icon" alt="${priority}">
                 </div>
                 <div class="assigned-to-container">

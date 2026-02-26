@@ -8,11 +8,11 @@
 
 #### Sign Up (Osman)
 - Checkbox braucht hover
-- Blauer Rahmen beim ausgewaehlten feld
-- Haken desing
-- Link zu Privacy Policie funktioniert nicht
-- Zurueck Pfeil muss zu  Login page zeigen
-- Links ganzen unten blauer hover plus bold und zur seite verlinken
+- Blauer Rahmen beim ausgewaehlten feld -> DONE
+- Haken design
+- Link zu Privacy Policie funktioniert nicht -> ich brauche dafür die externen Seiten zum verlinken, die noch nicht existieren
+- Zurueck Pfeil muss zu  Login page zeigen -> DONE
+- Links ganzen unten blauer hover plus bold und zur seite verlinken -> DONE
 
 
 #### Summary (Enrico)
@@ -39,20 +39,23 @@
 #### Board (Florian, Osman, Enrico)
 - Leere Liste, no task in progress, hintergrund grau, und schmaler
 - Kartenbreite breiter machen
-- Overlay vom karten oeffnen ist kaputt
+- Overlay vom karten oeffnen ist kaputt -> DONE
 - Suche funktioinert nicht
 - plus buttons haben hellen hintergrund
 - Add Task overlay siehe Add Task
 - Lupe hovereffect
 - Status in Datenbank updaten beim Karten verschieben Zeile 190 in board.js
+- große Karte: subtasks blauer rahmen
 
 #### Contacts (Osman)
 - Edit  Contact, im dunkelblauen bereich muss der weisser rand weg und das markierte eingabe feld braucht einen hellblauen rahmen
-- Bei delete button kein x
-- Beim Save Button haken weiter nach rechts
-- Delte Button im Edit muss Contact loeschen
+- Edit Contact: Overlay schließen bei Klick außerhalb
+- Bei delete button kein x -> DONE
+- Beim Save Button haken weiter nach rechts -> DONE
+- Delte Button im Edit muss Contact loeschen -> DONE
 - Add Contact auch weisser rand weg und blauer rahmen siehe oben
-- Create Contact haken weiter rechts 
+- Create Contact haken weiter rechts -> DONE
+- Create Contact: Hintergrund wird abgedunkelt
 
 #### Sidebar (Enrico)
 - menu Punkte mehr zentriert

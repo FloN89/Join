@@ -389,7 +389,7 @@ function renderAssignees(assignees) {
 function renderSubtasks(subtasks, id) {
   if (subtasks && subtasks.length > 0) {
     return subtasks.map((subtask, index) =>
-      `<li>
+      `<li class="subtask-list">
         <input class="subtaskCheckbox" 
           id="subtaskCheckbox-${index}" 
           type="checkbox" ${subtask.done ? "checked" : ""}
