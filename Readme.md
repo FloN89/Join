@@ -25,9 +25,9 @@
 #### Add Task (Florian)
 - Headline bold (done)
 - Schriftgroesse pruefen
-- hover effect bei dropdowns und priority buttons
+- hover effect bei dropdowns und priority buttons(done)
 - ausgewaehlte priority box hat schrift bold(done)
-- Initialien fehlen im Dropdown menu bei assigned to vor den namen
+- Initialien fehlen im Dropdown menu bei assigned to vor den namen(done)
 - Divider fehlt
 - fliessender uebergang beim dropdown menu oeffnen
 - subtask fehlt x zum loeschen und haken zum akzeptieren

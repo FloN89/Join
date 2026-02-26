@@ -171,8 +171,8 @@ input#priority-low:checked + label.low {
   font-weight: 700; 
 }
 
-.priority-button:hover { 
-  box-shadow: var(--shadow-medium); 
+.priority-options input[type="radio"]:not(:checked) + .priority-button:hover {
+  box-shadow: var(--shadow-medium);
 }
 
 
@@ -214,16 +214,19 @@ input#priority-low:checked + label.low {
 
 .checkbox-label {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 6px 8px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 8px;
+  justify-content: space-between;
+  padding: 4px 6px;
+  border-radius: 10px;
 }
 
 .checkbox-label:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-grey-100);
+}
+
+.checkbox-label:has(input[type="checkbox"]:checked) {
+  background-color: var(--color-primary-light);
+  color: var(--color-white);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -254,20 +257,93 @@ input#priority-low:checked + label.low {
 .avatar {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  background-color: #2a3647;
-  color: #fff;
+  border-radius: var(--border-radius-round);
+  background-color: var(--color-primary);
+  color: var(--color-white);
   font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* ===============================
+   ASSIGNEE DROPDOWN STYLING
+   =============================== */
 
+/* Ganze Zeile */
+.assignee-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: 12px;
+  transition: background-color 0.15s ease;
+}
+
+/* Grauer Hover-Effekt */
+.assignee-row:hover {
+  background-color: var(--color-grey-100);
+}
+
+/* Linker Bereich (Avatar + Name) */
+.assignee-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 12px;
+}
+
+/* Blau NUR wenn Name geklickt wurde (per JS-Klasse) */
+.assignee-row.name-selected {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Initialen-Kreis */
+.assignee-initials {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Name */
+.assignee-name {
+  font-size: 14px;
+}
+
+/* Checkbox rechts */
+.assignee-checkbox {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #2a3647;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* Checkbox checked Icon */
+.assignee-checkbox:checked {
+  border: none;
+  background-image: url("/assets/icons/Property 1=hover checked.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+}
 
 .custom-category-select {
   position: relative;
 }
+
 
 .category-select-header {
   display: flex;

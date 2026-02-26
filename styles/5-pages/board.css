@@ -159,9 +159,7 @@
 .add-column-task-btn {
   width: 32px;
   height: 32px;
-  border: none;
-  background-color: #2a3647;
-  color: white;
+  border: 2px #2a3647;
   font-size: 24px;
   border-radius: 8px;
   cursor: pointer;
