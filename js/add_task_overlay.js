@@ -148,16 +148,17 @@ function createAssigneeLabel(contact) {
   left.addEventListener("click", (e) => {
   e.stopPropagation();
 
-  // toggle: wenn schon blau -> wieder aus
-  const isAlreadySelected = row.classList.contains("name-selected");
+  // Checkbox togglen
+  checkbox.checked = !checkbox.checked;
 
-  // wenn du willst, dass nur 1 Zeile gleichzeitig blau sein kann:
-  document
-    .querySelectorAll("#assignee-dropdown .assignee-row.name-selected")
-    .forEach((el) => el.classList.remove("name-selected"));
+  // Optional: visuelle Hervorhebung synchronisieren
+  if (checkbox.checked) {
+    row.classList.add("name-selected");
+  } else {
+    row.classList.remove("name-selected");
+  }
 
-  // toggle anwenden
-  if (!isAlreadySelected) row.classList.add("name-selected");
+  updateAssigneeDisplay();
 });
 
   left.addEventListener("keydown", (e) => {
@@ -168,10 +169,19 @@ function createAssigneeLabel(contact) {
   });
 
   // Klick auf Checkbox -> nur checkbox, NIE blau markieren
-  checkbox.addEventListener("click", (e) => {
-    e.stopPropagation();
+  left.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  checkbox.checked = !checkbox.checked;
+
+  if (checkbox.checked) {
+    row.classList.add("name-selected");
+  } else {
     row.classList.remove("name-selected");
-  });
+  }
+
+  updateAssigneeDisplay();
+});
 
   checkbox.addEventListener("change", () => {
     updateAssigneeDisplay();
