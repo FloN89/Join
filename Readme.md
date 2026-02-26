@@ -17,9 +17,9 @@
 
 #### Summary (Enrico)
 
-- Bei hover ueber boxen sollen die farben invertieren, nur die oberen bilder
-- headline in eine Zeile
-- alle boxen sollen groesser werden wenn man hovert
+- Bei hover ueber boxen sollen die farben invertieren, nur die oberen bilder -> DONE
+- headline in eine Zeile -> DONE
+- alle boxen sollen groesser werden wenn man hovert -> DONE
 
 
 #### Add Task (Florian)
@@ -58,14 +58,14 @@
 - Create Contact: Hintergrund wird abgedunkelt
 
 #### Sidebar (Enrico)
-- menu Punkte mehr zentriert
-- untere Links bold bei hover
-- ausgewaehltes braucht festen hintergrund und hovert nicht mehr
+- menu Punkte mehr zentriert -> DONE
+- untere Links bold bei hover -> DONE
+- ausgewaehltes braucht festen hintergrund und hovert nicht mehr -> DONE
 
 #### Topbar (Enrico)
-- Benutzer Badge in der Topbar, dunkel blauer Rand, weisser Hintergrund, hellblaue Schrift und hover hintergrund grau
-- ? in der Topbar soll groesser werden bei hover
-- submenu muss direkt unter user badge und ohne help link, kein reinsliden
+- Benutzer Badge in der Topbar, dunkel blauer Rand, weisser Hintergrund, hellblaue Schrift und hover hintergrund grau -> DONE
+- ? in der Topbar soll groesser werden bei hover -> DONE
+- submenu muss direkt unter user badge und ohne help link, kein reinsliden -> DONE
 
 ### Mobile
 
@@ -86,8 +86,8 @@
 
 
 #### Summary
-- Headline etwas groesser 
-- Blauer divider etwas breiter
+- Headline etwas groesser -> DONE
+- Blauer divider etwas breiter -> DONE
 
 #### Add Task
 - Headline etwas groesser
@@ -108,21 +108,21 @@
 - Edit Overlay delete Button fehlt
 
 #### Help
-- Bisschen mehr abstand von rechts
+- Bisschen mehr abstand von rechts -> DONE
 
 
 #### Legal Notice
-- Zuerueck Button fehlt
+- Zuerueck Button fehlt -> DONE
 
 
 #### Privacy Policy
-- Zurueck Button fehlt
+- Zurueck Button fehlt -> DONE
 
 
 
 #### Topbar
-- kein Help Button
+- kein Help Button -> DONE
 
 
 #### Sidebar
--  Hintergrund bei Auswahl etwas enger
+-  Hintergrund bei Auswahl etwas enger -> DONE
