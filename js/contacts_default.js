@@ -79,7 +79,7 @@ function removeBackgroundColor() {
 
 function openCreateModal() {
     const modal = document.getElementById("newContactModal");
-    modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!", "createContact()");
+    modal.innerHTML = generateModalContent("Add contact", "Cancel", "Create contact", "Tasks are better with a team!", "", "createContact()");
     modal.classList.add("show");
 }
 
@@ -91,6 +91,7 @@ function openEditContact(contactId) {
         "Delete",
         "Save",
         "",
+        `${contactId}`,
         `saveEditedContact('${contactId}')`
     );
     modal.classList.add("show");
@@ -118,6 +119,12 @@ async function saveEditedContact(contactId) {
 }
 
 async function deleteContact(contactId) {
+    closeOverlay();
+    
+    const modalRef = document.getElementById("newContactModal");
+    if (modalRef.classList.contains("show")) {
+        modalRef.classList.remove("show");
+    }
     await deleteData("contacts/" + contactId);
     await fetchContacts();
     let content = document.getElementById("contact-content")
@@ -126,7 +133,6 @@ async function deleteContact(contactId) {
     if (window.innerWidth <= 768) {
         backToContacts();
     }
-    closeOverlay()
 }
 
 function toggleModal() {

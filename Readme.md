@@ -2,17 +2,17 @@
 
 ### Desktop
 #### Login Page (Florian)
-- Logo muss einfliegen
-- Alle buttons Schrift Bold, sowie beide Links unten
-- Blauer Rahmen beim ausgewaehlten feld
+- Logo muss einfliegen (Done)
+- Alle buttons Schrift Bold, sowie beide Links unten(done)
+- Blauer Rahmen beim ausgewaehlten feld (done)
 
 #### Sign Up (Osman)
 - Checkbox braucht hover
-- Blauer Rahmen beim ausgewaehlten feld
-- Haken desing
-- Link zu Privacy Policie funktioniert nicht
-- Zurueck Pfeil muss zu  Login page zeigen
-- Links ganzen unten blauer hover plus bold und zur seite verlinken
+- Blauer Rahmen beim ausgewaehlten feld -> DONE
+- Haken design
+- Link zu Privacy Policie funktioniert nicht -> ich brauche dafür die externen Seiten zum verlinken, die noch nicht existieren
+- Zurueck Pfeil muss zu  Login page zeigen -> DONE
+- Links ganzen unten blauer hover plus bold und zur seite verlinken -> DONE
 
 
 #### Summary (Enrico)
@@ -23,11 +23,11 @@
 
 
 #### Add Task (Florian)
-- Headline bold
+- Headline bold (done)
 - Schriftgroesse pruefen
-- hover effect bei dropdowns und priority buttons
-- ausgewaehlte priority box hat schrift bold
-- Initialien fehlen im Dropdown menu
+- hover effect bei dropdowns und priority buttons(done)
+- ausgewaehlte priority box hat schrift bold(done)
+- Initialien fehlen im Dropdown menu bei assigned to vor den namen(done)
 - Divider fehlt
 - fliessender uebergang beim dropdown menu oeffnen
 - subtask fehlt x zum loeschen und haken zum akzeptieren
@@ -39,20 +39,23 @@
 #### Board (Florian, Osman, Enrico)
 - Leere Liste, no task in progress, hintergrund grau, und schmaler
 - Kartenbreite breiter machen
-- Overlay vom karten oeffnen ist kaputt
+- Overlay vom karten oeffnen ist kaputt -> DONE
 - Suche funktioinert nicht
 - plus buttons haben hellen hintergrund
 - Add Task overlay siehe Add Task
 - Lupe hovereffect
 - Status in Datenbank updaten beim Karten verschieben Zeile 190 in board.js
+- große Karte: subtasks blauer rahmen
 
 #### Contacts (Osman)
 - Edit  Contact, im dunkelblauen bereich muss der weisser rand weg und das markierte eingabe feld braucht einen hellblauen rahmen
-- Bei delete button kein x
-- Beim Save Button haken weiter nach rechts
-- Delte Button im Edit muss Contact loeschen
+- Edit Contact: Overlay schließen bei Klick außerhalb
+- Bei delete button kein x -> DONE
+- Beim Save Button haken weiter nach rechts -> DONE
+- Delte Button im Edit muss Contact loeschen -> DONE
 - Add Contact auch weisser rand weg und blauer rahmen siehe oben
-- Create Contact haken weiter rechts 
+- Create Contact haken weiter rechts -> DONE
+- Create Contact: Hintergrund wird abgedunkelt
 
 #### Sidebar (Enrico)
 - menu Punkte mehr zentriert
@@ -67,12 +70,13 @@
 ### Mobile
 
 #### Login Page
-- Join Logo muss links oben hin
--  Headline muss etwas nach unten
-- Ausgewaehlte feld blauer rahmen bitte
-- Buttons Login und Guest Login untereinander
-- Not a Join User? auserhalb vom weissen kasten
-- Links ganzen unten ein stueck hoeher
+- Join Logo muss links oben hin(done)
+- Headline muss etwas nach unten(done)
+- Ausgewaehlte feld blauer rahmen bitte(done)
+- Buttons Login und Guest Login untereinander(done)
+- Not a Join User? auserhalb vom weissen kasten(done)
+- Links ganzen unten ein stueck hoeher(done)
+
 - Links ganzen unten muessen zur external variante zeigen
 - Bei Guest Login in wird ein paar sekunden good morining angezeigt und dann gehts zur summary
 - Bei Login mit User kurz welcome message

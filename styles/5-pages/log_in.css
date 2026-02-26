@@ -117,6 +117,11 @@
   background-image: none !important;
 }
 
+.input:focus {
+  border: 1px solid #29abe3;
+  outline: none;
+}
+
 .icon-btn.password-toggle {
   position: absolute;
   right: 12px;             
@@ -171,7 +176,7 @@
 
 .btn {
   border-radius: var(--border-radius-small);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 16px;
   padding: 10px;
   cursor: pointer;
@@ -240,11 +245,12 @@ body.page-loaded .app-header {
 .site-footer a {
   text-decoration: none;
   color: var(--color-text-secondary);
+
 }
 
 .site-footer a:hover {
   color: var(--color-primary-light);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 
@@ -319,88 +325,81 @@ body.page-loaded .app-header {
   }
 }
 
-@media (max-width: 480px) {
-  .app-header { 
-    flex-direction: column; 
-    gap: 30px; 
-  }
-  .signup-area { 
-    display: none; 
-  }
-  .signup-area-mobile {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    padding-top: 30px;
-  }
-
-  .signup-button { 
-    font-size: 12px; 
-  }
-  .login-panel {
-     width: 80%; 
-     padding: 10px; 
-     border-radius: var(--border-radius-large); 
-    }
-  .form-fields { 
-    width: 80%; 
-  }
-  .button-row {
-     width: 100%; 
-     gap: 5px; 
-  }
-  .panel-title { 
-    font-size: 28px;
-  }
-  .panel-title::after { 
-    width: 60px; 
-  }
-  .app-logo { 
-    width: 150px; 
-    
-  }
-}
 
 @media (max-width: 480px) {
-  .app-header { 
-    flex-direction: column; 
-    gap: 30px; 
-  }
-  .signup-area { 
-    display: none; 
-  }
-  .signup-area-mobile {
-    display: inline-flex;
+  .app-header {
     flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    padding-top: 30px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 32px 24px 0;
+    gap: 0;
   }
 
-  .signup-button { 
-    font-size: 12px; 
+  .app-logo {
+    width: 65px;
   }
-  .login-panel {
-     width: 80%; 
-     padding: 10px; 
-     border-radius: var(--border-radius-large); 
-    }
-  .form-fields { 
-    width: 80%; 
+
+  .signup-area {
+    display: none;
   }
-  .button-row {
-     width: 100%; 
-     gap: 5px; 
-  }
-  .panel-title { 
-    font-size: 28px;
-  }
-  .panel-title::after { 
-    width: 60px; 
-  }
-  .app-logo { 
-    width: 80px; 
-    
-  }
+
+  .main-area {
+  padding: 60px 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+ .login-panel {
+    position: relative;
+    padding-bottom: 100px; 
+  }
+  .panel-title {
+    font-size: 47px;
+    margin-bottom: 8px;
+  }
+
+  .panel-title::after {
+    width: 88px;
+  }
+
+  .form-fields {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .button-row {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 0;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    width: 180px;
+    padding: 12px 0;
+  }
+
+  .signup-area-mobile {
+    position: absolute;
+    bottom: -100px;         
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+   
+  }
+.signup-button  {
+  font-size: 16px;
+  font-weight: 400px;
+}
+}
+  .site-footer {
+    padding-top: 150px;
+    padding-bottom: 24px;
+    gap: 32px;
+    font-size: 16px;
+  }

@@ -89,55 +89,73 @@ function renderAssigneeOptions() {
 
 // Erstellt ein Label mit Checkbox für einen Assignee (Name + Farbe als data-Attribute)
 function createAssigneeLabel(contact) {
-  const labelElement = document.createElement("label");
-  labelElement.className = "checkbox-label";
+  const row = document.createElement("div");
+  row.className = "assignee-row";
 
-  labelElement.innerHTML = `
-    <span>${contact.name}</span>
+  const initials = getInitials(contact.name);
+
+  row.innerHTML = `
+    <div class="assignee-left" tabindex="0" role="button">
+      <div class="assignee-initials" style="background-color: ${contact.color};">
+        ${initials}
+      </div>
+      <span class="assignee-name">${contact.name}</span>
+    </div>
+
     <input
+      class="assignee-checkbox"
       type="checkbox"
       data-name="${contact.name}"
       data-color="${contact.color}"
-      onchange="updateAssigneeDisplay()"
     >
   `;
 
-  return labelElement;
-}
+  const left = row.querySelector(".assignee-left");
+  const checkbox = row.querySelector(".assignee-checkbox");
 
-// Aktualisiert die Anzeige der ausgewählten Assignees
-function updateAssigneeDisplay() {
-  const assignedTo = getSelectedAssignees();
-  const placeholderText = document.getElementById("selected-assignees-placeholder");
-  const avatarContainer = document.getElementById("selected-assignee-avatars");
+  // Klick auf Name/Avatar -> blau markieren (Checkbox NICHT togglen)
+  const selectByName = () => {
+    // wenn nur 1 Zeile blau sein soll:
+    document
+      .querySelectorAll("#assignee-dropdown .assignee-row.name-selected")
+      .forEach((el) => el.classList.remove("name-selected"));
 
-  avatarContainer.innerHTML = "";
+    row.classList.add("name-selected");
+  };
 
-  if (assignedTo.length === 0) {
-    placeholderText.textContent = "Select contacts";
-    return;
-  }
+ left.addEventListener("click", (e) => {
+  e.stopPropagation();
 
-  placeholderText.textContent = assignedTo.map((a) => a.name).join(", ");
-  renderAssigneeAvatars(assignedTo, avatarContainer);
-}
+  // toggle: wenn schon blau -> wieder aus
+  const isAlreadySelected = row.classList.contains("name-selected");
 
-// Gibt alle aktuell ausgewählten Assignees zurück (als Objekte)
-function getSelectedAssignees() {
-  const checkboxElements = document.querySelectorAll("#assignee-dropdown input");
-  const selected = [];
+  // wenn du willst, dass nur 1 Zeile gleichzeitig blau sein kann:
+  document
+    .querySelectorAll("#assignee-dropdown .assignee-row.name-selected")
+    .forEach((el) => el.classList.remove("name-selected"));
 
-  for (let i = 0; i < checkboxElements.length; i++) {
-    const cb = checkboxElements[i];
-    if (cb.checked) {
-      selected.push({
-        name: cb.dataset.name,
-        color: cb.dataset.color
-      });
+  // toggle anwenden
+  if (!isAlreadySelected) row.classList.add("name-selected");
+});
+
+  left.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      selectByName();
     }
-  }
+  });
 
-  return selected;
+  // Klick auf Checkbox -> nur checkbox, NIE blau markieren
+  checkbox.addEventListener("click", (e) => {
+    e.stopPropagation();
+    row.classList.remove("name-selected");
+  });
+
+  checkbox.addEventListener("change", () => {
+    updateAssigneeDisplay();
+  });
+
+  return row;
 }
 
 // Rendert Initialen-Avatare für ausgewählte Assignees (mit Farbe)
@@ -173,6 +191,8 @@ function toggleAssigneeDropdown() {
     categoryDropdown.classList.add("d-none");
   }
 }
+
+
 
 // Öffnet oder schließt das Kategorie-Dropdown
 function toggleCategoryDropdown() {

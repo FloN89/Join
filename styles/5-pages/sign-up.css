@@ -1,3 +1,14 @@
+/* input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--color-light-blue);
+} */
+
 .join-icon {
     position: absolute;
     top: 80px;
@@ -117,6 +128,10 @@
     align-items: center;
 }
 
+.input-wrapper input:focus {
+    border-color: var(--color-light-blue);
+}
+
 .input-wrapper input::placeholder {
     color: var(--color-border);
     font-size: 20px;
@@ -154,7 +169,23 @@ input[type="password"] {
     font-weight: 400;
 }
 
-.privacy input[type="checkbox"] {
+.checkboxWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.checkboxWrapper:hover {
+    background-color: var(--color-hover-background-light);
+    cursor: pointer;
+}
+
+.privacyCheckbox {
     width: 16px;
     height: 16px;
     margin: 0;
@@ -211,6 +242,11 @@ input[type="password"] {
     color: var(--color-text-secondary);
     font-size: 16px;
     font-weight: 400;
+}
+
+.privacy_legal a:hover {
+    color: var(--color-primary-light);
+    font-weight: bold;
 }
 
 .errorMessage {
