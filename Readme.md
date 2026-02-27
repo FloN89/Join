@@ -2,9 +2,9 @@
 
 ### Desktop
 #### Login Page (Florian)
-- Logo muss einfliegen (Done)
-- Alle buttons Schrift Bold, sowie beide Links unten(done)
-- Blauer Rahmen beim ausgewaehlten feld (done)
+- Logo muss einfliegen -> DONE
+- Alle buttons Schrift Bold, sowie beide Links unten -> DONE
+- Blauer Rahmen beim ausgewaehlten feld  -> DONE
 
 #### Sign Up (Osman)
 - Checkbox braucht hover -> DONE
@@ -23,16 +23,16 @@
 
 
 #### Add Task (Florian)
-- Headline bold (done)
-- Schriftgroesse pruefen(done)
-- hover effect bei dropdowns und priority buttons(done)
-- ausgewaehlte priority box hat schrift bold(done)
-- Initialien fehlen im Dropdown menu bei assigned to vor den namen(done)
-- Divider fehlt
-- fliessender uebergang beim dropdown menu oeffnen
+- Headline bold  -> DONE
+- Schriftgroesse pruefen -> DONE
+- hover effect bei dropdowns und priority buttons -> DONE
+- ausgewaehlte priority box hat schrift bold -> DONE
+- Initialien fehlen im Dropdown menu bei assigned to vor den namen -> DONE
+- Divider fehlt -> DONE
+- fliessender uebergang beim dropdown menu oeffnen -> DONE
 - subtask fehlt x zum loeschen und haken zum akzeptieren
-- required fields abfrage pruefen
-- bestaetigungs overlay muss einfliegen
+- required fields abfrage pruefen -> DONE
+- bestaetigungs overlay muss einfliegen -> DONE
 - Ausgewaehlte User bekommen dunkel blauen Hintergrund
 
 
@@ -72,12 +72,12 @@
 ### Mobile
 
 #### Login Page
-- Join Logo muss links oben hin(done)
-- Headline muss etwas nach unten(done)
-- Ausgewaehlte feld blauer rahmen bitte(done)
-- Buttons Login und Guest Login untereinander(done)
-- Not a Join User? auserhalb vom weissen kasten(done)
-- Links ganzen unten ein stueck hoeher(done)
+- Join Logo muss links oben hin -> DONE
+- Headline muss etwas nach unten -> DONE
+- Ausgewaehlte feld blauer rahmen bitte -> DONE
+- Buttons Login und Guest Login untereinander -> DONE
+- Not a Join User? auserhalb vom weissen kasten -> DONE
+- Links ganzen unten ein stueck hoeher -> DONE
 
 - Links ganzen unten muessen zur external variante zeigen
 - Bei Guest Login in wird ein paar sekunden good morining angezeigt und dann gehts zur summary
@@ -92,10 +92,10 @@
 - Blauer divider etwas breiter -> DONE
 
 #### Add Task
-- Headline etwas groesser
+- Headline etwas groesser -> DONE
 - Ausgewaehltes Feld blauer rahmen
-- Create Task Button braucht haken
-- Clear und Create Task Buttons sind fix unten beim scrollen
+- Create Task Button braucht haken -> DONE
+- Clear und Create Task Buttons sind fix unten beim scrollen -> DONE
 - Rest siehe Desktop
 
 #### Board

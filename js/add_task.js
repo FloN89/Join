@@ -38,7 +38,7 @@ function validateForm() {
   let isFormValid = true;
 
   if (!checkRequiredField("title", "error-title")) isFormValid = false;
-  // datum in firebase laden
+  if (!checkRequiredField("due-date", "error-due-date")) isFormValid = false;
   if (!validateCategoryField()) isFormValid = false;
 
   return isFormValid;
@@ -229,7 +229,7 @@ function selectCategory(categoryValue) {
   document.getElementById("error-category").classList.remove("active");
 }
 
-// Reagiert auf die Enter-Taste im Subtask-Feld
+
 function handleSubtaskKey(event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -237,7 +237,7 @@ function handleSubtaskKey(event) {
   }
 }
 
-// Fügt einen neuen Subtask hinzu (click = remove)
+
 function addSubtask() {
   const subtaskInput = document.getElementById("subtask");
   const subtaskText = subtaskInput.value.trim();
@@ -253,7 +253,7 @@ function addSubtask() {
   subtaskInput.value = "";
 }
 
-// Setzt das komplette Formular zurück
+
 function handleClear() {
   const taskForm = document.getElementById("taskForm");
   taskForm.reset();
@@ -270,11 +270,11 @@ function handleClear() {
   document.getElementById("category").value = "";
   document.getElementById("selected-category-placeholder").textContent = "Select category";
 
-  // Priority Icons sauber neu setzen
+  
   updatePriorityIcons();
 }
 
-// Sammelt alle Eingabedaten aus dem Add-Task-Formular 
+
 function collectTaskData() {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
@@ -317,11 +317,11 @@ function getSelectedAssignees() {
   return selected;
 }
 
-// Wird beim Absenden des Formulars aufgerufen und speichert den Task in Firebase
+
 async function handleFormSubmit(event) {
   event.preventDefault();
 
-  console.log("✅ handleFormSubmit fired"); // <-- MUSS im Console-Log erscheinen
+  console.log("✅ handleFormSubmit fired"); 
 
   if (!validateForm()) return;
 
@@ -335,7 +335,7 @@ async function handleFormSubmit(event) {
     showSuccessAndRedirect();
   } catch (err) {
     console.error("❌ Firebase save failed:", err);
-    // Zum Testen auch bei Fehler kurz anzeigen:
+   
     const toast = ensureSuccessToast();
     toast.textContent = "Saving failed";
     toast.classList.remove("show");
@@ -389,11 +389,11 @@ function ensureSuccessToast() {
 
 function showSuccessAndRedirect() {
   const toast = ensureSuccessToast();
-  toast.classList.remove("show");         // reset, falls schon mal gezeigt
-  void toast.offsetWidth;                 // reflow -> Animation triggert sicher
+  toast.classList.remove("show");         
+  void toast.offsetWidth;                 
   toast.classList.add("show");
 
   setTimeout(() => {
-    window.location.href = "board.html";  // ggf. Pfad anpassen
+    window.location.href = "board.html"; 
   }, 2500);
 }
