@@ -1,18 +1,27 @@
 // Wartet, bis das DOM vollständig geladen ist, und initialisiert die Add-Task-Seite
 document.addEventListener("DOMContentLoaded", initializeAddTaskPage);
 
-// Liste aller verfügbaren Kontakte für die Zuweisung (Name + Farbe)
-const contacts = [
-  { name: "Anton Mayer", color: "#FF7A00" },
-  { name: "Evelyne Meyer", color: "#1FD7C1" },
-  { name: "Marcel Bauer", color: "#462F8A" }
-];
+let contacts = [];
+
+async function loadContacts() {
+  const userId = sessionStorage.getItem("userId");
+
+  if (userId === "guest") {
+    // Beispiel-User laden
+    contacts = await loadData("guest-contacts/") || [];
+  } else {
+    // Echte registrierte User laden
+    contacts = await loadData("users/") || [];
+  }
+
+  renderAssigneeOptions();
+}
 
 // Initialisiert alle notwendigen Funktionen auf der Seite
-function initializeAddTaskPage() {
+async function initializeAddTaskPage() {
   setMinimumDateToToday();
   initializeFormEvents();
-  renderAssigneeOptions();
+  await loadContacts();
   initPriorityIconHandlers();
 }
 

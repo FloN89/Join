@@ -88,3 +88,20 @@ async function seedGuestTasks() {
   }
   await saveData("guest-tasks", guestTasks);
 }
+
+
+
+// ===== GUEST CONTACTS (nur für Guest Login) =====
+
+let guestContacts = {
+  "guest-contact-1": { name: "Sofia Müller", color: "#ff7a00" },
+  "guest-contact-2": { name: "Max Mustermann", color: "#9327ff" },
+  "guest-contact-3": { name: "Anna Schmidt", color: "#6e52ff" }
+};
+
+async function seedGuestContacts() {
+  let existingData = await loadData("guest-contacts/");
+  if (existingData) return;
+
+  await saveData("guest-contacts", guestContacts);
+}
