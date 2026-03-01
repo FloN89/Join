@@ -262,6 +262,48 @@ body.page-loaded .app-header {
   display: flex; 
 }
 
+
+/* Welcome Overlay (nur Mobile ≤ 480px) */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  background: #f6f7f8;
+  z-index: 999999;
+
+  /* JS setzt display/opacity inline */
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+
+  justify-content: center;
+  align-items: center;
+}
+.welcome-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.welcome-overlay.is-hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.welcome-card { text-align: center; padding: 24px; }
+.welcome-title { margin: 0; font-size: 36px; font-weight: 400; color: #2a3647; }
+.welcome-name  { margin: 10px 0 0; font-size: 32px; font-weight: 700; color: #29abe2; }
+
+/* WICHTIG: Sobald Welcome aktiv ist, Login-Seite wirklich entfernen */
+body.welcome-active .app-header,
+body.welcome-active .main-area,
+body.welcome-active .site-footer {
+  display: none !important;
+}
+
+/* Auf größeren Screens: Overlay komplett deaktivieren */
+@media (min-width: 481px) {
+  .welcome-overlay { display: none !important; }
+}
+
 @media (max-width: 1360px) {
   body.page-loaded .app-logo { 
     padding-left: 150px; 

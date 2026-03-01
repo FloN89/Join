@@ -54,7 +54,7 @@
 
 <div class="button-row">
   <a class="btn btn-primary" href="#" onclick="startLogin(event)">Log in</a>
-  <a class="btn btn-ghost" href="#" onclick="guestLogin()">Guest Log in</a>
+ <a class="btn btn-ghost" href="#" onclick="guestLogin(event)">Guest Log in</a>
 
 </div>
 
@@ -70,6 +70,14 @@
       <a href="privacy.html">Privacy Policy</a>
       <a href="legal-notice.html">Legal notice</a>
     </footer>
+
+<div id="welcome-overlay" class="welcome-overlay">
+  <div class="welcome-card">
+    <h1 class="welcome-title">Good morning!</h1>
+    <h2 id="welcome-name" class="welcome-name"></h2>
+  </div>
+</div>
+
 
     <script src="../js/log_in.js"></script>
   </body>

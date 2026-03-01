@@ -69,7 +69,7 @@ function handleLoginResponse(usersFromDatabase, emailValue, passwordValue) {
   }
 
   saveUserSession(matchingUser.userId);
-  redirectToSummaryPage();
+  redirectToSummaryPage(matchingUser.user.name || "");
 }
 
 // Speichert Benutzer-ID in der Session
@@ -78,8 +78,77 @@ function saveUserSession(userId) {
 }
 
 // Leitet zur Summary-Seite weiter
-function redirectToSummaryPage() {
-  window.location.href = "summary.html";
+function redirectToSummaryPage(userName = "") {
+  const isMobile480 = window.matchMedia("(max-width: 480px)").matches;
+
+  // Desktop/Tablet: sofort weiter
+  if (!isMobile480) {
+    window.location.href = "summary.html";
+    return;
+  }
+
+  // Mobile: SOFORT Login-UI weg + Overlay an
+  forceShowWelcomeOverlay(userName);
+
+  // Danach weiterleiten (Overlay bleibt sichtbar bis Redirect)
+  setTimeout(function () {
+    window.location.href = "summary.html";
+  }, 1800);
+}
+
+function forceShowWelcomeOverlay(userName) {
+  const overlay = document.getElementById("welcome-overlay");
+  const nameEl = document.getElementById("welcome-name");
+
+  // 1) Login-UI sofort entfernen (INLINE = höchste Priorität)
+  const header = document.querySelector(".app-header");
+  const main = document.querySelector(".main-area");
+  const footer = document.querySelector(".site-footer");
+
+  if (header) header.style.display = "none";
+  if (main) main.style.display = "none";
+  if (footer) footer.style.display = "none";
+
+  // 2) Overlay sofort sichtbar machen (INLINE)
+  if (overlay) {
+    overlay.style.display = "flex";
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+  }
+
+  // 3) Name setzen (Guest -> keine Zeile)
+  if (nameEl) {
+    const trimmed = (userName || "").trim();
+    nameEl.textContent = trimmed;
+    nameEl.style.display = trimmed ? "block" : "none";
+  }
+}
+
+ function showWelcomeOverlay(userName) {
+  const overlay = document.getElementById("welcome-overlay");
+  const nameEl = document.getElementById("welcome-name");
+  if (!overlay || !nameEl) return;
+
+  // 1) SOFORT: komplette Login-UI entfernen (kein Paint mehr möglich)
+  document.body.classList.add("welcome-active");
+
+  // 2) Name setzen (Guest -> keine zweite Zeile)
+  const trimmed = (userName || "").trim();
+  nameEl.textContent = trimmed;
+  nameEl.style.display = trimmed ? "block" : "none";
+
+  // 3) Nächster Frame: Overlay sichtbar schalten (verhindert Zwischenframe)
+  requestAnimationFrame(function () {
+    overlay.classList.remove("is-hide");
+    overlay.classList.add("is-visible");
+  });
+}
+function hideWelcomeOverlay() {
+  const overlay = document.getElementById("welcome-overlay");
+  if (!overlay) return;
+
+  overlay.classList.add("is-hide");
+  overlay.classList.remove("is-visible");
 }
 
 // Zeigt eine Fehlermeldung an
@@ -214,11 +283,12 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
   }
 }
 
-function guestLogin() {
-  sessionStorage.setItem("userId", "guest");
-  window.location.href = "summary.html";
-}
+function guestLogin(event) {
+  if (event) event.preventDefault();
 
+  sessionStorage.setItem("userId", "guest");
+  redirectToSummaryPage("");
+}
 
 // Lädt alle Benutzer aus der Datenbank
 function loadUsersFromDatabase(onSuccess, onError) {

@@ -225,7 +225,7 @@ input#priority-low:checked + label.low {
 
 
 .assignee-row:hover {
-  background-color: #d0cccc;
+  background-color: #f8eeee;
 }
 
 
@@ -313,7 +313,7 @@ input#priority-low:checked + label.low {
 }
 
 .category-option:hover {
-  background-color: #d0cccc;
+  background-color:  #f8eeee;
 }
 
 .subtask-input-container {

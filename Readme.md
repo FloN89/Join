@@ -2,7 +2,7 @@
 
 ### Desktop
 #### Login Page (Florian)
-- Logo muss einfliegen -> DONE
+- Logo muss einfliegen -> DONE ---> wenn man start.html öffnet
 - Alle buttons Schrift Bold, sowie beide Links unten -> DONE
 - Blauer Rahmen beim ausgewaehlten feld  -> DONE
 
@@ -96,7 +96,7 @@
 - Ausgewaehltes Feld blauer rahmen -> DONE
 - Create Task Button braucht haken -> DONE
 - Clear und Create Task Buttons sind fix unten beim scrollen -> DONE
-- Rest siehe Desktop
+- Rest siehe Desktop -> DONE
 
 #### Board
 - kein scrollbalken bei mehreren Karten
