@@ -69,7 +69,10 @@ function handleLoginResponse(usersFromDatabase, emailValue, passwordValue) {
   }
 
   saveUserSession(matchingUser.userId);
-  redirectToSummaryPage(matchingUser.user.name || "");
+  const displayName =
+  (matchingUser.user && (matchingUser.user.username ?? matchingUser.user.userName ?? matchingUser.user.name)) || "";
+
+redirectToSummaryPage(String(displayName).trim());
 }
 
 // Speichert Benutzer-ID in der Session
