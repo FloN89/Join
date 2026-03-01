@@ -80,7 +80,7 @@ let guestTasks = {
     createdAt: Date.now()
   }
 };
-
+s
 async function seedGuestTasks() {
   let existingData = await loadData("guest-tasks/");
   if (existingData) {
@@ -91,7 +91,7 @@ async function seedGuestTasks() {
 
 
 
-// ===== GUEST CONTACTS (nur für Guest Login) =====
+// ===== GUEST CONTACTS (nur für Guest Login) =====( test!! --> Kann gelöscht werden wenn nicht benötigt)
 
 let guestContacts = {
   "guest-contact-1": { name: "Sofia Müller", color: "#ff7a00" },

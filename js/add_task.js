@@ -1,18 +1,35 @@
 // Wartet, bis das DOM vollständig geladen ist, und initialisiert die Add-Task-Seite
 document.addEventListener("DOMContentLoaded", initializeAddTaskPage);
 
+const GUEST_CONTACTS_FALLBACK = [
+  { name: "Alex",  color: "#FF7A00" },
+  { name: "Mina",  color: "#1FD7C1" },
+  { name: "Chris", color: "#6E52FF" },
+];
+
+
 let contacts = [];
 
 async function loadContacts() {
   const userId = sessionStorage.getItem("userId");
+  const isGuest = (!userId || userId === "guest");
 
-  if (userId === "guest") {
-    // Beispiel-User laden
-    contacts = await loadData("guest-contacts/") || [];
-  } else {
-    // Echte registrierte User laden
-    contacts = await loadData("users/") || [];
+  const path = isGuest ? "guest-contacts/" : "contacts/";
+  const raw = (await loadData(path)) || [];
+
+  let list = Array.isArray(raw) ? raw : Object.values(raw);
+
+  // ✅ Guest-Fallback, wenn DB leer
+  if (isGuest && list.length === 0) {
+    list = GUEST_CONTACTS_FALLBACK;
   }
+
+  contacts = list
+    .map((c) => ({
+      name: c.name || c.contactName || "",
+      color: c.color || "#CCCCCC",
+    }))
+    .filter((c) => c.name.trim().length > 0);
 
   renderAssigneeOptions();
 }
@@ -239,39 +256,163 @@ function selectCategory(categoryValue) {
 }
 
 
-function handleSubtaskKey(event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    addSubtask();
-  }
+/* =========================
+   SUBTASKS (X | Divider | ✓)
+========================= */
+
+let subtaskCollection = [];
+
+/** Löscht den aktuell eingegebenen Subtask-Text im Eingabefeld. */
+function clearSubtaskInput() {
+  const subtaskInputElement = document.getElementById("subtask");
+  if (!subtaskInputElement) return;
+  subtaskInputElement.value = "";
 }
 
+/** Fügt Subtask per Enter hinzu und verhindert Formular-Submit. */
+function handleSubtaskKey(keyboardEvent) {
+  if (keyboardEvent.key !== "Enter") return;
+  keyboardEvent.preventDefault();
+  addSubtask();
+}
 
+/** Liest den Input aus, legt den Subtask an und rendert die Liste neu. */
 function addSubtask() {
-  const subtaskInput = document.getElementById("subtask");
-  const subtaskText = subtaskInput.value.trim();
-  if (!subtaskText) return;
+  const subtaskInputElement = document.getElementById("subtask");
+  if (!subtaskInputElement) return;
+  const subtaskTitle = getTrimmedValue(subtaskInputElement.value);
+  if (!subtaskTitle) return;
+  subtaskCollection.push(createSubtaskObject(subtaskTitle));
+  renderSubtaskList();
+  subtaskInputElement.value = "";
+}
 
-  const listItem = document.createElement("li");
-  listItem.className = "subtask-item";
-  listItem.textContent = "• " + subtaskText;
+/** Schneidet Text sauber zu (Whitespace entfernen) und liefert leeren Text als "". */
+function getTrimmedValue(textValue) {
+  if (typeof textValue !== "string") return "";
+  return textValue.trim();
+}
 
-  listItem.addEventListener("click", () => listItem.remove());
+/** Erstellt ein einheitliches Subtask-Objekt für Speicherung und Anzeige. */
+function createSubtaskObject(subtaskTitle) {
+  return { title: subtaskTitle, completed: false };
+}
 
-  document.getElementById("subtask-list").appendChild(listItem);
-  subtaskInput.value = "";
+/** Rendert alle Subtasks wie im Screenshot (Punkt links, Icons rechts). */
+function renderSubtaskList() {
+  const subtaskListElement = document.getElementById("subtask-list");
+  if (!subtaskListElement) return;
+  subtaskListElement.innerHTML = buildSubtaskListMarkup();
+  attachSubtaskActionHandlers(subtaskListElement);
+}
+
+/** Baut das komplette HTML-Markup für alle Subtasks. */
+function buildSubtaskListMarkup() {
+  return subtaskCollection.map((subtaskObject, subtaskIndex) => {
+    return buildSingleSubtaskMarkup(subtaskObject, subtaskIndex);
+  }).join("");
+}
+
+/** Baut das Markup für genau einen Subtask (inkl. Edit/Delete Buttons). */
+function buildSingleSubtaskMarkup(subtaskObject, subtaskIndex) {
+  const safeTitle = escapeHtmlText(subtaskObject.title);
+  return `
+    <li class="subtask-item" data-subtask-index="${subtaskIndex}">
+      <div class="subtask-left">
+        <span class="subtask-bullet">•</span>
+        <span class="subtask-title">${safeTitle}</span>
+      </div>
+      <div class="subtask-actions">
+        <button type="button" data-action="edit" aria-label="Edit subtask">
+          <img src="../assets/icons/edit.svg" alt="Edit">
+        </button>
+        <button type="button" data-action="delete" aria-label="Delete subtask">
+          <img src="../assets/icons/delete.svg" alt="Delete">
+        </button>
+      </div>
+    </li>
+  `;
+}
+
+/** Verhindert HTML-Injection und stellt Text sicher dar. */
+function escapeHtmlText(unsafeText) {
+  return String(unsafeText)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+/** Hängt Event-Handling für Edit/Delete an die Liste (Event Delegation). */
+function attachSubtaskActionHandlers(subtaskListElement) {
+  subtaskListElement.onclick = (mouseEvent) => handleSubtaskListClick(mouseEvent);
+}
+
+/** Verteilt Klicks auf Edit/Delete Buttons an die passenden Aktionen. */
+function handleSubtaskListClick(mouseEvent) {
+  const actionButtonElement = mouseEvent.target.closest("button[data-action]");
+  if (!actionButtonElement) return;
+  const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
+  if (!listItemElement) return;
+  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
+  runSubtaskAction(actionButtonElement.dataset.action, subtaskIndex);
+}
+
+/** Führt je nach Action entweder Bearbeiten oder Löschen aus. */
+function runSubtaskAction(actionName, subtaskIndex) {
+  if (actionName === "delete") deleteSubtask(subtaskIndex);
+  if (actionName === "edit") editSubtask(subtaskIndex);
+}
+
+/** Löscht einen Subtask aus der Sammlung und rendert die Liste neu. */
+function deleteSubtask(subtaskIndex) {
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+  subtaskCollection.splice(subtaskIndex, 1);
+  renderSubtaskList();
+}
+
+/** Bearbeitet einen Subtask-Titel per Prompt und rendert die Liste neu. */
+function editSubtask(subtaskIndex) {
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+  const currentTitle = subtaskCollection[subtaskIndex].title;
+  const newTitle = prompt("Edit subtask:", currentTitle);
+  applyEditedSubtaskTitle(subtaskIndex, newTitle);
+}
+
+/** Validiert Index gegen die aktuelle Sammlung. */
+function isValidSubtaskIndex(subtaskIndex) {
+  return Number.isInteger(subtaskIndex) && subtaskIndex >= 0 && subtaskIndex < subtaskCollection.length;
+}
+
+/** Übernimmt den neuen Titel, wenn er gültig ist, und rendert neu. */
+function applyEditedSubtaskTitle(subtaskIndex, newTitle) {
+  const cleanedTitle = getTrimmedValue(newTitle ?? "");
+  if (!cleanedTitle) return;
+  subtaskCollection[subtaskIndex].title = cleanedTitle;
+  renderSubtaskList();
+}
+
+/** Setzt Subtasks komplett zurück (Sammlung + Anzeige). */
+function resetSubtasks() {
+  subtaskCollection = [];
+  renderSubtaskList();
 }
 
 
+/* =========================
+   INTEGRATION: handleClear + collectTaskData
+   -> diese Teile bei dir ersetzen/anpassen
+========================= */
+
+/** Setzt das komplette Formular zurück und leert auch Subtasks korrekt. */
 function handleClear() {
   const taskForm = document.getElementById("taskForm");
-  taskForm.reset();
+  if (taskForm) taskForm.reset();
+  resetSubtasks();
 
-  document.getElementById("subtask-list").innerHTML = "";
-
-  document
-    .querySelectorAll('#assignee-dropdown input[type="checkbox"]')
-    .forEach((checkbox) => (checkbox.checked = false));
+  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]')
+    .forEach((checkboxElement) => checkboxElement.checked = false);
 
   document.getElementById("selected-assignee-avatars").innerHTML = "";
   document.getElementById("selected-assignees-placeholder").textContent = "Select contacts";
@@ -279,11 +420,10 @@ function handleClear() {
   document.getElementById("category").value = "";
   document.getElementById("selected-category-placeholder").textContent = "Select category";
 
-  
   updatePriorityIcons();
 }
 
-
+/** Sammelt alle Task-Daten ein, inkl. Subtasks aus der Sammlung. */
 function collectTaskData() {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
@@ -294,38 +434,15 @@ function collectTaskData() {
 
   const assignedTo = getSelectedAssignees();
 
-  const subtasks = [];
-  document.querySelectorAll("#subtask-list .subtask-item").forEach((li) => {
-    subtasks.push({
-      title: li.textContent.replace("• ", "").trim(),
-      completed: false
-    });
-  });
-
   return {
     category,
     title,
     description,
     priority,
     assignedTo,
-    subtasks
+    subtasks: structuredClone(subtaskCollection)
   };
 }
-
-function getSelectedAssignees() {
-  const selected = [];
-
-  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]:checked')
-    .forEach((checkbox) => {
-      selected.push({
-        name: checkbox.dataset.name,
-        color: checkbox.dataset.color
-      });
-    });
-
-  return selected;
-}
-
 
 async function handleFormSubmit(event) {
   event.preventDefault();

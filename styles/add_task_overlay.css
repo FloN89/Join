@@ -272,11 +272,7 @@ input#priority-low:checked + label.low {
   justify-content: center;
 }
 
-/* ===============================
-   ASSIGNEE DROPDOWN STYLING
-   =============================== */
 
-/* Ganze Zeile */
 .assignee-row {
   display: flex;
   align-items: center;
@@ -286,12 +282,12 @@ input#priority-low:checked + label.low {
   transition: background-color 0.15s ease;
 }
 
-/* Grauer Hover-Effekt */
+
+
 .assignee-row:hover {
-  background-color: var(--color-grey-100, #f5f5f5);
+  background-color: #d0cccc;
 }
 
-/* Linker Bereich (Avatar + Name) */
 .assignee-left {
   flex: 1;
   display: flex;
@@ -302,13 +298,13 @@ input#priority-low:checked + label.low {
   border-radius: 12px;
 }
 
-/* Blau NUR wenn Name geklickt wurde (per JS-Klasse) */
+
 .assignee-row.name-selected {
   background-color: var(--color-primary);
   color: var(--color-white);
 }
 
-/* Initialen-Kreis */
+
 .assignee-initials {
   width: 34px;
   height: 34px;
@@ -321,12 +317,12 @@ input#priority-low:checked + label.low {
   font-weight: 500;
 }
 
-/* Name */
+
 .assignee-name {
   font-size: 14px;
 }
 
-/* Checkbox rechts */
+
 .assignee-checkbox {
   appearance: none;
   width: 18px;
@@ -337,7 +333,7 @@ input#priority-low:checked + label.low {
   box-sizing: border-box;
 }
 
-/* Checkbox checked Icon */
+
 .assignee-checkbox:checked {
   border: none;
   background-image: url("/assets/icons/Property 1=hover checked.svg");
@@ -378,45 +374,130 @@ input#priority-low:checked + label.low {
 }
 
 .category-option:hover {
-  background-color: var(--color-grey-100, #f5f5f5);
+  background-color: #d0cccc;
 }
 
 
 .subtask-input-container {
   position: relative;
+  width: 100%;
 }
 
 .subtask-input-container input {
   width: 100%;
-  padding-right: 32px;
+  padding: 10px 96px 10px 12px; 
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
 }
 
-.subtask-add-btn {
+.subtask-input-container input:focus {
+  border-color: #29abe2;
+}
+
+
+.subtask-input-actions {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  font-size: 20px;
-  font-weight: 600;
-  color: #2a3647;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
+
+.subtask-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.checkSub-btn {
+  width: 14px;
+  height: 14px;
+}
+
+.closeSub-btn {
+  width: 24px;
+  height: 24px;
+
+}
+
+.subtask-action-btn:hover {
+  transform: scale(1.1);
+}
+
+
+.subtask-action-divider {
+  width: 1px;
+  height: 20px;
+  background: #d1d1d1;
+}
+
+
+
 #subtask-list {
-  margin: 8px 0 0;
-  padding: 0;
   list-style: none;
+  padding-left: 0;
+  margin-top: 8px;
 }
 
 .subtask-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 6px 8px;
-  border-radius: 8px;
-  background-color: #f4f4f4;
-  font-size: 14px;
-  margin-bottom: 4px;
+  border-radius: 6px;
+}
+
+.subtask-item:hover {
+  background-color: #f6f7f8;
+}
+
+.subtask-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtask-bullet {
+  font-size: 18px;
+}
+
+.subtask-title {
+  font-size: 16px;
+}
+
+
+.subtask-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.subtask-item:hover .subtask-actions {
+  opacity: 1;
+}
+
+.subtask-actions button {
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 4px;
+}
+
+.subtask-actions img {
+  width: 16px;
+  height: 16px;
 }
 
 

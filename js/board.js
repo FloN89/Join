@@ -671,3 +671,87 @@ function saveSubtaskEdit(li) {
     <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
   `;
 }
+
+/**
+ * Wird bei jeder Eingabe im Suchfeld ausgelöst.
+ * Durchsucht alle Task-Karten nach Titel und Beschreibung.
+ * Blendet nicht passende Karten aus.
+ * Zeigt eine Fehlermeldung an, wenn keine Ergebnisse gefunden werden.
+ */
+function onSearchInput() {
+
+  // Wert aus dem Suchfeld holen
+  const inputField = document.getElementById("searchInput");
+  const searchValue = inputField.value.toLowerCase().trim();
+
+  // Alle Task-Karten auf dem Board auswählen
+  const taskCards = document.querySelectorAll(".task-card");
+
+  // Referenz auf die Fehlermeldung unter dem Suchfeld
+  const errorMessage = document.getElementById("search_error");
+
+  let visibleCardCount = 0;
+
+  /**
+   * Wenn das Suchfeld leer ist:
+   * - Alle Karten wieder anzeigen
+   * - Fehlermeldung ausblenden
+   * - Funktion beenden
+   */
+  if (searchValue === "") {
+    taskCards.forEach(function (card) {
+      card.style.display = "block";
+    });
+
+    errorMessage.style.display = "none";
+    return;
+  }
+
+  /**
+   * Jede einzelne Task-Karte überprüfen
+   */
+  taskCards.forEach(function (card) {
+
+    // Titel und Beschreibung der Karte auslesen
+    const titleElement = card.querySelector(".task-title");
+    const descriptionElement = card.querySelector(".task-description");
+
+    const titleText = titleElement ? titleElement.textContent.toLowerCase() : "";
+    const descriptionText = descriptionElement ? descriptionElement.textContent.toLowerCase() : "";
+
+    /**
+     * Prüfen, ob Suchbegriff im Titel oder in der Beschreibung enthalten ist
+     */
+    if (titleText.includes(searchValue) || descriptionText.includes(searchValue)) {
+
+      // Karte anzeigen
+      card.style.display = "block";
+      visibleCardCount++;
+
+    } else {
+
+      // Karte ausblenden
+      card.style.display = "none";
+    }
+  });
+
+  /**
+   * Wenn keine sichtbaren Karten vorhanden sind:
+   * Fehlermeldung anzeigen
+   */
+  if (visibleCardCount === 0) {
+    errorMessage.style.display = "block";
+  } else {
+    errorMessage.style.display = "none";
+  }
+}
+
+
+/**
+ * Setzt den Fokus in das Suchfeld,
+ * wenn auf das Such-Icon geklickt wird.
+ */
+function focusSearchInputField() {
+  const inputField = document.getElementById("searchInput");
+  inputField.focus();
+}

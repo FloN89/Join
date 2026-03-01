@@ -88,6 +88,11 @@
   background-position: center;
   background-size: contain;
 }
+.search_button:hover{
+  transform: translate(2px);
+  background-color: rgb(243, 235, 235);
+  border-radius: 100%;
+}
 
 .add_task_button {
   display: flex;
@@ -159,19 +164,24 @@
 .add-column-task-btn {
   width: 32px;
   height: 32px;
-  border: 2px #2a3647;
-  font-size: 24px;
+  border: 2px solid #2a3647;
+  background-color: transparent;
+  color: #2a3647;
+  font-size: 20px;
+  font-weight: 700;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 125ms ease, transform 125ms ease;
+  transition: 
+    border-color 125ms ease,
+    color 125ms ease;
 }
 
 .add-column-task-btn:hover {
-  background-color: #29abe2;
-  transform: scale(1.1);
+  border-color: #29abe2;
+  color: #29abe2;
 }
 
 .task-list {

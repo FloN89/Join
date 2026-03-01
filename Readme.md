@@ -30,20 +30,20 @@
 - Initialien fehlen im Dropdown menu bei assigned to vor den namen -> DONE
 - Divider fehlt -> DONE
 - fliessender uebergang beim dropdown menu oeffnen -> DONE
-- subtask fehlt x zum loeschen und haken zum akzeptieren
+- subtask fehlt x zum loeschen und haken zum akzeptieren -> DONE
 - required fields abfrage pruefen -> DONE
 - bestaetigungs overlay muss einfliegen -> DONE
-- Ausgewaehlte User bekommen dunkel blauen Hintergrund
+- Ausgewaehlte User bekommen dunkel blauen Hintergrund ---> bitte nochmal drüber schauen. (besser bekomme ich es nicht hin)
 
 
 #### Board (Florian, Osman, Enrico)
 - Leere Liste, no task in progress, hintergrund grau, und schmaler -> DONE
 - Kartenbreite breiter machen -> DONE
 - Overlay vom karten oeffnen ist kaputt -> DONE
-- Suche funktioinert nicht
-- plus buttons haben hellen hintergrund
-- Add Task overlay siehe Add Task
-- Lupe hovereffect
+- Suche funktioinert nicht -> DONE 
+- plus buttons haben hellen hintergrund -> DONE
+- Add Task overlay siehe Add Task ->DONE
+- Lupe hovereffect ->DONE
 - Status in Datenbank updaten beim Karten verschieben Zeile 190 in board.js -> DONE
 - große Karte: subtasks blauer rahmen
 - Osman: große karte gibt fehlermeldung auf
@@ -93,7 +93,7 @@
 
 #### Add Task
 - Headline etwas groesser -> DONE
-- Ausgewaehltes Feld blauer rahmen
+- Ausgewaehltes Feld blauer rahmen -> DONE
 - Create Task Button braucht haken -> DONE
 - Clear und Create Task Buttons sind fix unten beim scrollen -> DONE
 - Rest siehe Desktop

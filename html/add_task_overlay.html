@@ -168,13 +168,15 @@
                 placeholder="Add new subtask"
                 onkeydown="handleSubtaskKey(event)"
               />
-              <button
-                type="button"
-                onclick="addSubtask()"
-                class="subtask-add-btn"
-              >
-                +
-              </button>
+              <div class="subtask-input-actions" aria-label="Subtask actions">
+  <button type="button" class="subtask-action-btn" onclick="clearSubtaskInput()" aria-label="Clear subtask">
+    <img src="../assets/icons/close.svg" alt="Clear" />
+  </button>
+  <span class="subtask-action-divider" aria-hidden="true"></span>
+  <button type="button" class="subtask-action-btn" onclick="addSubtask()" aria-label="Add subtask">
+    <img src="../assets/icons/check.svg" alt="Add" />
+  </button>
+</div>
             </div>
             <ul id="subtask-list"></ul>
           </div>
