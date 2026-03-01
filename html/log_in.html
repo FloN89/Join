@@ -4,18 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Log In</title>
-   
-    <link rel="stylesheet" href="../styles/1-settings/variables.css"/>
-    <link rel="stylesheet" href="../styles/2-base/base.css"/>
-    <link rel="stylesheet" href="../styles/3-layout/layout.css"/>
-    <link rel="stylesheet" href="../styles/5-pages/log_in.css"/>
-    
+
+    <link rel="stylesheet" href="../styles/1-settings/variables.css" />
+    <link rel="stylesheet" href="../styles/2-base/base.css" />
+    <link rel="stylesheet" href="../styles/3-layout/layout.css" />
+    <link rel="stylesheet" href="../styles/5-pages/log_in.css" />
   </head>
 
   <body>
     <header class="app-header">
       <img class="app-logo" src="../assets/icons/join_logo_1.png" />
-      <div class="signup-area is-hidden">
+      <div class="signup-area">
         <p>Not a Join user?</p>
         <a class="signup-button" href="sign-up.html">Sign up</a>
       </div>
@@ -25,45 +24,47 @@
       <section class="login-panel">
         <h1 class="panel-title">Log in</h1>
 
-        <div id="login-error-box" class="error-box" style="display: none;"></div>
+        <div id="login-error-box" class="error-box" style="display: none"></div>
 
-       <div class="form-fields">
-  <input
-    class="input input-email"
-    type="email"
-    name="email"
-    placeholder="E-Mail"
-    required
-  />
+        <div class="form-fields">
+          <input
+            class="input input-email"
+            type="email"
+            name="email"
+            placeholder="E-Mail"
+            required
+          />
 
-  <div class="input-wrapper">
-    <input
-      class="input input-password"
-      type="password"
-      name="password"
-      placeholder="Password"
-      required
-    />
-    <button
-      type="button"
-      class="icon-btn password-toggle is-lock"
-      aria-label="Passwort anzeigen"
-    ></button>
-  </div>
-</div>
+          <div class="input-wrapper">
+            <input
+              class="input input-password"
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <button
+              type="button"
+              class="icon-btn password-toggle is-lock"
+              aria-label="Passwort anzeigen"
+            ></button>
+          </div>
+        </div>
 
-<div class="button-row">
-  <a class="btn btn-primary" href="#" onclick="startLogin(event)">Log in</a>
- <a class="btn btn-ghost" href="#" onclick="guestLogin(event)">Guest Log in</a>
+        <div class="button-row">
+          <a class="btn btn-primary" href="#" onclick="startLogin(event)"
+            >Log in</a
+          >
+          <a class="btn btn-ghost" href="#" onclick="startGuestLogin(event)"
+            >Guest Log in</a
+          >
+        </div>
 
-</div>
-
-       
-
-      <div class="signup-area-mobile">
-        <p>Not a Join user?</p>
-        <a class="signup-button" href="sign-up.html">Sign up</a>
-      </div>
+        <div class="signup-area-mobile">
+          <p>Not a Join user?</p>
+          <a class="signup-button" href="sign-up.html">Sign up</a>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -71,13 +72,12 @@
       <a href="legal-notice.html">Legal notice</a>
     </footer>
 
-<div id="welcome-overlay" class="welcome-overlay">
-  <div class="welcome-card">
-    <h1 class="welcome-title">Good morning!</h1>
-    <h2 id="welcome-name" class="welcome-name"></h2>
-  </div>
-</div>
-
+    <div id="welcome-overlay" class="welcome-overlay">
+      <div class="welcome-card">
+        <h1 class="welcome-title">Good morning!</h1>
+        <h2 id="welcome-name" class="welcome-name"></h2>
+      </div>
+    </div>
 
     <script src="../js/log_in.js"></script>
   </body>

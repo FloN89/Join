@@ -1,10 +1,9 @@
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
-  padding: 80px 0;              
+  justify-content: space-between;
+  padding: 80px 0;
 }
-
 
 .signup-area {
   display: flex;
@@ -43,11 +42,10 @@
 
 .app-header,
 .main-area {
-  max-width: 1440px;  
-  margin: 0 auto;    
+  max-width: 1440px;
+  margin: 0 auto;
   width: 100%;
 }
-
 
 .login-panel {
   background-color: var(--color-white);
@@ -67,7 +65,7 @@
   font-weight: 700;
   font-size: 58px;
   margin: 0;
-  margin-bottom: 8px;   
+  margin-bottom: 8px;
   padding: 0 20px 6px;
   border-bottom: none;
 }
@@ -75,11 +73,11 @@
 .panel-title::after {
   content: "";
   display: block;
-  width: 80px;          
+  width: 80px;
   height: 3px;
   background: var(--color-primary-light);
   border-radius: 999px;
-  margin: 8px auto 0;   
+  margin: 8px auto 0;
 }
 
 .form-fields {
@@ -87,8 +85,9 @@
   flex-direction: column;
   gap: 20px;
   width: 70%;
-  margin: 16px auto 0;  
+  margin: 16px auto 0;
 }
+
 .input {
   border-radius: var(--border-radius-medium);
   border: 1px solid var(--color-border);
@@ -98,14 +97,14 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
+
 .input-email {
   background-image: url(/assets/icons/mail.svg);
-
 }
 
 .input-wrapper {
   position: relative;
-  display: inline-block;  
+  display: inline-block;
   width: 100%;
 }
 
@@ -124,7 +123,7 @@
 
 .icon-btn.password-toggle {
   position: absolute;
-  right: 12px;             
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   width: 24px;
@@ -133,26 +132,23 @@
   border: 0;
   padding: 0;
   cursor: pointer;
-  z-index: 2;               
-  opacity: .9;
+  z-index: 2;
+  opacity: 0.9;
 }
 
-
-
-.icon-btn.password-toggle.is-lock { 
-  background-image: url(/assets/icons/lock.svg); 
+.icon-btn.password-toggle.is-lock {
+  background-image: url(/assets/icons/lock.svg);
 }
-.icon-btn.password-toggle.is-off  { 
-  background-image: url(/assets/icons/visibility_off.svg); 
+.icon-btn.password-toggle.is-off {
+  background-image: url(/assets/icons/visibility_off.svg);
 }
-.icon-btn.password-toggle.is-on   {
-   background-image: url(/assets/icons/visibility.svg); 
-  }
-
-.icon-btn.password-toggle:hover { 
-  opacity: 1; 
+.icon-btn.password-toggle.is-on {
+  background-image: url(/assets/icons/visibility.svg);
 }
 
+.icon-btn.password-toggle:hover {
+  opacity: 1;
+}
 
 .error-box {
   color: var(--color-error);
@@ -160,7 +156,6 @@
   margin-bottom: 10px;
   text-align: center;
 }
-
 
 .button-row {
   display: flex;
@@ -170,8 +165,8 @@
   padding-bottom: 60px;
 }
 
-.button-row a { 
-  text-decoration: none; 
+.button-row a {
+  text-decoration: none;
 }
 
 .btn {
@@ -209,16 +204,15 @@
   box-shadow: var(--shadow-medium);
 }
 
-
 .app-logo {
-  position: static;  
+  position: static;
   width: 150px;
   height: auto;
   transform: none;
   transition: none;
 }
 
-
+/* Fade-In für Hauptbereiche */
 .main-area,
 .site-footer,
 .signup-area {
@@ -226,13 +220,14 @@
   transition: opacity 2s ease-in-out;
 }
 
-.is-visible { opacity: 1; }
-
-body.page-loaded .app-header { 
-  opacity: 1; 
-  transition: opacity 0.3s ease-in; 
+.is-visible {
+  opacity: 1;
 }
 
+body.page-loaded .app-header {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
 
 .site-footer {
   display: flex;
@@ -245,7 +240,6 @@ body.page-loaded .app-header {
 .site-footer a {
   text-decoration: none;
   color: var(--color-text-secondary);
-
 }
 
 .site-footer a:hover {
@@ -253,15 +247,9 @@ body.page-loaded .app-header {
   font-weight: 700;
 }
 
-
-.signup-area-mobile { 
-  display: none; 
+.signup-area-mobile {
+  display: none;
 }
-
-.is-hidden { 
-  display: flex; 
-}
-
 
 /* Welcome Overlay (nur Mobile ≤ 480px) */
 .welcome-overlay {
@@ -270,7 +258,7 @@ body.page-loaded .app-header {
   background: #f6f7f8;
   z-index: 999999;
 
-  /* JS setzt display/opacity inline */
+  /* Wird durch JavaScript sichtbar geschaltet */
   display: none;
   opacity: 0;
   pointer-events: none;
@@ -278,21 +266,27 @@ body.page-loaded .app-header {
   justify-content: center;
   align-items: center;
 }
-.welcome-overlay.is-visible {
-  opacity: 1;
-  pointer-events: auto;
+
+.welcome-card {
+  text-align: center;
+  padding: 24px;
 }
 
-.welcome-overlay.is-hide {
-  opacity: 0;
-  pointer-events: none;
+.welcome-title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 400;
+  color: #2a3647;
 }
 
-.welcome-card { text-align: center; padding: 24px; }
-.welcome-title { margin: 0; font-size: 36px; font-weight: 400; color: #2a3647; }
-.welcome-name  { margin: 10px 0 0; font-size: 32px; font-weight: 700; color: #29abe2; }
+.welcome-name {
+  margin: 10px 0 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #29abe2;
+}
 
-/* WICHTIG: Sobald Welcome aktiv ist, Login-Seite wirklich entfernen */
+/* Wenn Welcome aktiv ist, Login-Seite komplett entfernen */
 body.welcome-active .app-header,
 body.welcome-active .main-area,
 body.welcome-active .site-footer {
@@ -301,38 +295,38 @@ body.welcome-active .site-footer {
 
 /* Auf größeren Screens: Overlay komplett deaktivieren */
 @media (min-width: 481px) {
-  .welcome-overlay { display: none !important; }
+  .welcome-overlay {
+    display: none !important;
+  }
 }
 
 @media (max-width: 1360px) {
-  body.page-loaded .app-logo { 
-    padding-left: 150px; 
+  body.page-loaded .app-logo {
+    padding-left: 150px;
   }
-  .app-header { 
-    padding-right: 150px; 
+  .app-header {
+    padding-right: 150px;
     padding-left: 150px;
   }
 }
 
 @media (max-width: 1024px) {
-  .app-header { 
-    display: flex; 
-    flex-direction: row; 
-  
+  .app-header {
+    display: flex;
+    flex-direction: row;
   }
-  body.page-loaded .app-logo { 
-    padding-left: 50px; 
-    
+  body.page-loaded .app-logo {
+    padding-left: 50px;
   }
 }
 
 @media (max-width: 680px) {
-  .app-header { 
-    flex-direction: column; 
-    gap: 30px; 
+  .app-header {
+    flex-direction: column;
+    gap: 30px;
   }
-  .signup-area { 
-    display: none; 
+  .signup-area {
+    display: none;
   }
   .signup-area-mobile {
     display: inline-flex;
@@ -340,33 +334,37 @@ body.welcome-active .site-footer {
     gap: 10px;
   }
 
-  .signup-button { 
-    font-size: 20px; 
+  .signup-button {
+    font-size: 20px;
   }
+
   .login-panel {
-     width: 80%; 
-     padding: 10px; 
-     border-radius: var(--border-radius-large); 
-    }
-  .form-fields { 
-    width: 80%; 
+    width: 80%;
+    padding: 10px;
+    border-radius: var(--border-radius-large);
   }
+
+  .form-fields {
+    width: 80%;
+  }
+
   .button-row {
-     width: 100%; 
-     gap: 5px; 
+    width: 100%;
+    gap: 5px;
   }
-  .panel-title { 
+
+  .panel-title {
     font-size: 28px;
   }
-  .panel-title::after { 
-    width: 60px; 
+
+  .panel-title::after {
+    width: 60px;
   }
-  .app-logo { 
-    width: 150px; 
-    
+
+  .app-logo {
+    width: 150px;
   }
 }
-
 
 @media (max-width: 480px) {
   .app-header {
@@ -386,15 +384,17 @@ body.welcome-active .site-footer {
   }
 
   .main-area {
-  padding: 60px 16px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
- .login-panel {
-    position: relative;
-    padding-bottom: 100px; 
+    padding: 60px 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .login-panel {
+    position: relative;
+    padding-bottom: 100px;
+  }
+
   .panel-title {
     font-size: 47px;
     margin-bottom: 8px;
@@ -425,23 +425,24 @@ body.welcome-active .site-footer {
 
   .signup-area-mobile {
     position: absolute;
-    bottom: -100px;         
+    bottom: -100px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 32px;
-   
   }
-.signup-button  {
-  font-size: 16px;
-  font-weight: 400px;
-}
-}
+
+  .signup-button {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
   .site-footer {
     padding-top: 150px;
     padding-bottom: 24px;
     gap: 32px;
     font-size: 16px;
   }
+}
