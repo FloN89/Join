@@ -5,37 +5,22 @@ body {
   color: #2a3647;
 }
 
-.main-area {
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  border-radius: 24px;
-}
-
-.add-task-container {
-  max-width: 900px;
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 0 10px 2px #f0f0f0;
-  padding: 32px 32px 24px;
-  box-sizing: border-box;
-}
-
-.panel-title {
-  margin: 0 0 24px;
-  font-size: 32px;
-  font-weight: 700;
-  color: #2a3647;
-}
+/* =========================
+   OVERLAY LAYOUT
+   ========================= */
 
 .add-task-overlay {
   position: fixed;
-  inset: 0;                 
+  inset: 0;
   z-index: 1000;
   pointer-events: none;
   opacity: 0;
   transition: opacity 220ms ease;
+}
+
+.add-task-overlay.active {
+  pointer-events: auto;
+  opacity: 1;
 }
 
 .add-task-backdrop {
@@ -49,21 +34,32 @@ body {
   top: 50%;
   left: 50%;
   width: min(900px, 94vw);
-  background: #fff;
+  background: #ffffff;
   overflow: hidden;
   transform: translate(100vw, -50%);
   transition: transform 300ms ease;
   border-radius: 24px;
 }
 
-
-.add-task-overlay.active {
-  pointer-events: auto;
-  opacity: 1;
+.add-task-overlay.active .add-task-panel {
+  transform: translate(-50%, -50%);
 }
 
-.add-task-overlay.active .add-task-panel {
-   transform: translate(-50%, -50%);
+body.overlay-open {
+  overflow: hidden;
+}
+
+/* =========================
+   PANEL CONTENT
+   ========================= */
+
+.add-task-container {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 0 10px 2px #f0f0f0;
+  padding: 32px 32px 24px;
+  box-sizing: border-box;
 }
 
 .add-task-close {
@@ -73,8 +69,11 @@ body {
   cursor: pointer;
 }
 
-body.overlay-open {
-  overflow: hidden;
+.panel-title {
+  margin: 0 0 24px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2a3647;
 }
 
 .form-grid-add {
@@ -98,7 +97,7 @@ body.overlay-open {
 label {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 input[type="text"],
@@ -120,10 +119,14 @@ textarea {
 input[type="text"]:focus,
 input[type="date"]:focus,
 textarea:focus {
-  border: 2px solid #29ABE2;
+  border: 2px solid #29abe2;
   outline: none;
   box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.2);
 }
+
+/* =========================
+   PRIORITY
+   ========================= */
 
 .priority-options {
   display: flex;
@@ -141,14 +144,13 @@ textarea:focus {
   justify-content: center;
   gap: 8px;
   padding: 10px 8px;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid #d1d1d1;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.15s ease, color 0.15s ease,
-    border-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .priority-button img {
@@ -160,45 +162,50 @@ input#priority-urgent:checked + label.urgent {
   background-color: var(--color-priority-urgent);
   border-color: var(--color-priority-urgent);
   color: var(--color-white);
-  font-weight: 700; 
+  font-weight: 700;
 }
 
 input#priority-medium:checked + label.medium {
   background-color: var(--color-priority-medium);
   border-color: var(--color-priority-medium);
   color: var(--color-white);
-  font-weight: 700; 
+  font-weight: 700;
 }
 
 input#priority-low:checked + label.low {
   background-color: var(--color-priority-low);
   border-color: var(--color-priority-low);
   color: var(--color-white);
-  font-weight: 700; 
+  font-weight: 700;
 }
 
 .priority-options input[type="radio"]:not(:checked) + .priority-button:hover {
   box-shadow: var(--shadow-medium);
 }
 
+/* =========================
+   DROPDOWNS
+   ========================= */
 
 .multiselect-header:hover,
-.category-select-header:hover { 
-  box-shadow: var(--shadow-medium); 
+.category-select-header:hover {
+  box-shadow: var(--shadow-medium);
 }
 
-.custom-multiselect {
+.custom-multiselect,
+.custom-category-select {
   position: relative;
 }
 
-.multiselect-header {
+.multiselect-header,
+.category-select-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid #d1d1d1;
-  background-color: #fff;
+  background-color: #ffffff;
   cursor: pointer;
 }
 
@@ -212,46 +219,34 @@ input#priority-low:checked + label.low {
   padding: 8px;
   border-radius: 10px;
   border: 1px solid #d1d1d1;
-  background-color: #fff;
+  background-color: #ffffff;
   max-height: 150px;
   overflow-y: auto;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 6px;
+.category-dropdown {
+  margin-top: 4px;
   border-radius: 10px;
+  border: 1px solid #d1d1d1;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.checkbox-label:hover {
-  background-color: var(--color-grey-100);
-}
-
-.checkbox-label:has(input[type="checkbox"]:checked) {
-  background-color: var(--color-primary-light);
-  color: var(--color-white);
-}
-
-.checkbox-label input[type="checkbox"] {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #2A3647;
-  border-radius: 4px;
+.category-option {
+  padding: 10px 12px;
+  font-size: 14px;
   cursor: pointer;
-  box-sizing: border-box;
-  padding: 0; 
+  transition: background-color 0.15s ease;
 }
-.checkbox-label input[type="checkbox"]:checked {
-  border: none;
-  background-image: url("/assets/icons/Property 1=hover checked.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-   background-size: 20px 20px;
+
+.category-option:hover {
+  background-color: #d0cccc;
 }
+
+/* =========================
+   ASSIGNEES
+   ========================= */
 
 .selected-assignee-avatars {
   display: flex;
@@ -272,7 +267,6 @@ input#priority-low:checked + label.low {
   justify-content: center;
 }
 
-
 .assignee-row {
   display: flex;
   align-items: center;
@@ -282,10 +276,13 @@ input#priority-low:checked + label.low {
   transition: background-color 0.15s ease;
 }
 
-
-
 .assignee-row:hover {
   background-color: #d0cccc;
+}
+
+.assignee-row.name-selected {
+  background-color: var(--color-primary);
+  color: var(--color-white);
 }
 
 .assignee-left {
@@ -297,13 +294,6 @@ input#priority-low:checked + label.low {
   padding: 6px 8px;
   border-radius: 12px;
 }
-
-
-.assignee-row.name-selected {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-}
-
 
 .assignee-initials {
   width: 34px;
@@ -317,11 +307,9 @@ input#priority-low:checked + label.low {
   font-weight: 500;
 }
 
-
 .assignee-name {
   font-size: 14px;
 }
-
 
 .assignee-checkbox {
   appearance: none;
@@ -333,7 +321,6 @@ input#priority-low:checked + label.low {
   box-sizing: border-box;
 }
 
-
 .assignee-checkbox:checked {
   border: none;
   background-image: url("/assets/icons/Property 1=hover checked.svg");
@@ -342,41 +329,9 @@ input#priority-low:checked + label.low {
   background-size: 20px 20px;
 }
 
-.custom-category-select {
-  position: relative;
-}
-
-
-.category-select-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #d1d1d1;
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.category-dropdown {
-  margin-top: 4px;
-  border-radius: 10px;
-  border: 1px solid #d1d1d1;
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-.category-option {
-  padding: 10px 12px;          
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.category-option:hover {
-  background-color: #d0cccc;
-}
-
+/* =========================
+   SUBTASKS
+   ========================= */
 
 .subtask-input-container {
   position: relative;
@@ -385,7 +340,7 @@ input#priority-low:checked + label.low {
 
 .subtask-input-container input {
   width: 100%;
-  padding: 10px 96px 10px 12px; 
+  padding: 10px 96px 10px 12px;
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   font-size: 16px;
@@ -397,7 +352,6 @@ input#priority-low:checked + label.low {
   border-color: #29abe2;
 }
 
-
 .subtask-input-actions {
   position: absolute;
   right: 12px;
@@ -407,7 +361,6 @@ input#priority-low:checked + label.low {
   align-items: center;
   gap: 8px;
 }
-
 
 .subtask-action-btn {
   background: none;
@@ -419,30 +372,15 @@ input#priority-low:checked + label.low {
   justify-content: center;
 }
 
-
-.checkSub-btn {
-  width: 14px;
-  height: 14px;
-}
-
-.closeSub-btn {
-  width: 24px;
-  height: 24px;
-
-}
-
 .subtask-action-btn:hover {
   transform: scale(1.1);
 }
-
 
 .subtask-action-divider {
   width: 1px;
   height: 20px;
   background: #d1d1d1;
 }
-
-
 
 #subtask-list {
   list-style: none;
@@ -476,7 +414,6 @@ input#priority-low:checked + label.low {
   font-size: 16px;
 }
 
-
 .subtask-actions {
   display: flex;
   gap: 8px;
@@ -500,6 +437,9 @@ input#priority-low:checked + label.low {
   height: 16px;
 }
 
+/* =========================
+   FOOTER / BUTTONS
+   ========================= */
 
 .form-footer {
   margin-top: 20px;
@@ -512,7 +452,7 @@ input#priority-low:checked + label.low {
 
 .form-hint {
   font-size: 12px;
-  color: #888;
+  color: #888888;
   font-style: italic;
 }
 
@@ -532,13 +472,12 @@ input#priority-low:checked + label.low {
   cursor: pointer;
   border: 1px solid transparent;
   background-color: transparent;
-  transition: background-color 0.15s ease, color 0.15s ease,
-    box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-primary {
   background-color: #2b3646;
-  color: #fff;
+  color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -547,7 +486,7 @@ input#priority-low:checked + label.low {
 }
 
 .btn-ghost {
-  background-color: #fff;
+  background-color: #ffffff;
   color: #2b3646;
   border-color: #2a3647;
 }
@@ -561,8 +500,6 @@ input#priority-low:checked + label.low {
 .required-marker {
   color: #ff3d00;
 }
-
-
 
 .input-error {
   border-color: #ff3d00 !important;
@@ -579,8 +516,7 @@ input#priority-low:checked + label.low {
   display: block;
 }
 
-
-
+/* Utility: "d-none" wird hier als animiertes "collapsed" genutzt */
 .d-none {
   opacity: 0;
   max-height: 0;
@@ -591,16 +527,14 @@ input#priority-low:checked + label.low {
 
 .multiselect-dropdown,
 .category-dropdown {
-  transition: 
-    opacity 200ms ease,
-    transform 200ms ease,
-    max-height 250ms ease;
+  transition: opacity 200ms ease, transform 200ms ease, max-height 250ms ease;
 }
 
 @media (max-width: 768px) {
   .form-grid-add {
     flex-direction: column;
   }
+
   .form-divider {
     display: none;
   }
