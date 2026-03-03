@@ -46,8 +46,8 @@
 - Lupe hovereffect ->DONE
 - Status in Datenbank updaten beim Karten verschieben Zeile 190 in board.js -> DONE
 - große Karte: subtasks blauer rahmen
-- Osman: große karte gibt fehlermeldung auf
-- Osman: Save Button funktioniert nicht
+- Osman: große karte gibt fehlermeldung auf -> DONE
+- Osman: Save Button funktioniert nicht -> DONE
 
 #### Contacts (Osman)
 - Edit  Contact, im dunkelblauen bereich muss der weisser rand weg und das markierte eingabe feld braucht einen hellblauen rahmen -> DONE
@@ -84,7 +84,7 @@
 - Bei Login mit User kurz welcome message
 
 #### Sign Up
-- Siehe Desktop
+- Siehe Desktop -> DONE  
 
 
 #### Summary
@@ -104,10 +104,10 @@
 
 #### Contacts
 
-- Abstand zwischen Headline und Contact ist zu gross
-- User bleibt beim zureuck ausgewaehlt
+- Abstand zwischen Headline und Contact ist zu gross -> Wo?
+- User bleibt beim zureuck ausgewaehlt -> DONE
 - Overlay siehe Dekstop
-- Edit Overlay delete Button fehlt
+- Edit Overlay delete Button fehlt -> DONE
 
 #### Help
 - Bisschen mehr abstand von rechts -> DONE
