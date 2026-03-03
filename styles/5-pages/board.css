@@ -90,7 +90,7 @@
 }
 .search_button:hover{
   transform: translate(2px);
-  background-color: rgb(243, 235, 235);
+  background-color: rgb(246, 238, 238);
   border-radius: 100%;
 }
 
