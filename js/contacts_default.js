@@ -57,9 +57,16 @@ function renderActionButton(contactId) {
 function backToContacts() {
     const wrapper = document.querySelector(".contact-wrapper");
     const actionButton = document.getElementById("action-button");
+    const selectContact = document.getElementById("contact-content");
 
     wrapper.classList.remove("show-detail");
     actionButton.innerHTML = "";
+    closeOverlay();
+
+    if (window.innerWidth <= 768) {
+        removeBackgroundColor();
+        selectContact.classList.remove("show");
+    }
 }
 
 function changeBackgroundColor(contactId) {
@@ -80,6 +87,7 @@ function removeBackgroundColor() {
 function openCreateModal() {
     const modal = document.getElementById("newContactModal");
     const backgroundRef = document.querySelector(".add-contact-overlay-background");
+    modal.classList.remove("edit-contact-mode");
     modal.innerHTML = generateModalContent(
         "Add contact",
         "Cancel",
@@ -97,6 +105,7 @@ function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
     const backgroundRef = document.querySelector(".add-contact-overlay-background");
     const contactInfo = contacts[contactId];
+    modal.classList.add("edit-contact-mode");
     modal.innerHTML = generateModalContent(
         "Edit contact",
         "Delete",
@@ -155,6 +164,7 @@ function toggleModal() {
     const backgroundRef = document.querySelector(".add-contact-overlay-background");
 
     modalRef.classList.remove("show");
+    modalRef.classList.remove("edit-contact-mode");
     backgroundRef.classList.remove("show");
 }
 
