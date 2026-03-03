@@ -414,7 +414,7 @@ function renderSubtasks(subtasks, id) {
 async function toggleSubtaskCompletion(id, subtaskIndex) {
   const subtasks = task[id].subtasks || []; //aktuelle Subtasks holen
   subtasks[subtaskIndex].done = !subtasks[subtaskIndex].done; //Boolean umkehren
-  await saveData("task/" + id, {
+  await saveData((sessionStorage.getItem("userId") === "guest" ? "guest-tasks/" : "task/") + id, {
     ...task[id], //alle anderen Task-Daten beibehalten
     subtasks: subtasks //aktualisierte Subtasks speichern
   });
@@ -444,23 +444,28 @@ function openEditTaskOverlay(id) {
 }
 
 async function saveChanges(id) {
+  const isGuest = sessionStorage.getItem("userId") === "guest";
+  const path = (isGuest ? "guest-tasks/" : "task/") + id;
+
+  // nimmt guestTasks oder task – je nachdem was existiert
+  const currentTask = (guestTasks && guestTasks[id]) || (task && task[id]);
+
   const title = document.getElementById("edit-title").value;
   const description = document.getElementById("edit-description").value;
   const dueDate = document.getElementById("edit-due-date").value;
-
   const priority = document.querySelector('input[name="priority"]:checked')?.value;
 
   const assignees = getSelectedAssignees();
   const subtasks = getEditedSubtasks();
 
-  await saveData("task/" + id, {
-    ...task[id],
-    title: title,
-    description: description,
-    dueDate: dueDate,
-    priority: priority,
+  await saveData(path, {
+    ...currentTask,
+    title,
+    description,
+    dueDate,
+    priority,
     assignedTo: assignees,
-    subtasks: subtasks
+    subtasks
   });
 
   await fetchTasks();
@@ -550,6 +555,39 @@ function getEditedSubtasks() {
   return subtasks;
 }
 
+function getSelectedAssignees() {
+  const assignees = [];
+
+  document.querySelectorAll("#assignee-dropdown .assignee-checkbox:checked").forEach((checkbox) => {
+    assignees.push({
+      name: checkbox.dataset.name,
+      color: checkbox.dataset.color
+    });
+  });
+
+  return assignees;
+}
+
+function updateAssigneeDisplay() {
+  const selectedAssignees = getSelectedAssignees();
+  const avatarsContainer = document.getElementById("selected-assignee-avatars");
+  const placeholder = document.getElementById("selected-assignees-placeholder");
+
+  if (!avatarsContainer || !placeholder) return;
+
+  avatarsContainer.innerHTML = "";
+
+  selectedAssignees.forEach((assignee) => {
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = getInitials(assignee.name);
+    avatar.style.backgroundColor = assignee.color;
+    avatarsContainer.appendChild(avatar);
+  });
+
+  placeholder.textContent = selectedAssignees.length ? "" : "Select contacts";
+}
+
 function renderEditAssignees(taskAssignees = []) {
   const assigneeDropdown = document.getElementById("assignee-dropdown");
   if (!assigneeDropdown) return;
@@ -571,7 +609,7 @@ function renderEditAssignees(taskAssignees = []) {
 }
 
 async function deleteTask(taskId) {
-  await deleteData("task/" + taskId);
+  await deleteData((sessionStorage.getItem("userId") === "guest" ? "guest-tasks/" : "task/") + taskId);
   closeTaskOverlay();
   await fetchTasks();
 }
@@ -582,7 +620,7 @@ function closeTaskOverlay() {
   const editOverlay = document.getElementById("edit_task_overlay");
 
   taskOverlay.classList.remove("active");
-  taskOverlay.style.display = "none";  
+  taskOverlay.style.display = "none";
 
   background.style.display = "none";
   editOverlay.innerHTML = "";

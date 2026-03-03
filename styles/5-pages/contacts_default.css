@@ -663,6 +663,12 @@ header h2 {
     display: none;
   }
 
+  .newContactModal.edit-contact-mode .cancel-btn {
+    display: flex;
+    width: 120px;
+    height: 44px;
+  }
+
   .create-btn {
     width: 220px;
     height: 44px;
@@ -671,6 +677,10 @@ header h2 {
     justify-content: center;
     gap: 8px;
     font-weight: bold;
+  }
+
+  .newContactModal.edit-contact-mode .create-btn {
+    width: 120px;
   }
 
   .create-btn:active {
@@ -982,6 +992,12 @@ header h2 {
     display: none;
   }
 
+  .newContactModal.edit-contact-mode .cancel-btn {
+    display: flex;
+    width: 140px;
+    height: 50px;
+  }
+
   .create-btn {
     width: 260px;
     height: 50px;
@@ -990,6 +1006,10 @@ header h2 {
     justify-content: center;
     gap: 8px;
     font-weight: 700;
+  }
+
+  .newContactModal.edit-contact-mode .create-btn {
+    width: 140px;
   }
 
   .close {
