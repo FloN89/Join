@@ -28,9 +28,13 @@ function setPublicSidebar() {
   const userId = sessionStorage.getItem("userId");
 
   if (isPublic && !userId) {
+    const sidebar = document.querySelector("#sidebar");
     const sidebarNav = document.querySelector("#sidebar .sidebar-nav ul");
     if (sidebarNav) {
       sidebarNav.innerHTML = `<li><a href="/html/log_in.html"><img src="/assets/icons/login.svg" alt="Login"><span class="label">Log In</span></a></li>`;
+    }
+    if (sidebar) {
+      sidebar.classList.add("public-page");
     }
   }
 }

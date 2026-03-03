@@ -166,4 +166,50 @@ nav a {
   .sidebar-footer {
     display: none;
   }
+
+  /* === Public Page: Login left, PP + LN right === */
+  #sidebar.public-page {
+    justify-content: space-between;
+    padding: 15px 16px;
+  }
+
+  #sidebar.public-page .sidebar-nav {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-nav ul {
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-footer {
+    display: flex;
+    padding-top: 0;
+    flex: 0 0 auto;
+    margin-left: auto;
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-footer ul {
+    flex-direction: row;
+    height: auto;
+    gap: 4px;
+    align-items: center;
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-footer li {
+    flex: none;
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-footer a {
+    padding: 16px 22px;
+    width: auto;
+    border-radius: var(--border-radius-small);
+  }
+
+  #sidebar.public-page .sidebar-footer li:has(a.active) {
+    border-radius: var(--border-radius-small);
+  }
 }
