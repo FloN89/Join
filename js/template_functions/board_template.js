@@ -135,3 +135,33 @@ function getInitalsImgTaskOverlay(color, contactId) {
         ${getInitals((contactId))}
     </div > `
 }
+
+function generateTaskOverlayAssignee(person) {
+    return `
+      <div class="task-overlay-assignee">
+        ${createUserBadge(person)}
+        ${person.name}
+      </div>
+    `;
+}
+
+function generateTaskOverlaySubtask(subtask, index, id) {
+    return `
+      <li class="subtask-list">
+        <input class="subtaskCheckbox"
+          id="subtaskCheckbox-${index}"
+          type="checkbox" ${subtask.done ? "checked" : ""}
+          onchange="toggleSubtaskCompletion('${id}', ${index})">
+        <label for="subtaskCheckbox-${index}">${subtask.title}</label>
+      </li>
+    `;
+}
+
+function generateEditSubtaskItem(title) {
+    return `
+      <div class="subtask-item-content">
+        <span class="subtask-bullet">&bull;</span>
+        <span class="subtask-title" contenteditable="false">${title}</span>
+      </div>
+    `;
+}
