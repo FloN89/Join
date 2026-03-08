@@ -244,6 +244,11 @@ input#priority-low:checked + label.low {
   background-color:  #f5efef;
 }
 
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 /* =========================
    ASSIGNEES
    ========================= */

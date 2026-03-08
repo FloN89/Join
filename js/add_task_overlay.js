@@ -276,9 +276,18 @@ function hideCategoryError() {
 /** Submit-Handler: validiert, sammelt Daten, speichert in Firebase. */
 async function handleFormSubmit(submitEvent) {
   submitEvent.preventDefault();
-  if (!validateForm()) return;
-  const taskObject = collectTaskData();
-  await saveTask(taskObject);
+
+  const submitBtn = document.querySelector(".create-btn");
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    if (!validateForm()) return;
+
+    const taskObject = collectTaskData();
+    await saveTask(taskObject);
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
 }
 
 /** Validiert Pflichtfelder: Title, Due Date, Category. */

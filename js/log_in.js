@@ -46,9 +46,24 @@ function readTrimmedInputValue(selectorText) {
  * Prüft, ob E-Mail und Passwort gefüllt sind.
  */
 function areLoginInputsValid(email, password) {
-  if (email && password) return true;
-  showErrorMessage("Bitte E-Mail und Passwort eingeben.");
-  return false;
+  if (!email || !password) {
+    showErrorMessage("Bitte E-Mail und Passwort eingeben.");
+    return false;
+  }
+
+  if (!isValidEmailAddress(email)) {
+    showErrorMessage("Bitte eine gültige E-Mail-Adresse eingeben.");
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Prüft grob das Format einer E-Mail-Adresse.
+ */
+function isValidEmailAddress(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
 }
 
 /**

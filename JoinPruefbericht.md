@@ -98,9 +98,9 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 ```
 - contacts_default.js: Validierung für Name (Pflicht), E-Mail (Format),
   Telefon (Format) vor dem Speichern ergänzen
-- log_in.html: required-Attribut entfernen, stattdessen JS-Validierung nutzen
+- log_in.html: required-Attribut entfernen, stattdessen JS-Validierung nutzen --> DONE
 - sign-up.html: required-Attribute entfernen, stattdessen JS-Validierung nutzen
-- add_task_overlay.js: Submit-Button während dem fetch() deaktivieren und danach wieder aktivieren
+- add_task_overlay.js: Submit-Button während dem fetch() deaktivieren und danach wieder aktivieren -- > DONE
 ```
 
 ---
