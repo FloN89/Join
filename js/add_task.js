@@ -354,11 +354,14 @@ function setCategoryPlaceholderText(categoryValue) {
   const placeholderElement = document.getElementById("selected-category-placeholder");
   if (!placeholderElement) return;
 
-  if (categoryValue === "technical-task") placeholderElesment.textContent = "Technical Task";
-  if (categoryValue === "user-story") placeholderElement.textContent = "User Story";
-  if (!categoryValue) placeholderElement.textContent = "Select category";
+  if (categoryValue === "technical-task") {
+    placeholderElement.textContent = "Technical Task";
+  } else if (categoryValue === "user-story") {
+    placeholderElement.textContent = "User Story";
+  } else {
+    placeholderElement.textContent = "Select category";
+  }
 }
-
 function removeCategoryError() {
   const errorElement = document.getElementById("error-category");
   if (!errorElement) return;
