@@ -24,13 +24,13 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 | Status | Punkt | Details |
 |--------|-------|---------|
 | ❌ | **`board.js` hat 794 Zeilen** | Max. 400 erlaubt – Datei aufteilen |
-| ❌ | **`add_task.js` hat 664 Zeilen** | Max. 400 erlaubt – Datei aufteilen |
-| ❌ | **`add_task_overlay.js` hat 553 Zeilen** | Max. 400 erlaubt – Datei aufteilen |
+| ❌ | **`add_task.js` hat 664 Zeilen** | Max. 400 erlaubt – Datei aufteilen | --> DONE
+| ❌ | **`add_task_overlay.js` hat 553 Zeilen** | Max. 400 erlaubt – Datei aufteilen | --> DONE
 | ❌ | **`handleTouchMove()` in `board.js` hat ~77 Zeilen** | Max. 14 (ohne HTML) erlaubt |
 | ❌ | **`handleTouchEnd()` in `board.js` hat ~41 Zeilen** | Max. 14 erlaubt |
 | ❌ | **`board.js` hat nur 6 JSDoc-Blöcke bei 794 Zeilen** | Alle Funktionen dokumentieren |
 | ❌ | **`console.log` in `topbar-loader.js`** (Zeilen 16, 21, 27) | Vor Abgabe entfernen |
-| ⚠️ | `summary_guest.js` ist leer | Entfernen oder befüllen |
+| ⚠️ | `summary_guest.js` ist leer | Entfernen oder befüllen | --> DONE
 | ✅ | camelCase für alle Funktionen und Variablen |
 | ✅ | `add_task_overlay.js` hat sehr gute JSDoc-Dokumentation (63 Blöcke) |
 | ✅ | `add_task.js` hat gute JSDoc-Dokumentation (17 Blöcke) |
@@ -40,11 +40,11 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 
 ```
 - board.js aufteilen: z.B. board-drag.js, board-search.js, board-render.js
-- add_task.js aufteilen: z.B. add_task-form.js, add_task-submit.js
+- add_task.js aufteilen: z.B. add_task-form.js, add_task-submit.js --> DONE
 - handleTouchMove() in board.js in kleinere Funktionen aufteilen
 - JSDoc für alle Funktionen in board.js ergänzen
 - console.log/error Aufrufe aus topbar-loader.js entfernen
-- summary_guest.js entfernen oder befüllen
+- summary_guest.js entfernen oder befüllen --> DONE
 ```
 
 ---
