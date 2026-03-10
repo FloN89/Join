@@ -3,11 +3,32 @@ let id = [];
 
 async function fetchContacts() {
     contacts = await loadData("contacts/") || {};
+    await includeLoggedInUserInContacts();
     id = Object.keys(contacts).sort((a, b) => {
-        return contacts[a].contactName
-            .localeCompare(contacts[b].contactName);
+        return getContactNameById(a).localeCompare(getContactNameById(b));
     });
     renderContacts();
+}
+
+async function includeLoggedInUserInContacts() {
+    const userId = sessionStorage.getItem("userId");
+    if (!userId || userId === "guest" || contacts[userId]) return;
+
+    const user = await loadData("users/" + userId);
+    if (!user) return;
+
+    contacts[userId] = {
+        contactName: String(user.username || user.name || "").trim(),
+        contactMail: String(user.mail || "").trim(),
+        contactPhone: String(user.phone || "").trim(),
+        color: user.color || "#CCCCCC"
+    };
+}
+
+function getContactNameById(contactId) {
+    const contact = contacts[contactId] || {};
+    const name = String(contact.contactName || "").trim();
+    return name || String(contact.contactMail || "").trim();
 }
 
 function renderContacts() {
@@ -17,14 +38,18 @@ function renderContacts() {
 
     for (let i = 0; i < id.length; i++) {
         const contactInfo = contacts[id[i]];
+        if (!contactInfo) continue;
         const contactIcon = getInitals(id[i]);
 
-        let firstLetter = contactInfo.contactName.charAt(0).toUpperCase()
+        const sortName = getContactNameById(id[i]);
+        if (!sortName) continue;
+
+        let firstLetter = sortName.charAt(0).toUpperCase()
         if (firstLetter !== lastLetter) {
             contactListRef.innerHTML += generateGroupHeader(firstLetter)
             lastLetter = firstLetter
         }
-        contactListRef.innerHTML += generateContact(contactInfo.contactName, contactInfo.contactMail, contactInfo.color, contactIcon, id[i]);
+        contactListRef.innerHTML += generateContact(sortName, contactInfo.contactMail, contactInfo.color, contactIcon, id[i]);
     }
 }
 
@@ -125,14 +150,13 @@ function openEditContact(contactId) {
 }
 
 async function saveEditedContact(contactId) {
-    const name = document.getElementById("contactNameInput").value;
-    const mail = document.getElementById("contactMailInput").value;
-    const phone = document.getElementById("contactPhoneInput").value;
+    const formData = getValidatedContactFormData();
+    if (!formData) return;
 
     await saveData("contacts/" + contactId, {
-        "contactName": name,
-        "contactMail": mail,
-        "contactPhone": phone,
+        "contactName": formData.name,
+        "contactMail": formData.mail,
+        "contactPhone": formData.phone,
         "color": contacts[contactId].color
     });
     toggleModal();
@@ -191,19 +215,41 @@ function toggleOverlay(contactId) {
 }
 
 async function createContact() {
-    const name = document.getElementById("contactNameInput").value;
-    const mail = document.getElementById("contactMailInput").value;
-    const phone = document.getElementById("contactPhoneInput").value;
+    const formData = getValidatedContactFormData();
+    if (!formData) return;
 
     await postData("contacts/", {
-        "contactName": name,
-        "contactMail": mail,
-        "contactPhone": phone,
+        "contactName": formData.name,
+        "contactMail": formData.mail,
+        "contactPhone": formData.phone,
         "color": randomColor()
     });
     toggleModal();
     contactCreated();
     await fetchContacts();
+}
+
+function getValidatedContactFormData() {
+    const nameInput = document.getElementById("contactNameInput");
+    const mailInput = document.getElementById("contactMailInput");
+    const phoneInput = document.getElementById("contactPhoneInput");
+
+    if (!nameInput || !mailInput || !phoneInput) return null;
+
+    if (!nameInput.reportValidity() || !mailInput.reportValidity() || !phoneInput.reportValidity()) {
+        return null;
+    }
+
+    const name = nameInput.value.trim();
+    const mail = mailInput.value.trim();
+    const phone = phoneInput.value.trim();
+
+    if (!name || !mail || !phone) {
+        alert("Please fill in all fields.");
+        return null;
+    }
+
+    return { name, mail, phone };
 }
 
 function contactCreated() {

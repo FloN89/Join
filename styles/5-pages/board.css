@@ -500,7 +500,7 @@
   align-items: center;
   z-index: 1000;
   transform: translateX(100%);
-  transition: transform 400ms ease, opacity 400ms ease;
+  transition: transform 125ms ease, opacity 125ms ease;
   pointer-events: none;
 }
 
@@ -741,7 +741,7 @@
   display: flex;
   gap: 2px;
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 125ms ease;
 }
 
 .subtask-item:hover .subtask-actions {

@@ -47,6 +47,8 @@ function drop(dropEvent) {
   dropEvent.preventDefault();
   dropEvent.currentTarget.classList.remove("drag-over");
 
+  if (!currentDraggedElement) return;
+
   const taskList = dropEvent.currentTarget;
   taskList.appendChild(currentDraggedElement);
 
@@ -84,14 +86,14 @@ function handleTouchMove(touchEvent) {
   const deltaX = Math.abs(fingerX - touchStartX);
   const deltaY = Math.abs(fingerY - touchStartY);
 
-  // Wenn noch nicht im Drag-Modus, prüfe ob Bewegung starten soll
+  // Wenn noch nicht im Drag-Modus, pruefe ob Bewegung starten soll
   if (!isDragging) {
     // Schwellenwert: 10px Bewegung
     if (deltaX < 10 && deltaY < 10) return;
 
     // Wenn mehr horizontal als vertikal: normales Scrollen (kein Drag)
     if (deltaX > deltaY) {
-      return; // Erlaube horizontales Scrollen
+      return;
     }
 
     // Vertikale Bewegung: starte Drag
@@ -104,18 +106,17 @@ function handleTouchMove(touchEvent) {
     touchClone.classList.remove("dragging");
     document.body.appendChild(touchClone);
 
-    touchClone.style.left = (fingerX - touchOffsetX) + 'px';
-    touchClone.style.top = (fingerY - touchOffsetY) + 'px';
+    touchClone.style.left = fingerX - touchOffsetX + "px";
+    touchClone.style.top = fingerY - touchOffsetY + "px";
   }
 
   if (!isDragging || !touchClone) return;
 
   touchEvent.preventDefault();
 
-  touchClone.style.left = (fingerX - touchOffsetX) + 'px';
-  touchClone.style.top = (fingerY - touchOffsetY) + 'px';
+  touchClone.style.left = fingerX - touchOffsetX + "px";
+  touchClone.style.top = fingerY - touchOffsetY + "px";
 
-  // Automatisches Scrollen wenn Finger am Bildschirmrand
   const scrollZone = 100;
   const scrollSpeed = 10;
   const windowHeight = window.innerHeight;
@@ -136,19 +137,19 @@ function handleTouchMove(touchEvent) {
   }
 
   // Kopie kurz verstecken, um Element darunter zu finden
-  touchClone.style.display = 'none';
+  touchClone.style.display = "none";
   const elementUnderFinger = document.elementFromPoint(fingerX, fingerY);
-  touchClone.style.display = 'block';
+  touchClone.style.display = "block";
 
-  const allTaskLists = document.querySelectorAll('.task-list');
+  const allTaskLists = document.querySelectorAll(".task-list");
   allTaskLists.forEach(function (list) {
-    list.classList.remove('drag-over');
+    list.classList.remove("drag-over");
   });
 
   if (elementUnderFinger) {
-    const taskListUnderFinger = elementUnderFinger.closest('.task-list');
+    const taskListUnderFinger = elementUnderFinger.closest(".task-list");
     if (taskListUnderFinger) {
-      taskListUnderFinger.classList.add('drag-over');
+      taskListUnderFinger.classList.add("drag-over");
     }
   }
 }
@@ -161,7 +162,7 @@ function handleTouchEnd(touchEvent) {
     autoScrollInterval = null;
   }
 
-  // Nur wenn tatsächlich ein Drag stattgefunden hat
+  // Nur wenn tatsaechlich ein Drag stattgefunden hat
   if (isDragging) {
     currentTouchElement.classList.remove("dragging");
 
@@ -170,18 +171,18 @@ function handleTouchEnd(touchEvent) {
     const fingerY = touch.clientY;
 
     if (touchClone) {
-      touchClone.style.display = 'none';
+      touchClone.style.display = "none";
       const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
       touchClone.remove();
       touchClone = null;
 
-      const allTaskLists = document.querySelectorAll('.task-list');
+      const allTaskLists = document.querySelectorAll(".task-list");
       allTaskLists.forEach(function (list) {
-        list.classList.remove('drag-over');
+        list.classList.remove("drag-over");
       });
 
       if (elementAtDropPosition) {
-        const targetTaskList = elementAtDropPosition.closest('.task-list');
+        const targetTaskList = elementAtDropPosition.closest(".task-list");
         if (targetTaskList && currentDraggedElement) {
           targetTaskList.appendChild(currentDraggedElement);
           updateEmptyStates();
@@ -211,6 +212,7 @@ function dataToCard() {
   for (let i = 0; i < taskId.length; i++) {
     let id = taskId[i];
     let taskData = task[id];
+    if (!taskData) continue;
     let status = taskData.status || "todo";
     createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.subtasks, id, status);
   }
@@ -219,25 +221,26 @@ function dataToCard() {
 
 function updateEmptyStates() {
   const categories = [
-    { id: 'todo', name: 'To do' },
-    { id: 'in-progress', name: 'In progress' },
-    { id: 'await-feedback', name: 'Await feedback' },
-    { id: 'done', name: 'Done' }
+    { id: "todo", name: "To do" },
+    { id: "in-progress", name: "In progress" },
+    { id: "await-feedback", name: "Await feedback" },
+    { id: "done", name: "Done" }
   ];
 
   categories.forEach(function (category) {
     const taskList = document.getElementById(category.id);
-    const existingPlaceholder = taskList.querySelector('.empty-state');
+    if (!taskList) return;
+    const existingPlaceholder = taskList.querySelector(".empty-state");
 
     if (existingPlaceholder) {
       existingPlaceholder.remove();
     }
 
-    const taskCards = taskList.querySelectorAll('.task-card');
+    const taskCards = taskList.querySelectorAll(".task-card");
     if (taskCards.length === 0) {
-      const placeholder = document.createElement('div');
-      placeholder.className = 'empty-state';
-      placeholder.textContent = 'No tasks ' + category.name;
+      const placeholder = document.createElement("div");
+      placeholder.className = "empty-state";
+      placeholder.textContent = "No tasks " + category.name;
       taskList.appendChild(placeholder);
     }
   });
@@ -260,9 +263,9 @@ function createTaskCard(category, title, description, assignedTo, priority, subt
   card.ondragend = endDragging;
 
   // Mobile Touch Events
-  card.addEventListener('touchstart', handleTouchStart, { passive: false });
-  card.addEventListener('touchmove', handleTouchMove, { passive: false });
-  card.addEventListener('touchend', handleTouchEnd, { passive: false });
+  card.addEventListener("touchstart", handleTouchStart, { passive: false });
+  card.addEventListener("touchmove", handleTouchMove, { passive: false });
+  card.addEventListener("touchend", handleTouchEnd, { passive: false });
 
   const subtasksHTML = createSubtasksHTML(subtasks);
   const usersHTML = createUsersHTML(assignedTo);
@@ -284,11 +287,11 @@ function createTaskCard(category, title, description, assignedTo, priority, subt
 
 function createSubtasksHTML(subtasks) {
   if (!subtasks || subtasks.length === 0) {
-    return '';
+    return "";
   }
 
   const completedCount = subtasks.filter(function (subtask) {
-    return subtask.completed === true;
+    return subtask.done === true || subtask.completed === true;
   }).length;
   const totalCount = subtasks.length;
   const progressPercentage = (completedCount / totalCount) * 100;
@@ -305,18 +308,22 @@ function createSubtasksHTML(subtasks) {
 
 function createUsersHTML(assignedTo) {
   if (!assignedTo || assignedTo.length === 0) {
-    return '';
+    return "";
   }
 
   return assignedTo.map(function (user) {
-    const initials = getInitials(user.name);
-    const backgroundColor = user.color || '#CCCCCC';
+    const userName = typeof user === "string" ? user : user?.name || "";
+    if (!userName) return "";
+    const initials = getInitials(userName);
+    const backgroundColor = (typeof user === "object" && user?.color) ? user.color : "#CCCCCC";
     return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
-  }).join('');
+  }).join("");
 }
 
 function getInitials(name) {
-  const nameParts = name.split(' ');
+  if (!name || typeof name !== "string") return "";
+  const nameParts = name.split(" ");
+  if (!nameParts[0]) return "";
   if (nameParts.length >= 2) {
     return nameParts[0][0] + nameParts[1][0];
   }
@@ -325,21 +332,21 @@ function getInitials(name) {
 
 function createUserBadge(user) {
   const initials = getInitials(user.name);
-  const backgroundColor = user.color || '#CCCCCC';
+  const backgroundColor = user.color || "#CCCCCC";
   return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
 }
 
 function getPriorityColor(priority) {
-  if (priority === 'low') {
-    return 'green';
-  } else if (priority === 'medium') {
-    return 'yellow';
-  } else if (priority === 'high') {
-    return 'red';
-  } else if (priority === 'urgent') {
-    return 'red';
+  if (priority === "low") {
+    return "green";
+  } else if (priority === "medium") {
+    return "yellow";
+  } else if (priority === "high") {
+    return "red";
+  } else if (priority === "urgent") {
+    return "red";
   }
-  return 'red';
+  return "red";
 }
 
 // Lade Karten, wenn die Seite fertig geladen ist
@@ -353,7 +360,6 @@ async function openAddTaskOverlay() {
     const response = await fetch("add_task_overlay.html");
     content.innerHTML = await response.text();
 
-    // NACH dem Inject initialisieren:
     if (typeof initializeAddTaskPage === "function") {
       initializeAddTaskPage();
     }
@@ -370,372 +376,28 @@ function closeAddTaskOverlay() {
   document.body.classList.remove("overlay-open");
 }
 
-function openTaskOverlay(id, priorityColor) {
-  const overlay = document.getElementById("task_overlay");
-  const background = document.getElementById("big-card-background")
-  overlay.style.display = "flex";
-
-  overlay.innerHTML = "";
-  overlay.innerHTML = generateTaskOverlay(task[id].category, task[id].title, task[id].description,
-    task[id].dueDate, task[id].priority, priorityColor, task[id].assignedTo, task[id].subtasks, id);
-
-  overlay.classList.add("active");
-  background.style.display = "block";
-}
-
-function renderAssignees(assignees) {
-  if (assignees && assignees.length > 0) {
-    return assignees.map(person =>
-      `<div class="task-overlay-assignee">
-        ${createUserBadge(person)}
-        ${person.name}
-       </div>
-       `
-    ).join("");
-  }
-  return "";
-}
-
-function renderSubtasks(subtasks, id) {
-  if (subtasks && subtasks.length > 0) {
-    return subtasks.map((subtask, index) =>
-      `<li class="subtask-list">
-        <input class="subtaskCheckbox" 
-          id="subtaskCheckbox-${index}" 
-          type="checkbox" ${subtask.done ? "checked" : ""}
-          onchange="toggleSubtaskCompletion('${id}', ${index})"> 
-        <label for="subtaskCheckbox-${index}">${subtask.title}</label>
-      </li>`
-    ).join("");
-  }
-  return "";
-}
-
-async function toggleSubtaskCompletion(id, subtaskIndex) {
-  const subtasks = task[id].subtasks || []; //aktuelle Subtasks holen
-  subtasks[subtaskIndex].done = !subtasks[subtaskIndex].done; //Boolean umkehren
-  await saveData((sessionStorage.getItem("userId") === "guest" ? "guest-tasks/" : "task/") + id, {
-    ...task[id], //alle anderen Task-Daten beibehalten
-    subtasks: subtasks //aktualisierte Subtasks speichern
-  });
-  openTaskOverlay(id, getPriorityColor(task[id].priority));
-}
-
-function openEditTaskOverlay(id) {
-  const editOverlay = document.getElementById("edit_task_overlay");
-  const taskOverlay = document.getElementById("task_overlay");
-  const background = document.getElementById("big-card-background")
-
-  editOverlay.classList.add("active");
-  taskOverlay.style.display = "none";
-  background.style.display = "block";
-
-  editOverlay.innerHTML = "";
-  editOverlay.innerHTML = generateEditTaskOverlay(task[id].title, task[id].description, task[id].dueDate, id);
-
-  renderAssigneeOptions(task[id].assignedTo || []);
-  renderEditSubtasks(task[id].subtasks || []);
-
-  document
-    .querySelector(`input[name="priority"][value="${task[id].priority}"]`)
-    ?.setAttribute("checked", "true");
-  initPriorityIconHandlers();
-  renderEditAssignees(task[id].assignedTo || []);
-}
-
-async function saveChanges(id) {
-  const isGuest = sessionStorage.getItem("userId") === "guest";
-  const path = (isGuest ? "guest-tasks/" : "task/") + id;
-
-  // nimmt guestTasks oder task – je nachdem was existiert
-  const currentTask = (guestTasks && guestTasks[id]) || (task && task[id]);
-
-  const title = document.getElementById("edit-title").value;
-  const description = document.getElementById("edit-description").value;
-  const dueDate = document.getElementById("edit-due-date").value;
-  const priority = document.querySelector('input[name="priority"]:checked')?.value;
-
-  const assignees = getSelectedAssignees();
-  const subtasks = getEditedSubtasks();
-
-  await saveData(path, {
-    ...currentTask,
-    title,
-    description,
-    dueDate,
-    priority,
-    assignedTo: assignees,
-    subtasks
-  });
-
-  await fetchTasks();
-  closeTaskOverlay();
-}
-
-function renderEditSubtasks(subtasks = []) {
-  const list = document.getElementById("edit-subtask-list");
-  if (!list) return;
-
-  list.innerHTML = "";
-
-  subtasks.forEach(subtask => {
-    const li = document.createElement("li");
-    li.className = "subtask-item";
-
-    li.innerHTML = `
-      <div class="subtask-item-content">
-        <span class="subtask-bullet">•</span>
-        <span class="subtask-title" contenteditable="false">${subtask.title}</span>
-      </div>
-      <div class="subtask-actions">
-        <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-        <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-        <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-      </div>
-    `;
-
-    list.appendChild(li);
-
-    const editBtn = li.querySelector(".edit-subtask-btn");
-    const deleteBtn = li.querySelector(".delete-subtask-btn");
-
-    editBtn.addEventListener("click", () => enableSubtaskEdit(li));
-    deleteBtn.addEventListener("click", () => li.remove());
-  });
-}
-
-function addEditSubtask() {
-  const input = document.getElementById("subtask");
-  const text = input.value.trim();
-  if (!text) return;
-
-  const list = document.getElementById("edit-subtask-list");
-
-  const li = document.createElement("li");
-  li.className = "subtask-item";
-
-  li.innerHTML = `
-    <div class="subtask-item-content">
-      <span class="subtask-bullet">•</span>
-      <span class="subtask-title" contenteditable="false">${text}</span>
-    </div>
-    <div class="subtask-actions">
-      <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-      <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-      <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-    </div>
-  `;
-
-  list.appendChild(li);
-
-  const editBtn = li.querySelector(".edit-subtask-btn");
-  const deleteBtn = li.querySelector(".delete-subtask-btn");
-
-  editBtn.addEventListener("click", () => enableSubtaskEdit(li));
-  deleteBtn.addEventListener("click", () => li.remove());
-
-  input.value = "";
-}
-
-function getEditedSubtasks() {
-  const subtasks = [];
-
-  document.querySelectorAll("#edit-subtask-list li").forEach(li => {
-    const titleElement = li.querySelector(".subtask-title");
-    const title = titleElement.textContent.trim();
-
-    if (title !== "") {
-      subtasks.push({
-        title: title,
-        done: false
-      });
-    }
-  });
-
-  return subtasks;
-}
-
-function getSelectedAssignees() {
-  const assignees = [];
-
-  document.querySelectorAll("#assignee-dropdown .assignee-checkbox:checked").forEach((checkbox) => {
-    assignees.push({
-      name: checkbox.dataset.name,
-      color: checkbox.dataset.color
-    });
-  });
-
-  return assignees;
-}
-
-function updateAssigneeDisplay() {
-  const selectedAssignees = getSelectedAssignees();
-  const avatarsContainer = document.getElementById("selected-assignee-avatars");
-  const placeholder = document.getElementById("selected-assignees-placeholder");
-
-  if (!avatarsContainer || !placeholder) return;
-
-  avatarsContainer.innerHTML = "";
-
-  selectedAssignees.forEach((assignee) => {
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.textContent = getInitials(assignee.name);
-    avatar.style.backgroundColor = assignee.color;
-    avatarsContainer.appendChild(avatar);
-  });
-
-  placeholder.textContent = selectedAssignees.length ? "" : "Select contacts";
-}
-
-function renderEditAssignees(taskAssignees = []) {
-  const assigneeDropdown = document.getElementById("assignee-dropdown");
-  if (!assigneeDropdown) return;
-
-  assigneeDropdown.innerHTML = "";
-
-  contacts.forEach(contact => {
-    const assigneeLabel = createAssigneeLabel(contact);
-    const checkbox = assigneeLabel.querySelector("input");
-
-    if (taskAssignees.includes(contact)) {
-      checkbox.checked = true;
-    }
-
-    assigneeDropdown.appendChild(assigneeLabel);
-  });
-
-  updateAssigneeDisplay();
-}
-
-async function deleteTask(taskId) {
-  await deleteData((sessionStorage.getItem("userId") === "guest" ? "guest-tasks/" : "task/") + taskId);
-  closeTaskOverlay();
-  await fetchTasks();
-}
-
-function closeTaskOverlay() {
-  const taskOverlay = document.getElementById("task_overlay");
-  const background = document.getElementById("big-card-background");
-  const editOverlay = document.getElementById("edit_task_overlay");
-
-  taskOverlay.classList.remove("active");
-  taskOverlay.style.display = "none";
-
-  background.style.display = "none";
-  editOverlay.innerHTML = "";
-}
-
 function clearBoard() {
-  document.querySelectorAll('.task-list').forEach(list => {
-    list.innerHTML = '';
+  document.querySelectorAll(".task-list").forEach(list => {
+    list.innerHTML = "";
   });
 }
 
-document.addEventListener("click", function (e) {
-
-  // Delete
-  if (e.target.classList.contains("delete-subtask-btn")) {
-    const li = e.target.closest("li");
-    if (li) li.remove();
-  }
-
-  // Edit
-  if (e.target.classList.contains("edit-subtask-btn")) {
-    const li = e.target.closest("li");
-    if (!li) return;
-
-    const title = li.querySelector(".subtask-title");
-
-    const isEditing = title.getAttribute("contenteditable") === "true";
-
-    if (isEditing) {
-      title.setAttribute("contenteditable", "false");
-      title.blur();
-    } else {
-      title.setAttribute("contenteditable", "true");
-      title.focus();
-    }
-  }
-
-});
-
-function enableSubtaskEdit(li) {
-  const titleSpan = li.querySelector(".subtask-title");
-  const actionsDiv = li.querySelector(".subtask-actions");
-
-  // Text editierbar machen
-  titleSpan.setAttribute("contenteditable", "true");
-  titleSpan.focus();
-
-  // Icons wechseln: Edit -> Haken + Müllbecher
-  actionsDiv.innerHTML = `
-    <img src="../assets/icons/check.svg" class="save-subtask-btn" title="Save">
-    <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-    <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-  `;
-
-  const saveBtn = actionsDiv.querySelector(".save-subtask-btn");
-  const deleteBtn = actionsDiv.querySelector(".delete-subtask-btn");
-
-  saveBtn.addEventListener("click", () => {
-    titleSpan.setAttribute("contenteditable", "false");
-    // Icons zurücksetzen zu Edit + Delete
-    actionsDiv.innerHTML = `
-      <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-      <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-      <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-    `;
-    const newEditBtn = actionsDiv.querySelector(".edit-subtask-btn");
-    const newDeleteBtn = actionsDiv.querySelector(".delete-subtask-btn");
-
-    newEditBtn.addEventListener("click", () => enableSubtaskEdit(li));
-    newDeleteBtn.addEventListener("click", () => li.remove());
-  });
-
-  deleteBtn.addEventListener("click", () => li.remove());
-}
-
-function saveSubtaskEdit(li) {
-  const title = li.querySelector(".subtask-title");
-  const actions = li.querySelector(".subtask-actions");
-
-  title.setAttribute("contenteditable", "false");
-  title.blur();
-
-  actions.innerHTML = `
-    <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-    <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-    <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-  `;
-}
-
-/**
- * Wird bei jeder Eingabe im Suchfeld ausgelöst.
- * Durchsucht alle Task-Karten nach Titel und Beschreibung.
- * Blendet nicht passende Karten aus.
- * Zeigt eine Fehlermeldung an, wenn keine Ergebnisse gefunden werden.
- */
 function onSearchInput() {
-
   // Wert aus dem Suchfeld holen
   const inputField = document.getElementById("searchInput");
   const searchValue = inputField.value.toLowerCase().trim();
 
-  // Alle Task-Karten auf dem Board auswählen
+  // Alle Task-Karten auf dem Board auswaehlen
   const taskCards = document.querySelectorAll(".task-card");
-
   // Referenz auf die Fehlermeldung unter dem Suchfeld
   const errorMessage = document.getElementById("search_error");
 
   let visibleCardCount = 0;
 
-  /**
-   * Wenn das Suchfeld leer ist:
-   * - Alle Karten wieder anzeigen
-   * - Fehlermeldung ausblenden
-   * - Funktion beenden
-   */
+  // Wenn das Suchfeld leer ist:
+  // - Alle Karten wieder anzeigen
+  // - Fehlermeldung ausblenden
+  // - Funktion beenden
   if (searchValue === "") {
     taskCards.forEach(function (card) {
       card.style.display = "block";
@@ -745,11 +407,8 @@ function onSearchInput() {
     return;
   }
 
-  /**
-   * Jede einzelne Task-Karte überprüfen
-   */
+  // Jede einzelne Task-Karte ueberpruefen
   taskCards.forEach(function (card) {
-
     // Titel und Beschreibung der Karte auslesen
     const titleElement = card.querySelector(".task-title");
     const descriptionElement = card.querySelector(".task-description");
@@ -757,26 +416,18 @@ function onSearchInput() {
     const titleText = titleElement ? titleElement.textContent.toLowerCase() : "";
     const descriptionText = descriptionElement ? descriptionElement.textContent.toLowerCase() : "";
 
-    /**
-     * Prüfen, ob Suchbegriff im Titel oder in der Beschreibung enthalten ist
-     */
+    // Pruefen, ob Suchbegriff im Titel oder in der Beschreibung enthalten ist
     if (titleText.includes(searchValue) || descriptionText.includes(searchValue)) {
-
       // Karte anzeigen
       card.style.display = "block";
       visibleCardCount++;
-
     } else {
-
       // Karte ausblenden
       card.style.display = "none";
     }
   });
 
-  /**
-   * Wenn keine sichtbaren Karten vorhanden sind:
-   * Fehlermeldung anzeigen
-   */
+  // Wenn keine sichtbaren Karten vorhanden sind: Fehlermeldung anzeigen
   if (visibleCardCount === 0) {
     errorMessage.style.display = "block";
   } else {
@@ -784,11 +435,6 @@ function onSearchInput() {
   }
 }
 
-
-/**
- * Setzt den Fokus in das Suchfeld,
- * wenn auf das Such-Icon geklickt wird.
- */
 function focusSearchInputField() {
   const inputField = document.getElementById("searchInput");
   inputField.focus();
