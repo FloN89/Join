@@ -544,3 +544,64 @@ input#priority-low:checked + label.low {
     display: none;
   }
 }
+
+/* =========================
+   OVERLAY SMALL MOBILE
+   ========================= */
+
+@media (max-width: 320px) {
+
+  .add-task-panel {
+    width: 96vw;
+    border-radius: 16px;
+  }
+
+  .panel-title {
+    font-size: 22px;
+  }
+
+  label {
+    font-size: 16px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   LANDSCAPE MODE
+   ========================= */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+  .add-task-panel {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    border-radius: 0;
+  }
+
+  .add-task-container {
+    padding: 20px 24px 40px;
+  }
+
+  .panel-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  label {
+    font-size: 18px;
+  }
+
+  input,
+  textarea {
+    font-size: 18px;
+  }
+}

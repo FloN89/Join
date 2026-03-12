@@ -446,3 +446,82 @@ body.welcome-active .site-footer {
     font-size: 16px;
   }
 }
+
+@media (max-width: 320px) {
+
+  .panel-title {
+    font-size: 36px;
+  }
+
+  .input {
+    font-size: 14px;
+    padding: 10px 40px 10px 12px;
+  }
+
+  .btn {
+    font-size: 14px;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    width: 160px;
+    padding: 10px 0;
+  }
+
+  .signup-button {
+    font-size: 14px;
+  }
+
+  .site-footer {
+    font-size: 14px;
+    gap: 20px;
+  }
+
+  .welcome-title {
+    font-size: 28px;
+  }
+
+  .welcome-name {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .app-header {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 40px;
+  }
+
+  .main-area {
+    padding-top: 20px;
+  }
+
+  .login-panel {
+    height: auto;
+    padding: 20px;
+  }
+
+  .panel-title {
+    font-size: 32px;
+  }
+
+  .form-fields {
+    gap: 14px;
+  }
+
+  .button-row {
+    flex-direction: row;
+    padding-bottom: 20px;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    width: 140px;
+  }
+
+  .site-footer {
+    padding-top: 40px;
+  }
+}

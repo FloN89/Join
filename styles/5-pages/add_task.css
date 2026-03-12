@@ -566,3 +566,54 @@ input#priority-low:checked + label.low {
     z-index: 300;
   }
 }
+
+/* =========================
+   MOBILE SMALL (320px)
+   ========================= */
+
+@media (max-width: 320px) {
+
+  .add-task-container {
+    padding: 20px 12px;
+  }
+
+  .panel-title {
+    font-size: 22px;
+  }
+
+  label {
+    font-size: 16px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+
+  textarea {
+    min-height: 70px;
+  }
+
+  .form-grid-add {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-divider {
+    display: none;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+  .form-grid-add {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .panel-title {
+    font-size: 24px;
+  }
+}
