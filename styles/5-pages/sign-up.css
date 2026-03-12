@@ -167,7 +167,7 @@ input[type="password"] {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    transition: background-color 0.2s ease;
+    transition: background-color 125ms ease;
 }
 
 .privacyCheckbox {
@@ -275,7 +275,7 @@ input[type="password"] {
     border-radius: 20px;
     padding: 17px 24px;
     text-align: center;
-    transition: bottom 0.4s ease-in-out;
+    transition: bottom 125ms ease-in-out;
     z-index: 1000;
 }
 
@@ -346,10 +346,10 @@ input[type="password"] {
 }
 
 @media (max-width: 320px) {
-    .sign-up-box {
-        padding: 28px;
-        border-radius: var(--border-radius-large);
-    }
+  .sign-up-box {
+    padding: 28px;
+    border-radius: var(--border-radius-large);
+  }
 
     .title {
         font-size: 36px;
@@ -365,8 +365,32 @@ input[type="password"] {
         max-width: 220px;
     }
 
-    .arrow-left {
-        left: 50px;
-        top: 70px;
-    }
+  .arrow-left {
+    left: 50px;
+    top: 70px;
+  }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+  body {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-family: sans-serif;
+    text-align: center;
+    padding: 24px;
+  }
+
+  body > * {
+    display: none !important;
+  }
+
+  body::before {
+    font-size: 20px;
+    font-weight: 600;
+  }
 }
