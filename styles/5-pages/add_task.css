@@ -162,7 +162,7 @@ input#priority-low:checked + label.low {
   border: 1px solid var(--color-border);
   background-color: var(--color-white);
   box-shadow: var(--shadow-light);
-  transition: opacity 200ms ease, transform 200ms ease, max-height 250ms ease;
+  transition: opacity 125ms ease, transform 125ms ease, max-height 125ms ease;
 }
 
 .multiselect-dropdown {
@@ -362,7 +362,7 @@ input#priority-low:checked + label.low {
   display: flex;
   gap: 8px;
   opacity: 0;
-  transition: opacity 150ms ease;
+  transition: opacity 125ms ease;
 }
 
 .subtask-item:hover .subtask-actions {
@@ -564,5 +564,35 @@ input#priority-low:checked + label.low {
     padding: 16px;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
     z-index: 300;
+  }
+}
+
+
+/* ============================================
+   Landscape Mode Deaktivierung (Mobile)
+   ============================================ */
+
+@media (max-width: 900px) and (orientation: landscape) {
+  body {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-family: sans-serif;
+    text-align: center;
+    padding: 24px;
+  }
+
+  body > * {
+    display: none !important;
+  }
+
+  body::before {
+    content: "Please rotate your device to portrait mode for the best experience.";
+    font-size: 20px;
+    font-weight: 600;
   }
 }
