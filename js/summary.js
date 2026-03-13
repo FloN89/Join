@@ -92,23 +92,37 @@ function formatDate(dateString) {
   return month + " " + day + ", " + year;
 }
 
+function getTimeBasedGreeting() {
+  let currentHour = new Date().getHours();
+
+  if (currentHour >= 6 && currentHour < 12) {
+    return "Good morning";
+  } else if (currentHour >= 12 && currentHour < 18) {
+    return "Good afternoon";
+  } else {
+    return "Good evening";
+  }
+}
+
+
 async function loadGreeting() {
   let userId = sessionStorage.getItem("userId");
   let greetingText = document.getElementById("greeting-text");
   let greetingName = document.getElementById("greeting-name");
+  let timeGreeting = getTimeBasedGreeting();
 
   if (!userId || userId === "guest") {
-    greetingText.innerText = "Good morning!";
+    greetingText.innerText = timeGreeting + "!";
     greetingName.innerText = "";
     return;
   }
 
   let user = await loadData("users/" + userId);
   if (user && user.username) {
-    greetingText.innerText = "Good morning,";
+    greetingText.innerText = timeGreeting + ",";
     greetingName.innerText = user.username;
   } else {
-    greetingText.innerText = "Good morning!";
+    greetingText.innerText = timeGreeting + "!";
     greetingName.innerText = "";
   }
 }
