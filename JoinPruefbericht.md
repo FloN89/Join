@@ -206,9 +206,9 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 ### Wichtig – sollte behoben werden
 
 - [x] **Tageszeit-Begrüssung** – Morning / Afternoon / Evening in `summary.js` umsetzen
-- [ ] **Submit-Button deaktivieren** bei Add Task während dem Speichern
-- [ ] **320px Media Queries** für alle Seiten testen und ergänzen
-- [ ] **Landscape-Mode** auf Mobile deaktivieren (CSS `@media (orientation: landscape) and (max-width: 480px)`)
+- [x] **Submit-Button deaktivieren** bei Add Task während dem Speichern
+- [x] **320px Media Queries** für alle Seiten testen und ergänzen
+- [x] **Landscape-Mode** auf Mobile deaktivieren (CSS `@media (orientation: landscape) and (max-width: 480px)`)
 - [ ] **JSDoc für `board.js`** – alle Funktionen dokumentieren
 
 ### Vor Abgabe erledigen
@@ -219,5 +219,5 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 - [x] **Repository auf public** stellen
 - [x] **Eigenen Account in Kontaktliste** prüfen – sichtbar und bearbeitbar?
 - [x] **`summary_guest.js`** (leer) bereinigen oder entfernen
-- [ ] **Transitions** auf 75–125ms beschränken (aktuell teils 300–400ms)
+- [x] **Transitions** auf 75–125ms beschränken (aktuell teils 300–400ms)
 - [ ] Nach Abgabe: jedes Gruppenmitglied das Projekt forken

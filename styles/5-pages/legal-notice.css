@@ -11,3 +11,33 @@
 .highlight-join {
   color: var(--color-light-blue);
 }
+
+
+/* === Extra Small Mobile (max-width: 320px) === */
+@media (max-width: 320px) {
+  .page-header {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .page-header h1 {
+    font-size: 32px;
+  }
+
+  .main-text {
+    padding: 12px;
+  }
+
+  .main-text h2 {
+    font-size: 20px;
+  }
+
+  .main-text h3 {
+    font-size: 16px;
+  }
+
+  .main-text p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}

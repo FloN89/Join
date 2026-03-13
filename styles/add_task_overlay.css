@@ -15,7 +15,7 @@ body {
   z-index: 1000;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 220ms ease;
+  transition: opacity 125ms ease;
 }
 
 .add-task-overlay.active {
@@ -37,7 +37,7 @@ body {
   background: #ffffff;
   overflow: hidden;
   transform: translate(100vw, -50%);
-  transition: transform 300ms ease;
+  transition: transform 125ms ease;
   border-radius: 24px;
 }
 
@@ -423,7 +423,7 @@ input#priority-low:checked + label.low {
   display: flex;
   gap: 8px;
   opacity: 0;
-  transition: opacity 150ms ease;
+  transition: opacity 125ms ease;
 }
 
 .subtask-item:hover .subtask-actions {
@@ -532,7 +532,7 @@ input#priority-low:checked + label.low {
 
 .multiselect-dropdown,
 .category-dropdown {
-  transition: opacity 200ms ease, transform 200ms ease, max-height 250ms ease;
+  transition: opacity 125ms ease, transform 125ms ease, max-height 125ms ease;
 }
 
 @media (max-width: 768px) {
