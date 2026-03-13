@@ -78,17 +78,17 @@ function generateModalContent(header, button1, button2, underheader, contactId, 
                     <div class="input-group">
                         <span class="close" onclick="toggleModal()">&times;</span>
                         <label class="input-wrapper">
-                            <input type="text" placeholder="Name" required id="contactNameInput">
+                            <input type="text" placeholder="Name" data-required="true" id="contactNameInput">
                             <img src="../assets/icons/person.svg" alt="" class="field-icon">
                         </label>
 
                         <label class="input-wrapper">
-                            <input type="email" placeholder="Email" required id="contactMailInput">
+                            <input type="text" placeholder="Email" data-required="true" data-validate="email" id="contactMailInput">
                             <img src="../assets/icons/mail.svg" alt="" class="field-icon">
                         </label>
 
                         <label class="input-wrapper">
-                            <input type="tel" placeholder="Phone" required id="contactPhoneInput">
+                            <input type="tel" placeholder="Phone" data-required="true" id="contactPhoneInput">
                             <img src="../assets/icons/call.svg" alt="" class="field-icon">
                         </label>
 
