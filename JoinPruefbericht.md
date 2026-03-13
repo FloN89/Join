@@ -195,12 +195,12 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 
 ### Kritisch – muss vor Abgabe behoben werden
 
-- [ ] **`.gitignore` erstellen** – verhindert sensible Daten im Repository
+- [x] **`.gitignore` erstellen** – verhindert sensible Daten im Repository
 - [x] **Contact-Validierung** – `createContact()` und `updateContact()` validieren
 - [ ] **Kontakt löschen → aus Tasks entfernen** – Anforderung aus User Story Kontakte 4
 - [ ] **JS-Dateien aufteilen** – `board.js` (794), `add_task.js` (664), `add_task_overlay.js` (553) über 400 Zeilen
 - [x] **`handleTouchMove()` refaktorieren** – 77 Zeilen → in Hilfsfunktionen aufteilen
-- [ ] **HTML5-Validierung entfernen** – `required`-Attribute und `type="email"` durch JS-Validierung ersetzen
+- [x] **HTML5-Validierung entfernen** – `required`-Attribute und `type="email"` durch JS-Validierung ersetzen
 - [x] **`console.log` entfernen** – aus `topbar-loader.js` (Zeilen 16, 21, 27)
 
 ### Wichtig – sollte behoben werden
