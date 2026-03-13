@@ -21,3 +21,30 @@ function randomColor() {
 function eventBubbling(event) {
     event.stopPropagation();
 }
+
+function validateEmailValue(value) {
+    const trimmed = (value || '').trim();
+    if (!trimmed) return false;
+    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(trimmed);
+}
+
+function validateRequiredValue(value) {
+    return (value || '').toString().trim().length > 0;
+}
+
+function validateFormFields(form, config = {}) {
+    if (!form) return { isValid: true, errors: [] };
+    const requiredSelector = config.requiredSelector || '[data-required="true"]';
+    const emailSelector = config.emailSelector || '[data-validate="email"]';
+    const fields = Array.from(form.querySelectorAll(`${requiredSelector}, ${emailSelector}`));
+    const errors = [];
+    fields.forEach((field) => {
+        const value = field.value;
+        if (field.matches(requiredSelector) && !validateRequiredValue(value)) {
+            errors.push({ field, type: 'required' });
+        } else if (field.matches(emailSelector) && value && !validateEmailValue(value)) {
+            errors.push({ field, type: 'email' });
+        }
+    });
+    return { isValid: errors.length === 0, errors };
+}
