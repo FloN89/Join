@@ -20,6 +20,10 @@ fetch("/templates/topbar_template.html")
     // Silent error handling for production
   });
 
+/**
+ * Set user initial
+ * @async
+ */
 async function setUserInitial() {
   const userInitialElement = document.getElementById("user-initial");
   if (!userInitialElement) {
@@ -55,6 +59,9 @@ async function setUserInitial() {
   }
 }
 
+/**
+ * Init user overlay
+ */
 function initUserOverlay() {
   // Hole das User-Kürzel Element
   const userInitial = document.getElementById("user-initial");

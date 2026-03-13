@@ -4,11 +4,17 @@ let subtaskCollection = [];
    SUBTASKS
 ========================= */
 
+/**
+ * Register subtask events
+ */
 function registerSubtaskEvents() {
   registerSubtaskInputKeydown();
   registerSubtaskButtons();
 }
 
+/**
+ * Register subtask input keydown
+ */
 function registerSubtaskInputKeydown() {
   const subtaskInputElement = document.getElementById("subtask");
   if (!subtaskInputElement) return;
@@ -20,6 +26,9 @@ function registerSubtaskInputKeydown() {
   });
 }
 
+/**
+ * Register subtask buttons
+ */
 function registerSubtaskButtons() {
   const clearButtonElement = document.getElementById("subtask-clear-button");
   const addButtonElement = document.getElementById("subtask-add-button");
@@ -28,12 +37,18 @@ function registerSubtaskButtons() {
   if (addButtonElement) addButtonElement.addEventListener("click", addSubtask);
 }
 
+/**
+ * Clear subtask input
+ */
 function clearSubtaskInput() {
   const subtaskInputElement = document.getElementById("subtask");
   if (!subtaskInputElement) return;
   subtaskInputElement.value = "";
 }
 
+/**
+ * Add subtask
+ */
 function addSubtask() {
   const subtaskTitle = readSubtaskTitleFromInput();
   if (!subtaskTitle) return;
@@ -43,21 +58,38 @@ function addSubtask() {
   clearSubtaskInput();
 }
 
+/**
+ * Read subtask title from input
+ * @returns {void} Return value
+ */
 function readSubtaskTitleFromInput() {
   const subtaskInputElement = document.getElementById("subtask");
   if (!subtaskInputElement) return "";
   return getTrimmedValue(subtaskInputElement.value);
 }
 
+/**
+ * Create subtask object
+ * @param {*} subtaskTitle - Subtasktitle value
+ * @returns {*} Return value
+ */
 function createSubtaskObject(subtaskTitle) {
   return { title: subtaskTitle, completed: false };
 }
 
+/**
+ * Get trimmed value
+ * @param {*} textValue - Textvalue value
+ * @returns {*} Return value
+ */
 function getTrimmedValue(textValue) {
   if (typeof textValue !== "string") return "";
   return textValue.trim();
 }
 
+/**
+ * Render subtask list
+ */
 function renderSubtaskList() {
   const subtaskListElement = document.getElementById("subtask-list");
   if (!subtaskListElement) return;
@@ -66,16 +98,30 @@ function renderSubtaskList() {
   registerSubtaskListClick(subtaskListElement);
 }
 
+/**
+ * Register subtask list click
+ * @param {HTMLElement} subtaskListElement - DOM element
+ */
 function registerSubtaskListClick(subtaskListElement) {
   subtaskListElement.onclick = (mouseEvent) => handleSubtaskListClick(mouseEvent);
 }
 
+/**
+ * Build subtask list markup
+ * @returns {*} Return value
+ */
 function buildSubtaskListMarkup() {
   return subtaskCollection
     .map((subtaskObject, subtaskIndex) => buildSingleSubtaskMarkup(subtaskObject, subtaskIndex))
     .join("");
 }
 
+/**
+ * Build single subtask markup
+ * @param {*} subtaskObject - Subtaskobject value
+ * @param {number} subtaskIndex - Subtaskindex value
+ * @returns {*} Return value
+ */
 function buildSingleSubtaskMarkup(subtaskObject, subtaskIndex) {
   const safeTitle = escapeHtmlText(subtaskObject.title);
   return `
@@ -96,6 +142,11 @@ function buildSingleSubtaskMarkup(subtaskObject, subtaskIndex) {
   `;
 }
 
+/**
+ * Escape html text
+ * @param {*} unsafeText - Unsafetext value
+ * @returns {void} Return value
+ */
 function escapeHtmlText(unsafeText) {
   return String(unsafeText)
     .replaceAll("&", "&amp;")
@@ -105,6 +156,10 @@ function escapeHtmlText(unsafeText) {
     .replaceAll("'", "&#039;");
 }
 
+/**
+ * Handle subtask list click
+ * @param {Event} mouseEvent - Event object
+ */
 function handleSubtaskListClick(mouseEvent) {
   const actionName = readSubtaskAction(mouseEvent);
   if (!actionName) return;
@@ -115,34 +170,66 @@ function handleSubtaskListClick(mouseEvent) {
   runSubtaskAction(actionName, subtaskIndex);
 }
 
+/**
+ * Read subtask action
+ * @param {Event} mouseEvent - Event object
+ * @returns {void} Return value
+ */
 function readSubtaskAction(mouseEvent) {
   const actionButtonElement = mouseEvent.target.closest("button[data-action]");
   if (!actionButtonElement) return "";
   return actionButtonElement.dataset.action || "";
 }
 
+/**
+ * Read subtask index
+ * @param {Event} mouseEvent - Event object
+ * @returns {void} Return value
+ */
 function readSubtaskIndex(mouseEvent) {
   const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
   if (!listItemElement) return -1;
   return Number(listItemElement.dataset.subtaskIndex);
 }
 
+/**
+ * Run subtask action
+ * @param {*} actionName - Actionname value
+ * @param {number} subtaskIndex - Subtaskindex value
+ * @returns {void} Return value
+ */
 function runSubtaskAction(actionName, subtaskIndex) {
   if (actionName === "delete") deleteSubtask(subtaskIndex);
   if (actionName === "edit") editSubtask(subtaskIndex);
 }
 
+/**
+ * Delete subtask
+ * @param {number} subtaskIndex - Subtaskindex value
+ * @returns {void} Return value
+ */
 function deleteSubtask(subtaskIndex) {
   subtaskCollection.splice(subtaskIndex, 1);
   renderSubtaskList();
 }
 
+/**
+ * Edit subtask
+ * @param {number} subtaskIndex - Subtaskindex value
+ * @returns {void} Return value
+ */
 function editSubtask(subtaskIndex) {
   const currentTitle = subtaskCollection[subtaskIndex].title;
   const newTitle = prompt("Edit subtask:", currentTitle);
   applyEditedSubtaskTitle(subtaskIndex, newTitle);
 }
 
+/**
+ * Apply edited subtask title
+ * @param {number} subtaskIndex - Subtaskindex value
+ * @param {*} newTitle - Newtitle value
+ * @returns {void} Return value
+ */
 function applyEditedSubtaskTitle(subtaskIndex, newTitle) {
   const cleanedTitle = getTrimmedValue(newTitle ?? "");
   if (!cleanedTitle) return;
@@ -150,10 +237,19 @@ function applyEditedSubtaskTitle(subtaskIndex, newTitle) {
   renderSubtaskList();
 }
 
+/**
+ * Is valid subtask index
+ * @param {number} subtaskIndex - Subtaskindex value
+ * @returns {boolean} Return value
+ */
 function isValidSubtaskIndex(subtaskIndex) {
   return Number.isInteger(subtaskIndex) && subtaskIndex >= 0 && subtaskIndex < subtaskCollection.length;
 }
 
+/**
+ * Reset subtasks
+ * @returns {void} Return value
+ */
 function resetSubtasks() {
   subtaskCollection = [];
   renderSubtaskList();
@@ -163,6 +259,9 @@ function resetSubtasks() {
    PRIORITY ICONS
 ========================= */
 
+/**
+ * Initialize priority icon handlers
+ */
 function initializePriorityIconHandlers() {
   const radioNodeList = document.querySelectorAll('input[name="priority"]');
   radioNodeList.forEach((radioElement) => {
@@ -171,6 +270,9 @@ function initializePriorityIconHandlers() {
   updatePriorityIcons();
 }
 
+/**
+ * Update priority icons
+ */
 function updatePriorityIcons() {
   const urgentRadio = document.getElementById("priority-urgent");
   const mediumRadio = document.getElementById("priority-medium");
@@ -181,6 +283,14 @@ function updatePriorityIcons() {
   applyPriorityIcon("icon-low", lowRadio, "low_white", "low_green");
 }
 
+/**
+ * Apply priority icon
+ * @param {string} iconId - ID value
+ * @param {HTMLElement} radioElement - DOM element
+ * @param {*} checkedName - Checkedname value
+ * @param {*} uncheckedName - Uncheckedname value
+ * @returns {void} Return value
+ */
 function applyPriorityIcon(iconId, radioElement, checkedName, uncheckedName) {
   const iconElement = document.getElementById(iconId);
   if (!iconElement || !radioElement) return;
@@ -190,111 +300,4 @@ function applyPriorityIcon(iconId, radioElement, checkedName, uncheckedName) {
     : `../assets/icons/${uncheckedName}.svg`;
 }
 
-/* =========================
-   FORM RESET + DATA SAMMLUNG
-========================= */
-
-function handleClear() {
-  resetFormElement();
-  resetAssignees();
-  resetCategory();
-  resetSubtasks();
-  updatePriorityIcons();
-}
-
-function resetFormElement() {
-  const taskFormElement = document.getElementById("taskForm");
-  if (!taskFormElement) return;
-  taskFormElement.reset();
-}
-
-function resetAssignees() {
-  uncheckAllAssigneeCheckboxes();
-  clearAssigneeAvatarContainer();
-  resetAssigneePlaceholder();
-  updateAssigneeDisplay();
-}
-
-function uncheckAllAssigneeCheckboxes() {
-  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]').forEach((checkboxElement) => {
-    checkboxElement.checked = false;
-  });
-}
-
-function clearAssigneeAvatarContainer() {
-  const avatarContainerElement = document.getElementById("selected-assignee-avatars");
-  if (!avatarContainerElement) return;
-  avatarContainerElement.innerHTML = "";
-}
-
-function resetAssigneePlaceholder() {
-  const placeholderElement = document.getElementById("selected-assignees-placeholder");
-  if (!placeholderElement) return;
-  placeholderElement.textContent = "Select contacts to assign";
-}
-
-function resetCategory() {
-  setCategoryHiddenInput("");
-  setCategoryPlaceholderText("");
-  removeCategoryError();
-}
-
-function collectTaskData() {
-  return {
-    category: readInputValue("category"),
-    title: readInputValue("title"),
-    description: readInputValue("description"),
-    dueDate: readInputValue("due-date"),
-    priority: readSelectedPriority(),
-    assignedTo: getSelectedAssignees(),
-    subtasks: structuredClone(subtaskCollection),
-  };
-}
-
-function readInputValue(inputId) {
-  const inputElement = document.getElementById(inputId);
-  if (!inputElement) return "";
-  return inputElement.value.trim();
-}
-
-function readSelectedPriority() {
-  const selectedElement = document.querySelector('input[name="priority"]:checked');
-  return selectedElement ? selectedElement.value : "medium";
-}
-
-/* =========================
-   SUCCESS TOAST + REDIRECT
-========================= */
-
-function ensureSuccessToastElement() {
-  const toastElement = document.getElementById("task-success");
-  if (toastElement) return toastElement;
-
-  const newToastElement = document.createElement("div");
-  newToastElement.id = "task-success";
-  newToastElement.className = "task-success";
-  newToastElement.textContent = "Task added to board";
-  document.body.appendChild(newToastElement);
-  return newToastElement;
-}
-
-function showSuccessAndRedirect() {
-  const toastElement = ensureSuccessToastElement();
-  restartToastAnimation(toastElement);
-
-  setTimeout(() => {
-    window.location.href = "board.html";
-  }, 2500);
-}
-
-function showSavingFailedToast() {
-  const toastElement = ensureSuccessToastElement();
-  toastElement.textContent = "Saving failed";
-  restartToastAnimation(toastElement);
-}
-
-function restartToastAnimation(toastElement) {
-  toastElement.classList.remove("show");
-  void toastElement.offsetWidth;
-  toastElement.classList.add("show");
-}
+// Form-Reset, Data-Collection und Success-Toast wurden nach add_task_form.js ausgelagert

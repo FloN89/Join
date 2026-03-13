@@ -197,8 +197,8 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 
 - [x] **`.gitignore` erstellen** – verhindert sensible Daten im Repository
 - [x] **Contact-Validierung** – `createContact()` und `updateContact()` validieren
-- [ ] **Kontakt löschen → aus Tasks entfernen** – Anforderung aus User Story Kontakte 4
-- [ ] **JS-Dateien aufteilen** – `board.js` (794), `add_task.js` (664), `add_task_overlay.js` (553) über 400 Zeilen
+- [x] **Kontakt löschen → aus Tasks entfernen** – Anforderung aus User Story Kontakte 4
+- [x] **JS-Dateien aufteilen** – `board.js` (794), `add_task.js` (664), `add_task_overlay.js` (553) über 400 Zeilen
 - [x] **`handleTouchMove()` refaktorieren** – 77 Zeilen → in Hilfsfunktionen aufteilen
 - [x] **HTML5-Validierung entfernen** – `required`-Attribute und `type="email"` durch JS-Validierung ersetzen
 - [x] **`console.log` entfernen** – aus `topbar-loader.js` (Zeilen 16, 21, 27)
@@ -209,7 +209,7 @@ Das Projekt ist funktionsfähig mit guter Grundstruktur. Es gibt jedoch mehrere 
 - [x] **Submit-Button deaktivieren** bei Add Task während dem Speichern
 - [x] **320px Media Queries** für alle Seiten testen und ergänzen
 - [x] **Landscape-Mode** auf Mobile deaktivieren (CSS `@media (orientation: landscape) and (max-width: 480px)`)
-- [ ] **JSDoc für `board.js`** – alle Funktionen dokumentieren
+- [x] **JSDoc für `board.js`** – alle Funktionen dokumentieren
 
 ### Vor Abgabe erledigen
 

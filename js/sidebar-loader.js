@@ -23,6 +23,9 @@ fetch("/templates/sidebar_template.html")
     console.error("Error loading sidebar:", error);
   });
 
+/**
+ * Set public sidebar
+ */
 function setPublicSidebar() {
   const isPublic = document.body.dataset.public === "true";
   const userId = sessionStorage.getItem("userId");
@@ -39,6 +42,9 @@ function setPublicSidebar() {
   }
 }
 
+/**
+ * Set active link
+ */
 function setActiveLink() {
   // Hole den aktuellen Pfad
   const currentPath = window.location.pathname;
