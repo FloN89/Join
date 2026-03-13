@@ -76,47 +76,32 @@ function handleTouchStart(touchEvent) {
   touchOffsetY = touch.clientY - cardPosition.top;
 }
 
-function handleTouchMove(touchEvent) {
-  if (!currentTouchElement) return;
+function shouldStartTouchDrag(deltaX, deltaY) {
+  if (deltaX < 10 && deltaY < 10) return false;
+  if (deltaX > deltaY) return false;
+  return true;
+}
 
-  const touch = touchEvent.touches[0];
-  const fingerX = touch.clientX;
-  const fingerY = touch.clientY;
 
-  const deltaX = Math.abs(fingerX - touchStartX);
-  const deltaY = Math.abs(fingerY - touchStartY);
-
-  // Wenn noch nicht im Drag-Modus, pruefe ob Bewegung starten soll
-  if (!isDragging) {
-    // Schwellenwert: 10px Bewegung
-    if (deltaX < 10 && deltaY < 10) return;
-
-    // Wenn mehr horizontal als vertikal: normales Scrollen (kein Drag)
-    if (deltaX > deltaY) {
-      return;
-    }
-
-    // Vertikale Bewegung: starte Drag
-    isDragging = true;
-    currentTouchElement.classList.add("dragging");
-
-    // Erstelle jetzt die Kopie
-    touchClone = currentTouchElement.cloneNode(true);
-    touchClone.classList.add("touch-clone");
-    touchClone.classList.remove("dragging");
-    document.body.appendChild(touchClone);
-
-    touchClone.style.left = fingerX - touchOffsetX + "px";
-    touchClone.style.top = fingerY - touchOffsetY + "px";
-  }
-
-  if (!isDragging || !touchClone) return;
-
-  touchEvent.preventDefault();
-
+function initializeTouchDrag(fingerX, fingerY) {
+  isDragging = true;
+  currentTouchElement.classList.add("dragging");
+  touchClone = currentTouchElement.cloneNode(true);
+  touchClone.classList.add("touch-clone");
+  touchClone.classList.remove("dragging");
+  document.body.appendChild(touchClone);
   touchClone.style.left = fingerX - touchOffsetX + "px";
   touchClone.style.top = fingerY - touchOffsetY + "px";
+}
 
+
+function updateTouchClonePosition(fingerX, fingerY) {
+  touchClone.style.left = fingerX - touchOffsetX + "px";
+  touchClone.style.top = fingerY - touchOffsetY + "px";
+}
+
+
+function handleTouchAutoScroll(fingerY) {
   const scrollZone = 100;
   const scrollSpeed = 10;
   const windowHeight = window.innerHeight;
@@ -127,22 +112,19 @@ function handleTouchMove(touchEvent) {
   }
 
   if (fingerY < scrollZone) {
-    autoScrollInterval = setInterval(function () {
-      window.scrollBy(0, -scrollSpeed);
-    }, 20);
+    autoScrollInterval = setInterval(() => window.scrollBy(0, -scrollSpeed), 20);
   } else if (fingerY > windowHeight - scrollZone) {
-    autoScrollInterval = setInterval(function () {
-      window.scrollBy(0, scrollSpeed);
-    }, 20);
+    autoScrollInterval = setInterval(() => window.scrollBy(0, scrollSpeed), 20);
   }
+}
 
-  // Kopie kurz verstecken, um Element darunter zu finden
+
+function highlightTouchDropZone(fingerX, fingerY) {
   touchClone.style.display = "none";
   const elementUnderFinger = document.elementFromPoint(fingerX, fingerY);
   touchClone.style.display = "block";
 
-  const allTaskLists = document.querySelectorAll(".task-list");
-  allTaskLists.forEach(function (list) {
+  document.querySelectorAll(".task-list").forEach(list => {
     list.classList.remove("drag-over");
   });
 
@@ -154,47 +136,86 @@ function handleTouchMove(touchEvent) {
   }
 }
 
-function handleTouchEnd(touchEvent) {
+
+function handleTouchMove(touchEvent) {
   if (!currentTouchElement) return;
 
+  const touch = touchEvent.touches[0];
+  const fingerX = touch.clientX;
+  const fingerY = touch.clientY;
+  const deltaX = Math.abs(fingerX - touchStartX);
+  const deltaY = Math.abs(fingerY - touchStartY);
+
+  if (!isDragging && shouldStartTouchDrag(deltaX, deltaY)) {
+    initializeTouchDrag(fingerX, fingerY);
+  }
+
+  if (!isDragging || !touchClone) return;
+  touchEvent.preventDefault();
+  updateTouchClonePosition(fingerX, fingerY);
+  handleTouchAutoScroll(fingerY);
+  highlightTouchDropZone(fingerX, fingerY);
+}
+
+function stopTouchAutoScroll() {
   if (autoScrollInterval) {
     clearInterval(autoScrollInterval);
     autoScrollInterval = null;
   }
+}
 
-  // Nur wenn tatsaechlich ein Drag stattgefunden hat
-  if (isDragging) {
-    currentTouchElement.classList.remove("dragging");
 
-    const touch = touchEvent.changedTouches[0];
-    const fingerX = touch.clientX;
-    const fingerY = touch.clientY;
+function findTouchDropTarget(fingerX, fingerY) {
+  touchClone.style.display = "none";
+  const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
+  touchClone.remove();
+  touchClone = null;
+  return elementAtDropPosition;
+}
 
-    if (touchClone) {
-      touchClone.style.display = "none";
-      const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
-      touchClone.remove();
-      touchClone = null;
 
-      const allTaskLists = document.querySelectorAll(".task-list");
-      allTaskLists.forEach(function (list) {
-        list.classList.remove("drag-over");
-      });
+function clearTouchDragOverStates() {
+  document.querySelectorAll(".task-list").forEach(list => {
+    list.classList.remove("drag-over");
+  });
+}
 
-      if (elementAtDropPosition) {
-        const targetTaskList = elementAtDropPosition.closest(".task-list");
-        if (targetTaskList && currentDraggedElement) {
-          targetTaskList.appendChild(currentDraggedElement);
-          updateEmptyStates();
-          updateTaskStatus(currentDraggedElement, targetTaskList.id);
-        }
-      }
-    }
+
+function processTouchDrop(elementAtDropPosition) {
+  if (!elementAtDropPosition) return;
+
+  const targetTaskList = elementAtDropPosition.closest(".task-list");
+  if (targetTaskList && currentDraggedElement) {
+    targetTaskList.appendChild(currentDraggedElement);
+    updateEmptyStates();
+    updateTaskStatus(currentDraggedElement, targetTaskList.id);
   }
+}
 
+
+function resetTouchDragState() {
   currentTouchElement = null;
   currentDraggedElement = null;
   isDragging = false;
+}
+
+
+function handleTouchEnd(touchEvent) {
+  if (!currentTouchElement) return;
+  stopTouchAutoScroll();
+
+  if (isDragging) {
+    currentTouchElement.classList.remove("dragging");
+    const touch = touchEvent.changedTouches[0];
+
+    if (touchClone) {
+      const dropTarget = findTouchDropTarget(touch.clientX, touch.clientY);
+      clearTouchDragOverStates();
+      processTouchDrop(dropTarget);
+    }
+  }
+
+  resetTouchDragState();
 }
 
 async function updateTaskStatus(taskElement, newStatus) {

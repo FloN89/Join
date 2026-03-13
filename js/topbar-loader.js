@@ -13,18 +13,16 @@ fetch("/templates/topbar_template.html")
   })
   .then((html) => {
     topbarContainer.innerHTML = html;
-    console.log("Topbar: loaded");
     setUserInitial();
     initUserOverlay();
   })
-  .catch((error) => {
-    console.error("Error loading topbar:", error);
+  .catch(() => {
+    // Silent error handling for production
   });
 
 async function setUserInitial() {
   const userInitialElement = document.getElementById("user-initial");
   if (!userInitialElement) {
-    console.error("User initial element not found");
     return;
   }
 
