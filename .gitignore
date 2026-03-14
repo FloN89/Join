@@ -1,0 +1,17 @@
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+*.swn
+
+.vscode/
+.idea/
+
+node_modules/
+dist/
+build/
+
+.env
+.env.*

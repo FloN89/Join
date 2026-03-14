@@ -81,6 +81,11 @@ let guestTasks = {
   }
 };
 s
+/**
+ * Seed guest tasks
+ * @async
+ * @returns {void} Return value
+ */
 async function seedGuestTasks() {
   let existingData = await loadData("guest-tasks/");
   if (existingData) {
@@ -99,6 +104,11 @@ let guestContacts = {
   "guest-contact-3": { name: "Anna Schmidt", color: "#6e52ff" }
 };
 
+/**
+ * Seed guest contacts
+ * @async
+ * @returns {void} Return value
+ */
 async function seedGuestContacts() {
   let existingData = await loadData("guest-contacts/");
   if (existingData) return;

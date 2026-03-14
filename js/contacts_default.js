@@ -1,6 +1,11 @@
 let contacts = {};
 let id = [];
 
+/**
+ * Fetch contacts
+ * @async
+ * @returns {void} Return value
+ */
 async function fetchContacts() {
     contacts = await loadData("contacts/") || {};
     await includeLoggedInUserInContacts();
@@ -10,6 +15,11 @@ async function fetchContacts() {
     renderContacts();
 }
 
+/**
+ * Include logged in user in contacts
+ * @async
+ * @returns {void} Return value
+ */
 async function includeLoggedInUserInContacts() {
     const userId = sessionStorage.getItem("userId");
     if (!userId || userId === "guest" || contacts[userId]) return;
@@ -25,12 +35,20 @@ async function includeLoggedInUserInContacts() {
     };
 }
 
+/**
+ * Get contact name by id
+ * @param {string} contactId - ID value
+ * @returns {*} Return value
+ */
 function getContactNameById(contactId) {
     const contact = contacts[contactId] || {};
     const name = String(contact.contactName || "").trim();
     return name || String(contact.contactMail || "").trim();
 }
 
+/**
+ * Render contacts
+ */
 function renderContacts() {
     const contactListRef = document.getElementById("contact-list");
     contactListRef.innerHTML = "";
@@ -53,6 +71,11 @@ function renderContacts() {
     }
 }
 
+/**
+ * Selected contact
+ * @param {string} contactId - ID value
+ * @returns {void} Return value
+ */
 function selectedContact(contactId) {
     let selectContact = document.getElementById("contact-content");
     const wrapper = document.querySelector(".contact-wrapper");
@@ -74,11 +97,19 @@ function selectedContact(contactId) {
     }, 300);
 }
 
+/**
+ * Render action button
+ * @param {string} contactId - ID value
+ */
 function renderActionButton(contactId) {
     const actionButton = document.getElementById("action-button");
     actionButton.innerHTML = generateActionButton(contactId);
 }
 
+/**
+ * Back to contacts
+ * @returns {void} Return value
+ */
 function backToContacts() {
     const wrapper = document.querySelector(".contact-wrapper");
     const actionButton = document.getElementById("action-button");
@@ -94,12 +125,20 @@ function backToContacts() {
     }
 }
 
+/**
+ * Change background color
+ * @param {string} contactId - ID value
+ * @returns {void} Return value
+ */
 function changeBackgroundColor(contactId) {
     removeBackgroundColor();
     let backgroundColor = document.getElementById("contact-icon-list-" + contactId);
     backgroundColor.classList.add("contact-icon-list-selected");
 }
 
+/**
+ * Remove background color
+ */
 function removeBackgroundColor() {
     for (let index = 0; index < id.length; index++) {
         let backgroundColor = document.getElementById("contact-icon-list-" + id[index]);
@@ -109,6 +148,9 @@ function removeBackgroundColor() {
     }
 }
 
+/**
+ * Open create modal
+ */
 function openCreateModal() {
     const modal = document.getElementById("newContactModal");
     const backgroundRef = document.querySelector(".add-contact-overlay-background");
@@ -126,6 +168,10 @@ function openCreateModal() {
     backgroundRef.classList.add("show");
 }
 
+/**
+ * Open edit contact
+ * @param {string} contactId - ID value
+ */
 function openEditContact(contactId) {
     const modal = document.getElementById("newContactModal");
     const backgroundRef = document.querySelector(".add-contact-overlay-background");
@@ -149,6 +195,12 @@ function openEditContact(contactId) {
     iconPreview.innerHTML = getInitalsImg(contactInfo.color, contactId);
 }
 
+/**
+ * Save edited contact
+ * @async
+ * @param {string} contactId - ID value
+ * @returns {void} Return value
+ */
 async function saveEditedContact(contactId) {
     const formData = getValidatedContactFormData();
     if (!formData) return;
@@ -164,6 +216,12 @@ async function saveEditedContact(contactId) {
     selectedContact(contactId);
 }
 
+/**
+ * Delete contact
+ * @async
+ * @param {string} contactId - ID value
+ * @returns {void} Return value
+ */
 async function deleteContact(contactId) {
     closeOverlay();
 
@@ -183,6 +241,10 @@ async function deleteContact(contactId) {
     }
 }
 
+/**
+ * Toggle modal
+ * @returns {void} Return value
+ */
 function toggleModal() {
     const modalRef = document.getElementById("newContactModal");
     const backgroundRef = document.querySelector(".add-contact-overlay-background");
@@ -192,6 +254,9 @@ function toggleModal() {
     backgroundRef.classList.remove("show");
 }
 
+/**
+ * Close overlay
+ */
 function closeOverlay() {
     const overlayRef = document.getElementById("overlay-edit-delete");
     const backgroundRef = document.querySelector(".overlay-background");
@@ -200,6 +265,11 @@ function closeOverlay() {
     backgroundRef.style.display = "none";
 }
 
+/**
+ * Toggle overlay
+ * @param {string} contactId - ID value
+ * @returns {void} Return value
+ */
 function toggleOverlay(contactId) {
     const overlayRef = document.getElementById("overlay-edit-delete");
     const backgroundRef = document.querySelector(".overlay-background");
@@ -214,6 +284,11 @@ function toggleOverlay(contactId) {
     }
 }
 
+/**
+ * Create contact
+ * @async
+ * @returns {*} Return value
+ */
 async function createContact() {
     const formData = getValidatedContactFormData();
     if (!formData) return;
@@ -229,6 +304,10 @@ async function createContact() {
     await fetchContacts();
 }
 
+/**
+ * Get validated contact form data
+ * @returns {*} Return value
+ */
 function getValidatedContactFormData() {
     const nameInput = document.getElementById("contactNameInput");
     const mailInput = document.getElementById("contactMailInput");
@@ -252,6 +331,10 @@ function getValidatedContactFormData() {
     return { name, mail, phone };
 }
 
+/**
+ * Contact created
+ * @returns {void} Return value
+ */
 function contactCreated() {
     let successRef = document.getElementById("successfulCreated");
     successRef.classList.add("show");

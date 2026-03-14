@@ -1,3 +1,7 @@
+/**
+ * Init summary
+ * @async
+ */
 async function initSummary() {
   let tasks = await loadSummaryTasks();
   let metrics = calculateMetrics(tasks);
@@ -5,6 +9,11 @@ async function initSummary() {
   await loadGreeting();
 }
 
+/**
+ * Load summary tasks
+ * @async
+ * @returns {void} Return value
+ */
 async function loadSummaryTasks() {
   let userId = sessionStorage.getItem("userId");
 
@@ -18,6 +27,11 @@ async function loadSummaryTasks() {
   }
 }
 
+/**
+ * Calculate metrics
+ * @param {*} tasks - Tasks value
+ * @returns {void} Return value
+ */
 function calculateMetrics(tasks) {
   let taskList = Object.values(tasks);
   let todoCount = 0;
@@ -64,6 +78,10 @@ function calculateMetrics(tasks) {
   };
 }
 
+/**
+ * Update metrics d o m
+ * @param {*} metrics - Metrics value
+ */
 function updateMetricsDOM(metrics) {
   document.getElementById("count-todo").innerText = metrics.todo;
   document.getElementById("count-done").innerText = metrics.done;
@@ -80,6 +98,11 @@ function updateMetricsDOM(metrics) {
   }
 }
 
+/**
+ * Format date
+ * @param {*} dateString - Datestring value
+ * @returns {void} Return value
+ */
 function formatDate(dateString) {
   let date = new Date(dateString);
   let months = [
@@ -92,6 +115,10 @@ function formatDate(dateString) {
   return month + " " + day + ", " + year;
 }
 
+/**
+ * Get time based greeting
+ * @returns {*} Return value
+ */
 function getTimeBasedGreeting() {
   let currentHour = new Date().getHours();
 
@@ -105,6 +132,11 @@ function getTimeBasedGreeting() {
 }
 
 
+/**
+ * Load greeting
+ * @async
+ * @returns {void} Return value
+ */
 async function loadGreeting() {
   let userId = sessionStorage.getItem("userId");
   let greetingText = document.getElementById("greeting-text");

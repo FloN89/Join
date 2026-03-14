@@ -10,6 +10,11 @@ const databaseBaseUrl =
  * - Prüft Nutzer in der Datenbank
  * - Speichert Session und leitet weiter
  */
+/**
+ * Start login
+ * @param {Event} event - Event object
+ * @returns {void} Return value
+ */
 function startLogin(event) {
   if (event) event.preventDefault();
 
@@ -114,6 +119,11 @@ function saveUserSession(userId) {
  * - Desktop/Tablet: sofort
  * - Mobile <= 480px: Welcome Overlay kurz anzeigen
  */
+/**
+ * Redirect to summary page
+ * @param {*} userName - Username value
+ * @returns {void} Return value
+ */
 function redirectToSummaryPage(userName) {
   if (!isMobileScreen()) return navigateToSummary();
 
@@ -142,6 +152,11 @@ function navigateToSummary() {
  * Zeigt das Welcome Overlay ohne "Zwischen-Frame" an:
  * - Login-Bereiche werden ausgeblendet
  * - Overlay wird per Inline-Styles sofort sichtbar
+ */
+/**
+ * Show welcome overlay immediately
+ * @param {*} userName - Username value
+ * @returns {void} Return value
  */
 function showWelcomeOverlayImmediately(userName) {
   hideLoginLayoutImmediately();
@@ -179,6 +194,10 @@ function showOverlayImmediately() {
 /**
  * Setzt den Namen im Overlay:
  * - Wenn leer (Gast): Namenszeile ausblenden
+ */
+/**
+ * Set welcome name line
+ * @param {*} userName - Username value
  */
 function setWelcomeNameLine(userName) {
   const welcomeNameElement = document.getElementById("welcome-name");
@@ -233,6 +252,9 @@ function animatePageElements() {
  * Initialisiert die Seite nach dem Laden:
  * - Animation
  * - Passwort-Sichtbarkeit
+ */
+/**
+ * Initialize page
  */
 function initializePage() {
   animatePageElements();

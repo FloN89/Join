@@ -1,6 +1,11 @@
 let task = {};
 let taskId = [];
 
+/**
+ * Fetches all tasks from Firebase for current user or guest
+ * Clears the board and renders all task cards
+ * @async
+ */
 async function fetchTasks() {
   let userId = sessionStorage.getItem("userId");
 
@@ -18,31 +23,37 @@ async function fetchTasks() {
 }
 
 let currentDraggedElement;
-let currentTouchElement = null;
-let touchClone = null;
-let touchOffsetX = 0;
-let touchOffsetY = 0;
-let autoScrollInterval = null;
-let touchStartX = 0;
-let touchStartY = 0;
-let isDragging = false;
 
-// === Desktop Drag & Drop ===
-
+/**
+ * Starts dragging operation for desktop drag and drop
+ * @param {DragEvent} dragEvent - The drag event
+ */
 function startDragging(dragEvent) {
   currentDraggedElement = dragEvent.target;
   dragEvent.target.classList.add("dragging");
 }
 
+/**
+ * Ends dragging operation and removes dragging style
+ * @param {DragEvent} dragEvent - The drag event
+ */
 function endDragging(dragEvent) {
   dragEvent.target.classList.remove("dragging");
 }
 
+/**
+ * Allows dropping by preventing default and adding visual feedback
+ * @param {DragEvent} dragEvent - The drag event
+ */
 function allowDrop(dragEvent) {
   dragEvent.preventDefault();
   dragEvent.currentTarget.classList.add("drag-over");
 }
 
+/**
+ * Handles drop event and updates task status
+ * @param {DragEvent} dropEvent - The drop event
+ */
 function drop(dropEvent) {
   dropEvent.preventDefault();
   dropEvent.currentTarget.classList.remove("drag-over");
@@ -56,168 +67,20 @@ function drop(dropEvent) {
   updateTaskStatus(currentDraggedElement, taskList.id);
 }
 
+/**
+ * Removes drag-over visual feedback from drop zone
+ * @param {DragEvent} dragEvent - The drag event
+ */
 function removeDragOver(dragEvent) {
   dragEvent.currentTarget.classList.remove("drag-over");
 }
 
-// === Mobile Touch Drag & Drop ===
-
-function handleTouchStart(touchEvent) {
-  currentTouchElement = touchEvent.currentTarget;
-  currentDraggedElement = currentTouchElement;
-
-  const touch = touchEvent.touches[0];
-  touchStartX = touch.clientX;
-  touchStartY = touch.clientY;
-  isDragging = false;
-
-  const cardPosition = currentTouchElement.getBoundingClientRect();
-  touchOffsetX = touch.clientX - cardPosition.left;
-  touchOffsetY = touch.clientY - cardPosition.top;
-}
-
-function shouldStartTouchDrag(deltaX, deltaY) {
-  if (deltaX < 10 && deltaY < 10) return false;
-  if (deltaX > deltaY) return false;
-  return true;
-}
-
-
-function initializeTouchDrag(fingerX, fingerY) {
-  isDragging = true;
-  currentTouchElement.classList.add("dragging");
-  touchClone = currentTouchElement.cloneNode(true);
-  touchClone.classList.add("touch-clone");
-  touchClone.classList.remove("dragging");
-  document.body.appendChild(touchClone);
-  touchClone.style.left = fingerX - touchOffsetX + "px";
-  touchClone.style.top = fingerY - touchOffsetY + "px";
-}
-
-
-function updateTouchClonePosition(fingerX, fingerY) {
-  touchClone.style.left = fingerX - touchOffsetX + "px";
-  touchClone.style.top = fingerY - touchOffsetY + "px";
-}
-
-
-function handleTouchAutoScroll(fingerY) {
-  const scrollZone = 100;
-  const scrollSpeed = 10;
-  const windowHeight = window.innerHeight;
-
-  if (autoScrollInterval) {
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = null;
-  }
-
-  if (fingerY < scrollZone) {
-    autoScrollInterval = setInterval(() => window.scrollBy(0, -scrollSpeed), 20);
-  } else if (fingerY > windowHeight - scrollZone) {
-    autoScrollInterval = setInterval(() => window.scrollBy(0, scrollSpeed), 20);
-  }
-}
-
-
-function highlightTouchDropZone(fingerX, fingerY) {
-  touchClone.style.display = "none";
-  const elementUnderFinger = document.elementFromPoint(fingerX, fingerY);
-  touchClone.style.display = "block";
-
-  document.querySelectorAll(".task-list").forEach(list => {
-    list.classList.remove("drag-over");
-  });
-
-  if (elementUnderFinger) {
-    const taskListUnderFinger = elementUnderFinger.closest(".task-list");
-    if (taskListUnderFinger) {
-      taskListUnderFinger.classList.add("drag-over");
-    }
-  }
-}
-
-
-function handleTouchMove(touchEvent) {
-  if (!currentTouchElement) return;
-
-  const touch = touchEvent.touches[0];
-  const fingerX = touch.clientX;
-  const fingerY = touch.clientY;
-  const deltaX = Math.abs(fingerX - touchStartX);
-  const deltaY = Math.abs(fingerY - touchStartY);
-
-  if (!isDragging && shouldStartTouchDrag(deltaX, deltaY)) {
-    initializeTouchDrag(fingerX, fingerY);
-  }
-
-  if (!isDragging || !touchClone) return;
-  touchEvent.preventDefault();
-  updateTouchClonePosition(fingerX, fingerY);
-  handleTouchAutoScroll(fingerY);
-  highlightTouchDropZone(fingerX, fingerY);
-}
-
-function stopTouchAutoScroll() {
-  if (autoScrollInterval) {
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = null;
-  }
-}
-
-
-function findTouchDropTarget(fingerX, fingerY) {
-  touchClone.style.display = "none";
-  const elementAtDropPosition = document.elementFromPoint(fingerX, fingerY);
-  touchClone.remove();
-  touchClone = null;
-  return elementAtDropPosition;
-}
-
-
-function clearTouchDragOverStates() {
-  document.querySelectorAll(".task-list").forEach(list => {
-    list.classList.remove("drag-over");
-  });
-}
-
-
-function processTouchDrop(elementAtDropPosition) {
-  if (!elementAtDropPosition) return;
-
-  const targetTaskList = elementAtDropPosition.closest(".task-list");
-  if (targetTaskList && currentDraggedElement) {
-    targetTaskList.appendChild(currentDraggedElement);
-    updateEmptyStates();
-    updateTaskStatus(currentDraggedElement, targetTaskList.id);
-  }
-}
-
-
-function resetTouchDragState() {
-  currentTouchElement = null;
-  currentDraggedElement = null;
-  isDragging = false;
-}
-
-
-function handleTouchEnd(touchEvent) {
-  if (!currentTouchElement) return;
-  stopTouchAutoScroll();
-
-  if (isDragging) {
-    currentTouchElement.classList.remove("dragging");
-    const touch = touchEvent.changedTouches[0];
-
-    if (touchClone) {
-      const dropTarget = findTouchDropTarget(touch.clientX, touch.clientY);
-      clearTouchDragOverStates();
-      processTouchDrop(dropTarget);
-    }
-  }
-
-  resetTouchDragState();
-}
-
+/**
+ * Updates task status in Firebase when task is moved
+ * @async
+ * @param {HTMLElement} taskElement - The task card element
+ * @param {string} newStatus - The new status (todo, in-progress, await-feedback, done)
+ */
 async function updateTaskStatus(taskElement, newStatus) {
   const id = taskElement.dataset.taskId;
   if (!id || !task[id]) return;
@@ -229,6 +92,9 @@ async function updateTaskStatus(taskElement, newStatus) {
   await saveData(path, task[id]);
 }
 
+/**
+ * Renders all tasks as cards on the board
+ */
 function dataToCard() {
   for (let i = 0; i < taskId.length; i++) {
     let id = taskId[i];
@@ -240,107 +106,203 @@ function dataToCard() {
   updateEmptyStates();
 }
 
+/**
+ * Updates empty state placeholders for all task categories
+ */
 function updateEmptyStates() {
-  const categories = [
+  const categories = getTaskCategories();
+  categories.forEach(updateCategoryEmptyState);
+}
+
+/**
+ * Returns array of task category definitions
+ * @returns {Array<{id: string, name: string}>} Array of category objects
+ */
+function getTaskCategories() {
+  return [
     { id: "todo", name: "To do" },
     { id: "in-progress", name: "In progress" },
     { id: "await-feedback", name: "Await feedback" },
     { id: "done", name: "Done" }
   ];
-
-  categories.forEach(function (category) {
-    const taskList = document.getElementById(category.id);
-    if (!taskList) return;
-    const existingPlaceholder = taskList.querySelector(".empty-state");
-
-    if (existingPlaceholder) {
-      existingPlaceholder.remove();
-    }
-
-    const taskCards = taskList.querySelectorAll(".task-card");
-    if (taskCards.length === 0) {
-      const placeholder = document.createElement("div");
-      placeholder.className = "empty-state";
-      placeholder.textContent = "No tasks " + category.name;
-      taskList.appendChild(placeholder);
-    }
-  });
 }
 
-function createTaskCard(category, title, description, assignedTo, priority, subtasks, id, status) {
-  let columnId = status || "todo";
-  let column = document.getElementById(columnId);
-  if (!column) {
-    column = document.getElementById("todo");
+/**
+ * Updates empty state for a single category
+ * @param {{id: string, name: string}} category - Category object
+ */
+function updateCategoryEmptyState(category) {
+  const taskList = document.getElementById(category.id);
+  if (!taskList) return;
+  removeExistingPlaceholder(taskList);
+  if (shouldShowEmptyState(taskList)) {
+    addEmptyStatePlaceholder(taskList, category.name);
   }
-  let card = column.appendChild(document.createElement("div"));
+}
 
+/**
+ * Removes existing empty state placeholder from task list
+ * @param {HTMLElement} taskList - The task list container
+ */
+function removeExistingPlaceholder(taskList) {
+  const existingPlaceholder = taskList.querySelector(".empty-state");
+  if (existingPlaceholder) existingPlaceholder.remove();
+}
+
+/**
+ * Checks if task list should show empty state
+ * @param {HTMLElement} taskList - The task list container
+ * @returns {boolean} True if list is empty
+ */
+function shouldShowEmptyState(taskList) {
+  return taskList.querySelectorAll(".task-card").length === 0;
+}
+
+/**
+ * Adds empty state placeholder to task list
+ * @param {HTMLElement} taskList - The task list container
+ * @param {string} categoryName - Name of the category
+ */
+function addEmptyStatePlaceholder(taskList, categoryName) {
+  const placeholder = document.createElement("div");
+  placeholder.className = "empty-state";
+  placeholder.textContent = "No tasks " + categoryName;
+  taskList.appendChild(placeholder);
+}
+
+/**
+ * Creates and renders a task card on the board
+ * @param {string} category - Task category
+ * @param {string} title - Task title
+ * @param {string} description - Task description
+ * @param {Array} assignedTo - Array of assigned users
+ * @param {string} priority - Task priority (low, medium, high, urgent)
+ * @param {Array} subtasks - Array of subtask objects
+ * @param {string} id - Task ID
+ * @param {string} status - Task status
+ */
+function createTaskCard(category, title, description, assignedTo, priority, subtasks, id, status) {
+  const column = getTaskColumn(status);
+  const card = createCardElement(column, id);
+  attachDragAndTouchEvents(card);
+  card.innerHTML = buildTaskCardHTML(category, title, description, assignedTo, priority, subtasks, id);
+}
+
+/**
+ * Gets the task column element by status
+ * @param {string} status - Task status
+ * @returns {HTMLElement} The column element
+ */
+function getTaskColumn(status) {
+  let columnId = status || "todo";
+  return document.getElementById(columnId) || document.getElementById("todo");
+}
+
+/**
+ * Creates a card element and appends it to column
+ * @param {HTMLElement} column - The column to append to
+ * @param {string} id - Task ID
+ * @returns {HTMLElement} The created card element
+ */
+function createCardElement(column, id) {
+  let card = column.appendChild(document.createElement("div"));
   card.className = "task-card";
   card.draggable = true;
   card.dataset.taskId = id;
+  return card;
+}
 
-  // Desktop Drag & Drop
+/**
+ * Attaches drag and touch event listeners to card
+ * @param {HTMLElement} card - The card element
+ */
+function attachDragAndTouchEvents(card) {
   card.ondragstart = startDragging;
   card.ondragend = endDragging;
-
-  // Mobile Touch Events
   card.addEventListener("touchstart", handleTouchStart, { passive: false });
   card.addEventListener("touchmove", handleTouchMove, { passive: false });
   card.addEventListener("touchend", handleTouchEnd, { passive: false });
+}
 
+/**
+ * Builds the HTML content for a task card
+ * @param {string} category - Task category
+ * @param {string} title - Task title
+ * @param {string} description - Task description
+ * @param {Array} assignedTo - Array of assigned users
+ * @param {string} priority - Task priority
+ * @param {Array} subtasks - Array of subtasks
+ * @param {string} id - Task ID
+ * @returns {string} HTML string for card content
+ */
+function buildTaskCardHTML(category, title, description, assignedTo, priority, subtasks, id) {
   const subtasksHTML = createSubtasksHTML(subtasks);
   const usersHTML = createUsersHTML(assignedTo);
   const priorityColor = getPriorityColor(priority);
-
-  card.innerHTML = `
-    <div onclick="openTaskOverlay('${id}', '${priorityColor}')" class="task-card-content">
-        <div class="task-category ${category}">${category}</div>
-        <h3 class="task-title">${title}</h3>
-        <p class="task-description">${description}</p>
-      ${subtasksHTML}
-      <div class="task-footer">
-        <div class="assigned-users">${usersHTML}</div>
-        <img src="../assets/icons/${priority}_${priorityColor}.svg" class="priority-icon" alt="${priority}">
-      </div>
-    </div>
-  `;
+  return generateSmallTaskCardTemplate(category, title, description, subtasksHTML, usersHTML, priority, priorityColor, id);
 }
 
+/**
+ * Creates HTML for subtasks progress bar
+ * @param {Array} subtasks - Array of subtask objects
+ * @returns {string} HTML string or empty string
+ */
 function createSubtasksHTML(subtasks) {
-  if (!subtasks || subtasks.length === 0) {
-    return "";
-  }
-
-  const completedCount = subtasks.filter(function (subtask) {
-    return subtask.done === true || subtask.completed === true;
-  }).length;
+  if (!subtasks || subtasks.length === 0) return "";
+  const completedCount = countCompletedSubtasks(subtasks);
   const totalCount = subtasks.length;
   const progressPercentage = (completedCount / totalCount) * 100;
-
-  return `
-    <div class="subtasks-container">
-      <div class="subtask-progress-bar">
-        <div class="subtask-progress-fill" style="width: ${progressPercentage}%"></div>
-      </div>
-      <span class="subtask-counter">${completedCount}/${totalCount} Subtasks</span>
-    </div>
-  `;
+  return generateSubtasksProgressTemplate(progressPercentage, completedCount, totalCount);
 }
 
+/**
+ * Counts completed subtasks in array
+ * @param {Array} subtasks - Array of subtask objects
+ * @returns {number} Number of completed subtasks
+ */
+function countCompletedSubtasks(subtasks) {
+  return subtasks.filter(function (subtask) {
+    return subtask.done === true || subtask.completed === true;
+  }).length;
+}
+
+/**
+ * Creates HTML for assigned user badges
+ * @param {Array} assignedTo - Array of user objects or names
+ * @returns {string} HTML string for user badges
+ */
 function createUsersHTML(assignedTo) {
-  if (!assignedTo || assignedTo.length === 0) {
-    return "";
-  }
-
-  return assignedTo.map(function (user) {
-    const userName = typeof user === "string" ? user : user?.name || "";
-    if (!userName) return "";
-    const initials = getInitials(userName);
-    const backgroundColor = (typeof user === "object" && user?.color) ? user.color : "#CCCCCC";
-    return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
-  }).join("");
+  if (!assignedTo || assignedTo.length === 0) return "";
+  return assignedTo.map(generateUserBadgeHTML).join("");
 }
 
+/**
+ * Generates HTML for a single user badge
+ * @param {Object|string} user - User object or name string
+ * @returns {string} HTML string for user badge
+ */
+function generateUserBadgeHTML(user) {
+  const userName = typeof user === "string" ? user : user?.name || "";
+  if (!userName) return "";
+  const initials = getInitials(userName);
+  const backgroundColor = getUserColor(user);
+  return generateUserBadgeTemplate(initials, backgroundColor);
+}
+
+/**
+ * Gets color from user object or returns default
+ * @param {Object|string} user - User object or name string
+ * @returns {string} Color hex code
+ */
+function getUserColor(user) {
+  return (typeof user === "object" && user?.color) ? user.color : "#CCCCCC";
+}
+
+/**
+ * Extracts initials from user name
+ * @param {string} name - User full name
+ * @returns {string} User initials (1-2 characters)
+ */
 function getInitials(name) {
   if (!name || typeof name !== "string") return "";
   const nameParts = name.split(" ");
@@ -351,12 +313,22 @@ function getInitials(name) {
   return nameParts[0][0];
 }
 
+/**
+ * Creates user badge HTML with initials
+ * @param {Object} user - User object with name and color
+ * @returns {string} HTML string for user badge
+ */
 function createUserBadge(user) {
   const initials = getInitials(user.name);
   const backgroundColor = user.color || "#CCCCCC";
-  return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
+  return generateUserBadgeTemplate(initials, backgroundColor);
 }
 
+/**
+ * Maps priority level to color name
+ * @param {string} priority - Priority level (low, medium, high, urgent)
+ * @returns {string} Color name (green, yellow, red)
+ */
 function getPriorityColor(priority) {
   if (priority === "low") {
     return "green";
@@ -370,93 +342,16 @@ function getPriorityColor(priority) {
   return "red";
 }
 
-// Lade Karten, wenn die Seite fertig geladen ist
 document.addEventListener("DOMContentLoaded", fetchTasks);
 
-async function openAddTaskOverlay() {
-  const overlay = document.getElementById("add-task-overlay");
-  const content = document.getElementById("add-task-content");
-
-  if (!content.innerHTML.trim()) {
-    const response = await fetch("add_task_overlay.html");
-    content.innerHTML = await response.text();
-
-    if (typeof initializeAddTaskPage === "function") {
-      initializeAddTaskPage();
-    }
-  }
-  overlay.classList.add("active");
-  overlay.setAttribute("aria-hidden", "false");
-  document.body.classList.add("overlay-open");
-}
-
-function closeAddTaskOverlay() {
-  const overlay = document.getElementById("add-task-overlay");
-  overlay.classList.remove("active");
-  overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("overlay-open");
-}
-
+/**
+ * Clears all task cards from the board
+ */
 function clearBoard() {
   document.querySelectorAll(".task-list").forEach(list => {
     list.innerHTML = "";
   });
 }
 
-function onSearchInput() {
-  // Wert aus dem Suchfeld holen
-  const inputField = document.getElementById("searchInput");
-  const searchValue = inputField.value.toLowerCase().trim();
-
-  // Alle Task-Karten auf dem Board auswaehlen
-  const taskCards = document.querySelectorAll(".task-card");
-  // Referenz auf die Fehlermeldung unter dem Suchfeld
-  const errorMessage = document.getElementById("search_error");
-
-  let visibleCardCount = 0;
-
-  // Wenn das Suchfeld leer ist:
-  // - Alle Karten wieder anzeigen
-  // - Fehlermeldung ausblenden
-  // - Funktion beenden
-  if (searchValue === "") {
-    taskCards.forEach(function (card) {
-      card.style.display = "block";
-    });
-
-    errorMessage.style.display = "none";
-    return;
-  }
-
-  // Jede einzelne Task-Karte ueberpruefen
-  taskCards.forEach(function (card) {
-    // Titel und Beschreibung der Karte auslesen
-    const titleElement = card.querySelector(".task-title");
-    const descriptionElement = card.querySelector(".task-description");
-
-    const titleText = titleElement ? titleElement.textContent.toLowerCase() : "";
-    const descriptionText = descriptionElement ? descriptionElement.textContent.toLowerCase() : "";
-
-    // Pruefen, ob Suchbegriff im Titel oder in der Beschreibung enthalten ist
-    if (titleText.includes(searchValue) || descriptionText.includes(searchValue)) {
-      // Karte anzeigen
-      card.style.display = "block";
-      visibleCardCount++;
-    } else {
-      // Karte ausblenden
-      card.style.display = "none";
-    }
-  });
-
-  // Wenn keine sichtbaren Karten vorhanden sind: Fehlermeldung anzeigen
-  if (visibleCardCount === 0) {
-    errorMessage.style.display = "block";
-  } else {
-    errorMessage.style.display = "none";
-  }
-}
-
-function focusSearchInputField() {
-  const inputField = document.getElementById("searchInput");
-  inputField.focus();
-}
+// Overlay-Funktionen wurden nach board_overlay.js ausgelagert
+// Suchfunktionen wurden nach board_search.js ausgelagert

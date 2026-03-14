@@ -1,3 +1,9 @@
+/**
+ * Toggle password visibility
+ * @param {string} inputId - ID value
+ * @param {string} iconId - ID value
+ * @returns {void} Return value
+ */
 function togglePasswordVisibility(inputId, iconId) {
     const password = document.getElementById(inputId);
     const icon = document.getElementById(iconId);
@@ -14,6 +20,12 @@ function togglePasswordVisibility(inputId, iconId) {
     }
 }
 
+/**
+ * Change icon
+ * @param {string} inputId - ID value
+ * @param {string} iconId - ID value
+ * @returns {void} Return value
+ */
 function changeIcon(inputId, iconId) {
     const input = document.getElementById(inputId);
     const icon = document.getElementById(iconId);
@@ -24,6 +36,10 @@ function changeIcon(inputId, iconId) {
     }
 }
 
+/**
+ * Check password match
+ * @returns {boolean} Return value
+ */
 function checkPasswordMatch() {
     const password = document.getElementById("passwordInput")
     const confirmPassword = document.getElementById("confirmPasswordInput")
@@ -43,6 +59,10 @@ function checkPasswordMatch() {
     }
 }
 
+/**
+ * Show sign up
+ * @returns {void} Return value
+ */
 function showSignUp() {
     const user = document.getElementById("usernameInput");
     const mail = document.getElementById("mailInput");
@@ -59,6 +79,10 @@ function showSignUp() {
     }
 }
 
+/**
+ * Successful sign up
+ * @returns {void} Return value
+ */
 function successfulSignUp() {
     const successRef = document.getElementById("successfulSignUp");
     const overlayRef = document.getElementById("overlaySuccessful");
@@ -72,6 +96,11 @@ function successfulSignUp() {
     }, 1500);
 }
 
+/**
+ * Sign up
+ * @async
+ * @returns {void} Return value
+ */
 async function signUp() {
     const user = document.getElementById("usernameInput").value;
     const mail = document.getElementById("mailInput").value;
@@ -87,6 +116,13 @@ async function signUp() {
     successfulSignUp();
 }
 
+/**
+ * Check user
+ * @async
+ * @param {*} errorMessage - Errormessage value
+ * @param {*} user - User value
+ * @returns {boolean} Return value
+ */
 async function checkUser(errorMessage, user) {
     const users = await loadData("users");
     if (!users) return false;
@@ -104,6 +140,11 @@ async function checkUser(errorMessage, user) {
     return false;
 }
 
+/**
+ * Get initials
+ * @param {*} fullName = "" - Fullname = "" value
+ * @returns {*} Return value
+ */
 function getInitials(fullName = "") {
     return fullName.trim().split(" ").map(part => part[0]).join("").toUpperCase();
 }

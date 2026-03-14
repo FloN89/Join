@@ -1,3 +1,12 @@
+/**
+ * Generate contact
+ * @param {*} name - Name value
+ * @param {*} mail - Mail value
+ * @param {*} color - Color value
+ * @param {*} initials - Initials value
+ * @param {string} contactId - ID value
+ * @returns {*} Return value
+ */
 function generateContact(name, mail, color, initials, contactId) {
     return `<div class="contact-first-letter">
                 <div class="contact-icon-list" onclick="selectedContact('${contactId}')" id="contact-icon-list-${contactId}">
@@ -17,12 +26,27 @@ function generateContact(name, mail, color, initials, contactId) {
     `
 }
 
+/**
+ * Generate group header
+ * @param {*} letter - Letter value
+ * @returns {*} Return value
+ */
 function generateGroupHeader(letter) {
     return `
         <div class="contact-group-header">${letter}</div>
     `;
 }
 
+/**
+ * Generate contact content
+ * @param {*} name - Name value
+ * @param {*} mail - Mail value
+ * @param {number} number - Number value
+ * @param {*} color - Color value
+ * @param {*} initials - Initials value
+ * @param {string} contactId - ID value
+ * @returns {*} Return value
+ */
 function generateContactContent(name, mail, number, color, initials, contactId) {
     return `
         <div class="contact-content-header">
@@ -62,6 +86,17 @@ function generateContactContent(name, mail, number, color, initials, contactId) 
         `
 }
 
+/**
+ * Generate modal content
+ * @param {*} header - Header value
+ * @param {*} button1 - Button1 value
+ * @param {*} button2 - Button2 value
+ * @param {*} underheader - Underheader value
+ * @param {string} contactId - ID value
+ * @param {*} functionCall - Functioncall value
+ * @param {*} cancelCall = "toggleModal( - Cancelcall = "togglemodal( value
+ * @returns {*} Return value
+ */
 function generateModalContent(header, button1, button2, underheader, contactId, functionCall, cancelCall = "toggleModal()") {
     return `
                 <div class="modal-content" onclick="event.stopPropagation()">
@@ -107,6 +142,11 @@ function generateModalContent(header, button1, button2, underheader, contactId, 
     `
 }
 
+/**
+ * Generate overlay edit delete
+ * @param {string} contactId - ID value
+ * @returns {*} Return value
+ */
 function generateOverlayEditDelete(contactId) {
     return `
             <div class="overlay-content" onclick="openEditContact('${contactId}')">
@@ -120,6 +160,11 @@ function generateOverlayEditDelete(contactId) {
         `
 }
 
+/**
+ * Generate action button
+ * @param {string} contactId - ID value
+ * @returns {*} Return value
+ */
 function generateActionButton(contactId) {
     return `
             <div class="actionButtonEditDelete" onclick="toggleOverlay('${contactId}')">
@@ -128,6 +173,12 @@ function generateActionButton(contactId) {
             `
 }
 
+/**
+ * Get initals img
+ * @param {*} color - Color value
+ * @param {string} contactId - ID value
+ * @returns {*} Return value
+ */
 function getInitalsImg(color, contactId) {
     return `
     <div class="contact-icon-large" style = "background-color: ${color}">

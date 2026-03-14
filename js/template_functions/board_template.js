@@ -1,3 +1,16 @@
+/**
+ * Generates HTML for task overlay (big card view)
+ * @param {string} category - Task category
+ * @param {string} title - Task title
+ * @param {string} description - Task description
+ * @param {string} dueDate - Task due date
+ * @param {string} priority - Task priority
+ * @param {string} priorityColor - Color for priority icon
+ * @param {Array} assignees - Array of assigned users
+ * @param {Array} subtasks - Array of subtasks
+ * @param {string} id - Task ID
+ * @returns {string} HTML template for task overlay
+ */
 function generateTaskOverlay(category, title, description, dueDate, priority, priorityColor, assignees, subtasks, id) {
     return `
             <div class="big-card">
@@ -46,6 +59,15 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
         `;
 }
 
+
+/**
+ * Generates HTML for edit task overlay
+ * @param {string} title - Task title
+ * @param {string} description - Task description
+ * @param {string} dueDate - Task due date
+ * @param {string} id - Task ID
+ * @returns {string} HTML template for edit overlay
+ */
 function generateEditTaskOverlay(title, description, dueDate, id) {
     return `
             <div class="big-card edit-overlay">
@@ -129,6 +151,13 @@ function generateEditTaskOverlay(title, description, dueDate, id) {
         `;
 }
 
+
+/**
+ * Generates initials image for task overlay
+ * @param {string} color - Background color
+ * @param {string} contactId - Contact ID
+ * @returns {string} HTML template for initials image
+ */
 function getInitalsImgTaskOverlay(color, contactId) {
     return `
     <div class="assigne-icon-large" style = "background-color: ${color}">
@@ -136,6 +165,12 @@ function getInitalsImgTaskOverlay(color, contactId) {
     </div > `
 }
 
+
+/**
+ * Generates HTML for task overlay assignee
+ * @param {Object} person - Person object with name and color
+ * @returns {string} HTML template for assignee
+ */
 function generateTaskOverlayAssignee(person) {
     return `
       <div class="task-overlay-assignee">
@@ -145,6 +180,14 @@ function generateTaskOverlayAssignee(person) {
     `;
 }
 
+
+/**
+ * Generates HTML for task overlay subtask
+ * @param {Object} subtask - Subtask object
+ * @param {number} index - Subtask index
+ * @param {string} id - Task ID
+ * @returns {string} HTML template for subtask
+ */
 function generateTaskOverlaySubtask(subtask, index, id) {
     return `
       <li class="subtask-list">
@@ -157,6 +200,12 @@ function generateTaskOverlaySubtask(subtask, index, id) {
     `;
 }
 
+
+/**
+ * Generates HTML for edit subtask item
+ * @param {string} title - Subtask title
+ * @returns {string} HTML template for edit subtask
+ */
 function generateEditSubtaskItem(title) {
     return `
       <div class="subtask-item-content">
@@ -164,4 +213,62 @@ function generateEditSubtaskItem(title) {
         <span class="subtask-title" contenteditable="false">${title}</span>
       </div>
     `;
+}
+
+
+/**
+ * Generates HTML template for small task card
+ * @param {string} category - Task category
+ * @param {string} title - Task title
+ * @param {string} description - Task description
+ * @param {string} subtasksHTML - HTML for subtasks section
+ * @param {string} usersHTML - HTML for assigned users
+ * @param {string} priority - Task priority
+ * @param {string} priorityColor - Color for priority icon
+ * @param {string} id - Task ID
+ * @returns {string} HTML template for task card
+ */
+function generateSmallTaskCardTemplate(category, title, description, subtasksHTML, usersHTML, priority, priorityColor, id) {
+  return `
+    <div onclick="openTaskOverlay('${id}', '${priorityColor}')" class="task-card-content">
+        <div class="task-category ${category}">${category}</div>
+        <h3 class="task-title">${title}</h3>
+        <p class="task-description">${description}</p>
+      ${subtasksHTML}
+      <div class="task-footer">
+        <div class="assigned-users">${usersHTML}</div>
+        <img src="../assets/icons/${priority}_${priorityColor}.svg" class="priority-icon" alt="${priority}">
+      </div>
+    </div>
+  `;
+}
+
+
+/**
+ * Generates HTML for subtasks progress section
+ * @param {number} progressPercentage - Progress percentage
+ * @param {number} completedCount - Number of completed subtasks
+ * @param {number} totalCount - Total number of subtasks
+ * @returns {string} HTML template for subtasks progress
+ */
+function generateSubtasksProgressTemplate(progressPercentage, completedCount, totalCount) {
+  return `
+    <div class="subtasks-container">
+      <div class="subtask-progress-bar">
+        <div class="subtask-progress-fill" style="width: ${progressPercentage}%"></div>
+      </div>
+      <span class="subtask-counter">${completedCount}/${totalCount} Subtasks</span>
+    </div>
+  `;
+}
+
+
+/**
+ * Generates HTML for user badge
+ * @param {string} initials - User initials
+ * @param {string} backgroundColor - Badge background color
+ * @returns {string} HTML template for user badge
+ */
+function generateUserBadgeTemplate(initials, backgroundColor) {
+  return `<div class="user-badge" style="background-color: ${backgroundColor}">${initials}</div>`;
 }
