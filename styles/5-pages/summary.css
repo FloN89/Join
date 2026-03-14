@@ -308,3 +308,99 @@
     padding: 30px 15px;
   }
 }
+
+
+/* === Extra Small Mobile (max-width: 320px) === */
+@media (max-width: 320px) {
+  .dashboard {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .metrics-header h1 {
+    font-size: 48px;
+  }
+
+  .metrics-header p {
+    font-size: 24px;
+  }
+
+  .greeting-container h2 {
+    font-size: 32px;
+  }
+
+  .greeting-container h3 {
+    font-size: 18px;
+  }
+
+  .metrics-grid {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .task-card {
+    padding: 12px;
+    min-height: 100px;
+  }
+
+  .task-card h2 {
+    font-size: 32px;
+  }
+
+  .task-card p {
+    font-size: 12px;
+  }
+
+  .task-card-text {
+    padding: 24px 12px;
+  }
+
+  .urgent-card {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .urgent-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .deadline-text h3 {
+    font-size: 16px;
+  }
+
+  .deadline-text p {
+    font-size: 12px;
+  }
+}
+
+
+/* ============================================
+   Landscape Mode Deaktivierung (Mobile)
+   ============================================ */
+
+@media (max-width: 900px) and (orientation: landscape) {
+  body {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-family: sans-serif;
+    text-align: center;
+    padding: 24px;
+  }
+
+  body > * {
+    display: none !important;
+  }
+
+  body::before {
+    content: "Please rotate your device to portrait mode for the best experience.";
+    font-size: 20px;
+    font-weight: 600;
+  }
+}

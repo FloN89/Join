@@ -24,24 +24,24 @@
 
       <div class="input-group">
         <label class="input-wrapper">
-          <input type="text" placeholder="Name" id="usernameInput" oninput="showSignUp()">
+          <input type="text" placeholder="Name" data-required="true" id="usernameInput" oninput="showSignUp()">
           <img src="../assets/icons/person.svg" alt="" class="field-icon">
         </label>
 
         <label class="input-wrapper">
-          <input type="email" placeholder="Email" id="mailInput" oninput="showSignUp()">
+          <input type="text" placeholder="Email" data-required="true" data-validate="email" id="mailInput" oninput="showSignUp()">
           <img src="../assets/icons/mail.svg" alt="" class="field-icon">
         </label>
 
         <label class="input-wrapper">
-          <input type="password" placeholder="Password" required id="passwordInput"
+          <input type="password" placeholder="Password" data-required="true" id="passwordInput"
             oninput="changeIcon('passwordInput', 'passwordIcon'), showSignUp()">
           <img id="passwordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
             onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
         </label>
 
         <label class="input-wrapper password-input-wrapper">
-          <input type="password" placeholder="Confirm Password" required id="confirmPasswordInput"
+          <input type="password" placeholder="Confirm Password" data-required="true" id="confirmPasswordInput"
             oninput="changeIcon('confirmPasswordInput', 'confirmPasswordIcon'), checkPasswordMatch(), showSignUp()">
           <img id="confirmPasswordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
             onclick="togglePasswordVisibility('confirmPasswordInput', 'confirmPasswordIcon')">
