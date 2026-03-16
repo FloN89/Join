@@ -4,7 +4,7 @@ if (!sidebarContainer) {
   throw new Error("Sidebar container not found");
 }
 
-fetch("/templates/sidebar_template.html")
+fetch("../templates/sidebar_template.html")
   .then((response) => {
     if (response.ok) {
       return response.text();
@@ -34,7 +34,7 @@ function setPublicSidebar() {
     const sidebar = document.querySelector("#sidebar");
     const sidebarNav = document.querySelector("#sidebar .sidebar-nav ul");
     if (sidebarNav) {
-      sidebarNav.innerHTML = `<li><a href="/html/log_in.html"><img src="/assets/icons/login.svg" alt="Login"><span class="label">Log In</span></a></li>`;
+      sidebarNav.innerHTML = `<li><a href="log_in.html"><img src="../assets/icons/login.svg" alt="Login"><span class="label">Log In</span></a></li>`;
     }
     if (sidebar) {
       sidebar.classList.add("public-page");
