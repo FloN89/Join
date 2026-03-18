@@ -397,7 +397,7 @@ body.welcome-active .site-footer {
 
   .panel-title {
     font-size: 47px;
-    margin-bottom: 8px;
+    margin-top: 12px;
   }
 
   .panel-title::after {
