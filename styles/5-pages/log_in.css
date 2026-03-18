@@ -397,7 +397,7 @@ body.welcome-active .site-footer {
 
   .panel-title {
     font-size: 47px;
-    margin-top: 12px;
+    margin-top: px;
   }
 
   .panel-title::after {
@@ -474,5 +474,52 @@ body.welcome-active .site-footer {
     content: "Please rotate your device to portrait mode for the best experience.";
     font-size: 20px;
     font-weight: 600;
+  }
+}
+
+@media (max-width: 320px) {
+
+  .app-header {
+    padding: 20px 16px 0;
+  }
+
+  .app-logo {
+    width: 50px;
+  }
+
+  .login-panel {
+    width: 90%;
+    padding: 16px;
+  }
+
+  .panel-title {
+    font-size: 28px;
+  }
+
+  .panel-title::after {
+    width: 50px;
+  }
+
+  .form-fields {
+    gap: 14px;
+  }
+
+  .input {
+    font-size: 14px;
+    padding: 10px 40px 10px 12px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .signup-area-mobile {
+    gap: 16px;
+  }
+
+  .site-footer {
+    font-size: 14px;
+    gap: 20px;
   }
 }

@@ -605,3 +605,55 @@ input#priority-low:checked + label.low {
     font-size: 18px;
   }
 }
+
+@media (max-width: 320px) {
+
+  .add-task-panel {
+    width: 96vw;
+    border-radius: 12px;
+  }
+
+  .add-task-container {
+    padding: 20px 16px;
+  }
+
+  .panel-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input,
+  textarea {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .priority-button {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .priority-button img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .subtask-title {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
