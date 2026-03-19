@@ -149,11 +149,11 @@ function generateModalContent(header, button1, button2, underheader, contactId, 
  */
 function generateOverlayEditDelete(contactId) {
     return `
-            <div class="overlay-content" onclick="openEditContact('${contactId}')">
+            <div class="overlay-content-icon" onclick="openEditContact('${contactId}')">
                 <img src="../assets/icons/edit.svg" alt="Edit icon">
                 <p>Edit</p>
             </div>
-            <div class="overlay-content" onclick="deleteContact('${contactId}')">
+            <div class="overlay-content-icon" onclick="deleteContact('${contactId}')">
                 <img src="../assets/icons/delete.svg" alt="Delete icon">
                 <p>Delete</p>
             </div>
