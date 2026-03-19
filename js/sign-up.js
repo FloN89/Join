@@ -50,7 +50,6 @@ function checkPasswordMatch() {
         errorMessage.textContent = "";
         confirmPassword.classList.remove("borderRed");
         return;
-
     } else {
         errorMessage.classList.add("errorMessage")
         errorMessage.textContent = "Your passwords don't match. Please try again.";
@@ -60,10 +59,67 @@ function checkPasswordMatch() {
 }
 
 /**
+ * Is valid email basic
+ *  @param {string} email - Email value
+ *  @returns {boolean} Return value
+ */
+function isValidEmailBasic(email) {
+    const value = (email || "").trim();
+    const atSymbol = value.indexOf("@");
+    const dot = value.lastIndexOf(".");
+    return atSymbol > 0 && dot > atSymbol;
+}
+
+/** * Validate email input
+ * @returns {boolean} Return value
+ */
+function validateEmailInput() {
+    const emailInput = document.getElementById("mailInput");
+    const errorMessage = document.getElementById("errorMessage");
+    const email = emailInput.value;
+    if (email.length === 0) {
+        clearInvalidEmail(emailInput, errorMessage);
+        return true;
+    }
+    if (!isValidEmailBasic(email)) {
+        showInvalidEmail(emailInput, errorMessage);
+        return false;
+    }
+    clearInvalidEmail(emailInput, errorMessage);
+    return true;
+}
+
+/**
+ * Show invalid email
+ * @param {*} emailInput - Emailinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function showInvalidEmail(emailInput, errorMessage) {
+    emailInput.classList.add("borderRed");
+    errorMessage.classList.add("errorMessage");
+    errorMessage.textContent = "Please enter a valid email address.";
+}
+
+/**
+ * Clear invalid email
+ * @param {*} emailInput - Emailinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function clearInvalidEmail(emailInput, errorMessage) {
+    emailInput.classList.remove("borderRed");
+    if (errorMessage.textContent === "Please enter a valid email address.") {
+        errorMessage.textContent = "";
+    }
+}
+
+/**
  * Show sign up
  * @returns {void} Return value
  */
 function showSignUp() {
+    if (!validateEmailInput()) return;
     const user = document.getElementById("usernameInput");
     const mail = document.getElementById("mailInput");
     const password = document.getElementById("passwordInput");
@@ -135,7 +191,6 @@ async function checkUser(errorMessage, user) {
         errorMessage.textContent = "Your username is already taken. Please choose another one.";
         return true;
     }
-
     errorMessage.textContent = "";
     return false;
 }

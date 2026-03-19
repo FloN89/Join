@@ -12,13 +12,12 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
     width: 100%;
     margin: 0 auto;
     max-width: var(--max-width-layout);
-    overflow: hidden;
 }
 
 .sign-up-box {
@@ -26,10 +25,10 @@
     background: var(--color-white);
     border-radius: var(--border-radius-xl);
     padding: 36px 48px 46px;
-    box-shadow: var(--shadow-medium);
+    box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.04);
     border: 1px solid var(--color-border);
     position: relative;
-    top: 197px;
+    margin-top: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -233,9 +232,11 @@ input[type="password"] {
     justify-content: center;
     align-items: center;
     gap: 32px;
-    position: relative;
+    position: static;
     bottom: 0;
-    margin: 60px auto 40px;
+    margin-top: auto;
+    padding-top: 16px;
+    margin-bottom: 24px;
     width: fit-content;
 }
 
@@ -340,16 +341,40 @@ input[type="password"] {
     }
 
     .arrow-left {
-        left: 50px;
-        top: 70px;
+        left: 30px;
+        top: 25px;
+    }
+
+    .input-group {
+        gap: 0;
+    }
+
+    .title {
+        margin: 6px auto 6px;
+    }
+
+    .btn-wrap {
+        margin: 7px 0 12px 0;
+    }
+
+    .join-icon {
+        width: 60px;
+    }
+
+    .sign-up-box {
+        margin-top: 150px;
+    }
+
+    .signUpButton {
+        width: 180px;
     }
 }
 
 @media (max-width: 320px) {
-  .sign-up-box {
-    padding: 28px;
-    border-radius: var(--border-radius-large);
-  }
+    .sign-up-box {
+        padding: 5px;
+        border-radius: var(--border-radius-large);
+    }
 
     .title {
         font-size: 36px;
@@ -359,38 +384,28 @@ input[type="password"] {
         width: 70px;
         height: 3px;
     }
-
-    .signUpButton {
-        width: 100%;
-        max-width: 220px;
-    }
-
-  .arrow-left {
-    left: 50px;
-    top: 70px;
-  }
 }
 
 @media (max-width: 900px) and (orientation: landscape) {
-  body {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-primary);
-    color: var(--color-white);
-    font-family: sans-serif;
-    text-align: center;
-    padding: 24px;
-  }
+    body {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-primary);
+        color: var(--color-white);
+        font-family: sans-serif;
+        text-align: center;
+        padding: 24px;
+    }
 
-  body > * {
-    display: none !important;
-  }
+    body>* {
+        display: none !important;
+    }
 
-  body::before {
-    font-size: 20px;
-    font-weight: 600;
-  }
+    body::before {
+        font-size: 20px;
+        font-weight: 600;
+    }
 }
