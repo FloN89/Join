@@ -646,7 +646,6 @@ input#priority-low:checked + label.low {
 
   .priority-button {
     font-size: 12px;
-    padding: 8px 6px;
   }
 
   .priority-button img {
