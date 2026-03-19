@@ -603,8 +603,7 @@ input#priority-low:checked + label.low {
   }
 
   .priority-button {
-    font-size: 14px;
-    padding: 8px 6px;
+    font-size: 12px;
   }
 
   .category-option,
