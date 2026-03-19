@@ -4,7 +4,7 @@ if (!topbarContainer) {
   throw new Error("Topbar container not found");
 }
 
-fetch("/templates/topbar_template.html")
+fetch("../templates/topbar_template.html")
   .then((response) => {
     if (response.ok) {
       return response.text();

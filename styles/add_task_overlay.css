@@ -544,3 +544,116 @@ input#priority-low:checked + label.low {
     display: none;
   }
 }
+
+/* =========================
+   OVERLAY SMALL MOBILE
+   ========================= */
+
+@media (max-width: 320px) {
+
+  .add-task-panel {
+    width: 96vw;
+    border-radius: 16px;
+  }
+
+  .panel-title {
+    font-size: 22px;
+  }
+
+  label {
+    font-size: 16px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   LANDSCAPE MODE
+   ========================= */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+  .add-task-panel {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    border-radius: 0;
+  }
+
+  .add-task-container {
+    padding: 20px 24px 40px;
+  }
+
+  .panel-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  label {
+    font-size: 18px;
+  }
+
+  input,
+  textarea {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 320px) {
+
+  .add-task-panel {
+    width: 96vw;
+    border-radius: 12px;
+  }
+
+  .add-task-container {
+    padding: 20px 16px;
+  }
+
+  .panel-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input,
+  textarea {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .priority-button {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .priority-button img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .subtask-title {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
