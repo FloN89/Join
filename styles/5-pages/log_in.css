@@ -488,8 +488,8 @@ body.welcome-active .site-footer {
   }
 
   .login-panel {
-    width: 90%;
-    padding: 16px;
+    width: 80%;
+    padding: 24px;
   }
 
   .panel-title {
@@ -509,6 +509,13 @@ body.welcome-active .site-footer {
     padding: 10px 40px 10px 12px;
   }
 
+
+  .button-row {
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
   .btn {
     font-size: 14px;
     padding: 10px;
