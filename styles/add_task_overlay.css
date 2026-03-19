@@ -544,30 +544,42 @@ input#priority-low:checked + label.low {
     display: none;
   }
 }
-
-/* =========================
-   OVERLAY SMALL MOBILE
-   ========================= */
-
-@media (max-width: 320px) {
-
+@media (max-width: 768px) {
   .add-task-panel {
-    width: 96vw;
-    border-radius: 16px;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    transform: translateY(100%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .panel-title {
-    font-size: 22px;
+  .add-task-overlay.active .add-task-panel {
+    transform: translateY(0);
   }
 
-  label {
-    font-size: 16px;
+  .add-task-container {
+    min-height: 100%;
+    padding: 24px 16px 32px;
+    border-radius: 0;
   }
 
-  input[type="text"],
-  input[type="date"],
-  textarea {
-    font-size: 16px;
+  .form-grid-add {
+    flex-direction: column;
+  }
+
+  .form-divider {
+    display: none;
+  }
+
+  .form-footer {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding-top: 16px;
   }
 }
 

@@ -516,14 +516,24 @@ input#priority-low:checked + label.low {
 }
 
 /* RESPONSIVE (zusammengeführt) */
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
   .panel-title {
     font-size: 42px;
     font-weight: 800;
+    position: static;
+    background: transparent;
+    box-shadow: none;
+    padding: 20px 16px 0;
+    margin: 0;
+    z-index: auto;
   }
 
   .form-grid-add {
     flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    padding-bottom: 120px;
   }
 
   .form-divider {
@@ -536,23 +546,6 @@ input#priority-low:checked + label.low {
     height: 100vh;
     border-radius: 0;
     padding: 0;
-  }
-
-  .panel-title {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    z-index: 200;
-    padding: 20px 16px 16px;
-    margin: 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
-  }
-
-  .form-grid-add {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    padding-bottom: 120px;
   }
 
   .form-footer {
@@ -598,10 +591,6 @@ input#priority-low:checked + label.low {
 }
 
 @media (max-width: 320px) {
-
-  .panel-title {
-    font-size: 24px;
-  }
 
   label {
     font-size: 14px;
