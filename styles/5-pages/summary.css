@@ -34,6 +34,7 @@
   display: flex;
   margin-top: 40px;
   padding-left: var(--main-content-padding);
+  max-width: calc(var(--max-width-layout) - var(--width-sidebar));
 }
 
 .metrics {
