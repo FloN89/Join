@@ -91,7 +91,7 @@
 
 .task-row-3 {
   grid-template-columns: repeat(3, 1fr);
-  height: 180px;
+  height: 120px;
 }
 
 /* === Task Cards === */
@@ -101,7 +101,10 @@
   background: var(--color-white);
   border-radius: var(--border-radius-large);
   box-shadow: var(--shadow-light);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   cursor: pointer;
 }
 
@@ -225,7 +228,7 @@
 }
 
 .task-card-text .task-number {
-  font-size: 64px;
+  font-size: 48px;
   margin-bottom: 8px;
 }
 
@@ -244,7 +247,23 @@
     padding-left: var(--spacing-mobile);
     padding-right: var(--spacing-mobile);
     gap: 30px;
-    margin-top: 20px;
+    margin-top: 10px;
+  }
+
+  .task-container {
+    gap: 16px;
+  }
+
+  .task-row {
+    height: 130px;
+  }
+
+  .task-row-3 {
+    height: 110px;
+  }
+
+  .metrics-header {
+    margin-bottom: 16px;
   }
 
   .metrics {
@@ -308,7 +327,6 @@
     padding: 30px 15px;
   }
 }
-
 
 /* === Extra Small Mobile (max-width: 320px) === */
 @media (max-width: 320px) {
@@ -374,7 +392,6 @@
     font-size: 12px;
   }
 }
-
 
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)

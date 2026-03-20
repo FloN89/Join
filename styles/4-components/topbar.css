@@ -2,10 +2,18 @@
   height: var(--height-topbar);
   background-color: var(--color-white);
   display: flex;
-  justify-content: space-between;
   align-items: center;
   top: 0;
   box-shadow: var(--shadow-medium);
+}
+
+.topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: calc(var(--max-width-layout) - var(--width-sidebar));
+  height: 100%;
   padding-right: 16px;
 }
 
