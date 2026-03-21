@@ -32,7 +32,7 @@ html, body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 300px; 
+  width: 220px; 
   height: auto;
   z-index: 1;
 
@@ -50,7 +50,7 @@ html, body {
   top: 80px; 
   left: calc(max(0px, (100vw - 1440px) / 2)); 
   transform: none;
-  width: 150px; 
+  width: 120px; 
 }
 
 
