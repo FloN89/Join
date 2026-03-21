@@ -548,16 +548,7 @@ input#priority-low:checked + label.low {
     padding: 0;
   }
 
-  .form-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    padding: 16px;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
-    z-index: 300;
-  }
+  
 }
 
 
@@ -618,7 +609,7 @@ input#priority-low:checked + label.low {
   }
 
   .btn {
-    font-size: 14px;
+    font-size: 12px;
     padding: 8px 14px;
   }
 
