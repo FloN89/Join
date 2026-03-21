@@ -121,6 +121,7 @@ nav a {
 
   .sidebar-nav .label {
     /* display: none; */
+    white-space: nowrap;
   }
 
   nav ul {

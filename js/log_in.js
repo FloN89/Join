@@ -68,7 +68,7 @@ function areLoginInputsValid(email, password) {
  * Prüft grob das Format einer E-Mail-Adresse.
  */
 function isValidEmailAddress(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
+  return /^[^\s@]+@[^\s@]+\.(de|com|net)$/.test(String(email).trim());
 }
 
 /**
