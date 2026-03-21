@@ -45,7 +45,7 @@
   /* === Content Spacing for Fixed Elements === */
   .main-content {
     padding-top: var(--height-topbar-mobile);
-    padding-bottom: var(--height-sidebar-mobile);
+    padding-bottom: calc(var(--height-sidebar-mobile) + 20px);
   }
 }
 
