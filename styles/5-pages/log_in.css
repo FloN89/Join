@@ -1,6 +1,6 @@
 .app-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   padding: 80px 0;
 }
@@ -206,7 +206,7 @@
 
 .app-logo {
   position: static;
-  width: 150px;
+  width: 100px;
   height: auto;
   transform: none;
   transition: none;
