@@ -214,3 +214,16 @@ nav a {
     border-radius: var(--border-radius-small);
   }
 }
+
+/* === Extra Small Mobile (max-width: 360px) === */
+@media (max-width: 360px) {
+  .icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  nav a {
+    padding: 6px 6px;
+    font-size: 10px;
+  }
+}
