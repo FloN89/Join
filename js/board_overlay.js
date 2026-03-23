@@ -1,8 +1,18 @@
 /**
- * Opens the add task overlay and loads content if needed
+ * Opens the add task UI.
+ * On mobile devices, it redirects to the normal add task page.
+ * On larger screens, it opens the add task overlay.
+ *
  * @async
+ * @param {string} status - The task status/column where the new task should be added
  */
-async function openAddTaskOverlay() {
+async function openAddTaskOverlay(status) {
+  // Redirect to the normal Add Task page on mobile devices
+  if (window.innerWidth <= 768) {
+    window.location.href = "../html/add_task.html";
+    return;
+  }
+
   const overlay = document.getElementById("add-task-overlay");
   const content = document.getElementById("add-task-content");
 
@@ -14,18 +24,8 @@ async function openAddTaskOverlay() {
       initializeAddTaskPage();
     }
   }
+
   overlay.classList.add("active");
   overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("overlay-open");
-}
-
-
-/**
- * Closes the add task overlay
- */
-function closeAddTaskOverlay() {
-  const overlay = document.getElementById("add-task-overlay");
-  overlay.classList.remove("active");
-  overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("overlay-open");
 }

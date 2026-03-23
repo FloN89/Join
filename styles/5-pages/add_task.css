@@ -516,16 +516,20 @@ input#priority-low:checked + label.low {
 }
 
 /* RESPONSIVE (zusammengeführt) */
-  @media (max-width: 768px) {
+ @media (max-width: 768px) {
+  .add-task-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 0;
+  }
+
   .panel-title {
     font-size: 42px;
     font-weight: 800;
-    position: static;
-    background: transparent;
-    box-shadow: none;
     padding: 20px 16px 0;
     margin: 0;
-    z-index: auto;
   }
 
   .form-grid-add {
@@ -533,24 +537,55 @@ input#priority-low:checked + label.low {
     flex: 1;
     overflow-y: auto;
     padding: 16px;
-    padding-bottom: 120px;
+    padding-bottom: 170px; /* space for fixed buttons */
   }
 
   .form-divider {
     display: none;
   }
 
-  .add-task-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    border-radius: 0;
-    padding: 0;
+  .form-footer {
+    margin-top: 0;
   }
 
-  
-}
+  .form-hint {
+    display: none;
+  }
 
+  .task-buttons {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 90px; /* above mobile navbar */
+    z-index: 999;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 0;
+    background: white;
+  }
+
+  .clear-btn,
+  .create-btn {
+    height: 46px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0 20px;
+  }
+
+  .clear-btn {
+    background: #ffffff;
+    border: 1px solid #2a3647;
+    color: #2a3647;
+  }
+
+  .create-btn {
+    background: #2a3647;
+    color: #ffffff;
+    border: none;
+  }
+}
 
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)
@@ -616,4 +651,12 @@ input#priority-low:checked + label.low {
   .form-footer {
     padding: 12px;
   }
+
+  .task-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    
+    
+}
 }
