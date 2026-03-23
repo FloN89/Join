@@ -384,11 +384,7 @@ input#priority-low:checked + label.low {
 /* FOOTER */
 .form-footer {
   margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 .form-hint {
@@ -617,7 +613,11 @@ input#priority-low:checked + label.low {
 }
 
 @media (max-width: 380px) {
-
+  .main-area {
+    display: flex;
+    justify-content: center;
+    padding: 45px 10px 60px;
+   }
   label {
     font-size: 14px;
   }
@@ -629,7 +629,7 @@ input#priority-low:checked + label.low {
   }
 
   .priority-button {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500px;
   }
 
