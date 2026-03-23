@@ -1,7 +1,7 @@
 .main-area {
   display: flex;
-  justify-content: center;
-  padding: 40px 16px 60px;
+  justify-content: left;;
+  padding: 45px 60px 60px;
   box-sizing: border-box;
 }
 
@@ -616,7 +616,7 @@ input#priority-low:checked + label.low {
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 380px) {
 
   label {
     font-size: 14px;
@@ -630,6 +630,7 @@ input#priority-low:checked + label.low {
 
   .priority-button {
     font-size: 12px;
+    font-weight: 500px;
   }
 
   .category-option,
