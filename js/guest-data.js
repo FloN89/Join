@@ -80,7 +80,7 @@ let guestTasks = {
     createdAt: Date.now()
   }
 };
-s
+
 /**
  * Seed guest tasks
  * @async
