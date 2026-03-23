@@ -31,3 +31,14 @@
     padding-right: 15px;
   }
 }
+
+/* Global: main content zentrieren*/
+.main-content > .main-section,
+.main-content > .main-area,
+.main-content > .main-text,
+.main-content > main {
+  width: 100%;
+  max-width: calc(var(--max-width-layout) - var(--width-sidebar));
+  margin-left: auto;
+  margin-right: auto;
+}
