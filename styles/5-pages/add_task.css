@@ -556,12 +556,12 @@ input#priority-low:checked + label.low {
     position: fixed;
     left: 16px;
     right: 16px;
-    bottom: 90px; /* above mobile navbar */
+    bottom: 80px; /* above mobile navbar */
     z-index: 999;
     display: flex;
     justify-content: flex-end;
     gap: 16px;
-    padding: 0;
+    padding: 6px 0;
     background: #f6f7f8;
   }
 
