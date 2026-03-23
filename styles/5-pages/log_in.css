@@ -98,7 +98,7 @@
 }
 
 .input-email {
-  background-image: url(../assets/icons/mail.svg);
+  background-image: url(../../assets/icons/mail.svg);
 }
 
 .input-wrapper {
@@ -136,13 +136,13 @@
 }
 
 .icon-btn.password-toggle.is-lock {
-  background-image: url(../assets/icons/lock.svg);
+  background-image: url(../../assets/icons/lock.svg);
 }
 .icon-btn.password-toggle.is-off {
-  background-image: url(../assets/icons/visibility_off.svg);
+  background-image: url(../../assets/icons/visibility_off.svg);
 }
 .icon-btn.password-toggle.is-on {
-  background-image: url(../assets/icons/visibility.svg);
+  background-image: url(../../assets/icons/visibility.svg);
 }
 
 .icon-btn.password-toggle:hover {
