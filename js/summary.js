@@ -7,6 +7,7 @@ async function initSummary() {
   let metrics = calculateMetrics(tasks);
   updateMetricsDOM(metrics);
   await loadGreeting();
+  restrictGuestSummaryCards();
 }
 
 /**
@@ -25,6 +26,25 @@ async function loadSummaryTasks() {
     let data = await loadData("task/");
     return data || {};
   }
+}
+
+function isGuestUser() {
+  return (
+    sessionStorage.getItem("userId") === "guest" ||
+    sessionStorage.getItem("isGuest") === "true"
+  );
+}
+
+function restrictGuestSummaryCards() {
+  if (!isGuestUser()) return;
+
+  document.body.classList.add("guest-session");
+
+  document.querySelectorAll(".task-card").forEach((card) => {
+    card.removeAttribute("onclick");
+    card.setAttribute("aria-disabled", "true");
+    card.classList.add("guest-disabled-card");
+  });
 }
 
 /**

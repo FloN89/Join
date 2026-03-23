@@ -447,12 +447,8 @@ input#priority-low:checked + label.low {
    ========================= */
 
 .form-footer {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+  margin: 20px;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 .form-hint {

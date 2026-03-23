@@ -112,6 +112,57 @@
   background-color: var(--color-overlay-hover);
 }
 
+/* === Guest  === */
+
+.guest-signup-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 620px;
+  max-width: calc(100vw - 32px);
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #445a7c;
+  color: #d7e8ff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+.guest-signup-banner__text {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.guest-signup-banner__button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: #29a8ff;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.guest-signup-banner__button:hover {
+  opacity: 0.92;
+}
+
+.guest-signup-banner__close {
+  border: none;
+  background: transparent;
+  color: #d7e8ff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+
+
 /* === Mobile Topbar === */
 @media (max-width: 768px) {
   #topbar {
@@ -138,6 +189,25 @@
     padding-right: 10px;
   }
 }
+  .guest-signup-banner {
+    min-width: auto;
+    width: calc(100vw - 24px);
+    left: 12px;
+    right: 12px;
+    transform: none;
+    bottom: 16px;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .guest-signup-banner__text {
+    font-size: 13px;
+  }
+
+  .guest-signup-banner__button {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
 
 /* === Small Mobile === */
 @media (max-width: 480px) {

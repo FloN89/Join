@@ -4,6 +4,8 @@ if (!topbarContainer) {
   throw new Error("Topbar container not found");
 }
 
+guardGuestAccess();
+
 fetch("../templates/topbar_template.html")
   .then((response) => {
     if (response.ok) {
@@ -12,10 +14,12 @@ fetch("../templates/topbar_template.html")
     throw new Error("Failed to load topbar template (http ${response.status})");
   })
   .then((html) => {
-    topbarContainer.innerHTML = html;
-    setUserInitial();
-    initUserOverlay();
-  })
+  topbarContainer.innerHTML = html;
+  setUserInitial();
+  initUserOverlay();
+  setGuestTopbarRestrictions();
+  renderGuestSignupBanner();
+})
   .catch(() => {
     // Silent error handling for production
   });
@@ -83,4 +87,67 @@ function initUserOverlay() {
       overlay.classList.remove("active");
     }
   });
+}
+
+ // im guest login
+function isGuestUser() {
+  return (
+    sessionStorage.getItem("userId") === "guest" ||
+    sessionStorage.getItem("isGuest") === "true"
+  );
+}
+
+function isGuestAllowedPage() {
+  const currentPage = (window.location.pathname.split("/").pop() || "").toLowerCase();
+
+  return (
+    currentPage === "summary.html" ||
+    currentPage === "sign-up.html" ||
+    currentPage === "log_in.html" ||
+    currentPage.includes("privacy") ||
+    currentPage.includes("legal-notice") ||
+    currentPage.includes("legal_notice")
+  );
+}
+
+function guardGuestAccess() {
+  if (isGuestUser() && !isGuestAllowedPage()) {
+    window.location.replace("summary.html");
+  }
+}
+
+function renderGuestSignupBanner() {
+  const currentPage = (window.location.pathname.split("/").pop() || "").toLowerCase();
+  const isInfoPage =
+    currentPage.includes("privacy") ||
+    currentPage.includes("legal-notice") ||
+    currentPage.includes("legal_notice");
+
+  if (!isGuestUser() || !isInfoPage || document.querySelector(".guest-signup-banner")) {
+    return;
+  }
+
+  const banner = document.createElement("div");
+  banner.className = "guest-signup-banner";
+  banner.innerHTML = `
+    <div class="guest-signup-banner__text">
+      Du kannst diese Datei nur ansehen und kommentieren.
+    </div>
+    <button class="guest-signup-banner__button" type="button">Log in</button>
+    <button class="guest-signup-banner__close" type="button" aria-label="Schließen">×</button>
+  `;
+
+  document.body.appendChild(banner);
+
+  banner
+    .querySelector(".guest-signup-banner__button")
+    .addEventListener("click", function () {
+      window.location.href = "sign-up.html";
+    });
+
+  banner
+    .querySelector(".guest-signup-banner__close")
+    .addEventListener("click", function () {
+      banner.remove();
+    });
 }

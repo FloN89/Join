@@ -35,6 +35,7 @@ function startGuestLogin(event) {
   if (event) event.preventDefault();
 
   saveUserSession("guest");
+  sessionStorage.setItem("isGuest", "true");
   redirectToSummaryPage("");
 }
 
@@ -93,6 +94,7 @@ function handleLoginResponse(usersFromDatabase, email, password) {
   if (!matchingUser) return showErrorMessage("E-Mail oder Passwort ist falsch.");
 
   saveUserSession(matchingUser.userId);
+  sessionStorage.removeItem("isGuest");
 
   const userName = getUserDisplayName(matchingUser.user);
   redirectToSummaryPage(userName);
