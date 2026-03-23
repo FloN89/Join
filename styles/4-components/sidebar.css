@@ -54,7 +54,8 @@ nav a {
 }
 
 .sidebar-footer {
-  padding-top: 150px;
+  margin-top: auto;   
+  padding-top: 0;     
   width: 100%;
 }
 
@@ -62,7 +63,7 @@ nav a {
   display: flex;
   flex-direction: column;
   gap: 0;
-  height: 300px;
+  height: auto;       
   width: 100%;
 }
 
@@ -95,6 +96,19 @@ nav a {
 
 .sidebar-footer li:has(a.active) a {
   color: var(--color-white);
+}
+
+/* NEU:
+   Gesperrte Sidebar-Links für Guest komplett deaktivieren */
+nav a.guest-disabled-link {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* NEU:
+   Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */
+nav li.guest-disabled-item:not(:has(a.active)):hover {
+  background-color: transparent;
 }
 
 /* === Mobile Sidebar (Bottom Navigation) === */
@@ -217,6 +231,7 @@ nav a {
 
 /* === Extra Small Mobile (max-width: 360px) === */
 @media (max-width: 360px) {
+
   .icon {
     width: 22px;
     height: 22px;
@@ -226,4 +241,6 @@ nav a {
     padding: 6px 6px;
     font-size: 10px;
   }
+
+  
 }
