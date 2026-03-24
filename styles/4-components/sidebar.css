@@ -54,8 +54,8 @@ nav a {
 }
 
 .sidebar-footer {
-  margin-top: auto;   
-  padding-top: 0;     
+  margin-top: auto;
+  padding-top: 0;
   width: 100%;
 }
 
@@ -63,7 +63,7 @@ nav a {
   display: flex;
   flex-direction: column;
   gap: 0;
-  height: auto;       
+  height: auto;
   width: 100%;
 }
 
@@ -231,16 +231,13 @@ nav li.guest-disabled-item:not(:has(a.active)):hover {
 
 /* === Extra Small Mobile (max-width: 360px) === */
 @media (max-width: 360px) {
-
   .icon {
     width: 22px;
     height: 22px;
   }
 
   nav a {
-    padding: 6px 6px;
-    font-size: 10px;
+    padding: 5px 5px;
+    font-size: 16px;
   }
-
-  
 }
