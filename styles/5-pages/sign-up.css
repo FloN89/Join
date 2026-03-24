@@ -1,3 +1,7 @@
+.d_none {
+    display: none;
+}
+
 .join-icon {
     position: absolute;
     top: 80px;
@@ -219,12 +223,14 @@ input[type="password"] {
     margin-top: 15px;
 }
 
-.d_none {
-    display: none;
-}
-
 .signUpButton:hover {
     filter: brightness(0.95);
+}
+
+.signUpButton:disabled {
+    background: var(--color-border);
+    cursor: auto;
+    filter: none;
 }
 
 .privacy_legal {

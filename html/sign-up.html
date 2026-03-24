@@ -30,13 +30,14 @@
         </label>
 
         <label class="input-wrapper">
-          <input type="text" placeholder="Email" data-required="true" data-validate="email" id="mailInput" oninput="showSignUp()">
+          <input type="text" placeholder="Email" data-required="true" data-validate="email" id="mailInput" onblur="showSignUp()">
           <img src="../assets/icons/mail.svg" alt="" class="field-icon">
         </label>
 
         <label class="input-wrapper">
           <input type="password" placeholder="Password" data-required="true" id="passwordInput"
-            oninput="changeIcon('passwordInput', 'passwordIcon'), showSignUp()">
+            oninput="changeIcon('passwordInput', 'passwordIcon'), showSignUp()"
+            onblur="validatePasswordInput()">
           <img id="passwordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
             onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
         </label>

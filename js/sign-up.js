@@ -58,6 +58,82 @@ function checkPasswordMatch() {
     }
 }
 
+const COUNTRY_TLDS = {
+    at: "Austria",
+    ch: "Switzerland",
+    de: "Germany",
+    fr: "France",
+    it: "Italy",
+    es: "Spain",
+    nl: "Netherlands",
+    be: "Belgium",
+    pl: "Poland",
+    cz: "Czechia",
+    sk: "Slovakia",
+    hu: "Hungary",
+    se: "Sweden",
+    no: "Norway",
+    dk: "Denmark",
+    fi: "Finland",
+    uk: "United Kingdom",
+    ie: "Ireland",
+    pt: "Portugal",
+    gr: "Greece",
+    ro: "Romania",
+    bg: "Bulgaria",
+    hr: "Croatia",
+    si: "Slovenia",
+    rs: "Serbia",
+    tr: "Turkey",
+    us: "United States",
+    ca: "Canada",
+    au: "Australia",
+    nz: "New Zealand",
+    br: "Brazil",
+    ar: "Argentina",
+    mx: "Mexico",
+    cl: "Chile",
+    co: "Colombia",
+    pe: "Peru",
+    za: "South Africa",
+    eg: "Egypt",
+    ma: "Morocco",
+    ae: "United Arab Emirates",
+    sa: "Saudi Arabia",
+    in: "India",
+    pk: "Pakistan",
+    bd: "Bangladesh",
+    lk: "Sri Lanka",
+    cn: "China",
+    jp: "Japan",
+    kr: "South Korea",
+    tw: "Taiwan",
+    hk: "Hong Kong",
+    sg: "Singapore",
+    my: "Malaysia",
+    th: "Thailand",
+    vn: "Vietnam",
+    ph: "Philippines",
+    id: "Indonesia",
+};
+
+/**
+ * Get country from email ccTLD
+ * @param {string} email - Email value
+ * @returns {string|null} Return value
+ */
+function getCountryFromEmail(email) {
+    const value = (email || "").trim().toLowerCase();
+    const atSymbol = value.lastIndexOf("@");
+    if (atSymbol === -1) return null;
+    const domain = value.slice(atSymbol + 1);
+    const parts = domain.split(".").filter(Boolean);
+    if (parts.length < 2) return null;
+    const tld = parts[parts.length - 1];
+    if (tld.length !== 2) return "";
+    return COUNTRY_TLDS[tld] || null;
+}
+
 /**
  * Is valid email basic
  *  @param {string} email - Email value
@@ -65,9 +141,7 @@ function checkPasswordMatch() {
  */
 function isValidEmailBasic(email) {
     const value = (email || "").trim();
-    const atSymbol = value.indexOf("@");
-    const dot = value.lastIndexOf(".");
-    return atSymbol > 0 && dot > atSymbol;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value);
 }
 
 /** * Validate email input
@@ -77,16 +151,117 @@ function validateEmailInput() {
     const emailInput = document.getElementById("mailInput");
     const errorMessage = document.getElementById("errorMessage");
     const email = emailInput.value;
-    if (email.length === 0) {
-        clearInvalidEmail(emailInput, errorMessage);
-        return true;
-    }
-    if (!isValidEmailBasic(email)) {
-        showInvalidEmail(emailInput, errorMessage);
-        return false;
-    }
+    if (email.length === 0) return handleEmptyEmail(emailInput, errorMessage);
+    if (!isValidEmailBasic(email)) return handleInvalidEmail(emailInput, errorMessage);
+    const country = getCountryFromEmail(email);
+    if (country === null) return handleUnknownCountryEmail(emailInput, errorMessage);
+    applyEmailCountry(emailInput, country);
     clearInvalidEmail(emailInput, errorMessage);
     return true;
+}
+
+/**
+ * Handle empty email
+ * @param {*} emailInput - Emailinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function handleEmptyEmail(emailInput, errorMessage) {
+    clearInvalidEmail(emailInput, errorMessage);
+    emailInput.removeAttribute("data-country");
+    return true;
+}
+
+/**
+ * Handle invalid email
+ * @param {*} emailInput - Emailinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function handleInvalidEmail(emailInput, errorMessage) {
+    showInvalidEmail(emailInput, errorMessage);
+    return false;
+}
+
+/**
+ * Handle unknown country email
+ * @param {*} emailInput - Emailinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function handleUnknownCountryEmail(emailInput, errorMessage) {
+    emailInput.classList.add("borderRed");
+    errorMessage.classList.add("errorMessage");
+    errorMessage.textContent = "Unknown country code in email domain.";
+    return false;
+}
+
+/**
+ * Apply email country
+ * @param {*} emailInput - Emailinput value
+ * @param {string} country - Country value
+ * @returns {void} Return value
+ */
+function applyEmailCountry(emailInput, country) {
+    if (country) {
+        emailInput.setAttribute("data-country", country);
+    } else {
+        emailInput.removeAttribute("data-country");
+    }
+}
+
+/**
+ * Is valid password
+ * @param {string} password - Password value
+ * @returns {boolean} Return value
+ */
+function isValidPassword(password) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+}
+
+/**
+ * Validate password input
+ * @returns {boolean} Return value
+ */
+function validatePasswordInput() {
+    const passwordInput = document.getElementById("passwordInput");
+    const errorMessage = document.getElementById("errorMessage");
+    const password = passwordInput.value;
+    if (password.length === 0) {
+        clearInvalidPassword(passwordInput, errorMessage);
+        return true;
+    }
+    if (!isValidPassword(password)) {
+        showInvalidPassword(passwordInput, errorMessage);
+        return false;
+    }
+    clearInvalidPassword(passwordInput, errorMessage);
+    return true;
+}
+
+/**
+ * Show invalid password
+ * @param {*} passwordInput - Passwordinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function showInvalidPassword(passwordInput, errorMessage) {
+    passwordInput.classList.add("borderRed");
+    errorMessage.classList.add("errorMessage");
+    errorMessage.textContent = "Password must be at least 8 characters, include uppercase, lowercase and a number.";
+}
+
+/**
+ * Clear invalid password
+ * @param {*} passwordInput - Passwordinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function clearInvalidPassword(passwordInput, errorMessage) {
+    passwordInput.classList.remove("borderRed");
+    if (errorMessage.textContent === "Password must be at least 8 characters, include uppercase, lowercase and a number.") {
+        errorMessage.textContent = "";
+    }
 }
 
 /**
@@ -128,7 +303,7 @@ function showSignUp() {
     const checkbox = document.getElementById("privacyCheckbox");
 
     if (user.value.length > 0 && mail.value.length > 0 && password.value.length > 0 && confirmPassword.value.length > 0
-        && password.value === confirmPassword.value && checkbox.checked) {
+        && password.value === confirmPassword.value && isValidPassword(password.value) && checkbox.checked) {
         signUpButton.disabled = false;
     } else {
         signUpButton.disabled = true;
