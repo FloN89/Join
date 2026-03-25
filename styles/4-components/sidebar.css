@@ -180,50 +180,82 @@ nav li.guest-disabled-item:not(:has(a.active)):hover {
   }
 
   /* === Public Page: Login left, PP + LN right === */
-  #sidebar.public-page {
-    justify-content: space-between;
-    padding: 15px 16px;
-  }
+  /* === Public Page: Login left, PP + LN right === */
+#sidebar.public-page {
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+}
 
-  #sidebar.public-page .sidebar-nav {
-    flex: 0 0 auto;
-    width: auto;
-  }
+#sidebar.public-page .sidebar-nav {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+}
 
-  #sidebar.public-page .sidebar-nav ul {
-    width: auto;
-  }
+#sidebar.public-page .sidebar-nav ul {
+  width: auto;
+  display: flex;
+  align-items: center;
+}
 
-  #sidebar.public-page .sidebar-footer {
-    display: flex;
-    padding-top: 0;
-    flex: 0 0 auto;
-    margin-left: auto;
-    width: auto;
-  }
+#sidebar.public-page .sidebar-nav li {
+  width: auto;
+}
 
-  #sidebar.public-page .sidebar-footer ul {
-    flex-direction: row;
-    height: auto;
-    gap: 4px;
-    align-items: center;
-    width: auto;
-  }
+#sidebar.public-page .sidebar-nav a {
+  padding: 10px 16px;
+  width: auto;
+}
 
-  #sidebar.public-page .sidebar-footer li {
-    flex: none;
-    width: auto;
-  }
+#sidebar.public-page .sidebar-footer {
+  display: flex;
+  margin-left: auto;
+  width: auto;
+  padding-top: 0;
+}
 
-  #sidebar.public-page .sidebar-footer a {
-    padding: 16px 22px;
-    width: auto;
-    border-radius: var(--border-radius-small);
-  }
+#sidebar.public-page .sidebar-footer ul {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 4px;
+  width: auto;
+  height: 100%;
+}
 
-  #sidebar.public-page .sidebar-footer li:has(a.active) {
-    border-radius: var(--border-radius-small);
-  }
+#sidebar.public-page .sidebar-footer li {
+  width: auto;
+  height: 100%;
+  align-items: stretch;
+}
+
+#sidebar.public-page .sidebar-footer a {
+  padding: 22px 18px;
+  width: auto;
+  height: 100%;
+  border-radius: 18px 18px 0 0;
+  justify-content: center;
+}
+
+#sidebar.public-page .sidebar-footer li:has(a.active) {
+  background-color: var(--color-hover-background);
+  border-radius: 18px 18px 0 0;
+}
+
+#sidebar.public-page .sidebar-footer li:has(a.active) a {
+  color: var(--color-white);
+}
+
+#sidebar.public-page .sidebar-footer li:not(:has(a.active)):hover {
+  background-color: transparent;
+}
+
+#sidebar.public-page .sidebar-footer li:not(:has(a.active)):hover a {
+  color: var(--color-white);
+  font-weight: 400;
 }
 
 /* === Extra Small Mobile (max-width: 360px) === */
