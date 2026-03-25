@@ -102,6 +102,10 @@ function isGuestAllowedPage() {
 
   return (
     currentPage === "summary.html" ||
+    currentPage === "add_task.html" ||
+    currentPage === "board.html" ||
+    currentPage === "contacts_default.html" ||
+    currentPage === "help.html" ||
     currentPage === "sign-up.html" ||
     currentPage === "log_in.html" ||
     currentPage.includes("privacy") ||
