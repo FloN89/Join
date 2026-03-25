@@ -6,9 +6,8 @@
 .find_and_create_task_container {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   padding-top: 62px;
-  padding-right: 50px;
+  padding-left: 30px;
   gap: 32px;
 
 }
