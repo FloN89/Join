@@ -324,28 +324,72 @@
   height: 20px;
 }
 
+@media (min-width: 950px) and (max-width: 1350px) {
+
+  .find_and_create_task_container {
+    gap: 16px;
+  }
+
+  .board-headline {
+    padding-right: 40px;
+  }
+
+  .add_task_button {
+    margin-left: 0;
+    font-size: 16px;
+    width: 130px;
+    gap: 5px;
+  }
+
+  .plus_sign {
+    height: 20px;
+}
+}
+
 /* ============================================
    Mobile Responsive Styles (max-width: 768px)
    ============================================ */
 
 @media (max-width: 768px) {
-  .find_and_create_task_container {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px 16px 16px 16px;
-    gap: 16px;
+   .find_and_create_task_container {
+    display: flex;
+    flex-direction: row;      
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 12px;
+    padding: 15px 12px 12px 12px;
   }
 
   .board-headline {
-    font-size: 32px;
+    order: 1;
+    width: auto;              
+    flex: 1 1 auto;          
+    font-size: 28px;
     padding-right: 0;
-    width: 100%;
+    margin: 0;
+  }
+
+  .add_task_button {
+    order: 2;
+    display: flex;           
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add_task_lable {
+    display: none;
   }
 
   .search_input_wrapper {
+    order: 3;
     width: 100%;
+    flex: 0 0 100%;
   }
-
   .search_input_wrapper input {
     width: 100%;
     font-size: 16px;
@@ -357,17 +401,8 @@
     font-size: 14px;
   }
 
-  .add_task_button {
-    display: none;
-  }
-
-  .add_task_lable {
-    display: none;
-  }
-
   .plus_sign {
-    height: 28px;
-    width: 28px;
+    height: 18px;
   }
 
   /* Kanban Board Mobile Layout */
@@ -469,22 +504,43 @@
 
 @media (max-width: 480px) {
   .find_and_create_task_container {
+    display: flex;
+    flex-direction: row;      
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 12px;
     padding: 15px 12px 12px 12px;
   }
 
   .board-headline {
+    order: 1;
+    width: auto;              
+    flex: 1 1 auto;          
     font-size: 28px;
+    padding-right: 0;
+    margin: 0;
   }
 
-  .kanban-board {
-    padding: 12px;
-    gap: 20px;
+  .add_task_button {
+    order: 2;
+    display: flex;           
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
   }
 
+  .add_task_lable {
+    display: none;
+  }
 
-  .plus_sign {
-    height: 24px;
-    width: 24px;
+  .search_input_wrapper {
+    order: 3;
+    width: 100%;
+    flex: 0 0 100%;
   }
 }
 
@@ -811,6 +867,27 @@ label {
   gap: 37px;
 }
 
+
+/* ============================================
+   Extra Small Devices (max-width: 320px)
+   ============================================ */
+
+@media (max-width: 320px) {
+  .find_and_create_task_container {
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 12px 10px 10px 10px;
+  }
+
+  .board-headline {
+    font-size: 24px;
+  }
+
+  .add_task_button {
+    width: 36px;
+    height: 36px;
+  }
+}
 
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)
