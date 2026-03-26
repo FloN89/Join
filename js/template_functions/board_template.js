@@ -133,9 +133,15 @@ function generateEditTaskOverlay(title, description, dueDate, id) {
                             <label for="subtask">Subtasks</label>
                             <div class="subtask-input-container">
                                 <input type="text" id="subtask" placeholder="Add new subtask" onkeydown="handleSubtaskKey(event)" />
-                                <button type="button" onclick="addEditSubtask()" class="subtask-add-btn">
-                                  +
-                                </button>
+                                <div class="subtask-input-actions" aria-label="Subtask actions">
+                                    <button type="button" class="subtask-action-btn" onclick="document.getElementById('subtask').value=''" aria-label="Clear subtask">
+                                        <img src="../assets/icons/close.svg" alt="Clear" />
+                                    </button>
+                                    <span class="subtask-action-divider" aria-hidden="true"></span>
+                                    <button type="button" class="subtask-action-btn" onclick="addEditSubtask()" aria-label="Add subtask">
+                                        <img src="../assets/icons/check.svg" alt="Add" />
+                                    </button>
+                                </div>
                             </div>
                             <ul id="edit-subtask-list"></ul>
                         </div>

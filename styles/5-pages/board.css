@@ -138,6 +138,7 @@
   padding: 32px 24px;
   height: calc(100vh - 200px);
   overflow-x: auto;
+  
 }
 
 .kanban-column {
@@ -589,12 +590,15 @@
   display: none;
   width: 400px;
   height: auto;
+  max-height: 90vh;
   background-color: var(--color-white);
   border-radius: 30px;
   box-shadow: var(--shadow-light-plusplus);
   padding: 24px;
   font-size: 20px;
   pointer-events: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .overlay-header {
@@ -841,6 +845,63 @@ label {
   width: 100%;
 }
 
+.subtask-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.subtask-input-container input {
+  width: 100%;
+  padding: 10px 96px 10px 12px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.subtask-input-container input:focus {
+  border-color: #29abe2;
+}
+
+.subtask-input-actions {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.subtask-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtask-action-btn:hover {
+  transform: scale(1.1);
+}
+
+.subtask-action-divider {
+  width: 1px;
+  height: 20px;
+  background: #d1d1d1;
+}
+
+.subtask-input-container input:not(:placeholder-shown) ~ .subtask-input-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .assignees {
   display: flex;
   flex-direction: column;
@@ -867,6 +928,20 @@ label {
   gap: 37px;
 }
 
+@media (max-width: 480px) {
+  .big-card {
+    width: 90%;
+    padding: 16px;
+  }
+
+  .task-title-big {
+    font-size: 32px;
+  }
+
+  .task-description-big {
+    font-size: 16px;
+  }
+}
 
 /* ============================================
    Extra Small Devices (max-width: 320px)
