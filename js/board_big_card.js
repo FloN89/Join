@@ -134,7 +134,7 @@ function initializeEditOverlayFields(id) {
   renderAssigneeOptions(taskItem.assignedTo || []);
   renderEditSubtasks(taskItem.subtasks || []);
   document.querySelector(`input[name="priority"][value="${taskItem.priority}"]`)?.setAttribute("checked", "true");
-  initPriorityIconHandlers();
+  initializePriorityIconHandlers();
   renderEditAssignees(taskItem.assignedTo || []);
 }
 
