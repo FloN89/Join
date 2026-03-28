@@ -25,8 +25,6 @@
       <section class="login-panel">
         <h1 class="panel-title">Log in</h1>
 
-        <div id="login-error-box" class="error-box" style="display: none"></div>
-
         <div class="form-fields">
           <input
             class="input input-email"
@@ -50,8 +48,11 @@
           </div>
         </div>
 
+        <div id="login-error-box" class="error-box is-hidden"></div>
+
         <div class="button-row">
-          <a class="btn btn-primary" href="#" onclick="startLogin(event)"
+          <a class="btn btn-primary is-disabled" href="#" aria-disabled="true"
+            onclick="startLogin(event)"
             >Log in</a
           >
           <a class="btn btn-ghost" href="#" onclick="startGuestLogin(event)"

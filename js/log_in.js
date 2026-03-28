@@ -52,13 +52,14 @@ function readTrimmedInputValue(selectorText) {
  * Prüft, ob E-Mail und Passwort gefüllt sind.
  */
 function areLoginInputsValid(email, password) {
+  const errorText = "Check your email and password. Please try again.";
   if (!email || !password) {
-    showErrorMessage("Bitte E-Mail und Passwort eingeben.");
+    showErrorMessage(errorText);
     return false;
   }
 
   if (!isValidEmailAddress(email)) {
-    showErrorMessage("Bitte eine gültige E-Mail-Adresse eingeben.");
+    showErrorMessage(errorText);
     return false;
   }
 
@@ -81,7 +82,7 @@ function verifyLoginCredentials(email, password) {
       handleLoginResponse(usersFromDatabase, email, password);
     },
     function () {
-      showErrorMessage("Ein Fehler ist aufgetreten. Bitte später erneut versuchen.");
+      showErrorMessage("Check your email and password. Please try again.");
     }
   );
 }
@@ -91,7 +92,9 @@ function verifyLoginCredentials(email, password) {
  */
 function handleLoginResponse(usersFromDatabase, email, password) {
   const matchingUser = findMatchingUser(usersFromDatabase, email, password);
-  if (!matchingUser) return showErrorMessage("E-Mail oder Passwort ist falsch.");
+  if (!matchingUser) {
+    return showErrorMessage("Check your email and password. Please try again.");
+  }
 
   saveUserSession(matchingUser.userId);
   sessionStorage.removeItem("isGuest");
@@ -218,7 +221,7 @@ function showErrorMessage(messageText) {
   if (!errorBoxElement) return;
 
   errorBoxElement.innerText = String(messageText);
-  errorBoxElement.style.display = "block";
+  errorBoxElement.classList.remove("is-hidden");
 }
 
 /**
@@ -229,7 +232,7 @@ function hideErrorMessage() {
   if (!errorBoxElement) return;
 
   errorBoxElement.innerText = "";
-  errorBoxElement.style.display = "none";
+  errorBoxElement.classList.add("is-hidden");
 }
 
 /**
@@ -261,6 +264,7 @@ function animatePageElements() {
 function initializePage() {
   animatePageElements();
   initializePasswordToggle();
+  initializeLoginButtonState();
 }
 
 /**
@@ -274,6 +278,43 @@ function initializePasswordToggle() {
   setPasswordIconMode("locked", passwordToggleButtonElement);
   bindPasswordToggleClick(passwordInputElement, passwordToggleButtonElement);
   bindPasswordInputListener(passwordInputElement, passwordToggleButtonElement);
+}
+
+/**
+ * Initialisiert die Login-Button-Logik (aktiv/disabled).
+ */
+function initializeLoginButtonState() {
+  const emailInputElement = document.querySelector(".input-email");
+  const passwordInputElement = document.querySelector(".input-password");
+  const loginButtonElement = document.querySelector(".btn-primary");
+
+  if (!emailInputElement || !passwordInputElement || !loginButtonElement) return;
+
+  const updateButtonState = function () {
+    const hasEmail = String(emailInputElement.value || "").trim().length > 0;
+    const hasPassword = String(passwordInputElement.value || "").trim().length > 0;
+    setLoginButtonEnabled(loginButtonElement, hasEmail && hasPassword);
+  };
+
+  updateButtonState();
+  emailInputElement.addEventListener("input", updateButtonState);
+  passwordInputElement.addEventListener("input", updateButtonState);
+}
+
+/**
+ * Setzt den Status des Login-Buttons.
+ */
+function setLoginButtonEnabled(buttonElement, shouldEnable) {
+  if (!buttonElement) return;
+
+  if (shouldEnable) {
+    buttonElement.classList.remove("is-disabled");
+    buttonElement.setAttribute("aria-disabled", "false");
+    return;
+  }
+
+  buttonElement.classList.add("is-disabled");
+  buttonElement.setAttribute("aria-disabled", "true");
 }
 
 /**

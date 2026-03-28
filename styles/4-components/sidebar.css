@@ -1,13 +1,15 @@
 #sidebar {
   width: var(--width-sidebar);
-  height: 100%; /* Take full height of its parent (#sidebar-container) */
   background-color: var(--color-primary);
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   align-items: center;
   padding: 80px 0;
   color: var(--color-text-secondary);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: flex-start;
 }
 
 .sidebar-header {
@@ -98,16 +100,12 @@ nav a {
   color: var(--color-white);
 }
 
-/* NEU:
-   Gesperrte Sidebar-Links für Guest komplett deaktivieren */
-nav a.guest-disabled-link {
+Gesperrte Sidebar-Links für Guest komplett deaktivieren */ nav a.guest-disabled-link {
   cursor: default;
   pointer-events: none;
 }
 
-/* NEU:
-   Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */
-nav li.guest-disabled-item:not(:has(a.active)):hover {
+Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */ nav li.guest-disabled-item:not(:has(a.active)):hover {
   background-color: transparent;
 }
 
@@ -181,93 +179,93 @@ nav li.guest-disabled-item:not(:has(a.active)):hover {
 
   /* === Public Page: Login left, PP + LN right === */
   /* === Public Page: Login left, PP + LN right === */
-#sidebar.public-page {
-  justify-content: space-between;
-  align-items: stretch;
-  padding: 0;
-  overflow: hidden;
-}
-
-#sidebar.public-page .sidebar-nav {
-  flex: 0 0 auto;
-  width: auto;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-}
-
-#sidebar.public-page .sidebar-nav ul {
-  width: auto;
-  display: flex;
-  align-items: center;
-}
-
-#sidebar.public-page .sidebar-nav li {
-  width: auto;
-}
-
-#sidebar.public-page .sidebar-nav a {
-  padding: 10px 16px;
-  width: auto;
-}
-
-#sidebar.public-page .sidebar-footer {
-  display: flex;
-  margin-left: auto;
-  width: auto;
-  padding-top: 0;
-}
-
-#sidebar.public-page .sidebar-footer ul {
-  flex-direction: row;
-  align-items: stretch;
-  gap: 4px;
-  width: auto;
-  height: 100%;
-}
-
-#sidebar.public-page .sidebar-footer li {
-  width: auto;
-  height: 100%;
-  align-items: stretch;
-}
-
-#sidebar.public-page .sidebar-footer a {
-  padding: 29px 3px;
-  width: auto;
-  height: 100%;
-  border-radius: 18px 18px 0 0;
-  justify-content: center;
-}
-
-#sidebar.public-page .sidebar-footer li:has(a.active) {
-  background-color: var(--color-hover-background);
-  border-radius: 18px 18px 0 0;
-}
-
-#sidebar.public-page .sidebar-footer li:has(a.active) a {
-  color: var(--color-white);
-}
-
-#sidebar.public-page .sidebar-footer li:not(:has(a.active)):hover {
-  background-color: transparent;
-}
-
-#sidebar.public-page .sidebar-footer li:not(:has(a.active)):hover a {
-  color: var(--color-white);
-  font-weight: 400;
-}
-
-/* === Extra Small Mobile (max-width: 360px) === */
-@media (max-width: 360px) {
-  .icon {
-    width: 22px;
-    height: 22px;
+  #sidebar.public-page {
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
   }
 
-  nav a {
-    padding: 10px 2px;
-    font-size: 16px;
+  #sidebar.public-page .sidebar-nav {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
   }
-}
+
+  #sidebar.public-page .sidebar-nav ul {
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  #sidebar.public-page .sidebar-nav li {
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-nav a {
+    padding: 10px 16px;
+    width: auto;
+  }
+
+  #sidebar.public-page .sidebar-footer {
+    display: flex;
+    margin-left: auto;
+    width: auto;
+    padding-top: 0;
+  }
+
+  #sidebar.public-page .sidebar-footer ul {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 4px;
+    width: auto;
+    height: 100%;
+  }
+
+  #sidebar.public-page .sidebar-footer li {
+    width: auto;
+    height: 100%;
+    align-items: stretch;
+  }
+
+  #sidebar.public-page .sidebar-footer a {
+    padding: 29px 3px;
+    width: auto;
+    height: 100%;
+    border-radius: 18px 18px 0 0;
+    justify-content: center;
+  }
+
+  #sidebar.public-page .sidebar-footer li:has(a.active) {
+    background-color: var(--color-hover-background);
+    border-radius: 18px 18px 0 0;
+  }
+
+  #sidebar.public-page .sidebar-footer li:has(a.active) a {
+    color: var(--color-white);
+  }
+
+  #sidebar.public-page .sidebar-footer li:not(:has(a.active)):hover {
+    background-color: transparent;
+  }
+
+  #sidebar.public-page .sidebar-footer li:not(:has(a.active)):hover a {
+    color: var(--color-white);
+    font-weight: 400;
+  }
+
+  /* === Extra Small Mobile (max-width: 360px) === */
+  @media (max-width: 360px) {
+    .icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    nav a {
+      padding: 10px 2px;
+      font-size: 16px;
+    }
+  }
 }

@@ -138,7 +138,7 @@
   padding: 32px 50px;
   height: calc(100vh - 200px);
   overflow-x: auto;
-  
+  width: 1440px;
 }
 
 .kanban-column {

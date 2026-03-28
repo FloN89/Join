@@ -153,6 +153,13 @@
   color: var(--color-error);
   font-size: 14px;
   text-align: center;
+  min-height: 18px;
+  line-height: 18px;
+  width: 70%;
+}
+
+.error-box.is-hidden {
+  visibility: hidden;
 }
 
 .button-row {
@@ -182,10 +189,23 @@
   border: 1px;
 }
 
+.btn-primary.is-disabled {
+  background-color: var(--color-border);
+  cursor: auto;
+  filter: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
 .btn-primary:hover {
   background-color: var(--color-primary-light);
   transition: 100ms ease-in-out;
   box-shadow: var(--shadow-medium);
+}
+
+.btn-primary.is-disabled:hover {
+  background-color: var(--color-border);
+  box-shadow: none;
 }
 
 .btn-ghost {
