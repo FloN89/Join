@@ -7,14 +7,14 @@
   display: flex;
   align-items: center;
   padding-top: 62px;
-  padding-left: 30px;
+  padding-left: 50px;
   gap: 32px;
 
 }
 
 .board-headline {
   font-size: 58px;
-  padding-right: 350px;
+  padding-right: 580px;
 }
 
 .search_input_wrapper {
@@ -135,7 +135,7 @@
 .kanban-board {
   display: flex;
   gap: 16px;
-  padding: 32px 24px;
+  padding: 32px 50px;
   height: calc(100vh - 200px);
   overflow-x: auto;
   
@@ -951,7 +951,7 @@ label {
   .find_and_create_task_container {
     column-gap: 10px;
     row-gap: 10px;
-    padding: 12px 10px 10px 10px;
+    padding: 12px 18px 10px 10px;
   }
 
   .board-headline {

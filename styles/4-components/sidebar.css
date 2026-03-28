@@ -233,7 +233,7 @@ nav li.guest-disabled-item:not(:has(a.active)):hover {
 }
 
 #sidebar.public-page .sidebar-footer a {
-  padding: 22px 18px;
+  padding: 29px 3px;
   width: auto;
   height: 100%;
   border-radius: 18px 18px 0 0;
