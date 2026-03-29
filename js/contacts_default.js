@@ -12,10 +12,11 @@ function isGuestSessionUser() {
 
 /**
  * Returns contacts collection path for current session.
+ * Gast und eingeloggter User sollen dieselben Kontakte sehen.
  * @returns {string} Return value
  */
 function getContactsCollectionPath() {
-    return isGuestSessionUser() ? "guest-contacts/" : "contacts/";
+    return "contacts/";
 }
 
 /**
@@ -36,8 +37,8 @@ async function fetchContacts() {
     contacts = await loadData(getContactsCollectionPath()) || {};
     await includeLoggedInUserInContacts();
     id = Object.keys(contacts).sort((a, b) => {
-    return getContactNameById(a).localeCompare(getContactNameById(b));
-});
+        return getContactNameById(a).localeCompare(getContactNameById(b));
+    });
     renderContacts();
 }
 
