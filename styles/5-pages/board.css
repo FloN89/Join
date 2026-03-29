@@ -7,14 +7,15 @@
   display: flex;
   align-items: center;
   padding-top: 62px;
-  padding-left: 50px;
+  padding-left: 60px;
+  padding-right: 60px;
   gap: 32px;
-
+  max-width: calc(var(--max-width-layout) - var(--width-sidebar));
 }
 
 .board-headline {
   font-size: 58px;
-  padding-right: 580px;
+  margin-right: auto;
 }
 
 .search_input_wrapper {
@@ -135,10 +136,11 @@
 .kanban-board {
   display: flex;
   gap: 16px;
-  padding: 32px 50px;
+  padding: 32px 60px;
   height: calc(100vh - 200px);
   overflow-x: auto;
-  width: 1440px;
+  width: 100%;
+  max-width: calc(var(--max-width-layout) - var(--width-sidebar));
 }
 
 .kanban-column {
