@@ -79,16 +79,6 @@ function createSubtaskObject(subtaskTitle) {
 }
 
 /**
- * Get trimmed value
- * @param {string} textValue - Text value
- * @returns {string} Return value
- */
-function getTrimmedValue(textValue) {
-  if (typeof textValue !== "string") return "";
-  return textValue.trim();
-}
-
-/**
  * Render subtask list
  */
 function renderSubtaskList() {
@@ -196,20 +186,6 @@ function buildEditableSubtaskMarkup(subtaskObject, subtaskIndex) {
       </div>
     </li>
   `;
-}
-
-/**
- * Escape html text
- * @param {string} unsafeText - Unsafe text value
- * @returns {string} Return value
- */
-function escapeHtmlText(unsafeText) {
-  return String(unsafeText)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }
 
 /**
@@ -389,15 +365,6 @@ function focusEditingSubtaskInput() {
 }
 
 /**
- * Is valid subtask index
- * @param {number} subtaskIndex - Subtask index value
- * @returns {boolean} Return value
- */
-function isValidSubtaskIndex(subtaskIndex) {
-  return Number.isInteger(subtaskIndex) && subtaskIndex >= 0 && subtaskIndex < subtaskCollection.length;
-}
-
-/**
  * Reset subtasks
  */
 function resetSubtasks() {
@@ -405,49 +372,3 @@ function resetSubtasks() {
   editingSubtaskIndex = null;
   renderSubtaskList();
 }
-
-/* =========================
-   PRIORITY ICONS
-========================= */
-
-/**
- * Initialize priority icon handlers
- */
-function initializePriorityIconHandlers() {
-  const radioNodeList = document.querySelectorAll('input[name="priority"]');
-  radioNodeList.forEach((radioElement) => {
-    radioElement.addEventListener("change", updatePriorityIcons);
-  });
-  updatePriorityIcons();
-}
-
-/**
- * Update priority icons
- */
-function updatePriorityIcons() {
-  const urgentRadio = document.getElementById("priority-urgent");
-  const mediumRadio = document.getElementById("priority-medium");
-  const lowRadio = document.getElementById("priority-low");
-
-  applyPriorityIcon("icon-urgent", urgentRadio, "urgent_white", "urgent_red");
-  applyPriorityIcon("icon-medium", mediumRadio, "medium_white", "medium_yellow");
-  applyPriorityIcon("icon-low", lowRadio, "low_white", "low_green");
-}
-
-/**
- * Apply priority icon
- * @param {string} iconId - ID value
- * @param {HTMLElement} radioElement - DOM element
- * @param {string} checkedName - Checked name value
- * @param {string} uncheckedName - Unchecked name value
- */
-function applyPriorityIcon(iconId, radioElement, checkedName, uncheckedName) {
-  const iconElement = document.getElementById(iconId);
-  if (!iconElement || !radioElement) return;
-
-  iconElement.src = radioElement.checked
-    ? `../assets/icons/${checkedName}.svg`
-    : `../assets/icons/${uncheckedName}.svg`;
-}
-
-// Form-Reset, Data-Collection und Success-Toast wurden nach add_task_form.js ausgelagert
