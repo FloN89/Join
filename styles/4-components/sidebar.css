@@ -189,7 +189,7 @@ Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */ nav li.guest-disable
   #sidebar.public-page .sidebar-nav {
     flex: 0 0 auto;
     width: auto;
-    padding: 0 16px;
+    padding: 0 1px;
     display: flex;
     align-items: center;
   }
@@ -231,7 +231,7 @@ Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */ nav li.guest-disable
   }
 
   #sidebar.public-page .sidebar-footer a {
-    padding: 29px 3px;
+    padding: 29px 30px;
     width: auto;
     height: 100%;
     border-radius: 18px 18px 0 0;
@@ -256,8 +256,7 @@ Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */ nav li.guest-disable
     font-weight: 400;
   }
 
-  /* === Extra Small Mobile (max-width: 360px) === */
-  @media (max-width: 360px) {
+ @media (max-width: 480px) {
     .icon {
       width: 22px;
       height: 22px;
@@ -267,5 +266,35 @@ Kein Hover-Effekt mehr auf gesperrten Guest-Menüpunkten */ nav li.guest-disable
       padding: 10px 2px;
       font-size: 16px;
     }
+
+    #sidebar.public-page .sidebar-footer a {
+    padding: 29px 15px;
+    width: auto;
+    height: 100%;
+    border-radius: 18px 18px 0 0;
+    justify-content: center;
+  }
   }
 }
+
+  /* === Extra Small Mobile (max-width: 360px) === */
+  @media (max-width: 370px) {
+    .icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    nav a {
+      padding: 10px 2px;
+      font-size: 16px;
+    }
+
+    #sidebar.public-page .sidebar-footer a {
+    padding: 29px 1px;
+    width: auto;
+    height: 100%;
+    border-radius: 18px 18px 0 0;
+    justify-content: center;
+  }
+    
+  }
