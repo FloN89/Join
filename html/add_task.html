@@ -31,34 +31,40 @@
 
               <form id="taskForm" class="form-grid-add" novalidate>
                 <div class="form-left">
-                  <label for="title">
-                    Title <span class="required-marker">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Enter a title"
-                    required
-                  />
-                  <div class="field-error-message" id="error-title">
-                    <span class="required-marker">*</span>This field is required
+                  <div class="form-field">
+                    <label for="title">
+                      Title <span class="required-marker">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="title"
+                      name="title"
+                      placeholder="Enter a title"
+                      required
+                    />
+                    <div class="field-error-message" id="error-title">
+                      <span class="required-marker">*</span>This field is required
+                    </div>
                   </div>
 
-                  <label for="description">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows="4"
-                    placeholder="Enter a Description"
-                  ></textarea>
+                  <div class="form-field">
+                    <label for="description">Description</label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      rows="4"
+                      placeholder="Enter a Description"
+                    ></textarea>
+                  </div>
 
-                  <label for="due-date">
-                    Due Date <span class="required-marker">*</span>
-                  </label>
-                  <input type="date" id="due-date" name="due-date" required />
-                  <div class="field-error-message" id="error-due-date">
-                    <span class="required-marker">*</span>This field is required
+                  <div class="form-field">
+                    <label for="due-date">
+                      Due Date <span class="required-marker">*</span>
+                    </label>
+                    <input type="date" id="due-date" name="due-date" required />
+                    <div class="field-error-message" id="error-due-date">
+                      <span class="required-marker">*</span>This field is required
+                    </div>
                   </div>
                 </div>
 
@@ -125,63 +131,71 @@
                     ></div>
                   </div>
 
-                  <label>
-                    Category <span class="required-marker">*</span>
-                  </label>
-                  <div class="custom-category-select">
-                    <div class="category-select-header" id="category-header">
-                      <span id="selected-category-placeholder">
-                        Select category
-                      </span>
-                      <img
-                        src="../assets/icons/arrow_drop_down.svg"
-                        class="dropdown-icon"
+                  <div class="form-field">
+                    <label>
+                      Category <span class="required-marker">*</span>
+                    </label>
+
+                    <div class="custom-category-select">
+                      <div class="category-select-header" id="category-header">
+                        <span id="selected-category-placeholder">
+                          Select category
+                        </span>
+                        <img
+                          src="../assets/icons/arrow_drop_down.svg"
+                          class="dropdown-icon"
+                        />
+                      </div>
+
+                      <div class="category-dropdown d-none" id="category-dropdown">
+                        <div class="category-option" data-category="technical-task">
+                          Technical Task
+                        </div>
+                        <div class="category-option" data-category="user-story">
+                          User Story
+                        </div>
+                      </div>
+                    </div>
+
+                    <input type="hidden" id="category" name="category" required />
+                    <div class="field-error-message" id="error-category">
+                      <span class="required-marker">*</span>This field is required
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="subtask">Subtasks</label>
+                    <div class="subtask-input-container">
+                      <input
+                        type="text"
+                        id="subtask"
+                        placeholder="Add new subtask"
                       />
-                    </div>
 
-                    <div class="category-dropdown d-none" id="category-dropdown">
-                      <div class="category-option" data-category="technical-task">
-                        Technical Task
+                      <div class="subtask-input-actions" aria-label="Subtask actions">
+                        <button
+                          type="button"
+                          class="subtask-action-btn"
+                          id="subtask-clear-button"
+                          aria-label="Clear subtask"
+                        >
+                          <img src="../assets/icons/close.svg" class="closeSub-btn" />
+                        </button>
+
+                        <span
+                          class="subtask-action-divider"
+                          aria-hidden="true"
+                        ></span>
+
+                        <button
+                          type="button"
+                          class="subtask-action-btn"
+                          id="subtask-add-button"
+                          aria-label="Add subtask"
+                        >
+                          <img src="../assets/icons/check.svg" class="checkSub-btn" />
+                        </button>
                       </div>
-                      <div class="category-option" data-category="user-story">
-                        User Story
-                      </div>
-                    </div>
-                  </div>
-
-                  <input type="hidden" id="category" name="category" required />
-                  <div class="field-error-message" id="error-category">
-                    <span class="required-marker">*</span>This field is required
-                  </div>
-
-                  <label for="subtask">Subtasks</label>
-                  <div class="subtask-input-container">
-                    <input
-                      type="text"
-                      id="subtask"
-                      placeholder="Add new subtask"
-                    />
-
-                    <div class="subtask-input-actions" aria-label="Subtask actions">
-                      <button
-                        type="button"
-                        class="subtask-action-btn"
-                        id="subtask-clear-button"
-                        aria-label="Clear subtask"
-                      >
-                        <img src="../assets/icons/close.svg" class="closeSub-btn" />
-                      </button>
-
-                      <span class="subtask-action-divider" aria-hidden="true"></span>
-
-                      <button
-                        type="button"
-                        class="subtask-action-btn"
-                        id="subtask-add-button"
-                        aria-label="Add subtask"
-                      >
-                        <img src="../assets/icons/check.svg" class="checkSub-btn" />
-                      </button>
                     </div>
                   </div>
 

@@ -130,40 +130,96 @@ function isGuestSessionUser() {
 }
 
 /**
- * Ergänzt den eingeloggten User in der Kontaktliste,
- * falls er noch nicht unter contacts/ existiert.
- * @param {Object} contactsObject
+ * Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen.
+ * Für Guests werden beide Quellen berücksichtigt:
+ * - guest-contacts/
+ * - contacts/
  */
-async function includeLoggedInUserInAddTaskContacts(contactsObject) {
-  const userId = sessionStorage.getItem("userId");
-  if (!userId || userId === "guest" || contactsObject[userId]) return;
+async function loadContacts() {
+  const isGuestUser = isGuestSessionUser();
+  const sourcePaths = isGuestUser
+    ? ["guest-contacts/", "contacts/"]
+    : ["contacts/"];
 
-  const user = await loadData("users/" + userId);
-  if (!user) return;
+  const mergedContactsObject = await loadMergedContactsFromPaths(sourcePaths);
 
-  contactsObject[userId] = {
-    contactName: String(user.username || user.name || "").trim(),
-    contactMail: String(user.mail || "").trim(),
-    contactPhone: String(user.phone || "").trim(),
-    color: user.color || "#CCCCCC",
-  };
+  if (!isGuestUser) {
+    await includeLoggedInUserInAddTaskContacts(mergedContactsObject);
+  }
+
+  let normalizedContacts = Object.values(mergedContactsObject)
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0);
+
+  normalizedContacts = deduplicateContacts(normalizedContacts);
+
+  if (isGuestUser && normalizedContacts.length === 0) {
+    normalizedContacts = GUEST_CONTACTS_FALLBACK.map(mapContact);
+  }
+
+  contacts = normalizedContacts.sort((firstContact, secondContact) =>
+    firstContact.name.localeCompare(secondContact.name, "de")
+  );
+
+  renderAssigneeOptions();
 }
 
 /**
- * Normalisiert Rohdaten zu einer Kontaktliste.
- * @param {*} rawContacts
- * @param {boolean} isGuestUser
- * @returns {Array}
+ * Lädt mehrere Kontaktquellen und merged sie in ein Objekt.
+ * @param {string[]} sourcePaths
+ * @returns {Promise<Object>}
  */
-function normalizeContacts(rawContacts, isGuestUser) {
-  const contactList = Array.isArray(rawContacts)
-    ? rawContacts
-    : Object.values(rawContacts);
+async function loadMergedContactsFromPaths(sourcePaths) {
+  const mergedContactsObject = {};
 
-  if (isGuestUser && contactList.length === 0) return GUEST_CONTACTS_FALLBACK;
-  return contactList;
+  for (const sourcePath of sourcePaths) {
+    const rawContacts = (await loadData(sourcePath)) || {};
+    const normalizedObject = normalizeRawContactsToObject(rawContacts, sourcePath);
+
+    Object.entries(normalizedObject).forEach(([contactId, contactObject]) => {
+      mergedContactsObject[contactId] = contactObject;
+    });
+  }
+
+  return mergedContactsObject;
 }
 
+/**
+ * Normalisiert Rohdaten in ein Objekt mit stabilen Keys.
+ * @param {*} rawContacts
+ * @param {string} sourcePath
+ * @returns {Object}
+ */
+function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
+  if (Array.isArray(rawContacts)) {
+    return Object.fromEntries(
+      rawContacts.map((contactObject, index) => [`${sourcePath}${index}`, contactObject])
+    );
+  }
+
+  if (rawContacts && typeof rawContacts === "object") {
+    return { ...rawContacts };
+  }
+
+  return {};
+}
+
+/**
+ * Entfernt doppelte Kontakte anhand von Name + Mail.
+ * @param {Array} contactList
+ * @returns {Array}
+ */
+function deduplicateContacts(contactList) {
+  const seenKeys = new Set();
+
+  return contactList.filter((contactObject) => {
+    const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(contactObject.mail || "").trim().toLowerCase()}`;
+
+    if (seenKeys.has(uniqueKey)) return false;
+    seenKeys.add(uniqueKey);
+    return true;
+  });
+}
 /**
  * Bereinigt die Kontaktliste.
  * @param {Array} contactList

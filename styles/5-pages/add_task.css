@@ -331,6 +331,8 @@ input#priority-low:checked + label.low {
   list-style: none;
   padding-left: 0;
   margin-top: 8px;
+  max-height: 176px;
+  overflow-y: auto;
 }
 
 .subtask-item {
@@ -443,17 +445,27 @@ input#priority-low:checked + label.low {
   border-color: rgb(255, 138, 153) !important;
 }
 
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .field-error-message {
+  min-height: 16px;
   font-size: 12px;
-  color: rgb(255, 138, 153);
-  margin-top: -8px;
-  display: none;
+  line-height: 16px;
+  color: #ff3d00;
+  margin-top: 0;
+  visibility: hidden;
+  opacity: 0;
+  display: block;
+  transition: opacity 125ms ease;
 }
 
 .field-error-message.active {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  visibility: visible;
+  opacity: 1;
 }
 .task-buttons {
   display: flex;
@@ -503,17 +515,6 @@ input#priority-low:checked + label.low {
 
 .input-error {
   border-color: var(--color-priority-urgent) !important;
-}
-
-.field-error-message {
-  font-size: 12px;
-  color: var(--color-priority-urgent);
-  margin-top: -4px;
-  display: none;
-}
-
-.field-error-message.active {
-  display: block;
 }
 
 .d-none {
@@ -574,6 +575,18 @@ input#priority-low:checked + label.low {
 }
 
 /* RESPONSIVE (zusammengeführt) */
+ @media (max-width: 1020px) {
+  .add-task-container {
+    max-width: 900px;
+    padding: 32px 32px 24px;
+    box-sizing: border-box;
+}
+  .priority-button{
+    font-size: 16px;
+  } 
+
+ }
+
  @media (max-width: 768px) {
   .add-task-container {
     display: flex;

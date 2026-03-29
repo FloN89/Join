@@ -118,8 +118,9 @@ textarea {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
-textarea:focus {
-  border: 2px solid #29abe2;
+textarea:focus,
+.subtask-input-container input:focus {
+  border: 1px solid #29abe2;
   outline: none;
   box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.2);
 }
@@ -391,8 +392,9 @@ input#priority-low:checked + label.low {
   list-style: none;
   padding-left: 0;
   margin-top: 8px;
+  max-height: 176px;
+  overflow-y: auto;
 }
-
 .subtask-item {
   display: flex;
   justify-content: space-between;
@@ -555,15 +557,26 @@ input#priority-low:checked + label.low {
   border-color: #ff3d00 !important;
 }
 
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .field-error-message {
+  min-height: 16px;
   font-size: 12px;
+  line-height: 16px;
   color: #ff3d00;
   margin-top: -4px;
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  display: block;
 }
 
 .field-error-message.active {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Utility: "d-none" wird hier als animiertes "collapsed" genutzt */

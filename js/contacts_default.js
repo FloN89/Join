@@ -2,16 +2,42 @@ let contacts = {};
 let id = [];
 
 /**
+ * Checks whether current session belongs to a guest.
+ * @returns {boolean} Return value
+ */
+function isGuestSessionUser() {
+    const userId = sessionStorage.getItem("userId");
+    return !userId || userId === "guest";
+}
+
+/**
+ * Returns contacts collection path for current session.
+ * @returns {string} Return value
+ */
+function getContactsCollectionPath() {
+    return isGuestSessionUser() ? "guest-contacts/" : "contacts/";
+}
+
+/**
+ * Returns single contact path for current session.
+ * @param {string} contactId - ID value
+ * @returns {string} Return value
+ */
+function getSingleContactPath(contactId) {
+    return `${getContactsCollectionPath()}${contactId}`;
+}
+
+/**
  * Fetch contacts
  * @async
  * @returns {void} Return value
  */
 async function fetchContacts() {
-    contacts = await loadData("contacts/") || {};
+    contacts = await loadData(getContactsCollectionPath()) || {};
     await includeLoggedInUserInContacts();
     id = Object.keys(contacts).sort((a, b) => {
-        return getContactNameById(a).localeCompare(getContactNameById(b));
-    });
+    return getContactNameById(a).localeCompare(getContactNameById(b));
+});
     renderContacts();
 }
 
@@ -62,12 +88,18 @@ function renderContacts() {
         const sortName = getContactNameById(id[i]);
         if (!sortName) continue;
 
-        let firstLetter = sortName.charAt(0).toUpperCase()
+        let firstLetter = sortName.charAt(0).toUpperCase();
         if (firstLetter !== lastLetter) {
-            contactListRef.innerHTML += generateGroupHeader(firstLetter)
-            lastLetter = firstLetter
+            contactListRef.innerHTML += generateGroupHeader(firstLetter);
+            lastLetter = firstLetter;
         }
-        contactListRef.innerHTML += generateContact(sortName, contactInfo.contactMail, contactInfo.color, contactIcon, id[i]);
+        contactListRef.innerHTML += generateContact(
+            sortName,
+            contactInfo.contactMail,
+            contactInfo.color,
+            contactIcon,
+            id[i]
+        );
     }
 }
 
@@ -82,14 +114,21 @@ function selectedContact(contactId) {
 
     selectContact.classList.remove("show");
     const contactInfo = contacts[contactId];
-    const contactIcon = getInitals((contactId));
+    const contactIcon = getInitals(contactId);
     changeBackgroundColor(contactId);
 
-    selectContact.innerHTML = generateContactContent(contactInfo.contactName, contactInfo.contactMail, contactInfo.contactPhone, contactInfo.color, contactIcon, contactId);
+    selectContact.innerHTML = generateContactContent(
+        contactInfo.contactName,
+        contactInfo.contactMail,
+        contactInfo.contactPhone,
+        contactInfo.color,
+        contactIcon,
+        contactId
+    );
     renderActionButton(contactId);
 
     if (window.innerWidth <= 768) {
-        wrapper.classList.add("show-detail")
+        wrapper.classList.add("show-detail");
     }
 
     setTimeout(() => {
@@ -205,7 +244,7 @@ async function saveEditedContact(contactId) {
     const formData = getValidatedContactFormData();
     if (!formData) return;
 
-    await saveData("contacts/" + contactId, {
+    await saveData(getSingleContactPath(contactId), {
         "contactName": formData.name,
         "contactMail": formData.mail,
         "contactPhone": formData.phone,
@@ -231,9 +270,11 @@ async function deleteContact(contactId) {
         modalRef.classList.remove("show");
         backgroundRef.classList.remove("show");
     }
-    await deleteData("contacts/" + contactId);
+
+    await deleteData(getSingleContactPath(contactId));
     await fetchContacts();
-    let content = document.getElementById("contact-content")
+
+    let content = document.getElementById("contact-content");
     content.innerHTML = "";
 
     if (window.innerWidth <= 768) {
@@ -276,8 +317,7 @@ function toggleOverlay(contactId) {
 
     if (overlayRef.classList.contains("active")) {
         closeOverlay();
-    }
-    else {
+    } else {
         overlayRef.innerHTML = generateOverlayEditDelete(contactId);
         overlayRef.classList.add("active");
         backgroundRef.style.display = "block";
@@ -293,7 +333,7 @@ async function createContact() {
     const formData = getValidatedContactFormData();
     if (!formData) return;
 
-    await postData("contacts/", {
+    await postData(getContactsCollectionPath(), {
         "contactName": formData.name,
         "contactMail": formData.mail,
         "contactPhone": formData.phone,

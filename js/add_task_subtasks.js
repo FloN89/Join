@@ -186,12 +186,12 @@ function buildEditableSubtaskMarkup(subtaskObject, subtaskIndex) {
       </div>
 
       <div class="subtask-actions">
-        <button type="button" data-action="save" aria-label="Save subtask">
-          <img src="../assets/icons/delete.svg" alt="Save">
+        <button type="button" data-action="delete" aria-label="delete subtask">
+          <img src="../assets/icons/delete.svg" alt="delete">
         </button>
 
-        <button type="button" data-action="delete" aria-label="Delete subtask">
-          <img src="../assets/icons/check.svg" alt="Delete">
+        <button type="button" data-action="save" aria-label="save subtask">
+          <img src="../assets/icons/check.svg" alt="save">
         </button>
       </div>
     </li>
