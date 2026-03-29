@@ -1,7 +1,7 @@
 .main-area {
   display: flex;
   justify-content: left;;
-  padding: 45px 60px 60px;
+  padding: 45px 60px px;
   box-sizing: border-box;
 }
 
@@ -63,8 +63,9 @@ textarea {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
-textarea:focus {
-  border: 2px solid #29abe2;
+textarea:focus,
+.subtask-input-container input:focus {
+  border: 1px solid #29abe2;
   outline: none;
   box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.2);
 }

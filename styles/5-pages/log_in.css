@@ -311,7 +311,6 @@ body.welcome-active .site-footer {
   display: none !important;
 }
 
-
 @media (min-width: 1025px) {
   html,
   body {
@@ -326,7 +325,7 @@ body.welcome-active .site-footer {
 
   .main-area {
     flex: 1;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .site-footer {
@@ -478,7 +477,7 @@ body.welcome-active .site-footer {
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 32px;
+    gap: 20px;
   }
 
   .signup-button {

@@ -14,7 +14,6 @@
   width: 100%;
   max-width: calc(var(--max-width-layout) - var(--width-sidebar));
   height: 100%;
-  padding-right: 16px;
 }
 
 #topbar-img {
@@ -69,6 +68,7 @@
   justify-content: space-between;
   gap: 10px;
   position: relative;
+  padding: 10px;
 }
 
 /* User Overlay Styles */
