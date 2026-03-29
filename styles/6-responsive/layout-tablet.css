@@ -5,8 +5,8 @@
    adjustments for medium-sized screens.
    ============================================ */
 
-@media (min-width: 481px) and (max-width: 1024px) {
-  /* === Main Content Area === */
+/* @media (min-width: 481px) and (max-width: 1024px) {
+
   .main-section {
     padding: var(--spacing-tablet);
   }
@@ -15,20 +15,19 @@
     padding-left: var(--spacing-tablet);
   }
 
-  /* === Sidebar Tablet Adjustments === */
+
   #sidebar {
-    /* width : 200px; */
+    width : 200px;
   }
 
-  /* === Reduce padding for tablet === */
   .main-content {
     padding-left: 0;
   }
 }
 
-/* === Landscape Tablet === */
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   .main-section {
     padding: var(--spacing-tablet) var(--spacing-desktop);
   }
-}
+} 
+*/

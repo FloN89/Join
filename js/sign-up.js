@@ -141,7 +141,7 @@ function getCountryFromEmail(email) {
  */
 function isValidEmailBasic(email) {
     const value = (email || "").trim();
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value);
+    return /^(?!.*\.\.)(?!\.)(?!.*\.$)[A-Z0-9._%+-]+@[A-Z0-9-]+(?:\.[A-Z0-9-]+)*\.[A-Z]{2,}$/i.test(value);
 }
 
 /** * Validate email input
@@ -151,6 +151,7 @@ function validateEmailInput() {
     const emailInput = document.getElementById("mailInput");
     const errorMessage = document.getElementById("errorMessage");
     const email = emailInput.value;
+    
     if (email.length === 0) return handleEmptyEmail(emailInput, errorMessage);
     if (!isValidEmailBasic(email)) return handleInvalidEmail(emailInput, errorMessage);
     const country = getCountryFromEmail(email);
