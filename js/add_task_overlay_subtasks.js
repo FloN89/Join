@@ -1,54 +1,160 @@
 let subtaskCollection = [];
+let editingSubtaskIndex = null;
 
 /* =========================
    SUBTASKS
-   ========================= */
+========================= */
 
-/** Löscht den aktuell eingegebenen Subtask-Text. */
+/**
+ * Register subtask events
+ */
+function registerSubtaskEvents() {
+  registerSubtaskInputKeydown();
+  registerSubtaskButtons();
+}
+
+/**
+ * Register subtask input keydown
+ */
+function registerSubtaskInputKeydown() {
+  const subtaskInputElement = document.getElementById("subtask");
+  if (!subtaskInputElement) return;
+
+  subtaskInputElement.addEventListener("keydown", (keyboardEvent) => {
+    if (keyboardEvent.key !== "Enter") return;
+    keyboardEvent.preventDefault();
+    addSubtask();
+  });
+}
+
+/**
+ * Register subtask buttons
+ */
+function registerSubtaskButtons() {
+  const clearButtonElement = document.getElementById("subtask-clear-button");
+  const addButtonElement = document.getElementById("subtask-add-button");
+
+  if (clearButtonElement) clearButtonElement.addEventListener("click", clearSubtaskInput);
+  if (addButtonElement) addButtonElement.addEventListener("click", addSubtask);
+}
+
+/**
+ * Clear subtask input
+ */
 function clearSubtaskInput() {
-  const inputElement = document.getElementById("subtask");
-  if (!inputElement) return;
-  inputElement.value = "";
+  const subtaskInputElement = document.getElementById("subtask");
+  if (!subtaskInputElement) return;
+  subtaskInputElement.value = "";
 }
 
-/** Enter fügt Subtask hinzu und verhindert Formular-Submit. */
-function handleSubtaskKey(keyboardEvent) {
-  if (keyboardEvent.key !== "Enter") return;
-  keyboardEvent.preventDefault();
-  addSubtask();
-}
-
-/** Liest Input aus, speichert Subtask und rendert neu. */
+/**
+ * Add subtask
+ */
 function addSubtask() {
-  const inputElement = document.getElementById("subtask");
-  if (!inputElement) return;
-  const titleText = getTrimmedText(inputElement.value);
-  if (!titleText) return;
-  subtaskCollection.push({ title: titleText, completed: false });
-  inputElement.value = "";
+  const subtaskTitle = readSubtaskTitleFromInput();
+  if (!subtaskTitle) return;
+
+  subtaskCollection.push(createSubtaskObject(subtaskTitle));
   renderSubtaskList();
+  clearSubtaskInput();
 }
 
-/** Rendert alle Subtasks (mit Event Delegation für Edit/Delete). */
+/**
+ * Read subtask title from input
+ * @returns {string} Return value
+ */
+function readSubtaskTitleFromInput() {
+  const subtaskInputElement = document.getElementById("subtask");
+  if (!subtaskInputElement) return "";
+  return getTrimmedValue(subtaskInputElement.value);
+}
+
+/**
+ * Create subtask object
+ * @param {string} subtaskTitle - Subtask title value
+ * @returns {Object} Return value
+ */
+function createSubtaskObject(subtaskTitle) {
+  return { title: subtaskTitle, completed: false };
+}
+
+/**
+ * Get trimmed value
+ * @param {string} textValue - Text value
+ * @returns {string} Return value
+ */
+function getTrimmedValue(textValue) {
+  if (typeof textValue !== "string") return "";
+  return textValue.trim();
+}
+
+/**
+ * Render subtask list
+ */
 function renderSubtaskList() {
-  const listElement = document.getElementById("subtask-list");
-  if (!listElement) return;
-  listElement.innerHTML = subtaskCollection.map(buildSubtaskMarkup).join("");
-  listElement.onclick = handleSubtaskListClick;
+  const subtaskListElement = document.getElementById("subtask-list");
+  if (!subtaskListElement) return;
+
+  subtaskListElement.innerHTML = buildSubtaskListMarkup();
+  registerSubtaskListEvents(subtaskListElement);
+  focusEditingSubtaskInput();
 }
 
-/** Baut Markup für genau einen Subtask. */
-function buildSubtaskMarkup(subtaskItem, subtaskIndex) {
+/**
+ * Register subtask list events
+ * @param {HTMLElement} subtaskListElement - DOM element
+ */
+function registerSubtaskListEvents(subtaskListElement) {
+  subtaskListElement.onclick = (mouseEvent) => handleSubtaskListClick(mouseEvent);
+  subtaskListElement.onkeydown = (keyboardEvent) => handleSubtaskListKeydown(keyboardEvent);
+  subtaskListElement.onfocusout = (focusEvent) => handleSubtaskListFocusOut(focusEvent);
+}
+
+/**
+ * Build subtask list markup
+ * @returns {string} Return value
+ */
+function buildSubtaskListMarkup() {
+  return subtaskCollection
+    .map((subtaskObject, subtaskIndex) => buildSingleSubtaskMarkup(subtaskObject, subtaskIndex))
+    .join("");
+}
+
+/**
+ * Build single subtask markup
+ * @param {Object} subtaskObject - Subtask object
+ * @param {number} subtaskIndex - Subtask index
+ * @returns {string} Return value
+ */
+function buildSingleSubtaskMarkup(subtaskObject, subtaskIndex) {
+  if (editingSubtaskIndex === subtaskIndex) {
+    return buildEditableSubtaskMarkup(subtaskObject, subtaskIndex);
+  }
+
+  return buildReadonlySubtaskMarkup(subtaskObject, subtaskIndex);
+}
+
+/**
+ * Build readonly subtask markup
+ * @param {Object} subtaskObject - Subtask object
+ * @param {number} subtaskIndex - Subtask index
+ * @returns {string} Return value
+ */
+function buildReadonlySubtaskMarkup(subtaskObject, subtaskIndex) {
+  const safeTitle = escapeHtmlText(subtaskObject.title);
+
   return `
     <li class="subtask-item" data-subtask-index="${subtaskIndex}">
       <div class="subtask-left">
         <span class="subtask-bullet">•</span>
-        <span class="subtask-title">${escapeHtmlText(subtaskItem.title)}</span>
+        <span class="subtask-title">${safeTitle}</span>
       </div>
+
       <div class="subtask-actions">
         <button type="button" data-action="edit" aria-label="Edit subtask">
           <img src="../assets/icons/edit.svg" alt="Edit">
         </button>
+
         <button type="button" data-action="delete" aria-label="Delete subtask">
           <img src="../assets/icons/delete.svg" alt="Delete">
         </button>
@@ -57,110 +163,46 @@ function buildSubtaskMarkup(subtaskItem, subtaskIndex) {
   `;
 }
 
-/** Delegiert Klicks auf Edit/Delete Buttons. */
-function handleSubtaskListClick(mouseEvent) {
-  const actionButtonElement = mouseEvent.target.closest("button[data-action]");
-  const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
-  if (!actionButtonElement || !listItemElement) return;
-  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
-  runSubtaskAction(actionButtonElement.dataset.action, subtaskIndex);
+/**
+ * Build editable subtask markup
+ * @param {Object} subtaskObject - Subtask object
+ * @param {number} subtaskIndex - Subtask index
+ * @returns {string} Return value
+ */
+function buildEditableSubtaskMarkup(subtaskObject, subtaskIndex) {
+  const safeTitle = escapeHtmlText(subtaskObject.title);
+
+  return `
+    <li class="subtask-item is-editing" data-subtask-index="${subtaskIndex}">
+      <div class="subtask-left">
+        <span class="subtask-bullet">•</span>
+        <input
+          type="text"
+          class="subtask-title-input"
+          value="${safeTitle}"
+          data-role="subtask-edit-input"
+          aria-label="Edit subtask title"
+        >
+      </div>
+
+      <div class="subtask-actions">
+        <button type="button" data-action="save" aria-label="Save subtask">
+          <img src="../assets/icons/delete.svg" alt="Save">
+        </button>
+
+        <button type="button" data-action="delete" aria-label="Delete subtask">
+          <img src="../assets/icons/check.svg" alt="Delete">
+        </button>
+      </div>
+    </li>
+  `;
 }
 
-/** Führt Action aus (edit/delete). */
-function runSubtaskAction(actionName, subtaskIndex) {
-  if (actionName === "delete") deleteSubtask(subtaskIndex);
-  if (actionName === "edit") editSubtask(subtaskIndex);
-}
-
-/** Entfernt einen Subtask aus der Liste. */
-function deleteSubtask(subtaskIndex) {
-  if (!isValidSubtaskIndex(subtaskIndex)) return;
-  subtaskCollection.splice(subtaskIndex, 1);
-  renderSubtaskList();
-}
-
-/** Ändert den Titel eines Subtasks via Prompt. */
-function editSubtask(subtaskIndex) {
-  if (!isValidSubtaskIndex(subtaskIndex)) return;
-  const currentTitle = subtaskCollection[subtaskIndex].title;
-  const newTitle = prompt("Edit subtask:", currentTitle);
-  applyEditedSubtaskTitle(subtaskIndex, newTitle);
-}
-
-/** Übernimmt neuen Titel, wenn gültig. */
-function applyEditedSubtaskTitle(subtaskIndex, newTitle) {
-  const cleanedTitle = getTrimmedText(newTitle ?? "");
-  if (!cleanedTitle) return;
-  subtaskCollection[subtaskIndex].title = cleanedTitle;
-  renderSubtaskList();
-}
-
-/** Prüft, ob Index zur aktuellen Subtask-Liste passt. */
-function isValidSubtaskIndex(subtaskIndex) {
-  return Number.isInteger(subtaskIndex) && subtaskIndex >= 0 && subtaskIndex < subtaskCollection.length;
-}
-
-/** Löscht Subtasks komplett (State + UI). */
-function resetSubtasks() {
-  subtaskCollection = [];
-  renderSubtaskList();
-}
-
-/** Clone, damit Subtasks nicht per Referenz verändert werden. */
-function cloneSubtasks() {
-  if (typeof structuredClone === "function") return structuredClone(subtaskCollection);
-  return JSON.parse(JSON.stringify(subtaskCollection));
-}
-
-/* =========================
-   PRIORITY ICONS
-   ========================= */
-
-/** Registriert Change-Events für die Prioritäts-Radios. */
-function initializePriorityIconHandlers() {
-  document.querySelectorAll('input[name="priority"]').forEach((radioElement) => {
-    radioElement.addEventListener("change", updatePriorityIcons);
-  });
-  updatePriorityIcons();
-}
-
-/** Setzt Icons je nach ausgewählter Priorität (weiß vs. farbig). */
-function updatePriorityIcons() {
-  const urgentRadio = document.getElementById("priority-urgent");
-  const mediumRadio = document.getElementById("priority-medium");
-  const lowRadio = document.getElementById("priority-low");
-  setPriorityIcon("icon-urgent", urgentRadio?.checked, "../assets/icons/urgent_white.svg", "../assets/icons/urgent_red.svg");
-  setPriorityIcon("icon-medium", mediumRadio?.checked, "../assets/icons/medium_white.svg", "../assets/icons/medium_yellow.svg");
-  setPriorityIcon("icon-low", lowRadio?.checked, "../assets/icons/low_white.svg", "../assets/icons/low_green.svg");
-}
-
-/** Schreibt die passende Icon-Quelle abhängig vom checked-Status. */
-function setPriorityIcon(iconId, isChecked, checkedSource, uncheckedSource) {
-  const iconElement = document.getElementById(iconId);
-  if (!iconElement) return;
-  iconElement.src = isChecked ? checkedSource : uncheckedSource;
-}
-
-/* =========================
-   TEXT HELPERS
-   ========================= */
-
-/** Liefert getrimmten Text oder leeren String. */
-function getTrimmedText(textValue) {
-  if (typeof textValue !== "string") return "";
-  return textValue.trim();
-}
-
-/** Erstellt Initialen aus einem vollständigen Namen. */
-function getInitials(fullName) {
-  return String(fullName)
-    .split(" ")
-    .filter((part) => part.length > 0)
-    .map((part) => part[0].toUpperCase())
-    .join("");
-}
-
-/** Schützt gegen HTML-Injection, wenn Text in innerHTML landet. */
+/**
+ * Escape html text
+ * @param {string} unsafeText - Unsafe text value
+ * @returns {string} Return value
+ */
 function escapeHtmlText(unsafeText) {
   return String(unsafeText)
     .replaceAll("&", "&amp;")
@@ -169,3 +211,243 @@ function escapeHtmlText(unsafeText) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+/**
+ * Handle subtask list click
+ * @param {Event} mouseEvent - Event object
+ */
+function handleSubtaskListClick(mouseEvent) {
+  const actionName = readSubtaskAction(mouseEvent);
+  if (!actionName) return;
+
+  const subtaskIndex = readSubtaskIndex(mouseEvent);
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+
+  const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
+  runSubtaskAction(actionName, subtaskIndex, listItemElement);
+}
+
+/**
+ * Handle subtask list keydown
+ * @param {KeyboardEvent} keyboardEvent - Event object
+ */
+function handleSubtaskListKeydown(keyboardEvent) {
+  const inputElement = keyboardEvent.target.closest(".subtask-title-input");
+  if (!inputElement) return;
+
+  const listItemElement = inputElement.closest("li[data-subtask-index]");
+  if (!listItemElement) return;
+
+  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+
+  if (keyboardEvent.key === "Enter") {
+    keyboardEvent.preventDefault();
+    saveSubtaskEdit(subtaskIndex, inputElement.value);
+  }
+
+  if (keyboardEvent.key === "Escape") {
+    keyboardEvent.preventDefault();
+    cancelSubtaskEdit();
+  }
+}
+
+/**
+ * Handle subtask list focus out
+ * @param {FocusEvent} focusEvent - Event object
+ */
+function handleSubtaskListFocusOut(focusEvent) {
+  const inputElement = focusEvent.target.closest(".subtask-title-input");
+  if (!inputElement) return;
+
+  const listItemElement = inputElement.closest("li[data-subtask-index]");
+  if (!listItemElement) return;
+
+  const nextFocusedElement = focusEvent.relatedTarget;
+  if (nextFocusedElement && listItemElement.contains(nextFocusedElement)) return;
+
+  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+
+  saveSubtaskEdit(subtaskIndex, inputElement.value);
+}
+
+/**
+ * Read subtask action
+ * @param {Event} mouseEvent - Event object
+ * @returns {string} Return value
+ */
+function readSubtaskAction(mouseEvent) {
+  const actionButtonElement = mouseEvent.target.closest("button[data-action]");
+  if (!actionButtonElement) return "";
+  return actionButtonElement.dataset.action || "";
+}
+
+/**
+ * Read subtask index
+ * @param {Event} mouseEvent - Event object
+ * @returns {number} Return value
+ */
+function readSubtaskIndex(mouseEvent) {
+  const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
+  if (!listItemElement) return -1;
+  return Number(listItemElement.dataset.subtaskIndex);
+}
+
+/**
+ * Run subtask action
+ * @param {string} actionName - Action name value
+ * @param {number} subtaskIndex - Subtask index value
+ * @param {HTMLElement} listItemElement - List item DOM element
+ */
+function runSubtaskAction(actionName, subtaskIndex, listItemElement) {
+  if (actionName === "delete") deleteSubtask(subtaskIndex);
+  if (actionName === "edit") editSubtask(subtaskIndex);
+  if (actionName === "save") saveSubtaskEdit(subtaskIndex, readEditedSubtaskValue(listItemElement));
+  if (actionName === "cancel") cancelSubtaskEdit();
+}
+
+/**
+ * Read edited subtask value
+ * @param {HTMLElement} listItemElement - DOM element
+ * @returns {string} Return value
+ */
+function readEditedSubtaskValue(listItemElement) {
+  const inputElement = listItemElement?.querySelector(".subtask-title-input");
+  if (!inputElement) return "";
+  return inputElement.value;
+}
+
+/**
+ * Delete subtask
+ * @param {number} subtaskIndex - Subtask index value
+ */
+function deleteSubtask(subtaskIndex) {
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+
+  subtaskCollection.splice(subtaskIndex, 1);
+
+  if (editingSubtaskIndex === subtaskIndex) editingSubtaskIndex = null;
+  if (editingSubtaskIndex !== null && subtaskIndex < editingSubtaskIndex) editingSubtaskIndex -= 1;
+
+  renderSubtaskList();
+}
+
+/**
+ * Edit subtask inline
+ * @param {number} subtaskIndex - Subtask index value
+ */
+function editSubtask(subtaskIndex) {
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+  editingSubtaskIndex = subtaskIndex;
+  renderSubtaskList();
+}
+
+/**
+ * Save edited subtask title
+ * @param {number} subtaskIndex - Subtask index value
+ * @param {string} newTitle - New title value
+ */
+function saveSubtaskEdit(subtaskIndex, newTitle) {
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
+
+  const cleanedTitle = getTrimmedValue(newTitle ?? "");
+  if (!cleanedTitle) {
+    cancelSubtaskEdit();
+    return;
+  }
+
+  subtaskCollection[subtaskIndex].title = cleanedTitle;
+  editingSubtaskIndex = null;
+  renderSubtaskList();
+}
+
+/**
+ * Cancel subtask edit
+ */
+function cancelSubtaskEdit() {
+  editingSubtaskIndex = null;
+  renderSubtaskList();
+}
+
+/**
+ * Focus active subtask input
+ */
+function focusEditingSubtaskInput() {
+  if (editingSubtaskIndex === null) return;
+
+  const inputElement = document.querySelector(
+    `#subtask-list li[data-subtask-index="${editingSubtaskIndex}"] .subtask-title-input`
+  );
+
+  if (!inputElement) return;
+
+  requestAnimationFrame(() => {
+    inputElement.focus();
+    inputElement.select();
+  });
+}
+
+/**
+ * Is valid subtask index
+ * @param {number} subtaskIndex - Subtask index value
+ * @returns {boolean} Return value
+ */
+function isValidSubtaskIndex(subtaskIndex) {
+  return Number.isInteger(subtaskIndex) && subtaskIndex >= 0 && subtaskIndex < subtaskCollection.length;
+}
+
+/**
+ * Reset subtasks
+ */
+function resetSubtasks() {
+  subtaskCollection = [];
+  editingSubtaskIndex = null;
+  renderSubtaskList();
+}
+
+/* =========================
+   PRIORITY ICONS
+========================= */
+
+/**
+ * Initialize priority icon handlers
+ */
+function initializePriorityIconHandlers() {
+  const radioNodeList = document.querySelectorAll('input[name="priority"]');
+  radioNodeList.forEach((radioElement) => {
+    radioElement.addEventListener("change", updatePriorityIcons);
+  });
+  updatePriorityIcons();
+}
+
+/**
+ * Update priority icons
+ */
+function updatePriorityIcons() {
+  const urgentRadio = document.getElementById("priority-urgent");
+  const mediumRadio = document.getElementById("priority-medium");
+  const lowRadio = document.getElementById("priority-low");
+
+  applyPriorityIcon("icon-urgent", urgentRadio, "urgent_white", "urgent_red");
+  applyPriorityIcon("icon-medium", mediumRadio, "medium_white", "medium_yellow");
+  applyPriorityIcon("icon-low", lowRadio, "low_white", "low_green");
+}
+
+/**
+ * Apply priority icon
+ * @param {string} iconId - ID value
+ * @param {HTMLElement} radioElement - DOM element
+ * @param {string} checkedName - Checked name value
+ * @param {string} uncheckedName - Unchecked name value
+ */
+function applyPriorityIcon(iconId, radioElement, checkedName, uncheckedName) {
+  const iconElement = document.getElementById(iconId);
+  if (!iconElement || !radioElement) return;
+
+  iconElement.src = radioElement.checked
+    ? `../assets/icons/${checkedName}.svg`
+    : `../assets/icons/${uncheckedName}.svg`;
+}
+
+// Form-Reset, Data-Collection und Success-Toast wurden nach add_task_form.js ausgelagert

@@ -442,12 +442,42 @@ input#priority-low:checked + label.low {
   height: 16px;
 }
 
+.subtask-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.subtask-item.is-editing {
+  background-color: #f6f7f8;
+}
+
+.subtask-item.is-editing .subtask-actions {
+  opacity: 1;
+}
+
+.subtask-title-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  padding: 6px 8px;
+  border: 1px solid #29abe2;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.subtask-title-input:focus {
+  border: 1px solid #29abe2;
+  box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.15);
+}
+
 /* =========================
    FOOTER / BUTTONS
    ========================= */
 
 .form-footer {
-  margin: 20px;
+  margin: 20px 0 0;
   align-items: center;
 }
 
@@ -462,6 +492,25 @@ input#priority-low:checked + label.low {
   gap: 8px;
 }
 
+.task-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.form-required-note {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  color: #2a3647;
+}
+
+.input-error {
+  border-color: #ff3d00 !important;
+}
 .btn {
   display: inline-flex;
   align-items: center;

@@ -85,21 +85,44 @@ async function handleFormSubmit(submitEvent) {
    KONTAKTE LADEN / ASSIGNEES
 ========================= */
 
-/** Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen. */
+/**
+ * Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen.
+ */
 async function loadContacts() {
   const isGuestUser = isGuestSessionUser();
-  const dataPath = isGuestUser ? "guest-contacts/" : "contacts/";
-  const rawContacts = (await loadData(dataPath)) || [];
 
-  const contactList = normalizeContacts(rawContacts, isGuestUser);
-  contacts = sanitizeContacts(contactList);
+  if (isGuestUser) {
+    const rawGuestContacts = (await loadData("guest-contacts/")) || {};
+    const guestContactList = normalizeContacts(rawGuestContacts, true);
+
+    contacts = sanitizeContacts(guestContactList).sort((firstContact, secondContact) =>
+      firstContact.name.localeCompare(secondContact.name, "de")
+    );
+
+    renderAssigneeOptions();
+    return;
+  }
+
+  const rawContacts = (await loadData("contacts/")) || {};
+  const contactsObject = Array.isArray(rawContacts)
+    ? Object.fromEntries(rawContacts.map((contactObject, index) => [index, contactObject]))
+    : { ...rawContacts };
+
+  await includeLoggedInUserInAddTaskContacts(contactsObject);
+
+  contacts = Object.values(contactsObject)
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0)
+    .sort((firstContact, secondContact) =>
+      firstContact.name.localeCompare(secondContact.name, "de")
+    );
 
   renderAssigneeOptions();
 }
 
 /**
- * Is guest session user
- * @returns {boolean} Return value
+ * Prüft, ob der aktuelle User ein Guest ist.
+ * @returns {boolean}
  */
 function isGuestSessionUser() {
   const userId = sessionStorage.getItem("userId");
@@ -107,36 +130,68 @@ function isGuestSessionUser() {
 }
 
 /**
- * Normalize contacts
- * @param {*} rawContacts - Rawcontacts value
- * @param {boolean} isGuestUser - Isguestuser value
- * @returns {void} Return value
+ * Ergänzt den eingeloggten User in der Kontaktliste,
+ * falls er noch nicht unter contacts/ existiert.
+ * @param {Object} contactsObject
+ */
+async function includeLoggedInUserInAddTaskContacts(contactsObject) {
+  const userId = sessionStorage.getItem("userId");
+  if (!userId || userId === "guest" || contactsObject[userId]) return;
+
+  const user = await loadData("users/" + userId);
+  if (!user) return;
+
+  contactsObject[userId] = {
+    contactName: String(user.username || user.name || "").trim(),
+    contactMail: String(user.mail || "").trim(),
+    contactPhone: String(user.phone || "").trim(),
+    color: user.color || "#CCCCCC",
+  };
+}
+
+/**
+ * Normalisiert Rohdaten zu einer Kontaktliste.
+ * @param {*} rawContacts
+ * @param {boolean} isGuestUser
+ * @returns {Array}
  */
 function normalizeContacts(rawContacts, isGuestUser) {
-  const contactList = Array.isArray(rawContacts) ? rawContacts : Object.values(rawContacts);
+  const contactList = Array.isArray(rawContacts)
+    ? rawContacts
+    : Object.values(rawContacts);
+
   if (isGuestUser && contactList.length === 0) return GUEST_CONTACTS_FALLBACK;
   return contactList;
 }
 
 /**
- * Sanitize contacts
- * @param {Array} contactList - Contactlist value
- * @returns {void} Return value
+ * Bereinigt die Kontaktliste.
+ * @param {Array} contactList
+ * @returns {Array}
  */
 function sanitizeContacts(contactList) {
   return contactList
-    .map((contactObject) => mapContact(contactObject))
-    .filter((contactObject) => contactObject.name.trim().length > 0);
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0);
 }
 
 /**
- * Map contact
- * @param {*} contactObject - Contactobject value
- * @returns {void} Return value
+ * Mappt Kontaktobjekte aus contacts/ auf das Format für Assigned to.
+ * @param {Object} contactObject
+ * @returns {Object}
  */
-function mapContact(contactObject) {
+function mapContact(contactObject = {}) {
+  const name = String(
+    contactObject.contactName ||
+    contactObject.name ||
+    contactObject.contactMail ||
+    ""
+  ).trim();
+
   return {
-    name: contactObject.name || contactObject.contactName || "",
+    name,
+    mail: String(contactObject.contactMail || contactObject.mail || "").trim(),
+    phone: String(contactObject.contactPhone || contactObject.phone || "").trim(),
     color: contactObject.color || "#CCCCCC",
   };
 }

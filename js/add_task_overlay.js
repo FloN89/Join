@@ -23,6 +23,7 @@ let contactCollection = [];
 async function initializeAddTaskPage() {
   setMinimumDateToToday();
   registerFormSubmitHandler();
+  registerLiveValidationHandlers();
   registerGlobalClickHandler();
   await loadContacts();
   initializePriorityIconHandlers();
@@ -62,6 +63,44 @@ function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent
   if (!containerElement.contains(mouseEvent.target)) dropdownElement.classList.add("d-none");
 }
 
+function registerLiveValidationHandlers() {
+  registerRequiredFieldLiveValidation("title", "error-title");
+  registerRequiredFieldLiveValidation("due-date", "error-due-date");
+
+  const taskFormElement = document.getElementById("taskForm");
+  if (taskFormElement) {
+    taskFormElement.addEventListener("reset", () => {
+      requestAnimationFrame(clearAllValidationErrors);
+    });
+  }
+}
+
+function registerRequiredFieldLiveValidation(inputId, errorId) {
+  const inputElement = document.getElementById(inputId);
+  if (!inputElement) return;
+
+  const validateCurrentField = () => {
+    if (!inputElement.value.trim()) return;
+    clearFieldError(inputId, errorId);
+  };
+
+  inputElement.addEventListener("input", validateCurrentField);
+  inputElement.addEventListener("change", validateCurrentField);
+}
+
+function clearAllValidationErrors() {
+  clearFieldError("title", "error-title");
+  clearFieldError("due-date", "error-due-date");
+  clearFieldError("category", "error-category");
+}
+
+function clearFieldError(inputId, errorId) {
+  const inputElement = document.getElementById(inputId);
+  const errorElement = document.getElementById(errorId);
+
+  if (inputElement) inputElement.classList.remove("input-error");
+  if (errorElement) errorElement.classList.remove("active");
+}
 /* =========================
    OVERLAY OPEN / CLOSE
    ========================= */
@@ -264,9 +303,11 @@ function setCategoryPlaceholder(categoryValue) {
 
 /** Blendet den Kategorie-Fehler aus. */
 function hideCategoryError() {
+  const categoryInputElement = document.getElementById("category");
   const categoryErrorElement = document.getElementById("error-category");
-  if (!categoryErrorElement) return;
-  categoryErrorElement.classList.remove("active");
+
+  if (categoryInputElement) categoryInputElement.classList.remove("input-error");
+  if (categoryErrorElement) categoryErrorElement.classList.remove("active");
 }
 
 /* =========================
