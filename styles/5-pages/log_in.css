@@ -311,6 +311,30 @@ body.welcome-active .site-footer {
   display: none !important;
 }
 
+
+@media (min-width: 1025px) {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-area {
+    flex: 1;
+    justify-content: flex-start;
+  }
+
+  .site-footer {
+    margin-top: auto;
+    padding-top: 40px;
+  }
+}
+
 /* Auf größeren Screens: Overlay komplett deaktivieren */
 @media (min-width: 481px) {
   .welcome-overlay {
