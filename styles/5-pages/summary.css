@@ -351,7 +351,7 @@
     padding-left: var(--spacing-mobile);
     padding-right: var(--spacing-mobile);
     gap: 30px;
-    margin-top: 10px;
+    padding-top: 10px;
   }
 
   .task-container {
@@ -367,7 +367,7 @@
   }
 
   .metrics-header {
-    margin-bottom: 16px;
+    margin-bottom: 36px;
   }
 
   .metrics {
@@ -437,6 +437,7 @@
   .dashboard {
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 12px;
   }
 
   .metrics-header h1 {

@@ -101,11 +101,7 @@
 
             <label>Assigned to</label>
             <div class="custom-multiselect">
-              <div
-                class="multiselect-header"
-                id="assignee-header"
-                onclick="toggleAssigneeDropdown()"
-              >
+              <div class="multiselect-header" id="assignee-header">
                 <span id="selected-assignees-placeholder">
                   Select contacts to assign
                 </span>
@@ -132,11 +128,7 @@
               </label>
 
               <div class="custom-category-select">
-                <div
-                  class="category-select-header"
-                  id="category-header"
-                  onclick="toggleCategoryDropdown()"
-                >
+                <div class="category-select-header" id="category-header">
                   <span id="selected-category-placeholder">
                     Select category
                   </span>
@@ -147,16 +139,10 @@
                 </div>
 
                 <div class="category-dropdown d-none" id="category-dropdown">
-                  <div
-                    class="category-option"
-                    onclick="selectCategory('technical-task')"
-                  >
+                  <div class="category-option" data-category="technical-task">
                     Technical Task
                   </div>
-                  <div
-                    class="category-option"
-                    onclick="selectCategory('user-story')"
-                  >
+                  <div class="category-option" data-category="user-story">
                     User Story
                   </div>
                 </div>
@@ -175,17 +161,16 @@
                   type="text"
                   id="subtask"
                   placeholder="Add new subtask"
-                  onkeydown="handleSubtaskKey(event)"
                 />
 
                 <div class="subtask-input-actions" aria-label="Subtask actions">
                   <button
                     type="button"
                     class="subtask-action-btn"
-                    onclick="clearSubtaskInput()"
+                    id="subtask-clear-button"
                     aria-label="Clear subtask"
                   >
-                    <img src="../assets/icons/close.svg" alt="Clear" />
+                    <img src="../assets/icons/close.svg" class="closeSub-btn" alt="Clear" />
                   </button>
 
                   <span
@@ -196,10 +181,10 @@
                   <button
                     type="button"
                     class="subtask-action-btn"
-                    onclick="addSubtask()"
+                    id="subtask-add-button"
                     aria-label="Add subtask"
                   >
-                    <img src="../assets/icons/check.svg" alt="Add" />
+                    <img src="../assets/icons/check.svg" class="checkSub-btn" alt="Add" />
                   </button>
                 </div>
               </div>
@@ -220,7 +205,7 @@
             <button
               type="button"
               class="btn btn-ghost clear-btn"
-              onclick="handleClear()"
+              id="clear-form-button"
             >
               Clear <span class="x-icon">X</span>
             </button>
@@ -238,6 +223,8 @@
       </section>
     </main>
 
+    <script src="../js/firebase.js"></script>
+    <script src="../js/guest-data.js"></script>
     <script src="../js/add_task_shared_utils.js"></script>
     <script src="../js/add_task_overlay_validation.js"></script>
     <script src="../js/add_task_overlay_subtasks.js"></script>

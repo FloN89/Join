@@ -1,17 +1,11 @@
 /**
  * add_task_overlay.js
  * - Initialisiert Formular, Kontakte, Dropdowns, Priorität-Icons und Subtasks.
- * - Speichert Tasks via postData("task/", taskObject).
- * - Erwartet loadData(...) und postData(...) aus deinem Projekt-Setup.
+ * - Nutzt dieselbe Kontaktlogik wie add_task.
  */
 
 document.addEventListener("DOMContentLoaded", initializeAddTaskPage);
 
-const guestContactsFallback = [
-  { name: "Alex", color: "#FF7A00" },
-  { name: "Mina", color: "#1FD7C1" },
-  { name: "Chris", color: "#6E52FF" }
-];
 
 let contactCollection = [];
 
@@ -19,43 +13,73 @@ let contactCollection = [];
    PAGE INITIALIZATION
    ========================= */
 
-/** Startpunkt: richtet alles ein, sobald DOM bereit ist. */
 async function initializeAddTaskPage() {
   setMinimumDateToToday();
-  registerFormSubmitHandler();
-  registerLiveValidationHandlers();
-  registerGlobalClickHandler();
+  registerUserInterfaceEvents();
   await loadContacts();
   initializePriorityIconHandlers();
   renderSubtaskList();
 }
 
-/** Setzt im Date-Input das Minimum auf "heute". */
+function registerUserInterfaceEvents() {
+  registerFormSubmitHandler();
+  registerDropdownEvents();
+  registerCategoryOptionEvents();
+  registerSubtaskEvents();
+  registerClearButtonEvent();
+  registerLiveValidationHandlers();
+  registerGlobalClickHandler();
+}
+
 function setMinimumDateToToday() {
   const dateInputElement = document.getElementById("due-date");
   if (!dateInputElement) return;
   dateInputElement.min = new Date().toISOString().split("T")[0];
 }
 
-/** Registriert das Submit-Event am Formular. */
 function registerFormSubmitHandler() {
   const taskFormElement = document.getElementById("taskForm");
   if (!taskFormElement) return;
   taskFormElement.addEventListener("submit", handleFormSubmit);
 }
 
-/** Schließt Dropdowns, wenn außerhalb geklickt wird. */
+function registerClearButtonEvent() {
+  const clearButtonElement = document.getElementById("clear-form-button");
+  if (!clearButtonElement) return;
+  clearButtonElement.addEventListener("click", handleClear);
+}
+
+function registerDropdownEvents() {
+  const assigneeHeaderElement = document.getElementById("assignee-header");
+  const categoryHeaderElement = document.getElementById("category-header");
+
+  if (assigneeHeaderElement) {
+    assigneeHeaderElement.addEventListener("click", toggleAssigneeDropdown);
+  }
+
+  if (categoryHeaderElement) {
+    categoryHeaderElement.addEventListener("click", toggleCategoryDropdown);
+  }
+}
+
+function registerCategoryOptionEvents() {
+  const optionElements = document.querySelectorAll("#category-dropdown .category-option");
+  optionElements.forEach((optionElement) => {
+    optionElement.addEventListener("click", () => {
+      selectCategory(optionElement.dataset.category);
+    });
+  });
+}
+
 function registerGlobalClickHandler() {
   document.addEventListener("click", handleOutsideClick);
 }
 
-/** Schließt beide Dropdowns, wenn Klick nicht im jeweiligen Bereich ist. */
 function handleOutsideClick(mouseEvent) {
   closeDropdownIfClickedOutside("assignee-dropdown", ".custom-multiselect", mouseEvent);
   closeDropdownIfClickedOutside("category-dropdown", ".custom-category-select", mouseEvent);
 }
 
-/** Hilfsfunktion: schließt ein Dropdown, wenn außerhalb geklickt wurde. */
 function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent) {
   const dropdownElement = document.getElementById(dropdownId);
   const containerElement = document.querySelector(containerSelector);
@@ -67,7 +91,6 @@ function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent
    OVERLAY OPEN / CLOSE
    ========================= */
 
-/** Öffnet Overlay (optional, falls du es später per Button öffnest). */
 function openAddTaskOverlay() {
   const overlayElement = document.getElementById("add-task-overlay");
   if (!overlayElement) return;
@@ -75,7 +98,6 @@ function openAddTaskOverlay() {
   document.body.classList.add("overlay-open");
 }
 
-/** Schließt Overlay und erlaubt Scrollen im Hintergrund. */
 function closeAddTaskOverlay() {
   const overlayElement = document.getElementById("add-task-overlay");
   if (!overlayElement) return;
@@ -83,7 +105,6 @@ function closeAddTaskOverlay() {
   document.body.classList.remove("overlay-open");
 }
 
-/** Stoppt das Schließen, wenn im Panel geklickt wird. */
 function stopOverlayClick(mouseEvent) {
   mouseEvent.stopPropagation();
 }
@@ -92,42 +113,114 @@ function stopOverlayClick(mouseEvent) {
    CONTACTS / ASSIGNEES
    ========================= */
 
-/** Lädt Kontakte aus der Datenquelle (Guest bekommt Fallback). */
 async function loadContacts() {
-  const userIdentifier = sessionStorage.getItem("userId");
-  const isGuestUser = !userIdentifier || userIdentifier === "guest";
-  const databasePath = isGuestUser ? "guest-contacts/" : "contacts/";
-  const rawData = (await loadData(databasePath)) || [];
-  const normalizedList = Array.isArray(rawData) ? rawData : Object.values(rawData);
-  contactCollection = buildContactCollection(normalizedList, isGuestUser);
+  if (typeof loadData !== "function") {
+    console.error("loadData is not available");
+    return;
+  }
+
+  const isGuestUser = isGuestSessionUser();
+  const sourcePaths = isGuestUser
+    ? ["guest-contacts/", "contacts/"]
+    : ["contacts/"];
+
+  const mergedContactsObject = await loadMergedContactsFromPaths(sourcePaths);
+
+  if (!isGuestUser && typeof includeLoggedInUserInAddTaskContacts === "function") {
+    await includeLoggedInUserInAddTaskContacts(mergedContactsObject);
+  }
+
+  let normalizedContacts = Object.values(mergedContactsObject)
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0);
+
+  normalizedContacts = deduplicateContacts(normalizedContacts);
+
+  if (normalizedContacts.length === 0) {
+    normalizedContacts = GUEST_CONTACTS_FALLBACK.map(mapContact);
+  }
+
+  contactCollection = normalizedContacts.sort((firstContact, secondContact) =>
+    firstContact.name.localeCompare(secondContact.name, "de")
+  );
+
   renderAssigneeOptions();
 }
 
-/** Normalisiert Kontakte und stellt sicher, dass Guest nie leer ist. */
-function buildContactCollection(rawList, isGuestUser) {
-  const sourceList = isGuestUser && rawList.length === 0 ? guestContactsFallback : rawList;
-  return sourceList
-    .map((contactItem) => normalizeContact(contactItem))
-    .filter((contactItem) => contactItem.name.trim().length > 0);
+function isGuestSessionUser() {
+  const userId = sessionStorage.getItem("userId");
+  return !userId || userId === "guest";
 }
 
-/** Baut ein sauberes Kontakt-Objekt aus verschiedenen möglichen Feldern. */
-function normalizeContact(contactItem) {
+async function loadMergedContactsFromPaths(sourcePaths) {
+  const mergedContactsObject = {};
+
+  for (const sourcePath of sourcePaths) {
+    const rawContacts = (await loadData(sourcePath)) || {};
+    const normalizedObject = normalizeRawContactsToObject(rawContacts, sourcePath);
+
+    Object.entries(normalizedObject).forEach(([contactId, contactObject]) => {
+      mergedContactsObject[contactId] = contactObject;
+    });
+  }
+
+  return mergedContactsObject;
+}
+
+function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
+  if (Array.isArray(rawContacts)) {
+    return Object.fromEntries(
+      rawContacts.map((contactObject, index) => [`${sourcePath}${index}`, contactObject])
+    );
+  }
+
+  if (rawContacts && typeof rawContacts === "object") {
+    return { ...rawContacts };
+  }
+
+  return {};
+}
+
+function deduplicateContacts(contactList) {
+  const seenKeys = new Set();
+
+  return contactList.filter((contactObject) => {
+    const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(
+      contactObject.mail || ""
+    ).trim().toLowerCase()}`;
+
+    if (seenKeys.has(uniqueKey)) return false;
+    seenKeys.add(uniqueKey);
+    return true;
+  });
+}
+
+function mapContact(contactObject = {}) {
+  const name = String(
+    contactObject.contactName ||
+    contactObject.name ||
+    contactObject.contactMail ||
+    ""
+  ).trim();
+
   return {
-    name: contactItem.name || contactItem.contactName || "",
-    color: contactItem.color || "#CCCCCC"
+    name,
+    mail: String(contactObject.contactMail || contactObject.mail || "").trim(),
+    phone: String(contactObject.contactPhone || contactObject.phone || "").trim(),
+    color: contactObject.color || "#CCCCCC",
   };
 }
 
-/** Rendert Checkbox-Liste im Assignee-Dropdown. */
 function renderAssigneeOptions() {
   const dropdownElement = document.getElementById("assignee-dropdown");
   if (!dropdownElement) return;
+
   dropdownElement.innerHTML = "";
-  contactCollection.forEach((contactItem) => dropdownElement.appendChild(buildAssigneeRow(contactItem)));
+  contactCollection.forEach((contactItem) => {
+    dropdownElement.appendChild(buildAssigneeRow(contactItem));
+  });
 }
 
-/** Erstellt genau eine Assignee-Zeile (Name + Initialen + Checkbox). */
 function buildAssigneeRow(contactItem) {
   const rowElement = document.createElement("div");
   rowElement.className = "assignee-row";
@@ -136,7 +229,6 @@ function buildAssigneeRow(contactItem) {
   return rowElement;
 }
 
-/** Liefert das HTML-Markup für eine Assignee-Zeile. */
 function getAssigneeRowMarkup(contactItem) {
   const initialsText = getInitials(contactItem.name);
   return `
@@ -144,58 +236,67 @@ function getAssigneeRowMarkup(contactItem) {
       <div class="assignee-initials" style="background-color:${contactItem.color};">${initialsText}</div>
       <span class="assignee-name">${escapeHtmlText(contactItem.name)}</span>
     </div>
-    <input class="assignee-checkbox" type="checkbox" data-name="${escapeHtmlText(contactItem.name)}" data-color="${contactItem.color}">
+    <input
+      class="assignee-checkbox"
+      type="checkbox"
+      data-name="${escapeHtmlText(contactItem.name)}"
+      data-color="${contactItem.color}"
+    >
   `;
 }
 
-/** Hängt Interaktionen an: Klick/Enter/Space togglen die Checkbox + Auswahl. */
 function attachAssigneeRowHandlers(rowElement) {
   const clickAreaElement = rowElement.querySelector(".assignee-left");
   const checkboxElement = rowElement.querySelector(".assignee-checkbox");
   if (!clickAreaElement || !checkboxElement) return;
+
   clickAreaElement.addEventListener("click", () => toggleAssigneeSelection(rowElement, checkboxElement));
-  clickAreaElement.addEventListener("keydown", (keyboardEvent) => handleAssigneeKeydown(keyboardEvent, rowElement, checkboxElement));
-  checkboxElement.addEventListener("change", () => updateAssigneeDisplay());
+  clickAreaElement.addEventListener("keydown", (keyboardEvent) =>
+    handleAssigneeKeydown(keyboardEvent, rowElement, checkboxElement)
+  );
+
+  checkboxElement.addEventListener("change", () => {
+    rowElement.classList.toggle("name-selected", checkboxElement.checked);
+    updateAssigneeDisplay();
+  });
 }
 
-/** Tastatur: Enter oder Space verhält sich wie Klick. */
 function handleAssigneeKeydown(keyboardEvent, rowElement, checkboxElement) {
   if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
   keyboardEvent.preventDefault();
   toggleAssigneeSelection(rowElement, checkboxElement);
 }
 
-/** Schaltet Checkbox um und synchronisiert die optische Markierung. */
 function toggleAssigneeSelection(rowElement, checkboxElement) {
   checkboxElement.checked = !checkboxElement.checked;
   rowElement.classList.toggle("name-selected", checkboxElement.checked);
   updateAssigneeDisplay();
 }
 
-/** Aktualisiert Avatare + Placeholder entsprechend der Auswahl. */
 function updateAssigneeDisplay() {
   const selectedAssignees = getSelectedAssignees();
   renderAssigneeAvatars(selectedAssignees);
   updateAssigneePlaceholder(selectedAssignees.length);
 }
 
-/** Liest alle ausgewählten Assignees aus dem Dropdown aus. */
 function getSelectedAssignees() {
   const checkboxElements = document.querySelectorAll("#assignee-dropdown .assignee-checkbox:checked");
-  return Array.from(checkboxElements).map((checkboxElement) => {
-    return { name: checkboxElement.dataset.name, color: checkboxElement.dataset.color };
-  });
+  return Array.from(checkboxElements).map((checkboxElement) => ({
+    name: checkboxElement.dataset.name || "",
+    color: checkboxElement.dataset.color || "#CCCCCC",
+  }));
 }
 
-/** Rendert Initialen-Avatare für die aktuell ausgewählten Assignees. */
 function renderAssigneeAvatars(selectedAssignees) {
   const avatarContainer = document.getElementById("selected-assignee-avatars");
   if (!avatarContainer) return;
+
   avatarContainer.innerHTML = "";
-  selectedAssignees.forEach((assigneeItem) => avatarContainer.appendChild(buildAvatar(assigneeItem)));
+  selectedAssignees.forEach((assigneeItem) => {
+    avatarContainer.appendChild(buildAvatar(assigneeItem));
+  });
 }
 
-/** Baut genau einen Avatar-Div (Initialen + Farbe). */
 function buildAvatar(assigneeItem) {
   const avatarElement = document.createElement("div");
   avatarElement.className = "avatar";
@@ -204,44 +305,46 @@ function buildAvatar(assigneeItem) {
   return avatarElement;
 }
 
-/** Aktualisiert den Text im Assignee-Placeholder. */
 function updateAssigneePlaceholder(selectedCount) {
   const placeholderElement = document.getElementById("selected-assignees-placeholder");
   if (!placeholderElement) return;
-  placeholderElement.textContent = selectedCount === 0 ? "Select contacts to assign" : `${selectedCount} selected`;
+  placeholderElement.textContent = selectedCount === 0 ? "Select contacts to assign" : "Selected contacts";
 }
 
-/** Öffnet oder schließt das Assignee-Dropdown und schließt Category. */
-function toggleAssigneeDropdown() {
-  toggleDropdownVisibility("assignee-dropdown");
-  closeDropdown("category-dropdown");
+function getInitials(fullName = "") {
+  return String(fullName)
+    .split(" ")
+    .filter((namePart) => namePart.length > 0)
+    .map((namePart) => namePart[0].toUpperCase())
+    .join("");
 }
 
 /* =========================
    CATEGORY
    ========================= */
 
-/** Öffnet oder schließt das Category-Dropdown und schließt Assignees. */
+function toggleAssigneeDropdown() {
+  toggleDropdownVisibility("assignee-dropdown");
+  closeDropdown("category-dropdown");
+}
+
 function toggleCategoryDropdown() {
   toggleDropdownVisibility("category-dropdown");
   closeDropdown("assignee-dropdown");
 }
 
-/** Universeller Toggle für Dropdown-Sichtbarkeit. */
 function toggleDropdownVisibility(dropdownId) {
   const dropdownElement = document.getElementById(dropdownId);
   if (!dropdownElement) return;
   dropdownElement.classList.toggle("d-none");
 }
 
-/** Schließt ein Dropdown sicher. */
 function closeDropdown(dropdownId) {
   const dropdownElement = document.getElementById(dropdownId);
   if (!dropdownElement) return;
   dropdownElement.classList.add("d-none");
 }
 
-/** Setzt die gewählte Kategorie (hidden input + Placeholder). */
 function selectCategory(categoryValue) {
   setCategoryHiddenValue(categoryValue);
   setCategoryPlaceholder(categoryValue);
@@ -249,21 +352,25 @@ function selectCategory(categoryValue) {
   hideCategoryError();
 }
 
-/** Schreibt die Kategorie in das hidden Input-Feld. */
 function setCategoryHiddenValue(categoryValue) {
   const categoryInputElement = document.getElementById("category");
   if (!categoryInputElement) return;
-  categoryInputElement.value = categoryValue;
+  categoryInputElement.value = categoryValue || "";
 }
 
-/** Setzt den sichtbaren Text je nach Kategorie. */
 function setCategoryPlaceholder(categoryValue) {
   const placeholderElement = document.getElementById("selected-category-placeholder");
   if (!placeholderElement) return;
-  placeholderElement.textContent = categoryValue === "user-story" ? "User Story" : "Technical Task";
+
+  if (categoryValue === "technical-task") {
+    placeholderElement.textContent = "Technical Task";
+  } else if (categoryValue === "user-story") {
+    placeholderElement.textContent = "User Story";
+  } else {
+    placeholderElement.textContent = "Select category";
+  }
 }
 
-/** Blendet den Kategorie-Fehler aus. */
 function hideCategoryError() {
   const categoryInputElement = document.getElementById("category");
   const categoryErrorElement = document.getElementById("error-category");
@@ -276,7 +383,6 @@ function hideCategoryError() {
    FORM VALIDATION / SAVE
    ========================= */
 
-/** Submit-Handler: validiert, sammelt Daten, speichert in Firebase. */
 async function handleFormSubmit(submitEvent) {
   submitEvent.preventDefault();
 
@@ -293,15 +399,6 @@ async function handleFormSubmit(submitEvent) {
   }
 }
 
-/** Validiert Pflichtfelder: Title, Due Date, Category. */
-function validateForm() {
-  const titleValid = validateRequiredField("title", "error-title");
-  const dateValid = validateRequiredField("due-date", "error-due-date");
-  const categoryValid = validateCategoryField();
-  return titleValid && dateValid && categoryValid;
-}
-
-/** Validiert ein Pflichtfeld anhand von IDs. */
 function validateRequiredField(inputId, errorId) {
   const inputElement = document.getElementById(inputId);
   const errorElement = document.getElementById(errorId);
@@ -309,7 +406,6 @@ function validateRequiredField(inputId, errorId) {
   return setFieldValidity(inputElement, errorElement, inputElement.value.trim().length > 0);
 }
 
-/** Validiert, ob eine Kategorie ausgewählt wurde. */
 function validateCategoryField() {
   const inputElement = document.getElementById("category");
   const errorElement = document.getElementById("error-category");
@@ -317,47 +413,41 @@ function validateCategoryField() {
   return setFieldValidity(inputElement, errorElement, inputElement.value.trim().length > 0);
 }
 
-/** Setzt Error-UI anhand der Validität. */
 function setFieldValidity(inputElement, errorElement, isValid) {
   inputElement.classList.toggle("input-error", !isValid);
   errorElement.classList.toggle("active", !isValid);
   return isValid;
 }
 
-/** Sammelt alle Formdaten inklusive Subtasks/Assignees. */
 function collectTaskData() {
-  const titleText = getTrimmedText(document.getElementById("title")?.value);
-  const descriptionText = getTrimmedText(document.getElementById("description")?.value);
-  const categoryValue = document.getElementById("category")?.value || "";
-  const dueDateValue = document.getElementById("due-date")?.value || "";
-  const priorityValue = getSelectedPriorityValue();
-  const assigneeList = getSelectedAssignees();
-  return buildTaskObject(titleText, descriptionText, categoryValue, dueDateValue, priorityValue, assigneeList);
+  return {
+    category: readInputValue("category"),
+    title: readInputValue("title"),
+    description: readInputValue("description"),
+    dueDate: readInputValue("due-date"),
+    priority: getSelectedPriorityValue(),
+    assignedTo: getSelectedAssignees(),
+    subtasks:
+      typeof structuredClone === "function"
+        ? structuredClone(subtaskCollection)
+        : JSON.parse(JSON.stringify(subtaskCollection)),
+  };
 }
 
-/** Ermittelt die aktuell ausgewählte Priorität. */
+function readInputValue(inputId) {
+  const inputElement = document.getElementById(inputId);
+  if (!inputElement) return "";
+  return getTrimmedValue(inputElement.value);
+}
+
 function getSelectedPriorityValue() {
   const checkedElement = document.querySelector('input[name="priority"]:checked');
   return checkedElement ? checkedElement.value : "medium";
 }
 
-/** Baut das Task-Objekt in einer klaren Struktur. */
-function buildTaskObject(titleText, descriptionText, categoryValue, dueDateValue, priorityValue, assigneeList) {
-  return {
-    category: categoryValue,
-    title: titleText,
-    description: descriptionText,
-    dueDate: dueDateValue,
-    priority: priorityValue,
-    assignedTo: assigneeList,
-    subtasks: cloneSubtasks()
-  };
-}
-
-/** Speichert Task und behandelt Fehler sauber. */
 async function saveTask(taskObject) {
   try {
-    await postData("task/", taskObject);
+    await postData("task", taskObject);
     alert("Task successfully saved!");
     handleClear();
   } catch (errorObject) {
@@ -366,7 +456,6 @@ async function saveTask(taskObject) {
   }
 }
 
-/** Setzt komplettes Formular und UI zurück (inkl. Subtasks/Dropdowns). */
 function handleClear() {
   const taskFormElement = document.getElementById("taskForm");
   if (taskFormElement) taskFormElement.reset();
@@ -376,7 +465,6 @@ function handleClear() {
   updatePriorityIcons();
 }
 
-/** Entfernt alle Assignee-Auswahlen und setzt UI zurück. */
 function resetAssignees() {
   document.querySelectorAll('#assignee-dropdown input[type="checkbox"]').forEach((checkboxElement) => {
     checkboxElement.checked = false;
@@ -385,7 +473,6 @@ function resetAssignees() {
   updateAssigneeDisplay();
 }
 
-/** Setzt Kategorie zurück. */
 function resetCategory() {
   const categoryInputElement = document.getElementById("category");
   const placeholderElement = document.getElementById("selected-category-placeholder");

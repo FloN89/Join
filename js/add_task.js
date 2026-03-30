@@ -7,12 +7,6 @@
  */
 document.addEventListener("DOMContentLoaded", initializeAddTaskPage);
 
-const GUEST_CONTACTS_FALLBACK = [
-  { name: "Alex", color: "#FF7A00" },
-  { name: "Mina", color: "#1FD7C1" },
-  { name: "Chris", color: "#6E52FF" },
-];
-
 let contacts = [];
 
 /* =========================
@@ -28,13 +22,48 @@ async function initializeAddTaskPage() {
   renderSubtaskList();
 }
 
-/** Registriert alle Event-Listener (keine Inline-onclicks nötig). */
+/**
+ * Registriert alle Event-Listener (keine Inline-onclicks nötig).
+ */
 function registerUserInterfaceEvents() {
   registerFormSubmitEvent();
   registerDropdownEvents();
   registerCategoryOptionEvents();
   registerSubtaskEvents();
   registerClearButtonEvent();
+  registerGlobalClickHandler();
+}
+
+/**
+ * Registriert globalen Klick-Handler zum Schließen offener Dropdowns.
+ */
+function registerGlobalClickHandler() {
+  document.addEventListener("click", handleOutsideClick);
+}
+
+/**
+ * Schließt Dropdowns, wenn außerhalb geklickt wird.
+ * @param {MouseEvent} mouseEvent
+ */
+function handleOutsideClick(mouseEvent) {
+  closeDropdownIfClickedOutside("assignee-dropdown", ".custom-multiselect", mouseEvent);
+  closeDropdownIfClickedOutside("category-dropdown", ".custom-category-select", mouseEvent);
+}
+
+/**
+ * Schließt ein Dropdown, wenn der Klick außerhalb seines Containers stattfindet.
+ * @param {string} dropdownId
+ * @param {string} containerSelector
+ * @param {MouseEvent} mouseEvent
+ */
+function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent) {
+  const dropdownElement = document.getElementById(dropdownId);
+  const containerElement = document.querySelector(containerSelector);
+
+  if (!dropdownElement || !containerElement) return;
+  if (!containerElement.contains(mouseEvent.target)) {
+    dropdownElement.classList.add("d-none");
+  }
 }
 
 /** Verhindert Auswahl von Datumswerten in der Vergangenheit. */
@@ -317,9 +346,7 @@ function closeDropdownById(dropdownId) {
   dropdownElement.classList.add("d-none");
 }
 
-/**
- * Register category option events
- */
+/*** Register category option events*/
 function registerCategoryOptionEvents() {
   const optionElements = document.querySelectorAll("#category-dropdown .category-option");
   optionElements.forEach((optionElement) => {
@@ -335,20 +362,16 @@ function selectCategory(categoryValue) {
   removeCategoryError();
 }
 
-/**
- * Set category hidden input
- * @param {*} categoryValue - Categoryvalue value
- */
+/*** Set category hidden input
+ * @param {*} categoryValue - Categoryvalue value*/
 function setCategoryHiddenInput(categoryValue) {
   const hiddenInputElement = document.getElementById("category");
   if (!hiddenInputElement) return;
   hiddenInputElement.value = categoryValue || "";
 }
 
-/**
- * Set category placeholder text
- * @param {*} categoryValue - Categoryvalue value
- */
+/*** Set category placeholder text
+ * @param {*} categoryValue - Categoryvalue value*/
 function setCategoryPlaceholderText(categoryValue) {
   const placeholderElement = document.getElementById("selected-category-placeholder");
   if (!placeholderElement) return;
@@ -361,9 +384,7 @@ function setCategoryPlaceholderText(categoryValue) {
     placeholderElement.textContent = "Select category";
   }
 }
-/**
- * Remove category error
- */
+/*** Remove category error*/
 function removeCategoryError() {
   const errorElement = document.getElementById("error-category");
   if (!errorElement) return;
