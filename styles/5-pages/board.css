@@ -328,6 +328,41 @@
   height: 20px;
 }
 
+@media (max-width: 1060px) and (min-width: 769px) {
+  .find_and_create_task_container {
+    gap: 16px;
+  }
+
+  .board-headline {
+    font-size: 42px;
+    margin-right: 0;
+    flex: 0 0 auto;
+  }
+
+  .search_input_wrapper {
+    flex: 1 1 auto;
+    min-width: 160px;
+  }
+
+  .search_input_wrapper input {
+    width: 100%;
+  }
+
+  .add_task_button {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+    flex: 0 0 48px;
+  }
+
+  .add_task_lable {
+    display: none;
+  }
+}
+
 @media (min-width: 950px) and (max-width: 1350px) {
 
   .find_and_create_task_container {

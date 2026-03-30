@@ -1,7 +1,7 @@
 .main-area {
   display: flex;
   justify-content: left;;
-  padding: 45px 60px px;
+  padding: 45px 60px;
   box-sizing: border-box;
 }
 
