@@ -213,9 +213,7 @@ function setWelcomeNameLine(userName) {
   welcomeNameElement.style.display = trimmedName ? "block" : "none";
 }
 
-/**
- * Zeigt eine Fehlermeldung im UI.
- */
+/*** Zeigt eine Fehlermeldung im UI.*/
 function showErrorMessage(messageText) {
   const errorBoxElement = document.getElementById("login-error-box");
   if (!errorBoxElement) return;
@@ -224,9 +222,7 @@ function showErrorMessage(messageText) {
   errorBoxElement.classList.remove("is-hidden");
 }
 
-/**
- * Blendet die Fehlermeldung aus.
- */
+/*** Blendet die Fehlermeldung aus.*/
 function hideErrorMessage() {
   const errorBoxElement = document.getElementById("login-error-box");
   if (!errorBoxElement) return;
@@ -235,41 +231,28 @@ function hideErrorMessage() {
   errorBoxElement.classList.add("is-hidden");
 }
 
-/**
- * Macht ein Element sichtbar (Opacity + Klasse für Fade-In).
- */
+/*** Macht ein Element sichtbar (Opacity + Klasse für Fade-In).*/
 function makeElementVisible(targetElement) {
   if (!targetElement) return;
   targetElement.style.opacity = "1";
   targetElement.classList.add("is-visible");
 }
 
-/**
- * Führt die Fade-In-Animation für die Startseite aus.
- */
+/*** Führt die Fade-In-Animation für die Startseite aus.*/
 function animatePageElements() {
   makeElementVisible(document.querySelector(".main-area"));
   makeElementVisible(document.querySelector(".site-footer"));
   makeElementVisible(document.querySelector(".signup-area"));
 }
 
-/**
- * Initialisiert die Seite nach dem Laden:
- * - Animation
- * - Passwort-Sichtbarkeit
- */
-/**
- * Initialize page
- */
+/*** Initialisiert die Seite nach dem Laden:*/
 function initializePage() {
   animatePageElements();
   initializePasswordToggle();
   initializeLoginButtonState();
 }
 
-/**
- * Initialisiert den Button, der die Passwortsichtbarkeit toggelt.
- */
+/*** Initialisiert den Button, der die Passwortsichtbarkeit toggelt.*/
 function initializePasswordToggle() {
   const passwordInputElement = document.querySelector(".input-password");
   const passwordToggleButtonElement = document.querySelector(".password-toggle");
@@ -280,9 +263,7 @@ function initializePasswordToggle() {
   bindPasswordInputListener(passwordInputElement, passwordToggleButtonElement);
 }
 
-/**
- * Initialisiert die Login-Button-Logik (aktiv/disabled).
- */
+/*** Initialisiert die Login-Button-Logik (aktiv/disabled).*/
 function initializeLoginButtonState() {
   const emailInputElement = document.querySelector(".input-email");
   const passwordInputElement = document.querySelector(".input-password");
@@ -302,8 +283,7 @@ function initializeLoginButtonState() {
 }
 
 /**
- * Setzt den Status des Login-Buttons.
- */
+ * Setzt den Status des Login-Buttons.*/
 function setLoginButtonEnabled(buttonElement, shouldEnable) {
   if (!buttonElement) return;
 
@@ -318,8 +298,7 @@ function setLoginButtonEnabled(buttonElement, shouldEnable) {
 }
 
 /**
- * Klick-Listener für das Umschalten (sichtbar/versteckt).
- */
+ * Klick-Listener für das Umschalten (sichtbar/versteckt).*/
 function bindPasswordToggleClick(passwordInputElement, passwordToggleButtonElement) {
   passwordToggleButtonElement.addEventListener("click", function () {
     togglePasswordVisibility(passwordInputElement, passwordToggleButtonElement);
@@ -327,8 +306,7 @@ function bindPasswordToggleClick(passwordInputElement, passwordToggleButtonEleme
 }
 
 /**
- * Input-Listener: Icon-Zustand abhängig vom Inhalt.
- */
+ * Input-Listener: Icon-Zustand abhängig vom Inhalt.*/
 function bindPasswordInputListener(passwordInputElement, passwordToggleButtonElement) {
   passwordInputElement.addEventListener("input", function () {
     updatePasswordIconOnInput(passwordInputElement, passwordToggleButtonElement);
@@ -336,8 +314,7 @@ function bindPasswordInputListener(passwordInputElement, passwordToggleButtonEle
 }
 
 /**
- * Passt Icon und Typ an, wenn das Passwortfeld leer wird oder gefüllt ist.
- */
+ * Passt Icon und Typ an, wenn das Passwortfeld leer wird oder gefüllt ist.*/
 function updatePasswordIconOnInput(passwordInputElement, passwordToggleButtonElement) {
   if (passwordInputElement.value.length === 0) {
     passwordInputElement.type = "password";
@@ -350,8 +327,7 @@ function updatePasswordIconOnInput(passwordInputElement, passwordToggleButtonEle
 }
 
 /**
- * Wechselt zwischen sichtbarem und verstecktem Passwort.
- */
+ * Wechselt zwischen sichtbarem und verstecktem Passwort.*/
 function togglePasswordVisibility(passwordInputElement, passwordToggleButtonElement) {
   const isHiddenNow = passwordInputElement.type === "password";
 
@@ -362,8 +338,7 @@ function togglePasswordVisibility(passwordInputElement, passwordToggleButtonElem
 }
 
 /**
- * Setzt das passende Icon (CSS-Klasse) für den Passwortstatus.
- */
+ * Setzt das passende Icon (CSS-Klasse) für den Passwortstatus.*/
 function setPasswordIconMode(mode, passwordToggleButtonElement) {
   passwordToggleButtonElement.classList.remove("is-lock", "is-off", "is-on");
 
@@ -374,8 +349,7 @@ function setPasswordIconMode(mode, passwordToggleButtonElement) {
 }
 
 /**
- * Lädt alle Benutzer aus der Datenbank.
- */
+ * Lädt alle Benutzer aus der Datenbank */
 function loadUsersFromDatabase(onSuccess, onError) {
   fetch(databaseBaseUrl + "/users.json")
     .then(function (response) {
@@ -391,8 +365,7 @@ function loadUsersFromDatabase(onSuccess, onError) {
 }
 
 /**
- * Sucht einen Benutzer, dessen E-Mail und Passwort übereinstimmen.
- */
+ * Sucht einen Benutzer, dessen E-Mail und Passwort übereinstimmen. */
 function findMatchingUser(allUsers, email, password) {
   const userIds = Object.keys(allUsers || {});
 
@@ -409,14 +382,12 @@ function findMatchingUser(allUsers, email, password) {
 }
 
 /**
- * Prüft, ob Nutzerobjekt und Credentials zusammenpassen.
- */
+ * Prüft, ob Nutzerobjekt und Credentials zusammenpassen.*/
 function isUserCredentialsMatching(userObject, email, password) {
   if (!userObject) return false;
   return userObject.mail === email && userObject.password === password;
 }
 
 /**
- * Startpunkt beim Laden der Seite.
- */
+ * Startpunkt beim Laden der Seite.*/
 window.addEventListener("load", initializePage);

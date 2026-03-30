@@ -85,21 +85,44 @@ async function handleFormSubmit(submitEvent) {
    KONTAKTE LADEN / ASSIGNEES
 ========================= */
 
-/** Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen. */
+/**
+ * Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen.
+ */
 async function loadContacts() {
   const isGuestUser = isGuestSessionUser();
-  const dataPath = isGuestUser ? "guest-contacts/" : "contacts/";
-  const rawContacts = (await loadData(dataPath)) || [];
 
-  const contactList = normalizeContacts(rawContacts, isGuestUser);
-  contacts = sanitizeContacts(contactList);
+  if (isGuestUser) {
+    const rawGuestContacts = (await loadData("guest-contacts/")) || {};
+    const guestContactList = normalizeContacts(rawGuestContacts, true);
+
+    contacts = sanitizeContacts(guestContactList).sort((firstContact, secondContact) =>
+      firstContact.name.localeCompare(secondContact.name, "de")
+    );
+
+    renderAssigneeOptions();
+    return;
+  }
+
+  const rawContacts = (await loadData("contacts/")) || {};
+  const contactsObject = Array.isArray(rawContacts)
+    ? Object.fromEntries(rawContacts.map((contactObject, index) => [index, contactObject]))
+    : { ...rawContacts };
+
+  await includeLoggedInUserInAddTaskContacts(contactsObject);
+
+  contacts = Object.values(contactsObject)
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0)
+    .sort((firstContact, secondContact) =>
+      firstContact.name.localeCompare(secondContact.name, "de")
+    );
 
   renderAssigneeOptions();
 }
 
 /**
- * Is guest session user
- * @returns {boolean} Return value
+ * Prüft, ob der aktuelle User ein Guest ist.
+ * @returns {boolean}
  */
 function isGuestSessionUser() {
   const userId = sessionStorage.getItem("userId");
@@ -107,36 +130,124 @@ function isGuestSessionUser() {
 }
 
 /**
- * Normalize contacts
- * @param {*} rawContacts - Rawcontacts value
- * @param {boolean} isGuestUser - Isguestuser value
- * @returns {void} Return value
+ * Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen.
+ * Für Guests werden beide Quellen berücksichtigt:
+ * - guest-contacts/
+ * - contacts/
  */
-function normalizeContacts(rawContacts, isGuestUser) {
-  const contactList = Array.isArray(rawContacts) ? rawContacts : Object.values(rawContacts);
-  if (isGuestUser && contactList.length === 0) return GUEST_CONTACTS_FALLBACK;
-  return contactList;
+async function loadContacts() {
+  const isGuestUser = isGuestSessionUser();
+  const sourcePaths = isGuestUser
+    ? ["guest-contacts/", "contacts/"]
+    : ["contacts/"];
+
+  const mergedContactsObject = await loadMergedContactsFromPaths(sourcePaths);
+
+  if (!isGuestUser) {
+    await includeLoggedInUserInAddTaskContacts(mergedContactsObject);
+  }
+
+  let normalizedContacts = Object.values(mergedContactsObject)
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0);
+
+  normalizedContacts = deduplicateContacts(normalizedContacts);
+
+  if (isGuestUser && normalizedContacts.length === 0) {
+    normalizedContacts = GUEST_CONTACTS_FALLBACK.map(mapContact);
+  }
+
+  contacts = normalizedContacts.sort((firstContact, secondContact) =>
+    firstContact.name.localeCompare(secondContact.name, "de")
+  );
+
+  renderAssigneeOptions();
 }
 
 /**
- * Sanitize contacts
- * @param {Array} contactList - Contactlist value
- * @returns {void} Return value
+ * Lädt mehrere Kontaktquellen und merged sie in ein Objekt.
+ * @param {string[]} sourcePaths
+ * @returns {Promise<Object>}
+ */
+async function loadMergedContactsFromPaths(sourcePaths) {
+  const mergedContactsObject = {};
+
+  for (const sourcePath of sourcePaths) {
+    const rawContacts = (await loadData(sourcePath)) || {};
+    const normalizedObject = normalizeRawContactsToObject(rawContacts, sourcePath);
+
+    Object.entries(normalizedObject).forEach(([contactId, contactObject]) => {
+      mergedContactsObject[contactId] = contactObject;
+    });
+  }
+
+  return mergedContactsObject;
+}
+
+/**
+ * Normalisiert Rohdaten in ein Objekt mit stabilen Keys.
+ * @param {*} rawContacts
+ * @param {string} sourcePath
+ * @returns {Object}
+ */
+function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
+  if (Array.isArray(rawContacts)) {
+    return Object.fromEntries(
+      rawContacts.map((contactObject, index) => [`${sourcePath}${index}`, contactObject])
+    );
+  }
+
+  if (rawContacts && typeof rawContacts === "object") {
+    return { ...rawContacts };
+  }
+
+  return {};
+}
+
+/**
+ * Entfernt doppelte Kontakte anhand von Name + Mail.
+ * @param {Array} contactList
+ * @returns {Array}
+ */
+function deduplicateContacts(contactList) {
+  const seenKeys = new Set();
+
+  return contactList.filter((contactObject) => {
+    const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(contactObject.mail || "").trim().toLowerCase()}`;
+
+    if (seenKeys.has(uniqueKey)) return false;
+    seenKeys.add(uniqueKey);
+    return true;
+  });
+}
+/**
+ * Bereinigt die Kontaktliste.
+ * @param {Array} contactList
+ * @returns {Array}
  */
 function sanitizeContacts(contactList) {
   return contactList
-    .map((contactObject) => mapContact(contactObject))
-    .filter((contactObject) => contactObject.name.trim().length > 0);
+    .map(mapContact)
+    .filter((contactObject) => contactObject.name.length > 0);
 }
 
 /**
- * Map contact
- * @param {*} contactObject - Contactobject value
- * @returns {void} Return value
+ * Mappt Kontaktobjekte aus contacts/ auf das Format für Assigned to.
+ * @param {Object} contactObject
+ * @returns {Object}
  */
-function mapContact(contactObject) {
+function mapContact(contactObject = {}) {
+  const name = String(
+    contactObject.contactName ||
+    contactObject.name ||
+    contactObject.contactMail ||
+    ""
+  ).trim();
+
   return {
-    name: contactObject.name || contactObject.contactName || "",
+    name,
+    mail: String(contactObject.contactMail || contactObject.mail || "").trim(),
+    phone: String(contactObject.contactPhone || contactObject.phone || "").trim(),
     color: contactObject.color || "#CCCCCC",
   };
 }

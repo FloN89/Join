@@ -23,6 +23,7 @@ let contactCollection = [];
 async function initializeAddTaskPage() {
   setMinimumDateToToday();
   registerFormSubmitHandler();
+  registerLiveValidationHandlers();
   registerGlobalClickHandler();
   await loadContacts();
   initializePriorityIconHandlers();
@@ -264,9 +265,11 @@ function setCategoryPlaceholder(categoryValue) {
 
 /** Blendet den Kategorie-Fehler aus. */
 function hideCategoryError() {
+  const categoryInputElement = document.getElementById("category");
   const categoryErrorElement = document.getElementById("error-category");
-  if (!categoryErrorElement) return;
-  categoryErrorElement.classList.remove("active");
+
+  if (categoryInputElement) categoryInputElement.classList.remove("input-error");
+  if (categoryErrorElement) categoryErrorElement.classList.remove("active");
 }
 
 /* =========================

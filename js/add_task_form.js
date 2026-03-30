@@ -10,6 +10,8 @@ function handleClear() {
   resetAssignees();
   resetCategory();
   resetSubtasks();
+  resetFieldErrors();
+  closeTaskDropdowns();
   updatePriorityIcons();
 }
 
@@ -27,6 +29,7 @@ function resetFormElement() {
  */
 function resetAssignees() {
   uncheckAllAssigneeCheckboxes();
+  removeAllAssigneeSelectionStyles();
   clearAssigneeAvatarContainer();
   resetAssigneePlaceholder();
   updateAssigneeDisplay();
@@ -38,6 +41,15 @@ function resetAssignees() {
 function uncheckAllAssigneeCheckboxes() {
   document.querySelectorAll('#assignee-dropdown input[type="checkbox"]').forEach((checkboxElement) => {
     checkboxElement.checked = false;
+  });
+}
+
+/**
+ * Removes selected styling from all assignee rows
+ */
+function removeAllAssigneeSelectionStyles() {
+  document.querySelectorAll("#assignee-dropdown .assignee-row").forEach((rowElement) => {
+    rowElement.classList.remove("name-selected");
   });
 }
 
@@ -66,6 +78,27 @@ function resetCategory() {
   setCategoryHiddenInput("");
   setCategoryPlaceholderText("");
   removeCategoryError();
+}
+
+/**
+ * Removes all validation error styles from the form
+ */
+function resetFieldErrors() {
+  document.querySelectorAll("#taskForm .input-error").forEach((inputElement) => {
+    inputElement.classList.remove("input-error");
+  });
+
+  document.querySelectorAll("#taskForm .field-error-message.active").forEach((errorElement) => {
+    errorElement.classList.remove("active");
+  });
+}
+
+/**
+ * Closes open dropdowns after clearing the form
+ */
+function closeTaskDropdowns() {
+  document.getElementById("assignee-dropdown")?.classList.add("d-none");
+  document.getElementById("category-dropdown")?.classList.add("d-none");
 }
 
 /**
