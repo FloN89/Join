@@ -119,3 +119,15 @@ function focusSearchInputField() {
   const inputField = document.getElementById("searchInput");
   inputField.focus();
 }
+
+/**
+ * Initializes live search listeners for the board search field
+ */
+function initializeBoardSearch() {
+  const inputField = document.getElementById("searchInput");
+  if (!inputField) return;
+
+  inputField.addEventListener("input", onSearchInput);
+}
+
+document.addEventListener("DOMContentLoaded", initializeBoardSearch);

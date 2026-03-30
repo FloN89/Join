@@ -6,18 +6,18 @@ let editingSubtaskIndex = null;
 ========================= */
 
 function registerSubtaskEvents() {
-  registerSubtaskInputBehavior();
+  registerSubtaskInputKeydown();
   registerSubtaskButtons();
 }
 
-function registerSubtaskInputBehavior() {
+function registerSubtaskInputKeydown() {
   const subtaskInputElement = document.getElementById("subtask");
   if (!subtaskInputElement) return;
 
   subtaskInputElement.addEventListener("keydown", (keyboardEvent) => {
-    if (keyboardEvent.key === "Enter") {
-      keyboardEvent.preventDefault();
-    }
+    if (keyboardEvent.key !== "Enter") return;
+    keyboardEvent.preventDefault();
+    addSubtask();
   });
 }
 
@@ -123,12 +123,12 @@ function buildEditableSubtaskMarkup(subtaskObject, subtaskIndex) {
       </div>
 
       <div class="subtask-actions">
-        <button type="button" data-action="delete" aria-label="Delete subtask">
-          <img src="../assets/icons/delete.svg" alt="Delete">
+        <button type="button" data-action="delete" aria-label="delete subtask">
+          <img src="../assets/icons/delete.svg" alt="delete">
         </button>
 
-        <button type="button" data-action="save" aria-label="Save subtask">
-          <img src="../assets/icons/check.svg" alt="Save">
+        <button type="button" data-action="save" aria-label="save subtask">
+          <img src="../assets/icons/check.svg" alt="save">
         </button>
       </div>
     </li>
@@ -199,6 +199,7 @@ function runSubtaskAction(actionName, subtaskIndex, listItemElement) {
   if (actionName === "delete") deleteSubtask(subtaskIndex);
   if (actionName === "edit") editSubtask(subtaskIndex);
   if (actionName === "save") saveSubtaskEdit(subtaskIndex, readEditedSubtaskValue(listItemElement));
+  if (actionName === "cancel") cancelSubtaskEdit();
 }
 
 function readEditedSubtaskValue(listItemElement) {

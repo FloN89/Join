@@ -101,9 +101,19 @@ function dataToCard() {
     let taskData = task[id];
     if (!taskData) continue;
     let status = taskData.status || "todo";
-    createTaskCard(taskData.category, taskData.title, taskData.description, taskData.assignedTo, taskData.priority, taskData.subtasks, id, status);
+    createTaskCard(
+      taskData.category,
+      taskData.title,
+      taskData.description,
+      taskData.assignedTo,
+      taskData.priority,
+      taskData.subtasks,
+      id,
+      status
+    );
   }
   updateEmptyStates();
+  applyCurrentSearchFilter();
 }
 
 /**
@@ -351,6 +361,15 @@ function clearBoard() {
   document.querySelectorAll(".task-list").forEach(list => {
     list.innerHTML = "";
   });
+}
+
+/**
+ * Reapplies the active board search after rendering tasks
+ */
+function applyCurrentSearchFilter() {
+  if (typeof onSearchInput === "function") {
+    onSearchInput();
+  }
 }
 
 // Overlay-Funktionen wurden nach board_overlay.js ausgelagert
