@@ -22,6 +22,59 @@ function getSelectedAssignees() {
 
 
 /**
+ * Returns the active contact list for the board page.
+ * @returns {Array} Array of contact objects
+ */
+function getBoardContacts() {
+  if (typeof contactCollection !== "undefined" && Array.isArray(contactCollection)) {
+    return contactCollection;
+  }
+  if (typeof contacts !== "undefined") {
+    if (Array.isArray(contacts)) return contacts;
+    if (contacts && typeof contacts === "object") {
+      return Object.values(contacts).map((contact) => ({
+        name: contact.name || contact.contactName || "",
+        color: contact.color || "#CCCCCC"
+      }));
+    }
+  }
+  return [];
+}
+
+
+/**
+ * Creates an assignee option label for the dropdown.
+ * @param {Object} contact - Contact object with name and color
+ * @returns {HTMLElement} Label element
+ */
+function createAssigneeLabel(contact) {
+  const label = document.createElement("label");
+  label.className = "assignee-row";
+  label.innerHTML = `
+    <div class="assignee-left">
+      <div class="assignee-initials" style="background-color: ${contact.color};">${getInitials(contact.name)}</div>
+      <span class="assignee-name">${contact.name}</span>
+    </div>
+    <input class="assignee-checkbox" type="checkbox" data-name="${contact.name}" data-color="${contact.color}">
+  `;
+  return label;
+}
+
+
+/**
+ * Checks whether a contact is already assigned to the task.
+ * @param {Object} contact - Contact object
+ * @param {Array} taskAssignees - Array of assigned contact objects
+ * @returns {boolean}
+ */
+function isContactAssigned(contact, taskAssignees) {
+  return taskAssignees.some(
+    (assignee) => assignee.name === contact.name && assignee.color === contact.color
+  );
+}
+
+
+/**
  * Renders one assignee avatar element
  * @param {HTMLElement} avatarsContainer - Container element
  * @param {Object} assignee - Assignee object
@@ -56,7 +109,9 @@ function updateAssigneeDisplay() {
  */
 function appendAssigneeOption(assigneeDropdown, contact, taskAssignees) {
   const assigneeLabel = createAssigneeLabel(contact);
-  if (taskAssignees.includes(contact)) assigneeLabel.querySelector("input").checked = true;
+  if (isContactAssigned(contact, taskAssignees)) {
+    assigneeLabel.querySelector("input").checked = true;
+  }
   assigneeDropdown.appendChild(assigneeLabel);
 }
 
@@ -69,6 +124,6 @@ function renderEditAssignees(taskAssignees = []) {
   const assigneeDropdown = document.getElementById("assignee-dropdown");
   if (!assigneeDropdown) return;
   assigneeDropdown.innerHTML = "";
-  contacts.forEach(contact => appendAssigneeOption(assigneeDropdown, contact, taskAssignees));
+  getBoardContacts().forEach((contact) => appendAssigneeOption(assigneeDropdown, contact, taskAssignees));
   updateAssigneeDisplay();
 }
