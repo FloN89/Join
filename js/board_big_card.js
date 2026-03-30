@@ -141,7 +141,6 @@ async function initializeEditOverlayFields(id) {
   if (priorityInput) priorityInput.checked = true;
 
   initializePriorityIconHandlers();
-  renderEditAssignees(taskItem.assignedTo || []);
 }
 
 async function openEditTaskOverlay(id) {

@@ -3,6 +3,28 @@
   box-sizing: border-box;
 }
 
+#topbar-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ffffff;
+}
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-section {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
 .find_and_create_task_container {
   display: flex;
   align-items: center;
@@ -327,6 +349,8 @@
   width: 20px;
   height: 20px;
 }
+
+
 
 @media (max-width: 1060px) and (min-width: 769px) {
   .find_and_create_task_container {
