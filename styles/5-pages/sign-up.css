@@ -261,9 +261,10 @@ input[type="password"] {
 .errorMessage {
     color: var(--color-error);
     font-size: 14px;
-    padding-left: 8px;
+    padding-left: 10px;
     display: block;
     text-align: left;
+    height: 16px;
 }
 
 .borderRed {
