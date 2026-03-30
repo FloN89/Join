@@ -643,7 +643,7 @@ input#priority-low:checked + label.low {
 
 /* =========================
    LANDSCAPE MODE
-   ========================= */
+   ========================= 
 
 @media (orientation: landscape) and (max-height: 600px) {
 
@@ -675,25 +675,15 @@ input#priority-low:checked + label.low {
     font-size: 18px;
   }
 }
-
-@media (max-width: 320px) {
-
-  .add-task-panel {
-    width: 96vw;
-    border-radius: 12px;
-  }
-
-  .add-task-container {
-    padding: 20px 16px;
-  }
-
-  .panel-title {
-    font-size: 20px;
-    margin-bottom: 16px;
-  }
-
+*/
+@media (max-width: 380px) {
+  .main-area {
+    display: flex;
+    justify-content: center;
+    padding: 45px 10px 60px;
+   }
   label {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   input,
@@ -703,12 +693,13 @@ input#priority-low:checked + label.low {
   }
 
   .priority-button {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 500px;
   }
 
-  .priority-button img {
-    width: 14px;
-    height: 14px;
+  .category-option,
+  .assignee-name {
+    font-size: 14px;
   }
 
   .avatar {
@@ -717,12 +708,24 @@ input#priority-low:checked + label.low {
     font-size: 11px;
   }
 
-  .subtask-title {
-    font-size: 14px;
-  }
-
   .btn {
     font-size: 12px;
-    padding: 8px 12px;
+    padding: 8px 14px;
   }
+
+  .form-footer {
+    padding: 12px;
+  }
+  .form-required-note {
+    bottom: 134px;
+    font-size: 13px;
+  }
+
+  .task-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    
+    
+}
 }

@@ -587,6 +587,130 @@ input#priority-low:checked + label.low {
 
  }
 
+/* Tablet-Zwischenbereich: 950px bis 769px
+   bewusst OHNE Landscape Media Query */
+@media (max-width: 950px) and (min-width: 769px) {
+  .main-area {
+    padding: 24px;
+  }
+
+  .add-task-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 32px 24px;
+    box-sizing: border-box;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .panel-title {
+    margin-bottom: 24px;
+  }
+
+  .form-grid-add {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .form-left,
+  .form-right {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .form-divider {
+    display: none;
+  }
+
+  .form-field,
+  .custom-multiselect,
+  .custom-category-select,
+  .subtask-input-container,
+  .multiselect-header,
+  .category-select-header,
+  .multiselect-dropdown,
+  .category-dropdown {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #title,
+  #description,
+  #due-date,
+  #subtask {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  #description {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .priority-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  .priority-button {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .selected-assignee-avatars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .form-footer {
+    margin-top: 8px;
+  }
+
+  #subtask-list {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 18px;
+    box-sizing: border-box;
+  }
+
+  .task-bottom-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .task-buttons {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .clear-btn,
+  .create-btn {
+    min-width: 60px;
+  }
+
+  /* nur fürs Overlay relevant */
+  .add-task-close {
+    top: 24px;
+    right: 24px;
+  }
+}
+
  @media (max-width: 768px) {
   .add-task-container {
     display: flex;
@@ -658,9 +782,12 @@ input#priority-low:checked + label.low {
   }
 
    .task-bottom-bar {
-    margin-top: 0;
-  }
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 24px;
+}
   .form-required-note {
     position: fixed;
     left: 16px;
@@ -672,9 +799,11 @@ input#priority-low:checked + label.low {
   }
 }
 
+
+
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)
-   ============================================ */
+   ============================================ 
 
 @media (max-width: 900px) and (orientation: landscape) {
   body {
@@ -699,7 +828,7 @@ input#priority-low:checked + label.low {
     font-size: 20px;
     font-weight: 600;
   }
-}
+} **/
 
 @media (max-width: 380px) {
   .main-area {

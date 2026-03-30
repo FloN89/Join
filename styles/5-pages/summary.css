@@ -236,6 +236,109 @@
 /* ============================================
    Mobile Responsive Styles
    ============================================ */
+@media (max-width: 1300px) {
+  .dashboard {
+    position: relative;
+    margin-top: 110px;
+  }
+
+  .greeting {
+    position: relative;
+    align-self: flex-start;
+  }
+
+  .greeting p {
+    position: absolute;
+    top: -90px;
+    right: 200px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .task-card-text {
+    /* padding: 40px 20px; */
+    text-align: center;
+}
+.task-card {
+    display: grid;
+    /* padding: 28px 24px; */
+    background: var(--color-white);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+.task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+}
+
+@media (max-width: 1012px) {
+  .dashboard {
+    position: relative;
+    margin-top: 100px;
+  }
+
+  .greeting {
+    position: relative;
+    align-self: flex-start;
+  }
+
+  .greeting p {
+    font-size: 30px;
+    font-weight: 300;
+    position: absolute;
+    top: -90px;
+    right: 200px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .task-card-text {
+    text-align: center;
+}
+.task-card {
+    display: grid;
+    background: var(--color-white);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.metrics-header {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.metrics-header h1 {
+    font-size: 40px; 
+    font-weight: 700;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.dashboard {
+    display: flex;
+    margin-top: 40px;
+    padding-left: 15px; 
+    padding-top: 100px;
+}
+
+.task-card-text {
+    font-size: 30px;
+    text-align: center;
+}
+
+.task-container {
+    display: flex;
+    flex-direction: column;
+}
+}
 
 /* === Mobile (max-width: 768px) === */
 @media (max-width: 768px) {
@@ -396,7 +499,7 @@
 
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)
-   ============================================ */
+   ============================================ 
 
 @media (max-width: 900px) and (orientation: landscape) {
   body {
@@ -421,4 +524,4 @@
     font-size: 20px;
     font-weight: 600;
   }
-}
+}*/

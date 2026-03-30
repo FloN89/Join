@@ -922,7 +922,6 @@ header h2 {
   }
 
   #sidebar {
-    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;

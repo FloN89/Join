@@ -968,7 +968,7 @@ label {
 
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)
-   ============================================ */
+   ============================================ 
 
 @media (max-width: 900px) and (orientation: landscape) {
   body {
@@ -993,4 +993,4 @@ label {
     font-size: 20px;
     font-weight: 600;
   }
-}
+} */
