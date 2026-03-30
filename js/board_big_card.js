@@ -129,13 +129,25 @@ function renderEditOverlayContent(id) {
  * Initializes edit form fields with task data
  * @param {string} id - Task ID
  */
-function initializeEditOverlayFields(id) {
+async function initializeEditOverlayFields(id) {
   const taskItem = task[id];
-  renderAssigneeOptions(taskItem.assignedTo || []);
+
+  await loadContacts();
   renderEditSubtasks(taskItem.subtasks || []);
-  document.querySelector(`input[name="priority"][value="${taskItem.priority}"]`)?.setAttribute("checked", "true");
+
+  const priorityInput = document.querySelector(
+    `input[name="priority"][value="${taskItem.priority}"]`
+  );
+  if (priorityInput) priorityInput.checked = true;
+
   initializePriorityIconHandlers();
   renderEditAssignees(taskItem.assignedTo || []);
+}
+
+async function openEditTaskOverlay(id) {
+  showEditOverlay();
+  renderEditOverlayContent(id);
+  await initializeEditOverlayFields(id);
 }
 
 /**
