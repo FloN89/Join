@@ -255,13 +255,10 @@
     white-space: nowrap;
   }
 
-  .task-card-text {
-    /* padding: 40px 20px; */
-    text-align: center;
-}
+
 .task-card {
     display: grid;
-    /* padding: 28px 24px; */
+    
     background: var(--color-white);
     border-radius: var(--border-radius-large);
     box-shadow: var(--shadow-light);
@@ -350,8 +347,8 @@
     flex-direction: column;
     padding-left: var(--spacing-mobile);
     padding-right: var(--spacing-mobile);
-    gap: 30px;
-    padding-top: 10px;
+    gap: 10px;
+    margin-top: -60px;
   }
 
   .task-container {
@@ -417,6 +414,7 @@
   .dashboard {
     padding-left: 15px;
     padding-right: 15px;
+    margin-top: -5px;
   }
 
   .metrics-header h1 {
@@ -437,7 +435,6 @@
   .dashboard {
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 12px;
   }
 
   .metrics-header h1 {

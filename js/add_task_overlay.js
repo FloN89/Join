@@ -1,28 +1,38 @@
-document.addEventListener("DOMContentLoaded", initializeAddTaskOverlay);
+let contacts = [];
+let globalOverlayClickHandlerRegistered = false;
 
-let addTaskOverlayContacts = [];
+bootstrapAddTaskOverlay();
 
-/* =========================
-   INITIALISIERUNG
-========================= */
+function bootstrapAddTaskOverlay() {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeAddTaskOverlay, { once: true });
+    return;
+  }
+
+  initializeAddTaskOverlay();
+}
 
 async function initializeAddTaskOverlay() {
+  const taskFormElement = document.getElementById("taskForm");
+  if (!taskFormElement) return;
+  if (taskFormElement.dataset.initialized === "true") return;
+
+  taskFormElement.dataset.initialized = "true";
+
   setMinimumDateToToday();
   registerUserInterfaceEvents();
+
+  if (typeof registerValidationLiveEvents === "function") {
+    registerValidationLiveEvents();
+  }
+
   await loadContacts();
   initializePriorityIconHandlers();
   renderSubtaskList();
+  updateAssigneeDisplay();
 }
 
-function registerUserInterfaceEvents() {
-  registerFormSubmitEvent();
-  registerDropdownEvents();
-  registerCategoryOptionEvents();
-  registerSubtaskEvents();
-  registerClearButtonEvent();
-  registerValidationLiveEvents();
-  registerGlobalClickHandler();
-}
+window.initializeAddTaskOverlay = initializeAddTaskOverlay;
 
 function setMinimumDateToToday() {
   const dateInputElement = document.getElementById("due-date");
@@ -34,7 +44,7 @@ function setMinimumDateToToday() {
    OVERLAY OPEN / CLOSE
 ========================= */
 
-function openAddTaskOverlay() {
+function activateAddTaskOverlayUi() {
   const overlayElement = document.getElementById("add-task-overlay");
   if (!overlayElement) return;
   overlayElement.classList.add("active");
@@ -44,6 +54,7 @@ function openAddTaskOverlay() {
 function closeAddTaskOverlay() {
   const overlayElement = document.getElementById("add-task-overlay");
   if (!overlayElement) return;
+
   overlayElement.classList.remove("active");
   document.body.classList.remove("overlay-open");
 }
@@ -53,25 +64,60 @@ function stopOverlayClick(mouseEvent) {
 }
 
 /* =========================
-   FORM / BUTTONS
+   EVENTS
 ========================= */
+
+function registerUserInterfaceEvents() {
+  registerFormSubmitEvent();
+  registerDropdownEvents();
+  registerCategoryOptionEvents();
+  registerSubtaskEvents();
+  registerClearButtonEvent();
+  registerGlobalClickHandler();
+}
 
 function registerFormSubmitEvent() {
   const taskFormElement = document.getElementById("taskForm");
   if (!taskFormElement) return;
+
   taskFormElement.addEventListener("submit", handleFormSubmit);
 }
 
 function registerClearButtonEvent() {
   const clearButtonElement = document.getElementById("clear-form-button");
   if (!clearButtonElement) return;
+
   clearButtonElement.addEventListener("click", handleClear);
+}
+
+function registerGlobalClickHandler() {
+  if (globalOverlayClickHandlerRegistered) return;
+
+  document.addEventListener("click", handleOutsideClick);
+  globalOverlayClickHandlerRegistered = true;
+}
+
+function handleOutsideClick(mouseEvent) {
+  closeDropdownIfClickedOutside("assignee-dropdown", ".custom-multiselect", mouseEvent);
+  closeDropdownIfClickedOutside("category-dropdown", ".custom-category-select", mouseEvent);
+}
+
+function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent) {
+  const dropdownElement = document.getElementById(dropdownId);
+  const containerElement = document.querySelector(containerSelector);
+
+  if (!dropdownElement || !containerElement) return;
+  if (!containerElement.contains(mouseEvent.target)) {
+    dropdownElement.classList.add("d-none");
+  }
 }
 
 async function handleFormSubmit(submitEvent) {
   submitEvent.preventDefault();
 
-  const submitButtonElement = document.querySelector(".create-btn");
+  const submitButtonElement =
+    submitEvent.submitter || document.querySelector("#taskForm .create-btn");
+
   if (submitButtonElement) submitButtonElement.disabled = true;
 
   try {
@@ -85,28 +131,31 @@ async function handleFormSubmit(submitEvent) {
     window.dispatchEvent(new CustomEvent("task-created", { detail: taskObject }));
   } catch (saveError) {
     console.error("Saving failed:", saveError);
-    alert("Saving failed. Check console/network tab.");
+
+    if (typeof showSavingFailedToast === "function") {
+      showSavingFailedToast();
+    } else {
+      alert("Saving failed. Check console/network tab.");
+    }
   } finally {
     if (submitButtonElement) submitButtonElement.disabled = false;
   }
 }
 
 /* =========================
-   KONTAKTE LADEN / ASSIGNEES
+   KONTAKTE / ASSIGNEES
 ========================= */
 
 async function loadContacts() {
-  if (typeof loadData !== "function") {
-    console.error("loadData is not available");
-    return;
-  }
-
   const isGuestUser = isGuestSessionUser();
-  const sourcePaths = isGuestUser ? ["guest-contacts/", "contacts/"] : ["contacts/"];
+  const sourcePaths = isGuestUser
+    ? ["guest-contacts/", "contacts/"]
+    : ["contacts/"];
+
   const mergedContactsObject = await loadMergedContactsFromPaths(sourcePaths);
 
   if (!isGuestUser) {
-    await ensureLoggedInUserInAddTaskContacts(mergedContactsObject);
+    await includeLoggedInUserInAddTaskContacts(mergedContactsObject);
   }
 
   let normalizedContacts = Object.values(mergedContactsObject)
@@ -115,15 +164,16 @@ async function loadContacts() {
 
   normalizedContacts = deduplicateContacts(normalizedContacts);
 
-  if (normalizedContacts.length === 0) {
+  if (isGuestUser && normalizedContacts.length === 0) {
     normalizedContacts = getGuestContactsFallback().map(mapContact);
   }
 
-  addTaskOverlayContacts = normalizedContacts.sort((firstContact, secondContact) =>
+  contacts = normalizedContacts.sort((firstContact, secondContact) =>
     firstContact.name.localeCompare(secondContact.name, "de")
   );
 
   renderAssigneeOptions();
+  updateAssigneeDisplay();
 }
 
 function isGuestSessionUser() {
@@ -149,7 +199,10 @@ async function loadMergedContactsFromPaths(sourcePaths) {
 function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
   if (Array.isArray(rawContacts)) {
     return Object.fromEntries(
-      rawContacts.map((contactObject, index) => [`${sourcePath}${index}`, contactObject])
+      rawContacts.map((contactObject, index) => [
+        `${sourcePath}${index}`,
+        contactObject,
+      ])
     );
   }
 
@@ -160,7 +213,7 @@ function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
   return {};
 }
 
-async function ensureLoggedInUserInAddTaskContacts(contactsObject) {
+async function includeLoggedInUserInAddTaskContacts(contactsObject) {
   const userId = sessionStorage.getItem("userId");
   if (!userId || userId === "guest" || contactsObject[userId]) return;
 
@@ -176,6 +229,10 @@ async function ensureLoggedInUserInAddTaskContacts(contactsObject) {
 }
 
 function getGuestContactsFallback() {
+  if (typeof GUEST_CONTACTS_FALLBACK !== "undefined" && Array.isArray(GUEST_CONTACTS_FALLBACK)) {
+    return GUEST_CONTACTS_FALLBACK;
+  }
+
   if (typeof guestContacts === "object" && guestContacts !== null) {
     return Object.values(guestContacts);
   }
@@ -193,7 +250,9 @@ function deduplicateContacts(contactList) {
   return contactList.filter((contactObject) => {
     const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(
       contactObject.mail || ""
-    ).trim().toLowerCase()}`;
+    )
+      .trim()
+      .toLowerCase()}`;
 
     if (seenKeys.has(uniqueKey)) return false;
     seenKeys.add(uniqueKey);
@@ -217,131 +276,7 @@ function mapContact(contactObject = {}) {
   };
 }
 
-function renderAssigneeOptions() {
-  const dropdownElement = document.getElementById("assignee-dropdown");
-  if (!dropdownElement) return;
-
-  dropdownElement.innerHTML = "";
-  addTaskOverlayContacts.forEach((contactObject) => {
-    dropdownElement.appendChild(createAssigneeRow(contactObject));
-  });
-}
-
-function createAssigneeRow(contactObject) {
-  const rowElement = document.createElement("div");
-  rowElement.className = "assignee-row";
-  rowElement.innerHTML = buildAssigneeRowMarkup(contactObject);
-
-  const leftElement = rowElement.querySelector(".assignee-left");
-  const checkboxElement = rowElement.querySelector(".assignee-checkbox");
-
-  registerAssigneeRowEvents(rowElement, leftElement, checkboxElement);
-  return rowElement;
-}
-
-function buildAssigneeRowMarkup(contactObject) {
-  const initialsText = getInitials(contactObject.name);
-
-  return `
-    <div class="assignee-left" tabindex="0" role="button" aria-label="Toggle assignee">
-      <div class="assignee-initials" style="background-color: ${contactObject.color};">
-        ${initialsText}
-      </div>
-      <span class="assignee-name">${escapeHtmlText(contactObject.name)}</span>
-    </div>
-
-    <input
-      class="assignee-checkbox"
-      type="checkbox"
-      data-name="${escapeHtmlText(contactObject.name)}"
-      data-color="${contactObject.color}"
-    >
-  `;
-}
-
-function registerAssigneeRowEvents(rowElement, leftElement, checkboxElement) {
-  if (!leftElement || !checkboxElement) return;
-
-  leftElement.addEventListener("click", (clickEvent) => {
-    clickEvent.stopPropagation();
-    toggleCheckbox(checkboxElement);
-    syncRowSelectionStyle(rowElement, checkboxElement.checked);
-    updateAssigneeDisplay();
-  });
-
-  leftElement.addEventListener("keydown", (keyboardEvent) => {
-    if (!isEnterOrSpace(keyboardEvent)) return;
-    keyboardEvent.preventDefault();
-    leftElement.click();
-  });
-
-  checkboxElement.addEventListener("change", () => {
-    syncRowSelectionStyle(rowElement, checkboxElement.checked);
-    updateAssigneeDisplay();
-  });
-}
-
-function isEnterOrSpace(keyboardEvent) {
-  return keyboardEvent.key === "Enter" || keyboardEvent.key === " ";
-}
-
-function toggleCheckbox(checkboxElement) {
-  checkboxElement.checked = !checkboxElement.checked;
-}
-
-function syncRowSelectionStyle(rowElement, isSelected) {
-  if (isSelected) rowElement.classList.add("name-selected");
-  if (!isSelected) rowElement.classList.remove("name-selected");
-}
-
-function updateAssigneeDisplay() {
-  const avatarContainerElement = document.getElementById("selected-assignee-avatars");
-  const placeholderElement = document.getElementById("selected-assignees-placeholder");
-  if (!avatarContainerElement || !placeholderElement) return;
-
-  const selectedAssignees = getSelectedAssignees();
-  renderAssigneeAvatarContainer(avatarContainerElement, selectedAssignees);
-  setAssigneePlaceholderText(placeholderElement, selectedAssignees);
-}
-
-function renderAssigneeAvatarContainer(containerElement, assignedToList) {
-  containerElement.innerHTML = "";
-  assignedToList.forEach((assigneeObject) => {
-    containerElement.appendChild(buildAvatarElement(assigneeObject));
-  });
-}
-
-function buildAvatarElement(assigneeObject) {
-  const avatarElement = document.createElement("div");
-  avatarElement.className = "avatar";
-  avatarElement.textContent = getInitials(assigneeObject.name);
-  avatarElement.style.backgroundColor = assigneeObject.color;
-  return avatarElement;
-}
-
-function setAssigneePlaceholderText(placeholderElement, selectedAssignees) {
-  placeholderElement.textContent =
-    selectedAssignees.length > 0 ? "Selected contacts" : "Select contacts to assign";
-}
-
-function getSelectedAssignees() {
-  const checkboxNodeList = document.querySelectorAll(
-    '#assignee-dropdown input[type="checkbox"]:checked'
-  );
-
-  return Array.from(checkboxNodeList).map((checkboxElement) =>
-    buildAssigneeFromCheckbox(checkboxElement)
-  );
-}
-
-function buildAssigneeFromCheckbox(checkboxElement) {
-  return {
-    name: checkboxElement.dataset.name || "",
-    color: checkboxElement.dataset.color || "#CCCCCC",
-  };
-}
-
-function getInitials(fullName = "") {
+function getInitials(fullName) {
   return String(fullName)
     .split(" ")
     .filter((namePart) => namePart.length > 0)
@@ -366,25 +301,6 @@ function registerDropdownEvents() {
   }
 }
 
-function registerGlobalClickHandler() {
-  document.addEventListener("click", handleOutsideClick);
-}
-
-function handleOutsideClick(mouseEvent) {
-  closeDropdownIfClickedOutside("assignee-dropdown", ".custom-multiselect", mouseEvent);
-  closeDropdownIfClickedOutside("category-dropdown", ".custom-category-select", mouseEvent);
-}
-
-function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent) {
-  const dropdownElement = document.getElementById(dropdownId);
-  const containerElement = document.querySelector(containerSelector);
-
-  if (!dropdownElement || !containerElement) return;
-  if (!containerElement.contains(mouseEvent.target)) {
-    dropdownElement.classList.add("d-none");
-  }
-}
-
 function toggleAssigneeDropdown() {
   toggleDropdownById("assignee-dropdown");
   closeDropdownById("category-dropdown");
@@ -398,17 +314,20 @@ function toggleCategoryDropdown() {
 function toggleDropdownById(dropdownId) {
   const dropdownElement = document.getElementById(dropdownId);
   if (!dropdownElement) return;
+
   dropdownElement.classList.toggle("d-none");
 }
 
 function closeDropdownById(dropdownId) {
   const dropdownElement = document.getElementById(dropdownId);
   if (!dropdownElement) return;
+
   dropdownElement.classList.add("d-none");
 }
 
 function registerCategoryOptionEvents() {
   const optionElements = document.querySelectorAll("#category-dropdown .category-option");
+
   optionElements.forEach((optionElement) => {
     optionElement.addEventListener("click", () =>
       selectCategory(optionElement.dataset.category)
@@ -426,7 +345,9 @@ function selectCategory(categoryValue) {
 function setCategoryHiddenInput(categoryValue) {
   const hiddenInputElement = document.getElementById("category");
   if (!hiddenInputElement) return;
+
   hiddenInputElement.value = categoryValue || "";
+  hiddenInputElement.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
 function setCategoryPlaceholderText(categoryValue) {
@@ -451,66 +372,10 @@ function removeCategoryError() {
 }
 
 /* =========================
-   RESET + DATENSAMMLUNG
+   HILFSFUNKTIONEN FÜR RESET
 ========================= */
-
-function handleClear() {
-  const taskFormElement = document.getElementById("taskForm");
-  if (taskFormElement) taskFormElement.reset();
-
-  resetAssignees();
-  resetCategory();
-  resetSubtasks();
-  clearAllValidationErrors();
-  closeTaskDropdowns();
-  updatePriorityIcons();
-}
-
-function resetAssignees() {
-  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]').forEach((checkboxElement) => {
-    checkboxElement.checked = false;
-  });
-
-  document.querySelectorAll("#assignee-dropdown .assignee-row").forEach((rowElement) => {
-    rowElement.classList.remove("name-selected");
-  });
-
-  updateAssigneeDisplay();
-}
-
-function resetCategory() {
-  setCategoryHiddenInput("");
-  setCategoryPlaceholderText("");
-  removeCategoryError();
-}
 
 function closeTaskDropdowns() {
   closeDropdownById("assignee-dropdown");
   closeDropdownById("category-dropdown");
-}
-
-function collectTaskData() {
-  return {
-    category: readInputValue("category"),
-    title: readInputValue("title"),
-    description: readInputValue("description"),
-    dueDate: readInputValue("due-date"),
-    priority: readSelectedPriority(),
-    assignedTo: getSelectedAssignees(),
-    subtasks:
-      typeof structuredClone === "function"
-        ? structuredClone(subtaskCollection)
-        : JSON.parse(JSON.stringify(subtaskCollection)),
-  };
-}
-
-function readInputValue(inputId) {
-  const inputElement = document.getElementById(inputId);
-  if (!inputElement) return "";
-  return getTrimmedValue(inputElement.value);
-}
-
-function readSelectedPriority() {
-  const selectedElement = document.querySelector('input[name="priority"]:checked');
-  return selectedElement ? selectedElement.value : "medium";
 }
