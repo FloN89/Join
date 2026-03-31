@@ -118,50 +118,6 @@ async function handleFormSubmit(submitEvent) {
 
 /**
  * Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen.
- */
-async function loadContacts() {
-  const isGuestUser = isGuestSessionUser();
-
-  if (isGuestUser) {
-    const rawGuestContacts = (await loadData("guest-contacts/")) || {};
-    const guestContactList = normalizeContacts(rawGuestContacts, true);
-
-    contacts = sanitizeContacts(guestContactList).sort((firstContact, secondContact) =>
-      firstContact.name.localeCompare(secondContact.name, "de")
-    );
-
-    renderAssigneeOptions();
-    return;
-  }
-
-  const rawContacts = (await loadData("contacts/")) || {};
-  const contactsObject = Array.isArray(rawContacts)
-    ? Object.fromEntries(rawContacts.map((contactObject, index) => [index, contactObject]))
-    : { ...rawContacts };
-
-  await includeLoggedInUserInAddTaskContacts(contactsObject);
-
-  contacts = Object.values(contactsObject)
-    .map(mapContact)
-    .filter((contactObject) => contactObject.name.length > 0)
-    .sort((firstContact, secondContact) =>
-      firstContact.name.localeCompare(secondContact.name, "de")
-    );
-
-  renderAssigneeOptions();
-}
-
-/**
- * Prüft, ob der aktuelle User ein Guest ist.
- * @returns {boolean}
- */
-function isGuestSessionUser() {
-  const userId = sessionStorage.getItem("userId");
-  return !userId || userId === "guest";
-}
-
-/**
- * Lädt Kontakte (Guest oder User) und rendert Dropdown-Optionen.
  * Für Guests werden beide Quellen berücksichtigt:
  * - guest-contacts/
  * - contacts/
@@ -185,7 +141,7 @@ async function loadContacts() {
   normalizedContacts = deduplicateContacts(normalizedContacts);
 
   if (isGuestUser && normalizedContacts.length === 0) {
-    normalizedContacts = GUEST_CONTACTS_FALLBACK.map(mapContact);
+    normalizedContacts = getGuestContactsFallback().map(mapContact);
   }
 
   contacts = normalizedContacts.sort((firstContact, secondContact) =>
@@ -193,6 +149,16 @@ async function loadContacts() {
   );
 
   renderAssigneeOptions();
+  updateAssigneeDisplay();
+}
+
+/**
+ * Prüft, ob der aktuelle User ein Guest ist.
+ * @returns {boolean}
+ */
+function isGuestSessionUser() {
+  const userId = sessionStorage.getItem("userId");
+  return !userId || userId === "guest";
 }
 
 /**
@@ -224,7 +190,10 @@ async function loadMergedContactsFromPaths(sourcePaths) {
 function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
   if (Array.isArray(rawContacts)) {
     return Object.fromEntries(
-      rawContacts.map((contactObject, index) => [`${sourcePath}${index}`, contactObject])
+      rawContacts.map((contactObject, index) => [
+        `${sourcePath}${index}`,
+        contactObject,
+      ])
     );
   }
 
@@ -236,6 +205,48 @@ function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
 }
 
 /**
+ * Ergänzt den eingeloggten User in die Kontaktliste, falls noch nicht vorhanden.
+ * @param {Object} contactsObject
+ */
+async function includeLoggedInUserInAddTaskContacts(contactsObject) {
+  const userId = sessionStorage.getItem("userId");
+  if (!userId || userId === "guest" || contactsObject[userId]) return;
+
+  const userObject = await loadData(`users/${userId}`);
+  if (!userObject) return;
+
+  contactsObject[userId] = {
+    contactName: String(userObject.username || userObject.name || "").trim(),
+    contactMail: String(userObject.mail || "").trim(),
+    contactPhone: String(userObject.phone || "").trim(),
+    color: userObject.color || "#CCCCCC",
+  };
+}
+
+/**
+ * Fallback-Kontakte für Guest-Session.
+ * @returns {Array}
+ */
+function getGuestContactsFallback() {
+  if (
+    typeof GUEST_CONTACTS_FALLBACK !== "undefined" &&
+    Array.isArray(GUEST_CONTACTS_FALLBACK)
+  ) {
+    return GUEST_CONTACTS_FALLBACK;
+  }
+
+  if (typeof guestContacts === "object" && guestContacts !== null) {
+    return Object.values(guestContacts);
+  }
+
+  return [
+    { name: "Sofia Müller", color: "#ff7a00" },
+    { name: "Max Mustermann", color: "#9327ff" },
+    { name: "Anna Schmidt", color: "#6e52ff" },
+  ];
+}
+
+/**
  * Entfernt doppelte Kontakte anhand von Name + Mail.
  * @param {Array} contactList
  * @returns {Array}
@@ -244,35 +255,29 @@ function deduplicateContacts(contactList) {
   const seenKeys = new Set();
 
   return contactList.filter((contactObject) => {
-    const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(contactObject.mail || "").trim().toLowerCase()}`;
+    const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(
+      contactObject.mail || ""
+    )
+      .trim()
+      .toLowerCase()}`;
 
     if (seenKeys.has(uniqueKey)) return false;
     seenKeys.add(uniqueKey);
     return true;
   });
 }
-/**
- * Bereinigt die Kontaktliste.
- * @param {Array} contactList
- * @returns {Array}
- */
-function sanitizeContacts(contactList) {
-  return contactList
-    .map(mapContact)
-    .filter((contactObject) => contactObject.name.length > 0);
-}
 
 /**
- * Mappt Kontaktobjekte aus contacts/ auf das Format für Assigned to.
+ * Mappt Kontaktobjekte auf das Format für Assigned to.
  * @param {Object} contactObject
  * @returns {Object}
  */
 function mapContact(contactObject = {}) {
   const name = String(
     contactObject.contactName ||
-    contactObject.name ||
-    contactObject.contactMail ||
-    ""
+      contactObject.name ||
+      contactObject.contactMail ||
+      ""
   ).trim();
 
   return {
@@ -287,7 +292,7 @@ function mapContact(contactObject = {}) {
 
 /** Erstellt Initialen aus einem Namen. */
 function getInitials(fullName) {
-  return fullName
+  return String(fullName)
     .split(" ")
     .filter((namePart) => namePart.length > 0)
     .map((namePart) => namePart[0].toUpperCase())
