@@ -136,15 +136,38 @@ function buildEditableSubtaskMarkup(subtaskObject, subtaskIndex) {
 }
 
 function handleSubtaskListClick(mouseEvent) {
-  const actionName = readSubtaskAction(mouseEvent);
-  if (!actionName) return;
+  const actionButtonElement = mouseEvent.target.closest("button[data-action]");
+  if (!actionButtonElement) return;
 
-  const subtaskIndex = readSubtaskIndex(mouseEvent);
+  mouseEvent.preventDefault();
+
+  const actionName = actionButtonElement.dataset.action || "";
+  const listItemElement = actionButtonElement.closest("li[data-subtask-index]");
+  if (!listItemElement) return;
+
+  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
   if (!isValidSubtaskIndex(subtaskIndex)) return;
 
-  const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
-  runSubtaskAction(actionName, subtaskIndex, listItemElement);
+  if (actionName === "save") {
+    saveSubtaskEdit(subtaskIndex, readEditedSubtaskValue(listItemElement));
+    return;
+  }
+
+  if (actionName === "delete") {
+    deleteSubtask(subtaskIndex);
+    return;
+  }
+
+  if (actionName === "edit") {
+    editSubtask(subtaskIndex);
+    return;
+  }
+
+  if (actionName === "cancel") {
+    cancelSubtaskEdit();
+  }
 }
+
 
 function handleSubtaskListKeydown(keyboardEvent) {
   const inputElement = keyboardEvent.target.closest(".subtask-title-input");
@@ -175,6 +198,11 @@ function handleSubtaskListFocusOut(focusEvent) {
   if (!listItemElement) return;
 
   const nextFocusedElement = focusEvent.relatedTarget;
+
+  if (nextFocusedElement?.closest('button[data-action="save"]')) {
+    return;
+  }
+
   if (nextFocusedElement && listItemElement.contains(nextFocusedElement)) return;
 
   const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
@@ -182,6 +210,7 @@ function handleSubtaskListFocusOut(focusEvent) {
 
   saveSubtaskEdit(subtaskIndex, inputElement.value);
 }
+
 
 function readSubtaskAction(mouseEvent) {
   const actionButtonElement = mouseEvent.target.closest("button[data-action]");
@@ -229,13 +258,14 @@ function saveSubtaskEdit(subtaskIndex, newTitle) {
   if (!isValidSubtaskIndex(subtaskIndex)) return;
 
   const cleanedTitle = getTrimmedValue(newTitle ?? "");
+  editingSubtaskIndex = null;
+
   if (!cleanedTitle) {
-    cancelSubtaskEdit();
+    renderSubtaskList();
     return;
   }
 
   subtaskCollection[subtaskIndex].title = cleanedTitle;
-  editingSubtaskIndex = null;
   renderSubtaskList();
 }
 

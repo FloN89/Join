@@ -96,10 +96,13 @@ async function handleFormSubmit(submitEvent) {
   submitEvent.preventDefault();
   if (!validateForm()) return;
 
-  const taskObject = collectTaskData();
+  const taskObject = {
+    ...collectTaskData(),
+    status: "todo",
+  };
 
   try {
-    await postData("task", taskObject);
+    await postData(getTaskCollectionPath(), taskObject);
     handleClear();
     showSuccessAndRedirect();
   } catch (saveError) {
@@ -107,7 +110,6 @@ async function handleFormSubmit(submitEvent) {
     console.error("Saving failed:", saveError);
   }
 }
-
 // Validierungsfunktionen wurden nach add_task_validation.js ausgelagert
 
 /* =========================
