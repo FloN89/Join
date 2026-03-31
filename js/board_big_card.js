@@ -123,6 +123,16 @@ function renderEditOverlayContent(id) {
   const taskItem = task[id];
   editOverlay.innerHTML = "";
   editOverlay.innerHTML = generateEditTaskOverlay(taskItem.title, taskItem.description, taskItem.dueDate, id);
+  setMinimumEditDateToToday();
+}
+
+/**
+ * Prevent selecting past dates in edit overlay
+ */
+function setMinimumEditDateToToday() {
+  const dateInputElement = document.getElementById("edit-due-date");
+  if (!dateInputElement) return;
+  dateInputElement.min = new Date().toISOString().split("T")[0];
 }
 
 /**

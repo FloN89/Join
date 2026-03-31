@@ -8,6 +8,8 @@ body {
 
 .main-section {
   display: flex;
+  width: 100%;
+  overflow: hidden;
 }
 
 .contact-wrapper {
@@ -15,28 +17,31 @@ body {
   height: 100%;
   bottom: 80px;
   top: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 .all-contacts {
   background-color: var(--color-white);
   width: 620px;
   max-width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - var(--height-topbar));
   display: flex;
   justify-content: flex-start;
   align-items: center;
   box-shadow: 4px 0 6px rgba(0, 0, 0, 0.08);
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .contact-info {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100vh - 120px);
-  overflow-y: auto;
+  height: calc(100vh - var(--height-topbar));
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .contact-info-title {

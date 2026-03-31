@@ -14,15 +14,15 @@
 
 .main {
     position: relative;
-    display: grid;
-    grid-template-rows: auto auto;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-items: center;
     min-height: 100vh;
     width: 100%;
     margin: 0 auto;
     max-width: var(--max-width-layout);
-    padding-top: 225px;
+    padding: 40px 0 120px;
+    box-sizing: border-box;
 }
 
 .sign-up-box {
@@ -33,7 +33,7 @@
     box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.04);
     border: 1px solid var(--color-border);
     position: relative;
-    margin: 0;
+    margin: auto 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -239,11 +239,12 @@ input[type="password"] {
     justify-content: center;
     align-items: center;
     gap: 32px;
-    position: static;
-    bottom: 0;
-    margin-top: auto;
-    padding-top: 16px;
-    margin-bottom: 24px;
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
     width: fit-content;
 }
 
