@@ -9,6 +9,8 @@ let addTaskOverlayEventsBound = false;
  * @param {string} status - Die Board-Spalte, aus der geöffnet wurde
  */
 async function openBoardAddTaskOverlay(status = "todo") {
+  window.currentBoardAddTaskStatus = status;
+
   if (window.innerWidth <= 768) {
     window.location.href = "../html/add_task.html";
     return;

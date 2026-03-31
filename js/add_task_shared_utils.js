@@ -30,3 +30,13 @@ function escapeHtmlText(unsafeText) {
 function isValidSubtaskIndex(subtaskIndex) {
   return Number.isInteger(subtaskIndex) && subtaskIndex >= 0 && subtaskIndex < subtaskCollection.length;
 }
+
+/**
+ * Returns the correct task collection path for current session
+ * @returns {string} Firebase collection path
+ */
+function getTaskCollectionPath() {
+  return sessionStorage.getItem("userId") === "guest"
+    ? "guest-tasks"
+    : "task";
+}

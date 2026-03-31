@@ -123,8 +123,12 @@ async function handleFormSubmit(submitEvent) {
   try {
     if (!validateForm()) return;
 
-    const taskObject = collectTaskData();
-    await postData("task", taskObject);
+    const taskObject = {
+      ...collectTaskData(),
+      status: window.currentBoardAddTaskStatus || "todo",
+    };
+
+    await postData(getTaskCollectionPath(), taskObject);
 
     handleClear();
     closeAddTaskOverlay();
