@@ -94,6 +94,23 @@ function toggleSubtaskValue(subtasks, index) {
 }
 
 /**
+ * Updates the progress bar and counter on the small board card
+ * @param {string} id - Task ID
+ */
+function updateBoardCardProgress(id) {
+  const card = document.querySelector(`.task-card[data-task-id="${id}"]`);
+  if (!card) return;
+  const subtasks = task[id].subtasks || [];
+  const newHTML = createSubtasksHTML(subtasks);
+  const existing = card.querySelector(".subtasks-container");
+  if (existing) {
+    existing.outerHTML = newHTML || "";
+  } else if (newHTML) {
+    card.querySelector(".task-footer").insertAdjacentHTML("beforebegin", newHTML);
+  }
+}
+
+/**
  * Toggles subtask completion and saves to database
  * @async
  * @param {string} id - Task ID
@@ -102,6 +119,7 @@ function toggleSubtaskValue(subtasks, index) {
 async function toggleSubtaskCompletion(id, subtaskIndex) {
   const subtasks = toggleSubtaskValue(task[id].subtasks || [], subtaskIndex);
   await saveData(getTaskPath(id), { ...task[id], subtasks: subtasks });
+  updateBoardCardProgress(id);
   openTaskOverlay(id, getPriorityColor(task[id].priority));
 }
 
