@@ -5,7 +5,7 @@
  */
 function renderAssignees(assignees) {
   if (!assignees || assignees.length === 0) return "";
-  return assignees.map(person => generateTaskOverlayAssignee(person)).join("");
+  return assignees.map((person) => generateTaskOverlayAssignee(person)).join("");
 }
 
 /**
@@ -26,7 +26,9 @@ function getTemplateMarkup(templateId) {
  */
 function renderSubtasks(subtasks, id) {
   if (!subtasks || subtasks.length === 0) return "";
-  return subtasks.map((subtask, index) => generateTaskOverlaySubtask(subtask, index, id)).join("");
+  return subtasks
+    .map((subtask, index) => generateTaskOverlaySubtask(subtask, index, id))
+    .join("");
 }
 
 /**
@@ -37,6 +39,35 @@ function renderSubtasks(subtasks, id) {
 function getTaskPath(id) {
   const isGuest = sessionStorage.getItem("userId") === "guest";
   return (isGuest ? "guest-tasks/" : "task/") + id;
+}
+
+/**
+ * Returns the edit overlay root element.
+ * @returns {HTMLElement|null}
+ */
+function getEditOverlayRoot() {
+  return document.getElementById("edit_task_overlay");
+}
+
+/**
+ * Finds one element inside the edit overlay.
+ * @param {string} selector
+ * @returns {HTMLElement|null}
+ */
+function getEditOverlayElement(selector) {
+  const root = getEditOverlayRoot();
+  return root ? root.querySelector(selector) : null;
+}
+
+/**
+ * Finds all matching elements inside the edit overlay.
+ * @param {string} selector
+ * @returns {Array<HTMLElement>}
+ */
+function getEditOverlayElements(selector) {
+  const root = getEditOverlayRoot();
+  if (!root) return [];
+  return Array.from(root.querySelectorAll(selector));
 }
 
 /**
@@ -76,6 +107,8 @@ function buildTaskOverlayHtml(taskItem, id, priorityColor) {
 function openTaskOverlay(id, priorityColor) {
   const overlay = document.getElementById("task_overlay");
   const taskItem = task[id];
+  if (!overlay || !taskItem) return;
+
   overlay.innerHTML = "";
   overlay.innerHTML = buildTaskOverlayHtml(taskItem, id, priorityColor);
   overlay.classList.add("active");
@@ -89,7 +122,13 @@ function openTaskOverlay(id, priorityColor) {
  * @returns {Array} Updated subtasks array
  */
 function toggleSubtaskValue(subtasks, index) {
-  subtasks[index].done = !subtasks[index].done;
+  if (!Array.isArray(subtasks) || index < 0 || index >= subtasks.length) {
+    return subtasks || [];
+  }
+
+  const currentValue = subtasks[index].done === true || subtasks[index].completed === true;
+  subtasks[index].done = !currentValue;
+  delete subtasks[index].completed;
   return subtasks;
 }
 
@@ -99,14 +138,17 @@ function toggleSubtaskValue(subtasks, index) {
  */
 function updateBoardCardProgress(id) {
   const card = document.querySelector(`.task-card[data-task-id="${id}"]`);
-  if (!card) return;
+  if (!card || !task[id]) return;
+
   const subtasks = task[id].subtasks || [];
   const newHTML = createSubtasksHTML(subtasks);
   const existing = card.querySelector(".subtasks-container");
+
   if (existing) {
     existing.outerHTML = newHTML || "";
   } else if (newHTML) {
-    card.querySelector(".task-footer").insertAdjacentHTML("beforebegin", newHTML);
+    const footer = card.querySelector(".task-footer");
+    if (footer) footer.insertAdjacentHTML("beforebegin", newHTML);
   }
 }
 
@@ -117,8 +159,14 @@ function updateBoardCardProgress(id) {
  * @param {number} subtaskIndex - Index of subtask
  */
 async function toggleSubtaskCompletion(id, subtaskIndex) {
+  if (!task[id]) return;
+
   const subtasks = toggleSubtaskValue(task[id].subtasks || [], subtaskIndex);
-  await saveData(getTaskPath(id), { ...task[id], subtasks: subtasks });
+  const payload = { ...task[id], subtasks };
+
+  await saveData(getTaskPath(id), payload);
+  task[id] = payload;
+
   updateBoardCardProgress(id);
   openTaskOverlay(id, getPriorityColor(task[id].priority));
 }
@@ -127,9 +175,15 @@ async function toggleSubtaskCompletion(id, subtaskIndex) {
  * Shows edit overlay and hides details overlay
  */
 function showEditOverlay() {
-  document.getElementById("edit_task_overlay").classList.add("active");
-  document.getElementById("task_overlay").style.display = "none";
-  document.getElementById("big-card-background").style.display = "block";
+  const editOverlay = document.getElementById("edit_task_overlay");
+  const taskOverlay = document.getElementById("task_overlay");
+  const background = document.getElementById("big-card-background");
+
+  if (!editOverlay || !taskOverlay || !background) return;
+
+  editOverlay.classList.add("active");
+  taskOverlay.style.display = "none";
+  background.style.display = "block";
 }
 
 /**
@@ -139,8 +193,16 @@ function showEditOverlay() {
 function renderEditOverlayContent(id) {
   const editOverlay = document.getElementById("edit_task_overlay");
   const taskItem = task[id];
+  if (!editOverlay || !taskItem) return;
+
   editOverlay.innerHTML = "";
-  editOverlay.innerHTML = generateEditTaskOverlay(taskItem.title, taskItem.description, taskItem.dueDate, id);
+  editOverlay.innerHTML = generateEditTaskOverlay(
+    taskItem.title,
+    taskItem.description,
+    taskItem.dueDate,
+    id
+  );
+
   setMinimumEditDateToToday();
 }
 
@@ -148,7 +210,7 @@ function renderEditOverlayContent(id) {
  * Prevent selecting past dates in edit overlay
  */
 function setMinimumEditDateToToday() {
-  const dateInputElement = document.getElementById("edit-due-date");
+  const dateInputElement = getEditOverlayElement("#edit-due-date");
   if (!dateInputElement) return;
   dateInputElement.min = new Date().toISOString().split("T")[0];
 }
@@ -159,6 +221,8 @@ function setMinimumEditDateToToday() {
  */
 async function initializeEditOverlayFields(id) {
   const taskItem = task[id];
+  const editOverlay = getEditOverlayRoot();
+  if (!taskItem || !editOverlay) return;
 
   await loadContacts();
 
@@ -168,14 +232,20 @@ async function initializeEditOverlayFields(id) {
 
   renderEditSubtasks(taskItem.subtasks || []);
 
-  const priorityInput = document.querySelector(
+  const priorityInput = editOverlay.querySelector(
     `input[name="priority"][value="${taskItem.priority}"]`
   );
-  if (priorityInput) priorityInput.checked = true;
+  if (priorityInput) {
+    priorityInput.checked = true;
+  }
 
   initializePriorityIconHandlers();
 }
 
+/**
+ * Opens edit task overlay
+ * @param {string} id - Task ID
+ */
 async function openEditTaskOverlay(id) {
   showEditOverlay();
   renderEditOverlayContent(id);
@@ -183,44 +253,55 @@ async function openEditTaskOverlay(id) {
 }
 
 /**
- * Opens edit task overlay
- * @param {string} id - Task ID
- */
-function openEditTaskOverlay(id) {
-  showEditOverlay();
-  renderEditOverlayContent(id);
-  initializeEditOverlayFields(id);
-}
-
-/**
  * Gets current task from guest or regular tasks
  * @param {string} id - Task ID
- * @returns {Object} Task object
+ * @returns {Object|null} Task object
  */
 function getCurrentTask(id) {
-  return (guestTasks && guestTasks[id]) || (task && task[id]);
+  if (typeof guestTasks !== "undefined" && guestTasks && guestTasks[id]) {
+    return guestTasks[id];
+  }
+
+  if (typeof task !== "undefined" && task && task[id]) {
+    return task[id];
+  }
+
+  return null;
 }
 
 /**
  * Reads values from edit task form
- * @returns {Object} Form values object*/
+ * @returns {Object} Form values object
+ */
 function getEditFormValues() {
+  const editOverlay = getEditOverlayRoot();
+
   return {
-    title: document.getElementById("edit-title").value,
-    description: document.getElementById("edit-description").value,
-    dueDate: document.getElementById("edit-due-date").value,
-    priority: document.querySelector('input[name="priority"]:checked')?.value,
-    assignedTo: getSelectedAssignees(),
-    subtasks: getEditedSubtasks()
+    title: document.getElementById("edit-title")?.value?.trim() || "",
+    description: document.getElementById("edit-description")?.value?.trim() || "",
+    dueDate: document.getElementById("edit-due-date")?.value || "",
+    priority:
+      editOverlay?.querySelector('input[name="priority"]:checked')?.value ||
+      document.querySelector('input[name="priority"]:checked')?.value ||
+      "medium",
+    assignedTo:
+      typeof getBoardEditSelectedAssignees === "function"
+        ? getBoardEditSelectedAssignees()
+        : [],
+    subtasks: getEditedSubtasks(),
   };
 }
 
 /**
  * Saves task changes to database
  * @async
- * @param {string} id - Task ID*/
+ * @param {string} id - Task ID
+ */
 async function saveChanges(id) {
-  const payload = { ...getCurrentTask(id), ...getEditFormValues() };
+  const currentTask = getCurrentTask(id);
+  if (!currentTask) return;
+
+  const payload = { ...currentTask, ...getEditFormValues() };
   await saveData(getTaskPath(id), payload);
   await fetchTasks();
   closeTaskOverlay();
@@ -229,28 +310,39 @@ async function saveChanges(id) {
 /**
  * Creates editable subtask list item element
  * @param {string} title - Subtask title
- * @returns {HTMLElement} List item element*/
+ * @returns {HTMLElement} List item element
+ */
 function createEditableSubtaskItem(title) {
   const li = document.createElement("li");
   li.className = "subtask-item";
-  li.innerHTML = generateEditSubtaskItem(title) + getTemplateMarkup("subtask-actions-default-template");
+  li.innerHTML =
+    generateEditSubtaskItem(title) +
+    getTemplateMarkup("subtask-actions-default-template");
   return li;
 }
 
 /**
  * Binds edit and delete event listeners to subtask row
- * @param {HTMLElement} li - List item element*/
+ * @param {HTMLElement} li - List item element
+ */
 function bindSubtaskRowEvents(li) {
   const editBtn = li.querySelector(".edit-subtask-btn");
   const deleteBtn = li.querySelector(".delete-subtask-btn");
-  editBtn.addEventListener("click", () => enableSubtaskEdit(li));
-  deleteBtn.addEventListener("click", () => li.remove());
+
+  if (editBtn) {
+    editBtn.addEventListener("click", () => enableSubtaskEdit(li));
+  }
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", () => li.remove());
+  }
 }
 
 /**
  * Appends new subtask row to list
  * @param {HTMLElement} list - Subtask list element
- * @param {string} title - Subtask title*/
+ * @param {string} title - Subtask title
+ */
 function appendSubtaskRow(list, title) {
   const li = createEditableSubtaskItem(title);
   list.appendChild(li);
@@ -259,100 +351,104 @@ function appendSubtaskRow(list, title) {
 
 /**
  * Renders editable subtasks in edit overlay
- * @param {Array} subtasks - Array of subtask objects*/
+ * @param {Array} subtasks - Array of subtask objects
+ */
 function renderEditSubtasks(subtasks = []) {
-  const list = document.getElementById("edit-subtask-list");
+  const list = getEditOverlayElement("#edit-subtask-list");
   if (!list) return;
+
   list.innerHTML = "";
-  subtasks.forEach(subtask => appendSubtaskRow(list, subtask.title));
+  subtasks.forEach((subtask) => appendSubtaskRow(list, subtask.title));
 }
 
 /**
- * Adds new editable subtask from input field*/
+ * Adds new editable subtask from input field
+ */
 function addEditSubtask() {
-  const input = document.getElementById("subtask");
+  const input = getEditOverlayElement("#subtask");
+  const list = getEditOverlayElement("#edit-subtask-list");
+
+  if (!input || !list) return;
+
   const text = input.value.trim();
   if (!text) return;
-  appendSubtaskRow(document.getElementById("edit-subtask-list"), text);
+
+  appendSubtaskRow(list, text);
   input.value = "";
 }
 
 /**
  * Converts subtask row element to data object
  * @param {HTMLElement} li - List item element
- * @returns {Object|null} Subtask object or null*/
+ * @returns {Object|null} Subtask object or null
+ */
 function getSubtaskFromRow(li) {
-  const title = li.querySelector(".subtask-title").textContent.trim();
-  return title !== "" ? { title: title, done: false } : null;
+  const titleElement = li.querySelector(".subtask-title");
+  const title = titleElement ? titleElement.textContent.trim() : "";
+  return title !== "" ? { title, done: false } : null;
 }
 
 /**
  * Gets all edited subtasks from edit form
- * @returns {Array} Array of subtask objects*/
+ * @returns {Array} Array of subtask objects
+ */
 function getEditedSubtasks() {
   const subtasks = [];
-  document.querySelectorAll("#edit-subtask-list li").forEach(li => {
+  const rows = getEditOverlayElements("#edit-subtask-list li");
+
+  rows.forEach((li) => {
     const subtask = getSubtaskFromRow(li);
     if (subtask) subtasks.push(subtask);
   });
+
   return subtasks;
 }
-
-// Assignee-Funktionen wurden nach board_assignees.js ausgelagert
 
 /**
  * Deletes task from database
  * @async
- * @param {string} taskId - Task ID*/
+ * @param {string} taskId - Task ID
+ */
 async function deleteTask(taskId) {
   await deleteData(getTaskPath(taskId));
   closeTaskOverlay();
   await fetchTasks();
 }
 
-/*** Closes task overlay and cleans up*/
+/**
+ * Closes task overlay and cleans up
+ */
 function closeTaskOverlay() {
   const taskOverlay = document.getElementById("task_overlay");
   const background = document.getElementById("big-card-background");
   const editOverlay = document.getElementById("edit_task_overlay");
-  taskOverlay.classList.remove("active");
-  taskOverlay.style.display = "none";
-  background.style.display = "none";
-  editOverlay.innerHTML = "";
-}
 
-/**
- * Handles delete button click in subtask list
- * @param {HTMLElement} target - Click target element*/
-function handleSubtaskDeleteClick(target) {
-  const li = target.closest("li");
-  if (li) li.remove();
-}
+  if (taskOverlay) {
+    taskOverlay.classList.remove("active");
+    taskOverlay.style.display = "none";
+    taskOverlay.innerHTML = "";
+  }
 
-/**
- * Handles edit button click in subtask list
- * @param {HTMLElement} target - Click target element*/
-function handleSubtaskEditClick(target) {
-  const li = target.closest("li");
-  if (!li) return;
-  const title = li.querySelector(".subtask-title");
-  const isEditing = title.getAttribute("contenteditable") === "true";
-  title.setAttribute("contenteditable", isEditing ? "false" : "true");
-  if (isEditing) title.blur(); else title.focus();
-}
+  if (background) {
+    background.style.display = "none";
+  }
 
-document.addEventListener("click", function (e) {
-  if (e.target.classList.contains("delete-subtask-btn")) handleSubtaskDeleteClick(e.target);
-  if (e.target.classList.contains("edit-subtask-btn")) handleSubtaskEditClick(e.target);
-});
+  if (editOverlay) {
+    editOverlay.classList.remove("active");
+    editOverlay.innerHTML = "";
+  }
+}
 
 /**
  * Replaces subtask action buttons with template
  * @param {HTMLElement} li - List item element
  * @param {string} templateId - Template ID
- * @returns {HTMLElement} New actions div element*/
+ * @returns {HTMLElement|null} New actions div element
+ */
 function setSubtaskActions(li, templateId) {
-  let actionsDiv = li.querySelector(".subtask-actions");
+  const actionsDiv = li.querySelector(".subtask-actions");
+  if (!actionsDiv) return null;
+
   actionsDiv.outerHTML = getTemplateMarkup(templateId);
   return li.querySelector(".subtask-actions");
 }
@@ -361,36 +457,51 @@ function setSubtaskActions(li, templateId) {
  * Binds save and delete event listeners for subtask
  * @param {HTMLElement} li - List item element
  * @param {HTMLElement} titleSpan - Title span element
- * @param {HTMLElement} actionsDiv - Actions div element*/
+ * @param {HTMLElement} actionsDiv - Actions div element
+ */
 function bindSaveAndDeleteActions(li, titleSpan, actionsDiv) {
+  if (!actionsDiv) return;
+
   const saveBtn = actionsDiv.querySelector(".save-subtask-btn");
   const deleteBtn = actionsDiv.querySelector(".delete-subtask-btn");
-  saveBtn.addEventListener("click", () => {
-    titleSpan.setAttribute("contenteditable", "false");
-    const nextActions = setSubtaskActions(li, "subtask-actions-default-template");
-    nextActions.querySelector(".edit-subtask-btn").addEventListener("click", () => enableSubtaskEdit(li));
-    nextActions.querySelector(".delete-subtask-btn").addEventListener("click", () => li.remove());
-  });
-  deleteBtn.addEventListener("click", () => li.remove());
+
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      titleSpan.setAttribute("contenteditable", "false");
+      titleSpan.blur();
+
+      const nextActions = setSubtaskActions(li, "subtask-actions-default-template");
+      if (!nextActions) return;
+
+      const nextEditBtn = nextActions.querySelector(".edit-subtask-btn");
+      const nextDeleteBtn = nextActions.querySelector(".delete-subtask-btn");
+
+      if (nextEditBtn) {
+        nextEditBtn.addEventListener("click", () => enableSubtaskEdit(li));
+      }
+
+      if (nextDeleteBtn) {
+        nextDeleteBtn.addEventListener("click", () => li.remove());
+      }
+    });
+  }
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", () => li.remove());
+  }
 }
 
 /**
  * Enables edit mode for subtask
- * @param {HTMLElement} li - List item element*/
+ * @param {HTMLElement} li - List item element
+ */
 function enableSubtaskEdit(li) {
   const titleSpan = li.querySelector(".subtask-title");
+  if (!titleSpan) return;
+
   titleSpan.setAttribute("contenteditable", "true");
   titleSpan.focus();
+
   const actionsDiv = setSubtaskActions(li, "subtask-actions-editable-template");
   bindSaveAndDeleteActions(li, titleSpan, actionsDiv);
-}
-
-/**
- * Saves subtask edit and exits edit mode
- * @param {HTMLElement} li - List item element*/
-function saveBoardOverlaySubtaskEdit(li) {
-  const title = li.querySelector(".subtask-title");
-  title.setAttribute("contenteditable", "false");
-  title.blur();
-  setSubtaskActions(li, "subtask-actions-default-template");
 }
