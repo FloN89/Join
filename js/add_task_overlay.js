@@ -1,27 +1,20 @@
 let overlayBootstrapped = false;
 
-bootstrapAddTaskOverlay();
-
-/* =========================
-   ADD TASK OVERLAY
-========================= */
-
 /**
- * Boots the overlay initialization.
- */
-function bootstrapAddTaskOverlay() {
-  if (document.readyState === "loading") return document.addEventListener("DOMContentLoaded", initializeAddTaskOverlay, { once: true });
-  initializeAddTaskOverlay();
-}
-
-/**
- * Initializes the add-task overlay.
+ * Initializes the add-task overlay after the HTML was injected into the board.
  */
 async function initializeAddTaskOverlay() {
   const taskFormElement = getElement("taskForm");
-  if (!taskFormElement || overlayBootstrapped) return;
+  if (!taskFormElement) return;
+
+  if (overlayBootstrapped && taskFormElement.dataset.initialized === "true") {
+    updateAssigneeDisplay();
+    return;
+  }
+
   overlayBootstrapped = true;
   taskFormElement.dataset.initialized = "true";
+
   setMinimumDateToToday();
   registerOverlayEvents();
   registerValidationLiveEvents();
@@ -32,30 +25,6 @@ async function initializeAddTaskOverlay() {
 }
 
 window.initializeAddTaskOverlay = initializeAddTaskOverlay;
-
-/**
- * Activates the overlay user interface.
- */
-function activateAddTaskOverlayUi() {
-  getElement("add-task-overlay")?.classList.add("active");
-  document.body.classList.add("overlay-open");
-}
-
-/**
- * Closes the overlay user interface.
- */
-function closeAddTaskOverlay() {
-  getElement("add-task-overlay")?.classList.remove("active");
-  document.body.classList.remove("overlay-open");
-}
-
-/**
- * Stops click propagation inside the overlay.
- * @param {MouseEvent} mouseEvent - Click event.
- */
-function stopOverlayClick(mouseEvent) {
-  mouseEvent.stopPropagation();
-}
 
 /**
  * Registers all overlay events.
@@ -87,12 +56,16 @@ function registerOverlayClearButtonEvent() {
 
 /**
  * Handles task creation in the overlay.
- * @param {SubmitEvent} submitEvent - Submit event.
+ * @param {SubmitEvent} submitEvent
  */
 async function handleOverlayFormSubmit(submitEvent) {
   submitEvent.preventDefault();
-  const submitButtonElement = readSubmitButton(submitEvent);
+
+  const submitButtonElement =
+    submitEvent.submitter || document.querySelector("#taskForm .create-btn");
+
   disableButton(submitButtonElement);
+
   try {
     await submitOverlayTask();
   } catch (saveError) {
@@ -103,45 +76,19 @@ async function handleOverlayFormSubmit(submitEvent) {
 }
 
 /**
- * Submits the overlay task after validation.
+ * Validates and submits the overlay task.
  */
 async function submitOverlayTask() {
   if (!validateForm()) return;
+
   const taskObject = buildOverlayTaskObject();
-  await saveOverlayTask(taskObject);
+  await postData(getTaskCollectionPath(), taskObject);
   finalizeOverlayTaskCreation(taskObject);
 }
 
 /**
- * Reads the submit button.
- * @param {SubmitEvent} submitEvent - Submit event.
- * @returns {HTMLElement|null} Submit button.
- */
-function readSubmitButton(submitEvent) {
-  return submitEvent.submitter || document.querySelector("#taskForm .create-btn");
-}
-
-/**
- * Disables one button.
- * @param {HTMLElement|null} buttonElement - Button element.
- */
-function disableButton(buttonElement) {
-  if (!buttonElement) return;
-  buttonElement.disabled = true;
-}
-
-/**
- * Enables one button.
- * @param {HTMLElement|null} buttonElement - Button element.
- */
-function enableButton(buttonElement) {
-  if (!buttonElement) return;
-  buttonElement.disabled = false;
-}
-
-/**
  * Builds the overlay task object.
- * @returns {Object} Task data.
+ * @returns {Object}
  */
 function buildOverlayTaskObject() {
   return {
@@ -151,29 +98,52 @@ function buildOverlayTaskObject() {
 }
 
 /**
- * Saves the overlay task.
- * @param {Object} taskObject - Task data.
- */
-async function saveOverlayTask(taskObject) {
-  await postData(getTaskCollectionPath(), taskObject);
-}
-
-/**
- * Finalizes overlay task creation.
- * @param {Object} taskObject - Task data.
+ * Finalizes successful overlay creation.
+ * Keeps board animation behavior unchanged.
+ * @param {Object} taskObject
  */
 function finalizeOverlayTaskCreation(taskObject) {
   handleClear();
-  closeAddTaskOverlay();
+
+  if (typeof closeBoardAddTaskOverlay === "function") {
+    closeBoardAddTaskOverlay();
+  } else {
+    getElement("add-task-overlay")?.classList.remove("active");
+    document.body.classList.remove("overlay-open");
+  }
+
   window.dispatchEvent(new CustomEvent("task-created", { detail: taskObject }));
 }
 
 /**
+ * Disables one button.
+ * @param {HTMLElement|null} buttonElement
+ */
+function disableButton(buttonElement) {
+  if (!buttonElement) return;
+  buttonElement.disabled = true;
+}
+
+/**
+ * Enables one button.
+ * @param {HTMLElement|null} buttonElement
+ */
+function enableButton(buttonElement) {
+  if (!buttonElement) return;
+  buttonElement.disabled = false;
+}
+
+/**
  * Handles an overlay save error.
- * @param {Error} saveError - Save error.
+ * @param {Error} saveError
  */
 function handleOverlaySaveError(saveError) {
   console.error("Saving failed:", saveError);
-  if (typeof showSavingFailedToast === "function") return showSavingFailedToast();
+
+  if (typeof showSavingFailedToast === "function") {
+    showSavingFailedToast();
+    return;
+  }
+
   alert("Saving failed. Check console/network tab.");
 }

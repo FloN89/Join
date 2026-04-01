@@ -67,7 +67,8 @@ function getInitials(fullName) {
     .split(" ")
     .filter((namePart) => namePart.length > 0)
     .map((namePart) => namePart[0].toUpperCase())
-    .join("");
+    .join("")
+    .slice(0, 2);
 }
 
 /**

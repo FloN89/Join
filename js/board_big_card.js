@@ -161,6 +161,11 @@ async function initializeEditOverlayFields(id) {
   const taskItem = task[id];
 
   await loadContacts();
+
+  if (typeof renderEditAssignees === "function") {
+    renderEditAssignees(taskItem.assignedTo || []);
+  }
+
   renderEditSubtasks(taskItem.subtasks || []);
 
   const priorityInput = document.querySelector(
