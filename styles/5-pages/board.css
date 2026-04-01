@@ -417,13 +417,13 @@
 
 .big-card {
   display: none;
-  width: 450px;
+  width: min(520px, calc(100vw - 48px));
   height: auto;
   max-height: 90vh;
   background-color: var(--color-white);
   border-radius: 30px;
   box-shadow: var(--shadow-light-plusplus);
-  padding: 30px 22px 22px;
+  padding: 40px 32px 32px;
   font-size: 20px;
   pointer-events: auto;
   overflow-y: auto;
@@ -433,28 +433,25 @@
 .big-card {
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: #a8a8a8 transparent;
+  scrollbar-color: rgba(42, 54, 71, 0.35) transparent;
 }
 
-/* Chrome, Edge, Safari */
 .big-card::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 .big-card::-webkit-scrollbar-track {
   background: transparent;
-  margin: 12px 0;
+  margin: 14px 0;
 }
 
 .big-card::-webkit-scrollbar-thumb {
-  background-color: #a8a8a8;
+  background-color: rgba(42, 54, 71, 0.35);
   border-radius: 999px;
-  border: 3px solid transparent;
-  background-clip: content-box;
 }
 
 .big-card::-webkit-scrollbar-thumb:hover {
-  background-color: #2a3647;
+  background-color: rgba(42, 54, 71, 0.6);
 }
 
 .big-card::-webkit-scrollbar-corner {
