@@ -1,245 +1,236 @@
-<div
-  id="add-task-overlay"
-  class="add-task-overlay"
-  onclick="closeAddTaskOverlay()"
->
-  <div onclick="stopOverlayClick(event)">
-    <div class="add-task-container">
-      <img
-        src="../assets/icons/close.svg"
-        alt="Close"
-        class="add-task-close"
-        onclick="closeAddTaskOverlay()"
-      />
+<div class="add-task-container">
+  <img
+    src="../assets/icons/close.svg"
+    alt="Close"
+    class="add-task-close"
+    onclick="closeAddTaskOverlay()"
+  />
 
-      <h2 class="panel-title">Add Task</h2>
+  <h2 class="panel-title">Add Task</h2>
 
-      <form id="taskForm" class="form-grid-add" novalidate>
-        <div class="form-left">
-          <div class="form-field">
-            <label for="title">
-              Title <span class="required-marker">*</span>
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Enter a title"
-              required
-            />
-            <div class="field-error-message" id="error-title">
-              <span class="required-marker">*</span>This field is required
-            </div>
-          </div>
-
-          <div class="form-field">
-            <label for="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              rows="4"
-              placeholder="Enter a Description"
-            ></textarea>
-          </div>
-
-          <div class="form-field">
-            <label for="due-date">
-              Due Date <span class="required-marker">*</span>
-            </label>
-            <input type="date" id="due-date" name="due-date" required />
-            <div class="field-error-message" id="error-due-date">
-              <span class="required-marker">*</span>This field is required
-            </div>
-          </div>
-        </div>
-
-        <div class="form-divider"></div>
-
-        <div class="form-right">
-          <label>Priority</label>
-          <div class="priority-options">
-            <input
-              type="radio"
-              id="priority-urgent"
-              name="priority"
-              value="urgent"
-            />
-            <label for="priority-urgent" class="priority-button urgent">
-              Urgent
-              <img
-                id="icon-urgent"
-                src="../assets/icons/urgent_red.svg"
-                alt="Urgent"
-              />
-            </label>
-
-            <input
-              type="radio"
-              id="priority-medium"
-              name="priority"
-              value="medium"
-              checked
-            />
-            <label for="priority-medium" class="priority-button medium">
-              Medium
-              <img
-                id="icon-medium"
-                src="../assets/icons/medium_yellow.svg"
-                alt="Medium"
-              />
-            </label>
-
-            <input
-              type="radio"
-              id="priority-low"
-              name="priority"
-              value="low"
-            />
-            <label for="priority-low" class="priority-button low">
-              Low
-              <img
-                id="icon-low"
-                src="../assets/icons/low_green.svg"
-                alt="Low"
-              />
-            </label>
-          </div>
-
-          <label>Assigned to</label>
-          <div class="custom-multiselect">
-            <div class="multiselect-header" id="assignee-header">
-              <span id="selected-assignees-placeholder">
-                Select contacts to assign
-              </span>
-              <img
-                src="../assets/icons/arrow_drop_down.svg"
-                class="dropdown-icon"
-                alt="Open assignee dropdown"
-              />
-            </div>
-
-            <div
-              class="multiselect-dropdown d-none"
-              id="assignee-dropdown"
-            ></div>
-
-            <div
-              class="selected-assignee-avatars"
-              id="selected-assignee-avatars"
-            ></div>
-          </div>
-
-          <div class="form-field">
-            <label>
-              Category <span class="required-marker">*</span>
-            </label>
-
-            <div class="custom-category-select">
-              <div class="category-select-header" id="category-header">
-                <span id="selected-category-placeholder">
-                  Select category
-                </span>
-                <img
-                  src="../assets/icons/arrow_drop_down.svg"
-                  class="dropdown-icon"
-                  alt="Open category dropdown"
-                />
-              </div>
-
-              <div class="category-dropdown d-none" id="category-dropdown">
-                <div class="category-option" data-category="technical-task">
-                  Technical Task
-                </div>
-                <div class="category-option" data-category="user-story">
-                  User Story
-                </div>
-              </div>
-            </div>
-
-            <input type="hidden" id="category" name="category" required />
-            <div class="field-error-message" id="error-category">
-              <span class="required-marker">*</span>This field is required
-            </div>
-          </div>
-
-          <div class="form-field">
-            <label for="subtask">Subtasks</label>
-            <div class="subtask-input-container">
-              <input
-                type="text"
-                id="subtask"
-                placeholder="Add new subtask"
-              />
-
-              <div class="subtask-input-actions" aria-label="Subtask actions">
-                <button
-                  type="button"
-                  class="subtask-action-btn"
-                  id="subtask-clear-button"
-                  aria-label="Clear subtask"
-                >
-                  <img
-                    src="../assets/icons/close.svg"
-                    class="closeSub-btn"
-                    alt="Clear"
-                  />
-                </button>
-
-                <span
-                  class="subtask-action-divider"
-                  aria-hidden="true"
-                ></span>
-
-                <button
-                  type="button"
-                  class="subtask-action-btn"
-                  id="subtask-add-button"
-                  aria-label="Add subtask"
-                >
-                  <img
-                    src="../assets/icons/check.svg"
-                    class="checkSub-btn"
-                    alt="Add"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-footer">
-            <ul id="subtask-list"></ul>
-          </div>
-        </div>
-      </form>
-
-      <div class="task-bottom-bar">
-        <div class="form-required-note">
+  <form id="taskForm" class="form-grid-add" novalidate>
+    <div class="form-left">
+      <div class="form-field">
+        <label for="title">
+          Title <span class="required-marker">*</span>
+        </label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          placeholder="Enter a title"
+          required
+        />
+        <div class="field-error-message" id="error-title">
           <span class="required-marker">*</span>This field is required
         </div>
+      </div>
 
-        <div class="task-buttons">
-          <button
-            type="button"
-            class="btn btn-ghost clear-btn"
-            id="clear-form-button"
-          >
-            Clear <span class="x-icon">X</span>
-          </button>
+      <div class="form-field">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="4"
+          placeholder="Enter a Description"
+        ></textarea>
+      </div>
 
-          <button
-            type="submit"
-            class="btn btn-primary create-btn"
-            form="taskForm"
-          >
-            Create Task
-            <img
-              src="../assets/icons/create_check.svg"
-              alt="Create task"
-            />
-          </button>
+      <div class="form-field">
+        <label for="due-date">
+          Due Date <span class="required-marker">*</span>
+        </label>
+        <input type="date" id="due-date" name="due-date" required />
+        <div class="field-error-message" id="error-due-date">
+          <span class="required-marker">*</span>This field is required
         </div>
       </div>
     </div>
+
+    <div class="form-divider"></div>
+
+    <div class="form-right">
+      <label>Priority</label>
+      <div class="priority-options">
+        <input
+          type="radio"
+          id="priority-urgent"
+          name="priority"
+          value="urgent"
+        />
+        <label for="priority-urgent" class="priority-button urgent">
+          Urgent
+          <img
+            id="icon-urgent"
+            src="../assets/icons/urgent_red.svg"
+            alt="Urgent"
+          />
+        </label>
+
+        <input
+          type="radio"
+          id="priority-medium"
+          name="priority"
+          value="medium"
+          checked
+        />
+        <label for="priority-medium" class="priority-button medium">
+          Medium
+          <img
+            id="icon-medium"
+            src="../assets/icons/medium_yellow.svg"
+            alt="Medium"
+          />
+        </label>
+
+        <input
+          type="radio"
+          id="priority-low"
+          name="priority"
+          value="low"
+        />
+        <label for="priority-low" class="priority-button low">
+          Low
+          <img
+            id="icon-low"
+            src="../assets/icons/low_green.svg"
+            alt="Low"
+          />
+        </label>
+      </div>
+
+      <label>Assigned to</label>
+      <div class="custom-multiselect">
+        <div class="multiselect-header" id="assignee-header">
+          <span id="selected-assignees-placeholder">
+            Select contacts to assign
+          </span>
+          <img
+            src="../assets/icons/arrow_drop_down.svg"
+            class="dropdown-icon"
+            alt="Open assignee dropdown"
+          />
+        </div>
+
+        <div
+          class="multiselect-dropdown d-none"
+          id="assignee-dropdown"
+        ></div>
+
+        <div
+          class="selected-assignee-avatars"
+          id="selected-assignee-avatars"
+        ></div>
+      </div>
+
+      <div class="form-field">
+        <label>
+          Category <span class="required-marker">*</span>
+        </label>
+
+        <div class="custom-category-select">
+          <div class="category-select-header" id="category-header">
+            <span id="selected-category-placeholder">
+              Select category
+            </span>
+            <img
+              src="../assets/icons/arrow_drop_down.svg"
+              class="dropdown-icon"
+              alt="Open category dropdown"
+            />
+          </div>
+
+          <div class="category-dropdown d-none" id="category-dropdown">
+            <div class="category-option" data-category="technical-task">
+              Technical Task
+            </div>
+            <div class="category-option" data-category="user-story">
+              User Story
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" id="category" name="category" required />
+        <div class="field-error-message" id="error-category">
+          <span class="required-marker">*</span>This field is required
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="subtask">Subtasks</label>
+        <div class="subtask-input-container">
+          <input
+            type="text"
+            id="subtask"
+            placeholder="Add new subtask"
+          />
+
+          <div class="subtask-input-actions" aria-label="Subtask actions">
+            <button
+              type="button"
+              class="subtask-action-btn"
+              id="subtask-clear-button"
+              aria-label="Clear subtask"
+            >
+              <img
+                src="../assets/icons/close.svg"
+                class="closeSub-btn"
+                alt="Clear"
+              />
+            </button>
+
+            <span
+              class="subtask-action-divider"
+              aria-hidden="true"
+            ></span>
+
+            <button
+              type="button"
+              class="subtask-action-btn"
+              id="subtask-add-button"
+              aria-label="Add subtask"
+            >
+              <img
+                src="../assets/icons/check.svg"
+                class="checkSub-btn"
+                alt="Add"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <ul id="subtask-list"></ul>
+      </div>
+    </div>
+  </form>
+
+  <div class="task-bottom-bar">
+    <div class="form-required-note">
+      <span class="required-marker">*</span>This field is required
+    </div>
+
+    <div class="task-buttons">
+      <button
+        type="button"
+        class="btn btn-ghost clear-btn"
+        id="clear-form-button"
+      >
+        Clear <span class="x-icon">X</span>
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-primary create-btn"
+        form="taskForm"
+      >
+        Create Task
+        <img
+          src="../assets/icons/create_check.svg"
+          alt="Create task"
+        />
+      </button>
+    </div>
   </div>
 </div>
-
