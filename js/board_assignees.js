@@ -28,6 +28,11 @@ function getBoardContacts() {
  * @returns {HTMLElement}
  */
 function createBoardEditAssigneeLabel(contact) {
+  const displayName =
+    typeof getAssigneeDisplayName === "function"
+      ? getAssigneeDisplayName(contact)
+      : contact.name;
+
   const label = document.createElement("label");
   label.className = "assignee-row";
   label.innerHTML = `
@@ -35,7 +40,7 @@ function createBoardEditAssigneeLabel(contact) {
       <div class="assignee-initials" style="background-color: ${contact.color};">
         ${getInitials(contact.name)}
       </div>
-      <span class="assignee-name">${contact.name}</span>
+      <span class="assignee-name">${displayName}</span>
     </div>
     <input
       class="assignee-checkbox"

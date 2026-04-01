@@ -44,9 +44,14 @@ function buildAssigneeRowMarkup(contactObject) {
  */
 function buildAssigneeIdentityMarkup(contactObject) {
   const initialsText = getInitials(contactObject.name);
+  const displayName =
+    typeof getAssigneeDisplayName === "function"
+      ? getAssigneeDisplayName(contactObject)
+      : contactObject.name;
+
   return `
     <div class="assignee-initials" style="background-color: ${contactObject.color};">${initialsText}</div>
-    <span class="assignee-name">${contactObject.name}</span>
+    <span class="assignee-name">${displayName}</span>
   `;
 }
 

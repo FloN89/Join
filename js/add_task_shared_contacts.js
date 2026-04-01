@@ -1,5 +1,6 @@
 let contacts = [];
 let globalClickHandlerRegistered = false;
+let currentAddTaskUser = null;
 
 /**
  * Loads all contacts and refreshes the assignee user interface.
