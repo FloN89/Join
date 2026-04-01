@@ -203,8 +203,7 @@ function getCurrentTask(id) {
 
 /**
  * Reads values from edit task form
- * @returns {Object} Form values object
- */
+ * @returns {Object} Form values object*/
 function getEditFormValues() {
   return {
     title: document.getElementById("edit-title").value,
@@ -219,8 +218,7 @@ function getEditFormValues() {
 /**
  * Saves task changes to database
  * @async
- * @param {string} id - Task ID
- */
+ * @param {string} id - Task ID*/
 async function saveChanges(id) {
   const payload = { ...getCurrentTask(id), ...getEditFormValues() };
   await saveData(getTaskPath(id), payload);
@@ -231,8 +229,7 @@ async function saveChanges(id) {
 /**
  * Creates editable subtask list item element
  * @param {string} title - Subtask title
- * @returns {HTMLElement} List item element
- */
+ * @returns {HTMLElement} List item element*/
 function createEditableSubtaskItem(title) {
   const li = document.createElement("li");
   li.className = "subtask-item";
@@ -242,8 +239,7 @@ function createEditableSubtaskItem(title) {
 
 /**
  * Binds edit and delete event listeners to subtask row
- * @param {HTMLElement} li - List item element
- */
+ * @param {HTMLElement} li - List item element*/
 function bindSubtaskRowEvents(li) {
   const editBtn = li.querySelector(".edit-subtask-btn");
   const deleteBtn = li.querySelector(".delete-subtask-btn");
@@ -254,8 +250,7 @@ function bindSubtaskRowEvents(li) {
 /**
  * Appends new subtask row to list
  * @param {HTMLElement} list - Subtask list element
- * @param {string} title - Subtask title
- */
+ * @param {string} title - Subtask title*/
 function appendSubtaskRow(list, title) {
   const li = createEditableSubtaskItem(title);
   list.appendChild(li);
@@ -264,8 +259,7 @@ function appendSubtaskRow(list, title) {
 
 /**
  * Renders editable subtasks in edit overlay
- * @param {Array} subtasks - Array of subtask objects
- */
+ * @param {Array} subtasks - Array of subtask objects*/
 function renderEditSubtasks(subtasks = []) {
   const list = document.getElementById("edit-subtask-list");
   if (!list) return;
@@ -274,8 +268,7 @@ function renderEditSubtasks(subtasks = []) {
 }
 
 /**
- * Adds new editable subtask from input field
- */
+ * Adds new editable subtask from input field*/
 function addEditSubtask() {
   const input = document.getElementById("subtask");
   const text = input.value.trim();
@@ -287,8 +280,7 @@ function addEditSubtask() {
 /**
  * Converts subtask row element to data object
  * @param {HTMLElement} li - List item element
- * @returns {Object|null} Subtask object or null
- */
+ * @returns {Object|null} Subtask object or null*/
 function getSubtaskFromRow(li) {
   const title = li.querySelector(".subtask-title").textContent.trim();
   return title !== "" ? { title: title, done: false } : null;
@@ -296,8 +288,7 @@ function getSubtaskFromRow(li) {
 
 /**
  * Gets all edited subtasks from edit form
- * @returns {Array} Array of subtask objects
- */
+ * @returns {Array} Array of subtask objects*/
 function getEditedSubtasks() {
   const subtasks = [];
   document.querySelectorAll("#edit-subtask-list li").forEach(li => {
@@ -312,17 +303,14 @@ function getEditedSubtasks() {
 /**
  * Deletes task from database
  * @async
- * @param {string} taskId - Task ID
- */
+ * @param {string} taskId - Task ID*/
 async function deleteTask(taskId) {
   await deleteData(getTaskPath(taskId));
   closeTaskOverlay();
   await fetchTasks();
 }
 
-/**
- * Closes task overlay and cleans up
- */
+/*** Closes task overlay and cleans up*/
 function closeTaskOverlay() {
   const taskOverlay = document.getElementById("task_overlay");
   const background = document.getElementById("big-card-background");
@@ -335,8 +323,7 @@ function closeTaskOverlay() {
 
 /**
  * Handles delete button click in subtask list
- * @param {HTMLElement} target - Click target element
- */
+ * @param {HTMLElement} target - Click target element*/
 function handleSubtaskDeleteClick(target) {
   const li = target.closest("li");
   if (li) li.remove();
@@ -344,8 +331,7 @@ function handleSubtaskDeleteClick(target) {
 
 /**
  * Handles edit button click in subtask list
- * @param {HTMLElement} target - Click target element
- */
+ * @param {HTMLElement} target - Click target element*/
 function handleSubtaskEditClick(target) {
   const li = target.closest("li");
   if (!li) return;
@@ -364,8 +350,7 @@ document.addEventListener("click", function (e) {
  * Replaces subtask action buttons with template
  * @param {HTMLElement} li - List item element
  * @param {string} templateId - Template ID
- * @returns {HTMLElement} New actions div element
- */
+ * @returns {HTMLElement} New actions div element*/
 function setSubtaskActions(li, templateId) {
   let actionsDiv = li.querySelector(".subtask-actions");
   actionsDiv.outerHTML = getTemplateMarkup(templateId);
@@ -376,8 +361,7 @@ function setSubtaskActions(li, templateId) {
  * Binds save and delete event listeners for subtask
  * @param {HTMLElement} li - List item element
  * @param {HTMLElement} titleSpan - Title span element
- * @param {HTMLElement} actionsDiv - Actions div element
- */
+ * @param {HTMLElement} actionsDiv - Actions div element*/
 function bindSaveAndDeleteActions(li, titleSpan, actionsDiv) {
   const saveBtn = actionsDiv.querySelector(".save-subtask-btn");
   const deleteBtn = actionsDiv.querySelector(".delete-subtask-btn");
@@ -392,8 +376,7 @@ function bindSaveAndDeleteActions(li, titleSpan, actionsDiv) {
 
 /**
  * Enables edit mode for subtask
- * @param {HTMLElement} li - List item element
- */
+ * @param {HTMLElement} li - List item element*/
 function enableSubtaskEdit(li) {
   const titleSpan = li.querySelector(".subtask-title");
   titleSpan.setAttribute("contenteditable", "true");
@@ -404,8 +387,7 @@ function enableSubtaskEdit(li) {
 
 /**
  * Saves subtask edit and exits edit mode
- * @param {HTMLElement} li - List item element
- */
+ * @param {HTMLElement} li - List item element*/
 function saveBoardOverlaySubtaskEdit(li) {
   const title = li.querySelector(".subtask-title");
   title.setAttribute("contenteditable", "false");
