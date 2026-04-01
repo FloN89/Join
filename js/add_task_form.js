@@ -1,9 +1,9 @@
 /* =========================
-   FORM RESET + DATA SAMMLUNG
+   FORM RESET UND DATEN
 ========================= */
 
 /**
- * Handles form clear/reset
+ * Clears the complete form state.
  */
 function handleClear() {
   resetFormElement();
@@ -16,16 +16,16 @@ function handleClear() {
 }
 
 /**
- * Resets form element to initial state
+ * Resets the form element.
  */
 function resetFormElement() {
-  const taskFormElement = document.getElementById("taskForm");
+  const taskFormElement = getElement("taskForm");
   if (!taskFormElement) return;
   taskFormElement.reset();
 }
 
 /**
- * Resets all assignee selections
+ * Resets all assignee selections.
  */
 function resetAssignees() {
   uncheckAllAssigneeCheckboxes();
@@ -36,43 +36,55 @@ function resetAssignees() {
 }
 
 /**
- * Unchecks all assignee checkboxes
+ * Unchecks all assignee boxes.
  */
 function uncheckAllAssigneeCheckboxes() {
-  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]').forEach((checkboxElement) => {
-    checkboxElement.checked = false;
-  });
+  document.querySelectorAll('#assignee-dropdown input[type="checkbox"]').forEach(clearCheckbox);
 }
 
 /**
- * Removes selected styling from all assignee rows
+ * Clears one checkbox.
+ * @param {HTMLInputElement} checkboxElement - Checkbox element.
+ */
+function clearCheckbox(checkboxElement) {
+  checkboxElement.checked = false;
+}
+
+/**
+ * Removes selected row styles.
  */
 function removeAllAssigneeSelectionStyles() {
-  document.querySelectorAll("#assignee-dropdown .assignee-row").forEach((rowElement) => {
-    rowElement.classList.remove("name-selected");
-  });
+  document.querySelectorAll("#assignee-dropdown .assignee-row").forEach(removeAssigneeSelectionStyle);
 }
 
 /**
- * Clears assignee avatar container
+ * Removes the selected style from one row.
+ * @param {HTMLElement} rowElement - Assignee row.
+ */
+function removeAssigneeSelectionStyle(rowElement) {
+  rowElement.classList.remove("name-selected");
+}
+
+/**
+ * Clears the avatar container.
  */
 function clearAssigneeAvatarContainer() {
-  const avatarContainerElement = document.getElementById("selected-assignee-avatars");
+  const avatarContainerElement = getElement("selected-assignee-avatars");
   if (!avatarContainerElement) return;
   avatarContainerElement.innerHTML = "";
 }
 
 /**
- * Resets assignee placeholder text
+ * Resets the assignee placeholder.
  */
 function resetAssigneePlaceholder() {
-  const placeholderElement = document.getElementById("selected-assignees-placeholder");
+  const placeholderElement = getElement("selected-assignees-placeholder");
   if (!placeholderElement) return;
   placeholderElement.textContent = "Select contacts to assign";
 }
 
 /**
- * Resets category selection
+ * Resets the category input and label.
  */
 function resetCategory() {
   setCategoryHiddenInput("");
@@ -81,29 +93,32 @@ function resetCategory() {
 }
 
 /**
- * Removes all validation error styles from the form
+ * Removes all validation styles.
  */
 function resetFieldErrors() {
-  document.querySelectorAll("#taskForm .input-error").forEach((inputElement) => {
-    inputElement.classList.remove("input-error");
-  });
-
-  document.querySelectorAll("#taskForm .field-error-message.active").forEach((errorElement) => {
-    errorElement.classList.remove("active");
-  });
+  document.querySelectorAll("#taskForm .input-error").forEach(removeInputErrorClass);
+  document.querySelectorAll("#taskForm .field-error-message.active").forEach(removeActiveErrorClass);
 }
 
 /**
- * Closes open dropdowns after clearing the form
+ * Removes the input error class.
+ * @param {HTMLElement} inputElement - Input element.
  */
-function closeTaskDropdowns() {
-  document.getElementById("assignee-dropdown")?.classList.add("d-none");
-  document.getElementById("category-dropdown")?.classList.add("d-none");
+function removeInputErrorClass(inputElement) {
+  inputElement.classList.remove("input-error");
 }
 
 /**
- * Collects all task data from form
- * @returns {Object} Task data object
+ * Removes the active error class.
+ * @param {HTMLElement} errorElement - Error element.
+ */
+function removeActiveErrorClass(errorElement) {
+  errorElement.classList.remove("active");
+}
+
+/**
+ * Collects task form data.
+ * @returns {Object} Task data.
  */
 function collectTaskData() {
   return {
@@ -118,19 +133,19 @@ function collectTaskData() {
 }
 
 /**
- * Reads input value by ID
- * @param {string} inputId - Input element ID
- * @returns {string} Trimmed input value
+ * Reads one trimmed input value.
+ * @param {string} inputId - Input identifier.
+ * @returns {string} Input value.
  */
 function readInputValue(inputId) {
-  const inputElement = document.getElementById(inputId);
+  const inputElement = getElement(inputId);
   if (!inputElement) return "";
   return inputElement.value.trim();
 }
 
 /**
- * Reads selected priority value
- * @returns {string} Priority value or default "medium"
+ * Reads the selected priority.
+ * @returns {string} Priority value.
  */
 function readSelectedPriority() {
   const selectedElement = document.querySelector('input[name="priority"]:checked');
@@ -138,39 +153,50 @@ function readSelectedPriority() {
 }
 
 /* =========================
-   SUCCESS TOAST + REDIRECT
+   TOAST UND WEITERLEITUNG
 ========================= */
 
 /**
- * Ensures success toast element exists
- * @returns {HTMLElement} Toast element
+ * Ensures that a toast element exists.
+ * @returns {HTMLElement} Toast element.
  */
 function ensureSuccessToastElement() {
-  const toastElement = document.getElementById("task-success");
+  const toastElement = getElement("task-success");
   if (toastElement) return toastElement;
-
-  const newToastElement = document.createElement("div");
-  newToastElement.id = "task-success";
-  newToastElement.className = "task-success";
-  newToastElement.textContent = "Task added to board";
-  document.body.appendChild(newToastElement);
-  return newToastElement;
+  return createSuccessToastElement();
 }
 
 /**
- * Shows success toast and redirects to board
+ * Creates the toast element.
+ * @returns {HTMLElement} Toast element.
+ */
+function createSuccessToastElement() {
+  const toastElement = document.createElement("div");
+  toastElement.id = "task-success";
+  toastElement.className = "task-success";
+  toastElement.textContent = "Task added to board";
+  document.body.appendChild(toastElement);
+  return toastElement;
+}
+
+/**
+ * Shows the success toast and redirects.
  */
 function showSuccessAndRedirect() {
   const toastElement = ensureSuccessToastElement();
   restartToastAnimation(toastElement);
-
-  setTimeout(() => {
-    window.location.href = "board.html";
-  }, 2500);
+  setTimeout(() => redirectToBoardPage(), 2500);
 }
 
 /**
- * Shows saving failed toast message
+ * Redirects to the board page.
+ */
+function redirectToBoardPage() {
+  window.location.href = "board.html";
+}
+
+/**
+ * Shows a failed saving toast.
  */
 function showSavingFailedToast() {
   const toastElement = ensureSuccessToastElement();
@@ -179,8 +205,8 @@ function showSavingFailedToast() {
 }
 
 /**
- * Restarts toast animation by toggling class
- * @param {HTMLElement} toastElement - Toast DOM element
+ * Restarts the toast animation.
+ * @param {HTMLElement} toastElement - Toast element.
  */
 function restartToastAnimation(toastElement) {
   toastElement.classList.remove("show");

@@ -81,7 +81,11 @@
                     />
                     <label for="priority-urgent" class="priority-button urgent">
                       Urgent
-                      <img id="icon-urgent" src="../assets/icons/urgent_red.svg" />
+                      <img
+                        id="icon-urgent"
+                        src="../assets/icons/urgent_red.svg"
+                        alt="Urgent"
+                      />
                     </label>
 
                     <input
@@ -93,7 +97,11 @@
                     />
                     <label for="priority-medium" class="priority-button medium">
                       Medium
-                      <img id="icon-medium" src="../assets/icons/medium_yellow.svg" />
+                      <img
+                        id="icon-medium"
+                        src="../assets/icons/medium_yellow.svg"
+                        alt="Medium"
+                      />
                     </label>
 
                     <input
@@ -104,7 +112,11 @@
                     />
                     <label for="priority-low" class="priority-button low">
                       Low
-                      <img id="icon-low" src="../assets/icons/low_green.svg" />
+                      <img
+                        id="icon-low"
+                        src="../assets/icons/low_green.svg"
+                        alt="Low"
+                      />
                     </label>
                   </div>
 
@@ -117,6 +129,7 @@
                       <img
                         src="../assets/icons/arrow_drop_down.svg"
                         class="dropdown-icon"
+                        alt="Open assignee dropdown"
                       />
                     </div>
 
@@ -144,6 +157,7 @@
                         <img
                           src="../assets/icons/arrow_drop_down.svg"
                           class="dropdown-icon"
+                          alt="Open category dropdown"
                         />
                       </div>
 
@@ -179,7 +193,11 @@
                           id="subtask-clear-button"
                           aria-label="Clear subtask"
                         >
-                          <img src="../assets/icons/close.svg" class="closeSub-btn" />
+                          <img
+                            src="../assets/icons/close.svg"
+                            class="closeSub-btn"
+                            alt="Clear"
+                          />
                         </button>
 
                         <span
@@ -193,7 +211,11 @@
                           id="subtask-add-button"
                           aria-label="Add subtask"
                         >
-                          <img src="../assets/icons/check.svg" class="checkSub-btn" />
+                          <img
+                            src="../assets/icons/check.svg"
+                            class="checkSub-btn"
+                            alt="Add"
+                          />
                         </button>
                       </div>
                     </div>
@@ -225,7 +247,10 @@
                     form="taskForm"
                   >
                     Create Task
-                    <img src="../assets/icons/create_check.svg" />
+                    <img
+                      src="../assets/icons/create_check.svg"
+                      alt="Create task"
+                    />
                   </button>
                 </div>
               </div>
@@ -243,12 +268,13 @@
     <script src="../js/firebase.js"></script>
     <script src="../js/guest-data.js"></script>
     <script src="../js/add_task_shared_utils.js"></script>
-    <script src="../js/add_task_subtasks.js"></script>
-    <script src="../js/add_task_priority.js"></script>
-    <script src="../js/add_task_assignees.js"></script>
     <script src="../js/add_task_validation.js"></script>
+    <script src="../js/add_task_shared_contacts.js"></script>
     <script src="../js/add_task_form.js"></script>
-    <script src="../js/add_task.js"></script>    
+    <script src="../js/add_task_assignees.js"></script>
+    <script src="../js/add_task_priority.js"></script>
+    <script src="../js/add_task_subtasks.js"></script>
+    <script src="../js/add_task.js"></script>
     <script src="../js/sidebar-loader.js"></script>
     <script src="../js/topbar-loader.js"></script>
   </body>
