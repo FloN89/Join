@@ -1,31 +1,30 @@
-let contacts = [];
-let globalOverlayClickHandlerRegistered = false;
+let overlayBootstrapped = false;
 
 bootstrapAddTaskOverlay();
 
-function bootstrapAddTaskOverlay() {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeAddTaskOverlay, { once: true });
-    return;
-  }
+/* =========================
+   ADD TASK OVERLAY
+========================= */
 
+/**
+ * Boots the overlay initialization.
+ */
+function bootstrapAddTaskOverlay() {
+  if (document.readyState === "loading") return document.addEventListener("DOMContentLoaded", initializeAddTaskOverlay, { once: true });
   initializeAddTaskOverlay();
 }
 
+/**
+ * Initializes the add-task overlay.
+ */
 async function initializeAddTaskOverlay() {
-  const taskFormElement = document.getElementById("taskForm");
-  if (!taskFormElement) return;
-  if (taskFormElement.dataset.initialized === "true") return;
-
+  const taskFormElement = getElement("taskForm");
+  if (!taskFormElement || overlayBootstrapped) return;
+  overlayBootstrapped = true;
   taskFormElement.dataset.initialized = "true";
-
   setMinimumDateToToday();
-  registerUserInterfaceEvents();
-
-  if (typeof registerValidationLiveEvents === "function") {
-    registerValidationLiveEvents();
-  }
-
+  registerOverlayEvents();
+  registerValidationLiveEvents();
   await loadContacts();
   initializePriorityIconHandlers();
   renderSubtaskList();
@@ -34,352 +33,147 @@ async function initializeAddTaskOverlay() {
 
 window.initializeAddTaskOverlay = initializeAddTaskOverlay;
 
-function setMinimumDateToToday() {
-  const dateInputElement = document.getElementById("due-date");
-  if (!dateInputElement) return;
-  dateInputElement.min = new Date().toISOString().split("T")[0];
-}
-
-/* =========================
-   OVERLAY OPEN / CLOSE
-========================= */
-
+/**
+ * Activates the overlay user interface.
+ */
 function activateAddTaskOverlayUi() {
-  const overlayElement = document.getElementById("add-task-overlay");
-  if (!overlayElement) return;
-  overlayElement.classList.add("active");
+  getElement("add-task-overlay")?.classList.add("active");
   document.body.classList.add("overlay-open");
 }
 
+/**
+ * Closes the overlay user interface.
+ */
 function closeAddTaskOverlay() {
-  const overlayElement = document.getElementById("add-task-overlay");
-  if (!overlayElement) return;
-
-  overlayElement.classList.remove("active");
+  getElement("add-task-overlay")?.classList.remove("active");
   document.body.classList.remove("overlay-open");
 }
 
+/**
+ * Stops click propagation inside the overlay.
+ * @param {MouseEvent} mouseEvent - Click event.
+ */
 function stopOverlayClick(mouseEvent) {
   mouseEvent.stopPropagation();
 }
 
-/* =========================
-   EVENTS
-========================= */
-
-function registerUserInterfaceEvents() {
-  registerFormSubmitEvent();
+/**
+ * Registers all overlay events.
+ */
+function registerOverlayEvents() {
+  registerOverlayFormSubmitEvent();
   registerDropdownEvents();
   registerCategoryOptionEvents();
   registerSubtaskEvents();
-  registerClearButtonEvent();
+  registerOverlayClearButtonEvent();
   registerGlobalClickHandler();
 }
 
-function registerFormSubmitEvent() {
-  const taskFormElement = document.getElementById("taskForm");
+/**
+ * Registers the overlay submit handler.
+ */
+function registerOverlayFormSubmitEvent() {
+  const taskFormElement = getElement("taskForm");
   if (!taskFormElement) return;
-
-  taskFormElement.addEventListener("submit", handleFormSubmit);
+  taskFormElement.addEventListener("submit", handleOverlayFormSubmit);
 }
 
-function registerClearButtonEvent() {
-  const clearButtonElement = document.getElementById("clear-form-button");
-  if (!clearButtonElement) return;
-
-  clearButtonElement.addEventListener("click", handleClear);
+/**
+ * Registers the overlay clear button.
+ */
+function registerOverlayClearButtonEvent() {
+  bindClick("clear-form-button", handleClear);
 }
 
-function registerGlobalClickHandler() {
-  if (globalOverlayClickHandlerRegistered) return;
-
-  document.addEventListener("click", handleOutsideClick);
-  globalOverlayClickHandlerRegistered = true;
-}
-
-function handleOutsideClick(mouseEvent) {
-  closeDropdownIfClickedOutside("assignee-dropdown", ".custom-multiselect", mouseEvent);
-  closeDropdownIfClickedOutside("category-dropdown", ".custom-category-select", mouseEvent);
-}
-
-function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent) {
-  const dropdownElement = document.getElementById(dropdownId);
-  const containerElement = document.querySelector(containerSelector);
-
-  if (!dropdownElement || !containerElement) return;
-  if (!containerElement.contains(mouseEvent.target)) {
-    dropdownElement.classList.add("d-none");
-  }
-}
-
-async function handleFormSubmit(submitEvent) {
+/**
+ * Handles task creation in the overlay.
+ * @param {SubmitEvent} submitEvent - Submit event.
+ */
+async function handleOverlayFormSubmit(submitEvent) {
   submitEvent.preventDefault();
-
-  const submitButtonElement =
-    submitEvent.submitter || document.querySelector("#taskForm .create-btn");
-
-  if (submitButtonElement) submitButtonElement.disabled = true;
-
+  const submitButtonElement = readSubmitButton(submitEvent);
+  disableButton(submitButtonElement);
   try {
-    if (!validateForm()) return;
-
-    const taskObject = {
-      ...collectTaskData(),
-      status: window.currentBoardAddTaskStatus || "todo",
-    };
-
-    await postData(getTaskCollectionPath(), taskObject);
-
-    handleClear();
-    closeAddTaskOverlay();
-    window.dispatchEvent(new CustomEvent("task-created", { detail: taskObject }));
+    await submitOverlayTask();
   } catch (saveError) {
-    console.error("Saving failed:", saveError);
-
-    if (typeof showSavingFailedToast === "function") {
-      showSavingFailedToast();
-    } else {
-      alert("Saving failed. Check console/network tab.");
-    }
+    handleOverlaySaveError(saveError);
   } finally {
-    if (submitButtonElement) submitButtonElement.disabled = false;
+    enableButton(submitButtonElement);
   }
 }
 
-/* =========================
-   KONTAKTE / ASSIGNEES
-========================= */
-
-async function loadContacts() {
-  const isGuestUser = isGuestSessionUser();
-  const sourcePaths = isGuestUser
-    ? ["guest-contacts/", "contacts/"]
-    : ["contacts/"];
-
-  const mergedContactsObject = await loadMergedContactsFromPaths(sourcePaths);
-
-  if (!isGuestUser) {
-    await includeLoggedInUserInAddTaskContacts(mergedContactsObject);
-  }
-
-  let normalizedContacts = Object.values(mergedContactsObject)
-    .map(mapContact)
-    .filter((contactObject) => contactObject.name.length > 0);
-
-  normalizedContacts = deduplicateContacts(normalizedContacts);
-
-  if (isGuestUser && normalizedContacts.length === 0) {
-    normalizedContacts = getGuestContactsFallback().map(mapContact);
-  }
-
-  contacts = normalizedContacts.sort((firstContact, secondContact) =>
-    firstContact.name.localeCompare(secondContact.name, "de")
-  );
-
-  renderAssigneeOptions();
-  updateAssigneeDisplay();
+/**
+ * Submits the overlay task after validation.
+ */
+async function submitOverlayTask() {
+  if (!validateForm()) return;
+  const taskObject = buildOverlayTaskObject();
+  await saveOverlayTask(taskObject);
+  finalizeOverlayTaskCreation(taskObject);
 }
 
-function isGuestSessionUser() {
-  const userId = sessionStorage.getItem("userId");
-  return !userId || userId === "guest";
+/**
+ * Reads the submit button.
+ * @param {SubmitEvent} submitEvent - Submit event.
+ * @returns {HTMLElement|null} Submit button.
+ */
+function readSubmitButton(submitEvent) {
+  return submitEvent.submitter || document.querySelector("#taskForm .create-btn");
 }
 
-async function loadMergedContactsFromPaths(sourcePaths) {
-  const mergedContactsObject = {};
-
-  for (const sourcePath of sourcePaths) {
-    const rawContacts = (await loadData(sourcePath)) || {};
-    const normalizedObject = normalizeRawContactsToObject(rawContacts, sourcePath);
-
-    Object.entries(normalizedObject).forEach(([contactId, contactObject]) => {
-      mergedContactsObject[contactId] = contactObject;
-    });
-  }
-
-  return mergedContactsObject;
+/**
+ * Disables one button.
+ * @param {HTMLElement|null} buttonElement - Button element.
+ */
+function disableButton(buttonElement) {
+  if (!buttonElement) return;
+  buttonElement.disabled = true;
 }
 
-function normalizeRawContactsToObject(rawContacts, sourcePath = "") {
-  if (Array.isArray(rawContacts)) {
-    return Object.fromEntries(
-      rawContacts.map((contactObject, index) => [
-        `${sourcePath}${index}`,
-        contactObject,
-      ])
-    );
-  }
-
-  if (rawContacts && typeof rawContacts === "object") {
-    return { ...rawContacts };
-  }
-
-  return {};
+/**
+ * Enables one button.
+ * @param {HTMLElement|null} buttonElement - Button element.
+ */
+function enableButton(buttonElement) {
+  if (!buttonElement) return;
+  buttonElement.disabled = false;
 }
 
-async function includeLoggedInUserInAddTaskContacts(contactsObject) {
-  const userId = sessionStorage.getItem("userId");
-  if (!userId || userId === "guest" || contactsObject[userId]) return;
-
-  const userObject = await loadData(`users/${userId}`);
-  if (!userObject) return;
-
-  contactsObject[userId] = {
-    contactName: String(userObject.username || userObject.name || "").trim(),
-    contactMail: String(userObject.mail || "").trim(),
-    contactPhone: String(userObject.phone || "").trim(),
-    color: userObject.color || "#CCCCCC",
-  };
-}
-
-function getGuestContactsFallback() {
-  if (typeof GUEST_CONTACTS_FALLBACK !== "undefined" && Array.isArray(GUEST_CONTACTS_FALLBACK)) {
-    return GUEST_CONTACTS_FALLBACK;
-  }
-
-  if (typeof guestContacts === "object" && guestContacts !== null) {
-    return Object.values(guestContacts);
-  }
-
-  return [
-    { name: "Sofia Müller", color: "#ff7a00" },
-    { name: "Max Mustermann", color: "#9327ff" },
-    { name: "Anna Schmidt", color: "#6e52ff" },
-  ];
-}
-
-function deduplicateContacts(contactList) {
-  const seenKeys = new Set();
-
-  return contactList.filter((contactObject) => {
-    const uniqueKey = `${String(contactObject.name || "").trim().toLowerCase()}|${String(
-      contactObject.mail || ""
-    )
-      .trim()
-      .toLowerCase()}`;
-
-    if (seenKeys.has(uniqueKey)) return false;
-    seenKeys.add(uniqueKey);
-    return true;
-  });
-}
-
-function mapContact(contactObject = {}) {
-  const name = String(
-    contactObject.contactName ||
-      contactObject.name ||
-      contactObject.contactMail ||
-      ""
-  ).trim();
-
+/**
+ * Builds the overlay task object.
+ * @returns {Object} Task data.
+ */
+function buildOverlayTaskObject() {
   return {
-    name,
-    mail: String(contactObject.contactMail || contactObject.mail || "").trim(),
-    phone: String(contactObject.contactPhone || contactObject.phone || "").trim(),
-    color: contactObject.color || "#CCCCCC",
+    ...collectTaskData(),
+    status: window.currentBoardAddTaskStatus || "todo",
   };
 }
 
-function getInitials(fullName) {
-  return String(fullName)
-    .split(" ")
-    .filter((namePart) => namePart.length > 0)
-    .map((namePart) => namePart[0].toUpperCase())
-    .join("");
+/**
+ * Saves the overlay task.
+ * @param {Object} taskObject - Task data.
+ */
+async function saveOverlayTask(taskObject) {
+  await postData(getTaskCollectionPath(), taskObject);
 }
 
-/* =========================
-   DROPDOWNS + CATEGORY
-========================= */
-
-function registerDropdownEvents() {
-  const assigneeHeaderElement = document.getElementById("assignee-header");
-  const categoryHeaderElement = document.getElementById("category-header");
-
-  if (assigneeHeaderElement) {
-    assigneeHeaderElement.addEventListener("click", toggleAssigneeDropdown);
-  }
-
-  if (categoryHeaderElement) {
-    categoryHeaderElement.addEventListener("click", toggleCategoryDropdown);
-  }
+/**
+ * Finalizes overlay task creation.
+ * @param {Object} taskObject - Task data.
+ */
+function finalizeOverlayTaskCreation(taskObject) {
+  handleClear();
+  closeAddTaskOverlay();
+  window.dispatchEvent(new CustomEvent("task-created", { detail: taskObject }));
 }
 
-function toggleAssigneeDropdown() {
-  toggleDropdownById("assignee-dropdown");
-  closeDropdownById("category-dropdown");
-}
-
-function toggleCategoryDropdown() {
-  toggleDropdownById("category-dropdown");
-  closeDropdownById("assignee-dropdown");
-}
-
-function toggleDropdownById(dropdownId) {
-  const dropdownElement = document.getElementById(dropdownId);
-  if (!dropdownElement) return;
-
-  dropdownElement.classList.toggle("d-none");
-}
-
-function closeDropdownById(dropdownId) {
-  const dropdownElement = document.getElementById(dropdownId);
-  if (!dropdownElement) return;
-
-  dropdownElement.classList.add("d-none");
-}
-
-function registerCategoryOptionEvents() {
-  const optionElements = document.querySelectorAll("#category-dropdown .category-option");
-
-  optionElements.forEach((optionElement) => {
-    optionElement.addEventListener("click", () =>
-      selectCategory(optionElement.dataset.category)
-    );
-  });
-}
-
-function selectCategory(categoryValue) {
-  setCategoryHiddenInput(categoryValue);
-  setCategoryPlaceholderText(categoryValue);
-  closeDropdownById("category-dropdown");
-  removeCategoryError();
-}
-
-function setCategoryHiddenInput(categoryValue) {
-  const hiddenInputElement = document.getElementById("category");
-  if (!hiddenInputElement) return;
-
-  hiddenInputElement.value = categoryValue || "";
-  hiddenInputElement.dispatchEvent(new Event("change", { bubbles: true }));
-}
-
-function setCategoryPlaceholderText(categoryValue) {
-  const placeholderElement = document.getElementById("selected-category-placeholder");
-  if (!placeholderElement) return;
-
-  if (categoryValue === "technical-task") {
-    placeholderElement.textContent = "Technical Task";
-  } else if (categoryValue === "user-story") {
-    placeholderElement.textContent = "User Story";
-  } else {
-    placeholderElement.textContent = "Select category";
-  }
-}
-
-function removeCategoryError() {
-  const categoryInputElement = document.getElementById("category");
-  const errorElement = document.getElementById("error-category");
-
-  if (categoryInputElement) categoryInputElement.classList.remove("input-error");
-  if (errorElement) errorElement.classList.remove("active");
-}
-
-/* =========================
-   HILFSFUNKTIONEN FÜR RESET
-========================= */
-
-function closeTaskDropdowns() {
-  closeDropdownById("assignee-dropdown");
-  closeDropdownById("category-dropdown");
+/**
+ * Handles an overlay save error.
+ * @param {Error} saveError - Save error.
+ */
+function handleOverlaySaveError(saveError) {
+  console.error("Saving failed:", saveError);
+  if (typeof showSavingFailedToast === "function") return showSavingFailedToast();
+  alert("Saving failed. Check console/network tab.");
 }

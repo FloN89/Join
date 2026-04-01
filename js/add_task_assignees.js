@@ -1,131 +1,144 @@
 /* =========================
-   KONTAKTE LADEN / ASSIGNEES
+   ASSIGNEES
 ========================= */
 
 /**
- * Renders all contacts as selectable rows
+ * Renders all assignee options.
  */
 function renderAssigneeOptions() {
-  const dropdownElement = document.getElementById("assignee-dropdown");
+  const dropdownElement = getElement("assignee-dropdown");
   if (!dropdownElement) return;
-
   dropdownElement.innerHTML = "";
   contacts.forEach((contactObject) => dropdownElement.appendChild(createAssigneeRow(contactObject)));
 }
 
 /**
- * Creates assignee row with initials, name and checkbox
- * @param {Object} contactObject - Contact object with name and color
- * @returns {HTMLElement} Row element
+ * Creates one assignee row.
+ * @param {Object} contactObject - Contact data.
+ * @returns {HTMLElement} Row element.
  */
 function createAssigneeRow(contactObject) {
   const rowElement = document.createElement("div");
   rowElement.className = "assignee-row";
   rowElement.innerHTML = buildAssigneeRowMarkup(contactObject);
-
-  const leftElement = rowElement.querySelector(".assignee-left");
-  const checkboxElement = rowElement.querySelector(".assignee-checkbox");
-
-  registerAssigneeRowEvents(rowElement, leftElement, checkboxElement);
+  registerAssigneeRowEvents(rowElement);
   return rowElement;
 }
 
 /**
- * Builds assignee row HTML markup
- * @param {Object} contactObject - Contact object
- * @returns {string} HTML markup
+ * Builds assignee row markup.
+ * @param {Object} contactObject - Contact data.
+ * @returns {string} Row markup.
  */
 function buildAssigneeRowMarkup(contactObject) {
-  const initialsText = getInitials(contactObject.name);
   return `
-    <div class="assignee-left" tabindex="0" role="button">
-      <div class="assignee-initials" style="background-color: ${contactObject.color};">
-        ${initialsText}
-      </div>
-      <span class="assignee-name">${contactObject.name}</span>
-    </div>
-
-    <input
-      class="assignee-checkbox"
-      type="checkbox"
-      data-name="${contactObject.name}"
-      data-color="${contactObject.color}"
-    >
+    <div class="assignee-left" tabindex="0" role="button">${buildAssigneeIdentityMarkup(contactObject)}</div>
+    <input class="assignee-checkbox" type="checkbox" data-name="${contactObject.name}" data-color="${contactObject.color}">
   `;
 }
 
 /**
- * Registers events for assignee row
- * @param {HTMLElement} rowElement - Row DOM element
- * @param {HTMLElement} leftElement - Left section DOM element
- * @param {HTMLElement} checkboxElement - Checkbox DOM element
+ * Builds the left assignee content.
+ * @param {Object} contactObject - Contact data.
+ * @returns {string} Identity markup.
  */
-function registerAssigneeRowEvents(rowElement, leftElement, checkboxElement) {
-  if (!leftElement || !checkboxElement) return;
-
-  leftElement.addEventListener("click", (clickEvent) => {
-    clickEvent.stopPropagation();
-    toggleCheckbox(checkboxElement);
-    syncRowSelectionStyle(rowElement, checkboxElement.checked);
-    updateAssigneeDisplay();
-  });
-
-  leftElement.addEventListener("keydown", (keyboardEvent) => {
-    if (!isEnterOrSpace(keyboardEvent)) return;
-    keyboardEvent.preventDefault();
-    leftElement.click();
-  });
-
-  checkboxElement.addEventListener("change", () => {
-    syncRowSelectionStyle(rowElement, checkboxElement.checked);
-    updateAssigneeDisplay();
-  });
+function buildAssigneeIdentityMarkup(contactObject) {
+  const initialsText = getInitials(contactObject.name);
+  return `
+    <div class="assignee-initials" style="background-color: ${contactObject.color};">${initialsText}</div>
+    <span class="assignee-name">${contactObject.name}</span>
+  `;
 }
 
 /**
- * Checks if key is Enter or Space
- * @param {Event} keyboardEvent - Keyboard event
- * @returns {boolean} True if Enter or Space
+ * Registers assignee row events.
+ * @param {HTMLElement} rowElement - Row element.
+ */
+function registerAssigneeRowEvents(rowElement) {
+  const leftElement = rowElement.querySelector(".assignee-left");
+  const checkboxElement = rowElement.querySelector(".assignee-checkbox");
+  if (!leftElement || !checkboxElement) return;
+  leftElement.addEventListener("click", (clickEvent) => handleAssigneeLeftClick(clickEvent, rowElement, checkboxElement));
+  leftElement.addEventListener("keydown", (keyboardEvent) => handleAssigneeLeftKeydown(keyboardEvent, leftElement));
+  checkboxElement.addEventListener("change", () => refreshAssigneeSelection(rowElement, checkboxElement.checked));
+}
+
+/**
+ * Handles clicks on the left assignee area.
+ * @param {MouseEvent} clickEvent - Click event.
+ * @param {HTMLElement} rowElement - Row element.
+ * @param {HTMLInputElement} checkboxElement - Checkbox element.
+ */
+function handleAssigneeLeftClick(clickEvent, rowElement, checkboxElement) {
+  clickEvent.stopPropagation();
+  toggleCheckbox(checkboxElement);
+  refreshAssigneeSelection(rowElement, checkboxElement.checked);
+}
+
+/**
+ * Handles keyboard activation for assignees.
+ * @param {KeyboardEvent} keyboardEvent - Keyboard event.
+ * @param {HTMLElement} leftElement - Left element.
+ */
+function handleAssigneeLeftKeydown(keyboardEvent, leftElement) {
+  if (!isEnterOrSpace(keyboardEvent)) return;
+  keyboardEvent.preventDefault();
+  leftElement.click();
+}
+
+/**
+ * Checks whether Enter or Space was pressed.
+ * @param {KeyboardEvent} keyboardEvent - Keyboard event.
+ * @returns {boolean} True when supported.
  */
 function isEnterOrSpace(keyboardEvent) {
   return keyboardEvent.key === "Enter" || keyboardEvent.key === " ";
 }
 
 /**
- * Toggles checkbox state
- * @param {HTMLElement} checkboxElement - Checkbox DOM element
+ * Toggles a checkbox.
+ * @param {HTMLInputElement} checkboxElement - Checkbox element.
  */
 function toggleCheckbox(checkboxElement) {
   checkboxElement.checked = !checkboxElement.checked;
 }
 
 /**
- * Syncs row selection styling
- * @param {HTMLElement} rowElement - Row DOM element
- * @param {boolean} isSelected - Selection state
+ * Refreshes the selected assignee state.
+ * @param {HTMLElement} rowElement - Row element.
+ * @param {boolean} isSelected - Selection state.
  */
-function syncRowSelectionStyle(rowElement, isSelected) {
-  if (isSelected) rowElement.classList.add("name-selected");
-  if (!isSelected) rowElement.classList.remove("name-selected");
+function refreshAssigneeSelection(rowElement, isSelected) {
+  syncRowSelectionStyle(rowElement, isSelected);
+  updateAssigneeDisplay();
 }
 
 /**
- * Updates avatar display and placeholder text
+ * Updates the row selection style.
+ * @param {HTMLElement} rowElement - Row element.
+ * @param {boolean} isSelected - Selection state.
+ */
+function syncRowSelectionStyle(rowElement, isSelected) {
+  if (isSelected) return rowElement.classList.add("name-selected");
+  rowElement.classList.remove("name-selected");
+}
+
+/**
+ * Updates avatars and placeholder text.
  */
 function updateAssigneeDisplay() {
-  const avatarContainerElement = document.getElementById("selected-assignee-avatars");
-  const placeholderElement = document.getElementById("selected-assignees-placeholder");
+  const avatarContainerElement = getElement("selected-assignee-avatars");
+  const placeholderElement = getElement("selected-assignees-placeholder");
   if (!avatarContainerElement || !placeholderElement) return;
-
   const selectedAssignees = getSelectedAssignees();
   renderAssigneeAvatarContainer(avatarContainerElement, selectedAssignees);
   setAssigneePlaceholderText(placeholderElement, selectedAssignees);
 }
 
 /**
- * Renders assignee avatar container
- * @param {HTMLElement} containerElement - Container DOM element
- * @param {Array} assignedToList - Array of assignees
+ * Renders the avatar container.
+ * @param {HTMLElement} containerElement - Container element.
+ * @param {Array} assignedToList - Selected assignees.
  */
 function renderAssigneeAvatarContainer(containerElement, assignedToList) {
   containerElement.innerHTML = "";
@@ -133,9 +146,9 @@ function renderAssigneeAvatarContainer(containerElement, assignedToList) {
 }
 
 /**
- * Builds avatar element
- * @param {Object} assigneeObject - Assignee object
- * @returns {HTMLElement} Avatar element
+ * Builds one avatar element.
+ * @param {Object} assigneeObject - Assignee data.
+ * @returns {HTMLElement} Avatar element.
  */
 function buildAvatarElement(assigneeObject) {
   const avatarElement = document.createElement("div");
@@ -146,27 +159,27 @@ function buildAvatarElement(assigneeObject) {
 }
 
 /**
- * Sets assignee placeholder text
- * @param {HTMLElement} placeholderElement - Placeholder DOM element
- * @param {Array} selectedAssignees - Array of selected assignees
+ * Updates the assignee placeholder text.
+ * @param {HTMLElement} placeholderElement - Placeholder element.
+ * @param {Array} selectedAssignees - Selected assignees.
  */
 function setAssigneePlaceholderText(placeholderElement, selectedAssignees) {
   placeholderElement.textContent = selectedAssignees.length > 0 ? "Selected contacts" : "Select contacts to assign";
 }
 
 /**
- * Gets all selected assignees from dropdown
- * @returns {Array} Array of assignee objects
+ * Returns all selected assignees.
+ * @returns {Array} Assignee array.
  */
 function getSelectedAssignees() {
   const checkboxNodeList = document.querySelectorAll('#assignee-dropdown input[type="checkbox"]:checked');
-  return Array.from(checkboxNodeList).map((checkboxElement) => buildAssigneeFromCheckbox(checkboxElement));
+  return Array.from(checkboxNodeList).map(buildAssigneeFromCheckbox);
 }
 
 /**
- * Builds assignee object from checkbox
- * @param {HTMLElement} checkboxElement - Checkbox DOM element
- * @returns {Object} Assignee object
+ * Builds an assignee object from a checkbox.
+ * @param {HTMLInputElement} checkboxElement - Checkbox element.
+ * @returns {Object} Assignee data.
  */
 function buildAssigneeFromCheckbox(checkboxElement) {
   return {

@@ -1,12 +1,8 @@
 let subtaskCollection = [];
 let editingSubtaskIndex = null;
 
-/* =========================
-   SUBTASKS
-========================= */
-
 /**
- * Register subtask events
+ * Registers all subtask events.
  */
 function registerSubtaskEvents() {
   registerSubtaskInputKeydown();
@@ -14,298 +10,229 @@ function registerSubtaskEvents() {
 }
 
 /**
- * Register subtask input keydown
+ * Registers the enter key for the subtask input.
  */
 function registerSubtaskInputKeydown() {
-  const subtaskInputElement = document.getElementById("subtask");
+  const subtaskInputElement = getElement("subtask");
   if (!subtaskInputElement) return;
-
-  subtaskInputElement.addEventListener("keydown", (keyboardEvent) => {
-    if (keyboardEvent.key !== "Enter") return;
-    keyboardEvent.preventDefault();
-    addSubtask();
-  });
+  subtaskInputElement.addEventListener("keydown", handleSubtaskInputKeydown);
 }
 
 /**
- * Register subtask buttons
+ * Handles the subtask input keydown.
+ * @param {KeyboardEvent} keyboardEvent - Keyboard event.
+ */
+function handleSubtaskInputKeydown(keyboardEvent) {
+  if (keyboardEvent.key !== "Enter") return;
+  keyboardEvent.preventDefault();
+  addSubtask();
+}
+
+/**
+ * Registers subtask buttons.
  */
 function registerSubtaskButtons() {
-  const clearButtonElement = document.getElementById("subtask-clear-button");
-  const addButtonElement = document.getElementById("subtask-add-button");
-
-  if (clearButtonElement) clearButtonElement.addEventListener("click", clearSubtaskInput);
-  if (addButtonElement) addButtonElement.addEventListener("click", addSubtask);
+  bindClick("subtask-clear-button", clearSubtaskInput);
+  bindClick("subtask-add-button", addSubtask);
 }
 
 /**
- * Clear subtask input
+ * Clears the subtask input field.
  */
 function clearSubtaskInput() {
-  const subtaskInputElement = document.getElementById("subtask");
+  const subtaskInputElement = getElement("subtask");
   if (!subtaskInputElement) return;
   subtaskInputElement.value = "";
 }
 
 /**
- * Add subtask
+ * Adds one new subtask.
  */
 function addSubtask() {
   const subtaskTitle = readSubtaskTitleFromInput();
   if (!subtaskTitle) return;
-
   subtaskCollection.push(createSubtaskObject(subtaskTitle));
   renderSubtaskList();
   clearSubtaskInput();
 }
 
 /**
- * Read subtask title from input
- * @returns {string} Return value
+ * Reads the trimmed subtask title.
+ * @returns {string} Subtask title.
  */
 function readSubtaskTitleFromInput() {
-  const subtaskInputElement = document.getElementById("subtask");
+  const subtaskInputElement = getElement("subtask");
   if (!subtaskInputElement) return "";
   return getTrimmedValue(subtaskInputElement.value);
 }
 
 /**
- * Create subtask object
- * @param {string} subtaskTitle - Subtask title value
- * @returns {Object} Return value
+ * Builds one subtask object.
+ * @param {string} subtaskTitle - Subtask title.
+ * @returns {Object} Subtask object.
  */
 function createSubtaskObject(subtaskTitle) {
   return { title: subtaskTitle, completed: false };
 }
 
 /**
- * Render subtask list
+ * Renders the subtask list.
  */
 function renderSubtaskList() {
-  const subtaskListElement = document.getElementById("subtask-list");
+  const subtaskListElement = getElement("subtask-list");
   if (!subtaskListElement) return;
-
   subtaskListElement.innerHTML = buildSubtaskListMarkup();
   registerSubtaskListEvents(subtaskListElement);
   focusEditingSubtaskInput();
 }
 
 /**
- * Register subtask list events
- * @param {HTMLElement} subtaskListElement - DOM element
+ * Registers delegated subtask list events.
+ * @param {HTMLElement} subtaskListElement - List element.
  */
 function registerSubtaskListEvents(subtaskListElement) {
-  subtaskListElement.onclick = (mouseEvent) => handleSubtaskListClick(mouseEvent);
-  subtaskListElement.onkeydown = (keyboardEvent) => handleSubtaskListKeydown(keyboardEvent);
-  subtaskListElement.onfocusout = (focusEvent) => handleSubtaskListFocusOut(focusEvent);
+  subtaskListElement.onclick = handleSubtaskListClick;
+  subtaskListElement.onkeydown = handleSubtaskListKeydown;
+  subtaskListElement.onfocusout = handleSubtaskListFocusOut;
 }
 
 /**
- * Build subtask list markup
- * @returns {string} Return value
+ * Builds the complete subtask markup.
+ * @returns {string} List markup.
  */
 function buildSubtaskListMarkup() {
-  return subtaskCollection
-    .map((subtaskObject, subtaskIndex) => buildSingleSubtaskMarkup(subtaskObject, subtaskIndex))
-    .join("");
+  return subtaskCollection.map((subtaskObject, subtaskIndex) => buildSingleSubtaskMarkup(subtaskObject, subtaskIndex)).join("");
 }
 
 /**
- * Build single subtask markup
- * @param {Object} subtaskObject - Subtask object
- * @param {number} subtaskIndex - Subtask index
- * @returns {string} Return value
+ * Builds one subtask item.
+ * @param {Object} subtaskObject - Subtask object.
+ * @param {number} subtaskIndex - Subtask index.
+ * @returns {string} Item markup.
  */
 function buildSingleSubtaskMarkup(subtaskObject, subtaskIndex) {
-  if (editingSubtaskIndex === subtaskIndex) {
-    return buildEditableSubtaskMarkup(subtaskObject, subtaskIndex);
-  }
-
+  if (editingSubtaskIndex === subtaskIndex) return buildEditableSubtaskMarkup(subtaskObject, subtaskIndex);
   return buildReadonlySubtaskMarkup(subtaskObject, subtaskIndex);
 }
 
 /**
- * Build readonly subtask markup
- * @param {Object} subtaskObject - Subtask object
- * @param {number} subtaskIndex - Subtask index
- * @returns {string} Return value
+ * Builds the readonly subtask layout.
+ * @param {Object} subtaskObject - Subtask object.
+ * @param {number} subtaskIndex - Subtask index.
+ * @returns {string} Item markup.
  */
 function buildReadonlySubtaskMarkup(subtaskObject, subtaskIndex) {
   const safeTitle = escapeHtmlText(subtaskObject.title);
-
   return `
     <li class="subtask-item" data-subtask-index="${subtaskIndex}">
-      <div class="subtask-left">
-        <span class="subtask-bullet">•</span>
-        <span class="subtask-title">${safeTitle}</span>
-      </div>
-
-      <div class="subtask-actions">
-        <button type="button" data-action="edit" aria-label="Edit subtask">
-          <img src="../assets/icons/edit.svg" alt="Edit">
-        </button>
-
-        <button type="button" data-action="delete" aria-label="Delete subtask">
-          <img src="../assets/icons/delete.svg" alt="Delete">
-        </button>
-      </div>
+      <div class="subtask-left">${buildReadonlySubtaskContent(safeTitle)}</div>
+      <div class="subtask-actions">${buildReadonlySubtaskActions()}</div>
     </li>
   `;
 }
 
 /**
- * Build editable subtask markup
- * @param {Object} subtaskObject - Subtask object
- * @param {number} subtaskIndex - Subtask index
- * @returns {string} Return value
+ * Builds the readonly subtask content.
+ * @param {string} safeTitle - Safe title.
+ * @returns {string} Content markup.
+ */
+function buildReadonlySubtaskContent(safeTitle) {
+  return `<span class="subtask-bullet">•</span><span class="subtask-title">${safeTitle}</span>`;
+}
+
+/**
+ * Builds readonly action buttons.
+ * @returns {string} Action markup.
+ */
+function buildReadonlySubtaskActions() {
+  return createSubtaskButtonMarkup("edit", "Edit subtask", "edit") + createSubtaskButtonMarkup("delete", "Delete subtask", "delete");
+}
+
+/**
+ * Builds the editable subtask layout.
+ * @param {Object} subtaskObject - Subtask object.
+ * @param {number} subtaskIndex - Subtask index.
+ * @returns {string} Item markup.
  */
 function buildEditableSubtaskMarkup(subtaskObject, subtaskIndex) {
   const safeTitle = escapeHtmlText(subtaskObject.title);
-
   return `
     <li class="subtask-item is-editing" data-subtask-index="${subtaskIndex}">
-      <div class="subtask-left">
-        <span class="subtask-bullet">•</span>
-        <input
-          type="text"
-          class="subtask-title-input"
-          value="${safeTitle}"
-          data-role="subtask-edit-input"
-          aria-label="Edit subtask title"
-        >
-      </div>
-
-      <div class="subtask-actions">
-        <button type="button" data-action="delete" aria-label="delete subtask">
-          <img src="../assets/icons/delete.svg" alt="delete">
-        </button>
-
-        <button type="button" data-action="save" aria-label="save subtask">
-          <img src="../assets/icons/check.svg" alt="save">
-        </button>
-      </div>
+      <div class="subtask-left">${buildEditableSubtaskContent(safeTitle)}</div>
+      <div class="subtask-actions">${buildEditableSubtaskActions()}</div>
     </li>
   `;
 }
 
 /**
- * Handle subtask list click
- * @param {Event} mouseEvent - Event object
+ * Builds the editable subtask content.
+ * @param {string} safeTitle - Safe title.
+ * @returns {string} Content markup.
+ */
+function buildEditableSubtaskContent(safeTitle) {
+  return `
+    <span class="subtask-bullet">•</span>
+    <input type="text" class="subtask-title-input" value="${safeTitle}" data-role="subtask-edit-input" aria-label="Edit subtask title">
+  `;
+}
+
+/**
+ * Builds editable action buttons.
+ * @returns {string} Action markup.
+ */
+function buildEditableSubtaskActions() {
+  return createSubtaskButtonMarkup("delete", "Delete subtask", "delete") + createSubtaskButtonMarkup("save", "Save subtask", "check");
+}
+
+/**
+ * Builds one subtask action button.
+ * @param {string} actionName - Data action value.
+ * @param {string} labelText - Accessible label.
+ * @param {string} iconName - Icon filename.
+ * @returns {string} Button markup.
+ */
+function createSubtaskButtonMarkup(actionName, labelText, iconName) {
+  return `<button type="button" data-action="${actionName}" aria-label="${labelText}"><img src="../assets/icons/${iconName}.svg" alt="${labelText}"></button>`;
+}
+
+/**
+ * Handles clicks inside the subtask list.
+ * @param {MouseEvent} mouseEvent - Click event.
  */
 function handleSubtaskListClick(mouseEvent) {
   const actionButtonElement = mouseEvent.target.closest("button[data-action]");
   if (!actionButtonElement) return;
-
   mouseEvent.preventDefault();
+  runSubtaskAction(readActionName(actionButtonElement), readSubtaskIndexFromButton(actionButtonElement), actionButtonElement.closest("li[data-subtask-index]"));
+}
 
-  const actionName = actionButtonElement.dataset.action || "";
+/**
+ * Reads one action name from a button.
+ * @param {HTMLElement} actionButtonElement - Action button.
+ * @returns {string} Action name.
+ */
+function readActionName(actionButtonElement) {
+  return actionButtonElement?.dataset.action || "";
+}
+
+/**
+ * Reads the subtask index from a button.
+ * @param {HTMLElement} actionButtonElement - Action button.
+ * @returns {number} Subtask index.
+ */
+function readSubtaskIndexFromButton(actionButtonElement) {
   const listItemElement = actionButtonElement.closest("li[data-subtask-index]");
-  if (!listItemElement) return;
-
-  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
-  if (!isValidSubtaskIndex(subtaskIndex)) return;
-
-  if (actionName === "save") {
-    saveSubtaskEdit(subtaskIndex, readEditedSubtaskValue(listItemElement));
-    return;
-  }
-
-  if (actionName === "delete") {
-    deleteSubtask(subtaskIndex);
-    return;
-  }
-
-  if (actionName === "edit") {
-    editSubtask(subtaskIndex);
-    return;
-  }
-
-  if (actionName === "cancel") {
-    cancelSubtaskEdit();
-  }
-}
-
-
-/**
- * Handle subtask list keydown
- * @param {KeyboardEvent} keyboardEvent - Event object
- */
-function handleSubtaskListKeydown(keyboardEvent) {
-  const inputElement = keyboardEvent.target.closest(".subtask-title-input");
-  if (!inputElement) return;
-
-  const listItemElement = inputElement.closest("li[data-subtask-index]");
-  if (!listItemElement) return;
-
-  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
-  if (!isValidSubtaskIndex(subtaskIndex)) return;
-
-  if (keyboardEvent.key === "Enter") {
-    keyboardEvent.preventDefault();
-    saveSubtaskEdit(subtaskIndex, inputElement.value);
-  }
-
-  if (keyboardEvent.key === "Escape") {
-    keyboardEvent.preventDefault();
-    cancelSubtaskEdit();
-  }
+  return Number(listItemElement?.dataset.subtaskIndex);
 }
 
 /**
- * Handle subtask list focus out
- * @param {FocusEvent} focusEvent - Event object
- */
-function handleSubtaskListFocusOut(focusEvent) {
-  const inputElement = focusEvent.target.closest(".subtask-title-input");
-  if (!inputElement) return;
-
-  const listItemElement = inputElement.closest("li[data-subtask-index]");
-  if (!listItemElement) return;
-
-  const nextFocusedElement = focusEvent.relatedTarget;
-
-  if (nextFocusedElement?.closest('button[data-action="save"]')) {
-    return;
-  }
-
-  if (nextFocusedElement && listItemElement.contains(nextFocusedElement)) return;
-
-  const subtaskIndex = Number(listItemElement.dataset.subtaskIndex);
-  if (!isValidSubtaskIndex(subtaskIndex)) return;
-
-  saveSubtaskEdit(subtaskIndex, inputElement.value);
-}
-
-
-/**
- * Read subtask action
- * @param {Event} mouseEvent - Event object
- * @returns {string} Return value
- */
-function readSubtaskAction(mouseEvent) {
-  const actionButtonElement = mouseEvent.target.closest("button[data-action]");
-  if (!actionButtonElement) return "";
-  return actionButtonElement.dataset.action || "";
-}
-
-/**
- * Read subtask index
- * @param {Event} mouseEvent - Event object
- * @returns {number} Return value
- */
-function readSubtaskIndex(mouseEvent) {
-  const listItemElement = mouseEvent.target.closest("li[data-subtask-index]");
-  if (!listItemElement) return -1;
-  return Number(listItemElement.dataset.subtaskIndex);
-}
-
-/**
- * Run subtask action
- * @param {string} actionName - Action name value
- * @param {number} subtaskIndex - Subtask index value
- * @param {HTMLElement} listItemElement - List item DOM element
+ * Runs one delegated subtask action.
+ * @param {string} actionName - Action name.
+ * @param {number} subtaskIndex - Subtask index.
+ * @param {HTMLElement|null} listItemElement - Item element.
  */
 function runSubtaskAction(actionName, subtaskIndex, listItemElement) {
+  if (!isValidSubtaskIndex(subtaskIndex)) return;
   if (actionName === "delete") deleteSubtask(subtaskIndex);
   if (actionName === "edit") editSubtask(subtaskIndex);
   if (actionName === "save") saveSubtaskEdit(subtaskIndex, readEditedSubtaskValue(listItemElement));
@@ -313,9 +240,73 @@ function runSubtaskAction(actionName, subtaskIndex, listItemElement) {
 }
 
 /**
- * Read edited subtask value
- * @param {HTMLElement} listItemElement - DOM element
- * @returns {string} Return value
+ * Handles key actions inside the subtask list.
+ * @param {KeyboardEvent} keyboardEvent - Keyboard event.
+ */
+function handleSubtaskListKeydown(keyboardEvent) {
+  const inputElement = keyboardEvent.target.closest(".subtask-title-input");
+  if (!inputElement) return;
+  if (keyboardEvent.key === "Enter") return saveSubtaskFromKeyboard(keyboardEvent, inputElement);
+  if (keyboardEvent.key === "Escape") return cancelSubtaskFromKeyboard(keyboardEvent);
+}
+
+/**
+ * Saves the current subtask from the keyboard.
+ * @param {KeyboardEvent} keyboardEvent - Keyboard event.
+ * @param {HTMLElement} inputElement - Input element.
+ */
+function saveSubtaskFromKeyboard(keyboardEvent, inputElement) {
+  keyboardEvent.preventDefault();
+  saveSubtaskEdit(readSubtaskIndexFromInput(inputElement), inputElement.value);
+}
+
+/**
+ * Cancels the current subtask from the keyboard.
+ * @param {KeyboardEvent} keyboardEvent - Keyboard event.
+ */
+function cancelSubtaskFromKeyboard(keyboardEvent) {
+  keyboardEvent.preventDefault();
+  cancelSubtaskEdit();
+}
+
+/**
+ * Reads the subtask index from an input.
+ * @param {HTMLElement} inputElement - Input element.
+ * @returns {number} Subtask index.
+ */
+function readSubtaskIndexFromInput(inputElement) {
+  const listItemElement = inputElement.closest("li[data-subtask-index]");
+  return Number(listItemElement?.dataset.subtaskIndex);
+}
+
+/**
+ * Handles subtask edit focus changes.
+ * @param {FocusEvent} focusEvent - Focus event.
+ */
+function handleSubtaskListFocusOut(focusEvent) {
+  const inputElement = focusEvent.target.closest(".subtask-title-input");
+  if (!inputElement) return;
+  if (shouldIgnoreSubtaskFocusOut(focusEvent, inputElement)) return;
+  saveSubtaskEdit(readSubtaskIndexFromInput(inputElement), inputElement.value);
+}
+
+/**
+ * Checks whether the focus out event should be ignored.
+ * @param {FocusEvent} focusEvent - Focus event.
+ * @param {HTMLElement} inputElement - Current input.
+ * @returns {boolean} True when ignored.
+ */
+function shouldIgnoreSubtaskFocusOut(focusEvent, inputElement) {
+  const nextFocusedElement = focusEvent.relatedTarget;
+  const listItemElement = inputElement.closest("li[data-subtask-index]");
+  if (nextFocusedElement?.closest('button[data-action="save"]')) return true;
+  return Boolean(nextFocusedElement && listItemElement?.contains(nextFocusedElement));
+}
+
+/**
+ * Reads the edited subtask value.
+ * @param {HTMLElement|null} listItemElement - List item.
+ * @returns {string} Input value.
  */
 function readEditedSubtaskValue(listItemElement) {
   const inputElement = listItemElement?.querySelector(".subtask-title-input");
@@ -324,23 +315,28 @@ function readEditedSubtaskValue(listItemElement) {
 }
 
 /**
- * Delete subtask
- * @param {number} subtaskIndex - Subtask index value
+ * Deletes one subtask.
+ * @param {number} subtaskIndex - Subtask index.
  */
 function deleteSubtask(subtaskIndex) {
   if (!isValidSubtaskIndex(subtaskIndex)) return;
-
   subtaskCollection.splice(subtaskIndex, 1);
-
-  if (editingSubtaskIndex === subtaskIndex) editingSubtaskIndex = null;
-  if (editingSubtaskIndex !== null && subtaskIndex < editingSubtaskIndex) editingSubtaskIndex -= 1;
-
+  updateEditingIndexAfterDelete(subtaskIndex);
   renderSubtaskList();
 }
 
 /**
- * Edit subtask inline
- * @param {number} subtaskIndex - Subtask index value
+ * Updates the editing index after a delete action.
+ * @param {number} subtaskIndex - Deleted index.
+ */
+function updateEditingIndexAfterDelete(subtaskIndex) {
+  if (editingSubtaskIndex === subtaskIndex) editingSubtaskIndex = null;
+  if (editingSubtaskIndex !== null && subtaskIndex < editingSubtaskIndex) editingSubtaskIndex -= 1;
+}
+
+/**
+ * Starts subtask editing.
+ * @param {number} subtaskIndex - Subtask index.
  */
 function editSubtask(subtaskIndex) {
   if (!isValidSubtaskIndex(subtaskIndex)) return;
@@ -349,49 +345,50 @@ function editSubtask(subtaskIndex) {
 }
 
 /**
- * Save edited subtask title
- * @param {number} subtaskIndex - Subtask index value
- * @param {string} newTitle - New title value
+ * Saves the edited subtask title.
+ * @param {number} subtaskIndex - Subtask index.
+ * @param {string} newTitle - New title.
  */
 function saveSubtaskEdit(subtaskIndex, newTitle) {
   if (!isValidSubtaskIndex(subtaskIndex)) return;
-
   const cleanedTitle = getTrimmedValue(newTitle ?? "");
   editingSubtaskIndex = null;
-
-  if (!cleanedTitle) {
-    renderSubtaskList();
-    return;
-  }
-
+  if (!cleanedTitle) return renderSubtaskList();
   subtaskCollection[subtaskIndex].title = cleanedTitle;
   renderSubtaskList();
 }
+
 /**
- * Cancel subtask edit
+ * Cancels subtask editing.
  */
 function cancelSubtaskEdit() {
   editingSubtaskIndex = null;
   renderSubtaskList();
 }
 
-/*** Focus active subtask input*/
+/**
+ * Focuses the active subtask input.
+ */
 function focusEditingSubtaskInput() {
   if (editingSubtaskIndex === null) return;
-
-  const inputElement = document.querySelector(
-    `#subtask-list li[data-subtask-index="${editingSubtaskIndex}"] .subtask-title-input`
-  );
-
+  const selector = `#subtask-list li[data-subtask-index="${editingSubtaskIndex}"] .subtask-title-input`;
+  const inputElement = document.querySelector(selector);
   if (!inputElement) return;
-
-  requestAnimationFrame(() => {
-    inputElement.focus();
-    inputElement.select();
-  });
+  requestAnimationFrame(() => selectSubtaskInput(inputElement));
 }
 
-/*** Reset subtask*/
+/**
+ * Focuses and selects one subtask input.
+ * @param {HTMLElement} inputElement - Input element.
+ */
+function selectSubtaskInput(inputElement) {
+  inputElement.focus();
+  inputElement.select();
+}
+
+/**
+ * Resets the whole subtask state.
+ */
 function resetSubtasks() {
   subtaskCollection = [];
   editingSubtaskIndex = null;

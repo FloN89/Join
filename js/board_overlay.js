@@ -1,5 +1,11 @@
-let addTaskOverlayLoaded = false;
 let addTaskOverlayEventsBound = false;
+
+/**
+ * Initialisiert die Board-Overlay-Events genau einmal.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  bindBoardAddTaskOverlayEventsOnce();
+});
 
 /**
  * Öffnet das Add-Task-Overlay im Board.
@@ -26,6 +32,11 @@ async function openBoardAddTaskOverlay(status = "todo") {
 
   if (!content.innerHTML.trim()) {
     const response = await fetch("add_task_overlay.html", { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error(`Failed to load add_task_overlay.html (${response.status})`);
+    }
+
     content.innerHTML = await response.text();
 
     if (typeof initializeAddTaskOverlay === "function") {
@@ -43,51 +54,6 @@ function openAddTaskOverlay(status = "todo") {
 }
 
 /**
- * Lädt den HTML-Inhalt des Overlays in den vorgesehenen Container.
- *
- * @async
- * @param {HTMLElement} contentElement - Zielcontainer
- */
-async function loadBoardAddTaskOverlayContent(contentElement) {
-  const response = await fetch("add_task_overlay.html", { cache: "no-store" });
-
-  if (!response.ok) {
-    throw new Error(`Failed to load add_task_overlay.html (${response.status})`);
-  }
-
-  const htmlMarkup = await response.text();
-  contentElement.innerHTML = htmlMarkup;
-}
-
-/**
- * Initialisiert die Overlay-Logik, falls vorhanden.
- *
- * @async
- */
-async function initializeBoardAddTaskOverlayIfAvailable() {
-  if (typeof initializeAddTaskOverlay === "function") {
-    await initializeAddTaskOverlay();
-    return;
-  }
-
-  console.warn("initializeAddTaskOverlay() is not available");
-}
-
-/**
- * Zeigt das Board-Overlay mit Animation an.
- *
- * @param {HTMLElement} overlayElement - Overlay-DOM-Element
- */
-function showBoardAddTaskOverlay(overlayElement) {
-  overlayElement.setAttribute("aria-hidden", "false");
-  document.body.classList.add("overlay-open");
-
-  requestAnimationFrame(() => {
-    overlayElement.classList.add("active");
-  });
-}
-
-/**
  * Schließt das Board-Overlay.
  */
 function closeBoardAddTaskOverlay() {
@@ -100,6 +66,13 @@ function closeBoardAddTaskOverlay() {
 }
 
 /**
+ * Alias, damit alle bestehenden onclick-Aufrufe weiter funktionieren.
+ */
+function closeAddTaskOverlay() {
+  closeBoardAddTaskOverlay();
+}
+
+/**
  * Bindet globale Events nur einmal.
  */
 function bindBoardAddTaskOverlayEventsOnce() {
@@ -107,7 +80,6 @@ function bindBoardAddTaskOverlayEventsOnce() {
 
   bindTaskCreatedRefreshEvent();
   bindEscapeCloseEvent();
-  bindBackdropCloseEvent();
 
   addTaskOverlayEventsBound = true;
 }
@@ -135,19 +107,6 @@ function bindEscapeCloseEvent() {
     const overlayElement = document.getElementById("add-task-overlay");
     if (!overlayElement || !overlayElement.classList.contains("active")) return;
 
-    closeBoardAddTaskOverlay();
-  });
-}
-
-/**
- * Schließt das Overlay bei Klick auf den Hintergrund.
- */
-function bindBackdropCloseEvent() {
-  const overlayElement = document.getElementById("add-task-overlay");
-  if (!overlayElement) return;
-
-  overlayElement.addEventListener("click", (mouseEvent) => {
-    if (mouseEvent.target !== overlayElement) return;
     closeBoardAddTaskOverlay();
   });
 }

@@ -1,39 +1,37 @@
 /**
- * Initialize priority icon handlers
+ * Initializes priority icon updates.
  */
 function initializePriorityIconHandlers() {
-  const radioNodeList = document.querySelectorAll('input[name="priority"]');
-  radioNodeList.forEach((radioElement) => {
-    radioElement.addEventListener("change", updatePriorityIcons);
-  });
+  document.querySelectorAll('input[name="priority"]').forEach(registerPriorityChangeEvent);
   updatePriorityIcons();
 }
 
 /**
- * Update priority icons
+ * Registers one priority change event.
+ * @param {HTMLElement} radioElement - Radio input.
  */
-function updatePriorityIcons() {
-  const urgentRadio = document.getElementById("priority-urgent");
-  const mediumRadio = document.getElementById("priority-medium");
-  const lowRadio = document.getElementById("priority-low");
-
-  applyPriorityIcon("icon-urgent", urgentRadio, "urgent_white", "urgent_red");
-  applyPriorityIcon("icon-medium", mediumRadio, "medium_white", "medium_yellow");
-  applyPriorityIcon("icon-low", lowRadio, "low_white", "low_green");
+function registerPriorityChangeEvent(radioElement) {
+  radioElement.addEventListener("change", updatePriorityIcons);
 }
 
 /**
- * Apply priority icon
- * @param {string} iconId - ID value
- * @param {HTMLElement} radioElement - DOM element
- * @param {string} checkedName - Checked name value
- * @param {string} uncheckedName - Unchecked name value
+ * Updates all priority icons.
+ */
+function updatePriorityIcons() {
+  applyPriorityIcon("icon-urgent", getElement("priority-urgent"), "urgent_white", "urgent_red");
+  applyPriorityIcon("icon-medium", getElement("priority-medium"), "medium_white", "medium_yellow");
+  applyPriorityIcon("icon-low", getElement("priority-low"), "low_white", "low_green");
+}
+
+/**
+ * Applies the correct priority icon.
+ * @param {string} iconId - Image identifier.
+ * @param {HTMLElement|null} radioElement - Radio input.
+ * @param {string} checkedName - Checked icon name.
+ * @param {string} uncheckedName - Unchecked icon name.
  */
 function applyPriorityIcon(iconId, radioElement, checkedName, uncheckedName) {
-  const iconElement = document.getElementById(iconId);
+  const iconElement = getElement(iconId);
   if (!iconElement || !radioElement) return;
-
-  iconElement.src = radioElement.checked
-    ? `../assets/icons/${checkedName}.svg`
-    : `../assets/icons/${uncheckedName}.svg`;
+  iconElement.src = radioElement.checked ? `../assets/icons/${checkedName}.svg` : `../assets/icons/${uncheckedName}.svg`;
 }
