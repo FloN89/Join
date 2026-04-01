@@ -20,7 +20,7 @@ function getTemplateMarkup(templateId) {
 
 /**
  * Renders subtasks as HTML for task overlay
- * @param {Array} subtasks - Array of subtask objects
+ * @param {Array} subtasks - Array of subtasks
  * @param {string} id - Task ID
  * @returns {string} HTML string for subtasks
  */
@@ -233,13 +233,15 @@ async function initializeEditOverlayFields(id) {
   renderEditSubtasks(taskItem.subtasks || []);
 
   const priorityInput = editOverlay.querySelector(
-    `input[name="priority"][value="${taskItem.priority}"]`
+    `input[name="edit-priority"][value="${taskItem.priority}"]`
   );
+
   if (priorityInput) {
     priorityInput.checked = true;
   }
 
-  initializePriorityIconHandlers();
+  initializeEditPriorityIconHandlers();
+  bindEditSubtaskInputEvents();
 }
 
 /**
@@ -250,6 +252,102 @@ async function openEditTaskOverlay(id) {
   showEditOverlay();
   renderEditOverlayContent(id);
   await initializeEditOverlayFields(id);
+}
+
+/**
+ * Initializes priority icon handling for edit overlay.
+ */
+function initializeEditPriorityIconHandlers() {
+  const root = getEditOverlayRoot();
+  if (!root) return;
+
+  root.querySelectorAll('input[name="edit-priority"]').forEach((radioElement) => {
+    radioElement.addEventListener("change", updateEditPriorityIcons);
+  });
+
+  updateEditPriorityIcons();
+}
+
+/**
+ * Updates all priority icons inside the edit overlay.
+ */
+function updateEditPriorityIcons() {
+  applyEditPriorityIcon(
+    "edit-icon-urgent",
+    "edit-priority-urgent",
+    "urgent_white",
+    "urgent_red"
+  );
+  applyEditPriorityIcon(
+    "edit-icon-medium",
+    "edit-priority-medium",
+    "medium_white",
+    "medium_yellow"
+  );
+  applyEditPriorityIcon(
+    "edit-icon-low",
+    "edit-priority-low",
+    "low_white",
+    "low_green"
+  );
+}
+
+/**
+ * Applies one edit priority icon state.
+ * @param {string} iconId
+ * @param {string} radioId
+ * @param {string} checkedName
+ * @param {string} uncheckedName
+ */
+function applyEditPriorityIcon(iconId, radioId, checkedName, uncheckedName) {
+  const iconElement = getEditOverlayElement(`#${iconId}`);
+  const radioElement = getEditOverlayElement(`#${radioId}`);
+
+  if (!iconElement || !radioElement) return;
+
+  iconElement.src = radioElement.checked
+    ? `../assets/icons/${checkedName}.svg`
+    : `../assets/icons/${uncheckedName}.svg`;
+}
+
+/**
+ * Registers edit overlay subtask input events.
+ */
+function bindEditSubtaskInputEvents() {
+  const inputElement = getEditOverlayElement("#edit-subtask");
+  const clearButtonElement = getEditOverlayElement("#edit-subtask-clear-button");
+  const addButtonElement = getEditOverlayElement("#edit-subtask-add-button");
+
+  if (inputElement) {
+    inputElement.addEventListener("keydown", handleEditSubtaskKeydown);
+  }
+
+  if (clearButtonElement) {
+    clearButtonElement.addEventListener("click", clearEditSubtaskInput);
+  }
+
+  if (addButtonElement) {
+    addButtonElement.addEventListener("click", addEditSubtask);
+  }
+}
+
+/**
+ * Handles Enter key inside edit subtask input.
+ * @param {KeyboardEvent} keyboardEvent
+ */
+function handleEditSubtaskKeydown(keyboardEvent) {
+  if (keyboardEvent.key !== "Enter") return;
+  keyboardEvent.preventDefault();
+  addEditSubtask();
+}
+
+/**
+ * Clears the edit subtask input.
+ */
+function clearEditSubtaskInput() {
+  const inputElement = getEditOverlayElement("#edit-subtask");
+  if (!inputElement) return;
+  inputElement.value = "";
 }
 
 /**
@@ -277,13 +375,11 @@ function getEditFormValues() {
   const editOverlay = getEditOverlayRoot();
 
   return {
-    title: document.getElementById("edit-title")?.value?.trim() || "",
-    description: document.getElementById("edit-description")?.value?.trim() || "",
-    dueDate: document.getElementById("edit-due-date")?.value || "",
+    title: getEditOverlayElement("#edit-title")?.value?.trim() || "",
+    description: getEditOverlayElement("#edit-description")?.value?.trim() || "",
+    dueDate: getEditOverlayElement("#edit-due-date")?.value || "",
     priority:
-      editOverlay?.querySelector('input[name="priority"]:checked')?.value ||
-      document.querySelector('input[name="priority"]:checked')?.value ||
-      "medium",
+      editOverlay?.querySelector('input[name="edit-priority"]:checked')?.value || "medium",
     assignedTo:
       typeof getBoardEditSelectedAssignees === "function"
         ? getBoardEditSelectedAssignees()
@@ -365,16 +461,16 @@ function renderEditSubtasks(subtasks = []) {
  * Adds new editable subtask from input field
  */
 function addEditSubtask() {
-  const input = getEditOverlayElement("#subtask");
-  const list = getEditOverlayElement("#edit-subtask-list");
+  const inputElement = getEditOverlayElement("#edit-subtask");
+  const listElement = getEditOverlayElement("#edit-subtask-list");
 
-  if (!input || !list) return;
+  if (!inputElement || !listElement) return;
 
-  const text = input.value.trim();
-  if (!text) return;
+  const textValue = inputElement.value.trim();
+  if (!textValue) return;
 
-  appendSubtaskRow(list, text);
-  input.value = "";
+  appendSubtaskRow(listElement, textValue);
+  inputElement.value = "";
 }
 
 /**

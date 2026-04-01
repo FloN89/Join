@@ -1,153 +1,210 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="../assets/icons/join_logo_2.svg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/join_logo_2.svg" />
     <title>Board</title>
-  <link rel="stylesheet" href="../styles/1-settings/variables.css">
-  <link rel="stylesheet" href="../styles/2-base/base.css">
-  <link rel="stylesheet" href="../styles/3-layout/layout.css">
-  <link rel="stylesheet" href="../styles/4-components/sidebar.css">
-  <link rel="stylesheet" href="../styles/4-components/topbar.css">
-  <link rel="stylesheet" href="../styles/5-pages/board.css">
-  <link rel="stylesheet" href="../styles/6-responsive/layout-mobile.css">
-  <link rel="stylesheet" href="../styles/6-responsive/layout-tablet.css">
-  <link rel="stylesheet" href="../styles/6-responsive/utilities-mobile.css">
-  <link rel="stylesheet" href="../styles/5-pages/add_task_overlay.css">
-</head>
 
-<body>
-  <div class="layout">
-    <div id="sidebar-container"></div>
-    <div class="main-content">
-      <div id="topbar-container"></div>
-      <div class="main-section">
+    <link rel="stylesheet" href="../styles/1-settings/variables.css" />
+    <link rel="stylesheet" href="../styles/2-base/base.css" />
+    <link rel="stylesheet" href="../styles/3-layout/layout.css" />
+    <link rel="stylesheet" href="../styles/4-components/sidebar.css" />
+    <link rel="stylesheet" href="../styles/4-components/topbar.css" />
+    <link rel="stylesheet" href="../styles/5-pages/board.css" />
+    <link rel="stylesheet" href="../styles/6-responsive/layout-mobile.css" />
+    <link rel="stylesheet" href="../styles/6-responsive/layout-tablet.css" />
+    <link rel="stylesheet" href="../styles/6-responsive/utilities-mobile.css" />
+    <link rel="stylesheet" href="../styles/5-pages/add_task_overlay.css" />
+  </head>
 
-        <div class="find_and_create_task_container">
-          <h1 class="board-headline">Board</h1>
-          <div id="searchInputWrapper" class="search_input_wrapper">
-            <div class="search_field_row">
-              <input id="searchInput" type="text" placeholder="Find Task" />
-              <div class="search_affix">
-                <div class="separator_input_field"></div>
-                <button type="button" class="search_button" onclick="onSearchInput()"></button>
+  <body>
+    <div class="layout">
+      <div id="sidebar-container"></div>
+
+      <div class="main-content">
+        <div id="topbar-container"></div>
+
+        <div class="main-section">
+          <div class="find_and_create_task_container">
+            <h1 class="board-headline">Board</h1>
+
+            <div id="searchInputWrapper" class="search_input_wrapper">
+              <div class="search_field_row">
+                <input id="searchInput" type="text" placeholder="Find Task" />
+                <div class="search_affix">
+                  <div class="separator_input_field"></div>
+                  <button
+                    type="button"
+                    class="search_button"
+                    onclick="onSearchInput()"
+                    aria-label="Search task"
+                  ></button>
+                </div>
+              </div>
+
+              <div id="search_error" class="search_error">
+                Results not found. Adjust your search.
               </div>
             </div>
-            <div id="search_error" class="search_error">
-              Results not found. Adjust your search.
-            </div>
-          </div>
-          <button class="add_task_button toggle_button" onclick="openBoardAddTaskOverlay('todo')">
-            <span class="add_task_lable">Add task</span>
-            <img class="plus_sign" src="../assets/icons/plus_white.svg" />
-          </button>
-        </div>
 
-        <!-- Kanban Board Spalten -->
-        <div class="kanban-board">
-          <!-- To do Spalte -->
-          <div class="kanban-column">
-            <div class="column-header">
-              <h2>To do</h2>
-              <button class="add-column-task-btn" onclick="openAddTaskOverlay('todo')">+</button>
-            </div>
-            <div class="task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)"
-              ondragleave="removeDragOver(event)">
-              <!-- Hier kommen die Tasks rein -->
-            </div>
+            <button
+              class="add_task_button toggle_button"
+              onclick="openBoardAddTaskOverlay('todo')"
+              type="button"
+            >
+              <span class="add_task_lable">Add task</span>
+              <img class="plus_sign" src="../assets/icons/plus_white.svg" alt="Add task" />
+            </button>
           </div>
 
-          <!-- In progress Spalte -->
-          <div class="kanban-column">
-            <div class="column-header">
-              <h2>In progress</h2>
-              <button class="add-column-task-btn" onclick="openAddTaskOverlay('in-progress')">+</button>
+          <div class="kanban-board">
+            <!-- To do -->
+            <div class="kanban-column">
+              <div class="column-header">
+                <h2>To do</h2>
+                <button
+                  class="add-column-task-btn"
+                  type="button"
+                  onclick="openBoardAddTaskOverlay('todo')"
+                  aria-label="Add task to To do"
+                >
+                  +
+                </button>
+              </div>
+
+              <div
+                class="task-list"
+                id="todo"
+                ondrop="drop(event)"
+                ondragover="allowDrop(event)"
+                ondragleave="removeDragOver(event)"
+              >
+                <!-- Tasks -->
+              </div>
             </div>
-            <div class="task-list" id="in-progress" ondrop="drop(event)" ondragover="allowDrop(event)"
-              ondragleave="removeDragOver(event)">
-              <!-- Hier kommen die Tasks rein -->
+
+            <!-- In progress -->
+            <div class="kanban-column">
+              <div class="column-header">
+                <h2>In progress</h2>
+                <button
+                  class="add-column-task-btn"
+                  type="button"
+                  onclick="openBoardAddTaskOverlay('in-progress')"
+                  aria-label="Add task to In progress"
+                >
+                  +
+                </button>
+              </div>
+
+              <div
+                class="task-list"
+                id="in-progress"
+                ondrop="drop(event)"
+                ondragover="allowDrop(event)"
+                ondragleave="removeDragOver(event)"
+              >
+                <!-- Tasks -->
+              </div>
             </div>
+
+            <!-- Await feedback -->
+            <div class="kanban-column">
+              <div class="column-header">
+                <h2>Await feedback</h2>
+                <button
+                  class="add-column-task-btn"
+                  type="button"
+                  onclick="openBoardAddTaskOverlay('await-feedback')"
+                  aria-label="Add task to Await feedback"
+                >
+                  +
+                </button>
+              </div>
+
+              <div
+                class="task-list"
+                id="await-feedback"
+                ondrop="drop(event)"
+                ondragover="allowDrop(event)"
+                ondragleave="removeDragOver(event)"
+              >
+                <!-- Tasks -->
+              </div>
+            </div>
+
+            <!-- Done -->
+            <div class="kanban-column">
+              <div class="column-header">
+                <h2>Done</h2>
+              </div>
+
+              <div
+                class="task-list"
+                id="done"
+                ondrop="drop(event)"
+                ondragover="allowDrop(event)"
+                ondragleave="removeDragOver(event)"
+              >
+                <!-- Tasks -->
+              </div>
+            </div>
+
+            <!-- Task detail overlay -->
+            <div id="task_overlay" class="task_overlay" onclick="event.stopPropagation()"></div>
+            <div id="big-card-background" class="big-card-background" onclick="closeTaskOverlay()"></div>
+            <div id="edit_task_overlay" class="edit_task_overlay task_overlay"></div>
           </div>
-
-          <img src="" alt="">
-
-          <!-- Await feedback Spalte -->
-          <div class="kanban-column">
-            <div class="column-header">
-              <h2>Await feedback</h2>
-              <button class="add-column-task-btn" onclick="openAddTaskOverlay('await-feedback')">+</button>
-            </div>
-            <div class="task-list" id="await-feedback" ondrop="drop(event)" ondragover="allowDrop(event)"
-              ondragleave="removeDragOver(event)">
-              <!-- Hier kommen die Tasks rein -->
-            </div>
-          </div>
-
-          <!-- Done Spalte -->
-          <div class="kanban-column">
-            <div class="column-header">
-              <h2>Done</h2>
-            </div>
-            <div class="task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)"
-              ondragleave="removeDragOver(event)">
-              <!-- Hier kommen die Tasks rein -->
-            </div>
-          </div>
-
-          <!-- große Karte -->
-          <div id="task_overlay" class="task_overlay" onclick="event.stopPropagation()"></div>
-          <div id="big-card-background" class="big-card-background" onclick="closeTaskOverlay()"></div>
-          <div id="edit_task_overlay" class="edit_task_overlay task_overlay "></div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true">
-    <div class="add-task-backdrop" onclick="closeAddTaskOverlay()"></div>
-    <div class="add-task-panel">
-      <div id="add-task-content"></div>
+
+    <!-- Add task overlay -->
+    <div id="add-task-overlay" class="add-task-overlay" aria-hidden="true">
+      <div class="add-task-backdrop" onclick="closeAddTaskOverlay()"></div>
+      <div class="add-task-panel">
+        <div id="add-task-content"></div>
+      </div>
     </div>
-  </div>
-  
-  <template id="subtask-actions-default-template">
-    <div class="subtask-actions">
-      <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit">
-      <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-      <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-    </div>
-  </template>
-  <template id="subtask-actions-editable-template">
-    <div class="subtask-actions">
-      <img src="../assets/icons/check.svg" class="save-subtask-btn" title="Save">
-      <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider">
-      <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete">
-    </div>
-  </template>
 
- <script src="../js/sidebar-loader.js"></script>
-<script src="../js/topbar-loader.js"></script>
+    <template id="subtask-actions-default-template">
+      <div class="subtask-actions">
+        <img src="../assets/icons/edit.svg" class="edit-subtask-btn" title="Edit" alt="Edit subtask" />
+        <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider" />
+        <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete" alt="Delete subtask" />
+      </div>
+    </template>
 
-<script src="../js/firebase.js"></script>
-<script src="../js/guest-data.js"></script>
+    <template id="subtask-actions-editable-template">
+      <div class="subtask-actions">
+        <img src="../assets/icons/check.svg" class="save-subtask-btn" title="Save" alt="Save subtask" />
+        <img class="divider" src="../assets/icons/vector_3.svg" alt="Divider" />
+        <img src="../assets/icons/delete.svg" class="delete-subtask-btn" title="Delete" alt="Delete subtask" />
+      </div>
+    </template>
 
-<script src="../js/add_task_shared_utils.js"></script>
-<script src="../js/add_task_validation.js"></script>
-<script src="../js/add_task_shared_contacts.js"></script>
-<script src="../js/add_task_form.js"></script>
-<script src="../js/add_task_assignees.js"></script>
-<script src="../js/add_task_priority.js"></script>
-<script src="../js/add_task_subtasks.js"></script>
-<script src="../js/add_task_overlay.js"></script>
+    <script src="../js/sidebar-loader.js"></script>
+    <script src="../js/topbar-loader.js"></script>
 
-<script src="../js/template_functions/board_template.js"></script>
-<script src="../js/board_touch.js"></script>
-<script src="../js/board_search.js"></script>
-<script src="../js/board_overlay.js"></script>
-<script src="../js/board_assignees.js"></script>
-<script src="../js/board.js"></script>
-<script src="../js/board_big_card.js"></script>
-</body>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/guest-data.js"></script>
 
+    <script src="../js/add_task_shared_utils.js"></script>
+    <script src="../js/add_task_validation.js"></script>
+    <script src="../js/add_task_shared_contacts.js"></script>
+    <script src="../js/add_task_form.js"></script>
+    <script src="../js/add_task_assignees.js"></script>
+    <script src="../js/add_task_priority.js"></script>
+    <script src="../js/add_task_subtasks.js"></script>
+    <script src="../js/add_task_overlay.js"></script>
+
+    <script src="../js/template_functions/board_template.js"></script>
+    <script src="../js/board_touch.js"></script>
+    <script src="../js/board_search.js"></script>
+    <script src="../js/board_overlay.js"></script>
+    <script src="../js/board_assignees.js"></script>
+    <script src="../js/board.js"></script>
+    <script src="../js/board_big_card.js"></script>
+  </body>
 </html>
