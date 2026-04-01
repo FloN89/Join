@@ -478,6 +478,9 @@ body.overlay-open {
   box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.15);
 }
 
+.form-right {
+    /* gap: 0 !important; */
+}
 /* FOOTER / BUTTONS */
 
 .add-task-overlay .form-footer {

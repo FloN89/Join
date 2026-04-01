@@ -406,7 +406,7 @@ function enableSubtaskEdit(li) {
  * Saves subtask edit and exits edit mode
  * @param {HTMLElement} li - List item element
  */
-function saveSubtaskEdit(li) {
+function saveBoardOverlaySubtaskEdit(li) {
   const title = li.querySelector(".subtask-title");
   title.setAttribute("contenteditable", "false");
   title.blur();

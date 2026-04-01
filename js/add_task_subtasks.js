@@ -351,10 +351,14 @@ function editSubtask(subtaskIndex) {
  */
 function saveSubtaskEdit(subtaskIndex, newTitle) {
   if (!isValidSubtaskIndex(subtaskIndex)) return;
+
   const cleanedTitle = getTrimmedValue(newTitle ?? "");
+
+  if (cleanedTitle) {
+    subtaskCollection[subtaskIndex].title = cleanedTitle;
+  }
+
   editingSubtaskIndex = null;
-  if (!cleanedTitle) return renderSubtaskList();
-  subtaskCollection[subtaskIndex].title = cleanedTitle;
   renderSubtaskList();
 }
 
