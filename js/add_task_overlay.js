@@ -94,6 +94,7 @@ function buildOverlayTaskObject() {
   return {
     ...collectTaskData(),
     status: window.currentBoardAddTaskStatus || "todo",
+    createdAt: Date.now(),
   };
 }
 

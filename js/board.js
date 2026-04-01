@@ -16,10 +16,34 @@ async function fetchTasks() {
     task = (await loadData("task/")) || {};
   }
 
-  taskId = Object.keys(task);
+  taskId = getSortedTaskIds(task);
 
   clearBoard();
   dataToCard();
+}
+
+/**
+ * Returns task ids sorted by creation date (newest first).
+ * Tasks without a timestamp stay at the end.
+ * @param {Object} taskCollection - Complete task map.
+ * @returns {Array<string>} Sorted task ids.
+ */
+function getSortedTaskIds(taskCollection) {
+  return Object.keys(taskCollection).sort((firstId, secondId) => {
+    const secondTimestamp = getTaskSortTimestamp(taskCollection[secondId]);
+    const firstTimestamp = getTaskSortTimestamp(taskCollection[firstId]);
+    return secondTimestamp - firstTimestamp;
+  });
+}
+
+/**
+ * Returns the timestamp used for sorting one task.
+ * @param {Object} taskItem - Task data.
+ * @returns {number} Sort timestamp.
+ */
+function getTaskSortTimestamp(taskItem = {}) {
+  const rawTimestamp = Number(taskItem.createdAt);
+  return Number.isFinite(rawTimestamp) ? rawTimestamp : 0;
 }
 
 let currentDraggedElement;

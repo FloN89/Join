@@ -70,5 +70,6 @@ function buildPageTaskObject() {
   return {
     ...collectTaskData(),
     status: "todo",
+    createdAt: Date.now(),
   };
 }
