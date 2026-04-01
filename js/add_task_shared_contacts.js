@@ -2,9 +2,7 @@ let contacts = [];
 let globalClickHandlerRegistered = false;
 let currentAddTaskUser = null;
 
-/**
- * Loads all contacts and refreshes the assignee user interface.
- */
+/*** Loads all contacts and refreshes the assignee user interface.*/
 async function loadContacts() {
   const mergedContactsObject = await readMergedContacts();
   const normalizedContacts = await buildSortedContacts(mergedContactsObject);
@@ -90,10 +88,19 @@ function mergeContactsIntoTarget(targetObject, sourceObject) {
  */
 async function includeLoggedInUserInAddTaskContacts(contactsObject) {
   const userId = sessionStorage.getItem("userId");
-  if (!shouldIncludeLoggedInUser(userId, contactsObject)) return;
-  const userObject = await loadData(`users/${userId}`);
-  if (!userObject) return;
-  contactsObject[userId] = buildContactFromUser(userObject);
+
+  if (!userId || userId === "guest") {
+    currentAddTaskUser = null;
+    return;
+  }
+
+  if (!contactsObject[userId]) {
+    const userObject = await loadData(`users/${userId}`);
+    if (!userObject) return;
+    contactsObject[userId] = buildContactFromUser(userObject);
+  }
+
+  currentAddTaskUser = mapContact(contactsObject[userId]);
 }
 
 /**
@@ -220,46 +227,69 @@ function shouldUseGuestFallback(contactList) {
 /**
  * Sorts contacts by name.
  * @param {Array} contactList - Contact array.
- * @returns {Array} Sorted contacts.
- */
+ * @returns {Array} Sorted contacts.*/
 function sortContactsByName(contactList) {
-  return contactList.sort((firstContact, secondContact) => firstContact.name.localeCompare(secondContact.name, "de"));
+  return contactList.sort((firstContact, secondContact) => {
+    const firstContactIsLoggedInUser = isLoggedInUserContact(firstContact);
+    const secondContactIsLoggedInUser = isLoggedInUserContact(secondContact);
+
+    if (firstContactIsLoggedInUser && !secondContactIsLoggedInUser) return -1;
+    if (!firstContactIsLoggedInUser && secondContactIsLoggedInUser) return 1;
+
+    return firstContact.name.localeCompare(secondContact.name, "de");
+  });
 }
 
 /**
- * Registers shared dropdown events.
- */
+ * Checks whether a contact is the logged-in user.
+ * @param {Object} contactObject - Contact item.
+ * @returns {boolean} True when it is the logged-in user.*/
+function isLoggedInUserContact(contactObject) {
+  if (!currentAddTaskUser) return false;
+
+  if (contactObject.mail && currentAddTaskUser.mail) {
+    return (
+      contactObject.name === currentAddTaskUser.name &&
+      contactObject.mail === currentAddTaskUser.mail
+    );
+  }
+
+  return contactObject.name === currentAddTaskUser.name;
+}
+
+function getAssigneeDisplayName(contactObject) {
+  if (isLoggedInUserContact(contactObject)) {
+    return `${contactObject.name} (You)`;
+  }
+
+  return contactObject.name;
+}
+
+/*** Registers shared dropdown events.*/
 function registerDropdownEvents() {
   bindClick("assignee-header", toggleAssigneeDropdown);
   bindClick("category-header", toggleCategoryDropdown);
 }
 
-/**
- * Registers category option events.
- */
+/*** Registers category option events.*/
 function registerCategoryOptionEvents() {
   document.querySelectorAll("#category-dropdown .category-option").forEach(registerCategoryOptionEvent);
 }
 
 /**
  * Registers one category option event.
- * @param {HTMLElement} optionElement - Category option.
- */
+ * @param {HTMLElement} optionElement - Category option.*/
 function registerCategoryOptionEvent(optionElement) {
   optionElement.addEventListener("click", () => selectCategory(optionElement.dataset.category));
 }
 
-/**
- * Toggles the assignee dropdown.
- */
+/***Toggles the assignee dropdown.*/
 function toggleAssigneeDropdown() {
   toggleDropdownById("assignee-dropdown");
   closeDropdownById("category-dropdown");
 }
 
-/**
- * Toggles the category dropdown.
- */
+/*** Toggles the category dropdown.*/
 function toggleCategoryDropdown() {
   toggleDropdownById("category-dropdown");
   closeDropdownById("assignee-dropdown");
@@ -267,15 +297,14 @@ function toggleCategoryDropdown() {
 
 /**
  * Toggles a dropdown by identifier.
- * @param {string} dropdownId - Element identifier.
- */
+ * @param {string} dropdownId - Element identifier.*/
 function toggleDropdownById(dropdownId) {
   getElement(dropdownId)?.classList.toggle("d-none");
 }
 
 /**
  * Closes a dropdown by identifier.
- * @param {string} dropdownId - Element identifier.
+ * @param {string} dropdownId - Dropdown identifier.
  */
 function closeDropdownById(dropdownId) {
   getElement(dropdownId)?.classList.add("d-none");
@@ -283,8 +312,7 @@ function closeDropdownById(dropdownId) {
 
 /**
  * Selects a task category.
- * @param {string} categoryValue - Category value.
- */
+ * @param {string} categoryValue - Category value.*/
 function selectCategory(categoryValue) {
   setCategoryHiddenInput(categoryValue);
   setCategoryPlaceholderText(categoryValue);
@@ -294,8 +322,7 @@ function selectCategory(categoryValue) {
 
 /**
  * Sets the hidden category input.
- * @param {string} categoryValue - Category value.
- */
+ * @param {string} categoryValue - Category value.*/
 function setCategoryHiddenInput(categoryValue) {
   const hiddenInputElement = getElement("category");
   if (!hiddenInputElement) return;
@@ -305,8 +332,7 @@ function setCategoryHiddenInput(categoryValue) {
 
 /**
  * Updates the category placeholder label.
- * @param {string} categoryValue - Category value.
- */
+ * @param {string} categoryValue - Category value.*/
 function setCategoryPlaceholderText(categoryValue) {
   const placeholderElement = getElement("selected-category-placeholder");
   if (!placeholderElement) return;
@@ -316,24 +342,19 @@ function setCategoryPlaceholderText(categoryValue) {
 /**
  * Returns the visible category label.
  * @param {string} categoryValue - Category value.
- * @returns {string} Visible label.
- */
+ * @returns {string} Visible label.*/
 function getCategoryPlaceholderText(categoryValue) {
   if (categoryValue === "technical-task") return "Technical Task";
   if (categoryValue === "user-story") return "User Story";
   return "Select category";
 }
 
-/**
- * Removes the category error state.
- */
+/*** Removes the category error state.*/
 function removeCategoryError() {
   clearFieldError("category", "error-category");
 }
 
-/**
- * Closes task dropdowns.
- */
+/*** Closes task dropdowns.*/
 function closeTaskDropdowns() {
   closeDropdownById("assignee-dropdown");
   closeDropdownById("category-dropdown");
@@ -342,17 +363,14 @@ function closeTaskDropdowns() {
 /**
  * Registers one click listener.
  * @param {string} elementId - Element identifier.
- * @param {Function} callbackFunction - Click callback.
- */
+ * @param {Function} callbackFunction - Click callback.*/
 function bindClick(elementId, callbackFunction) {
   const targetElement = getElement(elementId);
   if (!targetElement) return;
   targetElement.addEventListener("click", callbackFunction);
 }
 
-/**
- * Registers the global outside click handler once.
- */
+/*** Registers the global outside click handler once.*/
 function registerGlobalClickHandler() {
   if (globalClickHandlerRegistered) return;
   document.addEventListener("click", handleOutsideClick);
@@ -361,8 +379,7 @@ function registerGlobalClickHandler() {
 
 /**
  * Closes open dropdowns after outside clicks.
- * @param {MouseEvent} mouseEvent - Click event.
- */
+ * @param {MouseEvent} mouseEvent - Click event.*/
 function handleOutsideClick(mouseEvent) {
   closeDropdownIfClickedOutside("assignee-dropdown", ".custom-multiselect", mouseEvent);
   closeDropdownIfClickedOutside("category-dropdown", ".custom-category-select", mouseEvent);
@@ -372,8 +389,7 @@ function handleOutsideClick(mouseEvent) {
  * Closes a dropdown after an outside click.
  * @param {string} dropdownId - Dropdown identifier.
  * @param {string} containerSelector - Parent selector.
- * @param {MouseEvent} mouseEvent - Click event.
- */
+ * @param {MouseEvent} mouseEvent - Click event.*/
 function closeDropdownIfClickedOutside(dropdownId, containerSelector, mouseEvent) {
   const dropdownElement = getElement(dropdownId);
   const containerElement = document.querySelector(containerSelector);
