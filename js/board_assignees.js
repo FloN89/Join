@@ -42,6 +42,17 @@ function getEditOverlayElement(selector) {
 }
 
 /**
+ * Finds all matching elements inside the edit overlay.
+ * @param {string} selector
+ * @returns {Array<HTMLElement>}
+ */
+function getEditOverlayElements(selector) {
+  const root = getEditOverlayRoot();
+  if (!root) return [];
+  return Array.from(root.querySelectorAll(selector));
+}
+
+/**
  * Returns all selected assignees from the edit overlay only.
  * @returns {Array}
  */
