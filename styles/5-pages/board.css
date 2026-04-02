@@ -909,10 +909,11 @@
 
 .edit_task_overlay .assignee-checkbox:checked {
   border: none;
-  background-image: url("/assets/icons/Property 1=hover checked.svg");
+  background-image: url("/assets/icons/Property\ 1=checked.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px 20px;
+  filter: brightness(0) invert(1);
 }
 
 .edit_task_overlay .d-none {
