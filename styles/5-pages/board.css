@@ -402,6 +402,7 @@
 .edit_task_overlay .big-card {
   display: flex;
   flex-direction: column;
+  width: min(420px, calc(100vw - 32px));
 }
 
 .big-card-background {
