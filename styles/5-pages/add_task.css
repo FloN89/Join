@@ -255,7 +255,7 @@ input#priority-low:checked + label.low {
 
 .assignee-checkbox:checked {
   border: none;
-  background-image: url("/assets/icons/Property\ 1=checked.svg");
+  background-image: url("../../assets/icons/Property\ 1=checked.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px 20px;
@@ -556,7 +556,7 @@ input#priority-low:checked + label.low {
 .success-icon {
   width: 35px;
   height: 35px;
-  background-image: url("/assets/icons/board.svg");
+  background-image: url("../../assets/icons/board.svg");
   background-size: contain;
   background-repeat: no-repeat;
 }
