@@ -860,6 +860,7 @@
   padding: 6px 8px;
   border-radius: 12px;
   transition: background-color 0.15s ease;
+  margin: 2px 0;
 }
 
 .edit_task_overlay .assignee-row:hover {
@@ -891,6 +892,7 @@
   color: #ffffff;
   font-size: 14px;
   font-weight: 500;
+  border: 1px solid #ffffff;
 }
 
 .edit_task_overlay .assignee-name {
