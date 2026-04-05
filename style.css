@@ -45,7 +45,7 @@ body {
 }
 
 .app-logo.to-login-position {
-  top: 80px;
+  top: 100px;
   left: calc((100vw - min(90vw, 1440px)) / 2 + 77px);
   transform: none;
   width: 101px;
@@ -53,15 +53,26 @@ body {
 
 @media (max-width: 1360px) {
   .app-logo.to-login-position {
+    top: 100px;
     left: calc((100vw - min(90vw, 1440px)) / 2 + 150px);
+    width: 101px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-logo.to-login-position {
+    top: 100px;
+    left: calc((100vw - min(90vw, 1440px)) / 2 + 50px);
+    width: 101px;
   }
 }
 
 @media (max-width: 680px) {
   .app-logo.to-login-position {
-    top: 32px;
+    top: 52px;
     left: calc((100vw - min(90vw, 1440px)) / 2 + 24px);
-    width: 65px;
+    transform: none;
+    width: 80px;
   }
 }
 
@@ -84,7 +95,7 @@ body {
   }
 
   .app-logo.to-login-position {
-    top: 32px;
+    top: 52px;
     left: calc((100vw - min(90vw, 1440px)) / 2 + 24px);
     transform: none;
     width: 65px;
@@ -93,15 +104,16 @@ body {
 
 @media (max-width: 320px) {
   .app-logo.to-login-position {
-    top: 20px;
+    top: 40px;
     left: calc((100vw - min(90vw, 1440px)) / 2 + 16px);
+    transform: none;
     width: 50px;
   }
 }
 
 /* ============================================
    Landscape Mode Deaktivierung (Mobile)
-   ============================================ */
+   ============================================ 
 
 @media (max-width: 900px) and (orientation: landscape) {
   body {
@@ -126,4 +138,4 @@ body {
     font-size: 20px;
     font-weight: 600;
   }
-}
+}*/
