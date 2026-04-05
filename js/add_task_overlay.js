@@ -1,4 +1,5 @@
 let overlayBootstrapped = false;
+let overlayCloseIconListenerRegistered = false;
 
 /**
  * Initializes the add-task overlay after the HTML was injected into the board.
@@ -7,7 +8,10 @@ async function initializeAddTaskOverlay() {
   const taskFormElement = getElement("taskForm");
   if (!taskFormElement) return;
 
+  initializeOverlayCloseIcon();
+
   if (overlayBootstrapped && taskFormElement.dataset.initialized === "true") {
+    updateOverlayCloseIcon();
     updateAssigneeDisplay();
     return;
   }
@@ -22,6 +26,7 @@ async function initializeAddTaskOverlay() {
   initializePriorityIconHandlers();
   renderSubtaskList();
   updateAssigneeDisplay();
+  updateOverlayCloseIcon();
 }
 
 window.initializeAddTaskOverlay = initializeAddTaskOverlay;
@@ -52,6 +57,40 @@ function registerOverlayFormSubmitEvent() {
  */
 function registerOverlayClearButtonEvent() {
   bindClick("clear-form-button", handleClear);
+}
+
+/**
+ * Initializes the responsive close icon handling.
+ */
+function initializeOverlayCloseIcon() {
+  updateOverlayCloseIcon();
+
+  if (overlayCloseIconListenerRegistered) return;
+
+  window.addEventListener("resize", updateOverlayCloseIcon);
+  overlayCloseIconListenerRegistered = true;
+}
+
+/**
+ * Updates the overlay close icon depending on viewport width.
+ */
+function updateOverlayCloseIcon() {
+  const closeIconElement = getElement("overlay-close-icon");
+  const closeButtonElement = getElement("overlay-close-button");
+
+  if (!closeIconElement || !closeButtonElement) return;
+
+  const isMobileOverlay = window.innerWidth <= 949.98;
+
+  closeIconElement.src = isMobileOverlay
+    ? "../assets/icons/arrow-left-line.svg"
+    : "../assets/icons/close.svg";
+
+  closeIconElement.alt = isMobileOverlay ? "Back" : "Close";
+  closeButtonElement.setAttribute(
+    "aria-label",
+    isMobileOverlay ? "Back to board" : "Close overlay"
+  );
 }
 
 /**

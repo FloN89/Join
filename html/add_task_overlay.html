@@ -1,10 +1,17 @@
 <div class="add-task-container">
-  <img
-    src="../assets/icons/close.svg"
-    alt="Close"
+  <button
+    type="button"
     class="add-task-close"
+    id="overlay-close-button"
+    aria-label="Close overlay"
     onclick="closeAddTaskOverlay()"
-  />
+  >
+    <img
+      id="overlay-close-icon"
+      src="../assets/icons/close.svg"
+      alt="Close"
+    />
+  </button>
 
   <h2 class="panel-title">Add Task</h2>
 
@@ -173,18 +180,10 @@
               aria-label="Clear subtask"
             >
               <img
-                 src="../assets/icons/close.svg"
-                 alt="Close"
-                 class="add-task-close add-task-close-desktop"
-                 onclick="closeAddTaskOverlay()"
-               />
-
-               <img
-                 src="../assets/icons/arrow-left-line.svg"
-                 alt="Zurück zum Board"
-                 class="add-task-close add-task-close-mobile"
-                 onclick="closeAddTaskOverlay()"
-               />
+                src="../assets/icons/close.svg"
+                class="closeSub-btn"
+                alt="Clear"
+              />
             </button>
 
             <span

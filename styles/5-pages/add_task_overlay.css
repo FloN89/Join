@@ -54,6 +54,7 @@ body.overlay-open {
    ========================= */
 
 .add-task-overlay .add-task-container {
+  position: relative;
   width: 100%;
   background-color: #ffffff;
   border-radius: 24px;
@@ -66,7 +67,23 @@ body.overlay-open {
   position: absolute;
   top: 16px;
   right: 16px;
+  z-index: 1002;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.add-task-overlay .add-task-close img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .add-task-overlay .panel-title {
@@ -183,7 +200,10 @@ body.overlay-open {
   font-weight: 700;
 }
 
-.add-task-overlay .priority-options input[type="radio"]:not(:checked) + .priority-button:hover {
+.add-task-overlay
+  .priority-options
+  input[type="radio"]:not(:checked)
+  + .priority-button:hover {
   box-shadow: var(--shadow-medium);
 }
 
@@ -224,7 +244,10 @@ body.overlay-open {
   border: 1px solid var(--color-border);
   background-color: var(--color-white);
   box-shadow: var(--shadow-light);
-  transition: opacity 125ms ease, transform 125ms ease, max-height 125ms ease;
+  transition:
+    opacity 125ms ease,
+    transform 125ms ease,
+    max-height 125ms ease;
 }
 
 .add-task-overlay .multiselect-dropdown {
@@ -599,7 +622,10 @@ body.overlay-open {
 
 .add-task-overlay .multiselect-dropdown,
 .add-task-overlay .category-dropdown {
-  transition: opacity 125ms ease, transform 125ms ease, max-height 125ms ease;
+  transition:
+    opacity 125ms ease,
+    transform 125ms ease,
+    max-height 125ms ease;
 }
 
 @media (max-width: 1020px) {
@@ -670,29 +696,29 @@ body.overlay-open {
   }
 
   .add-task-overlay .task-bottom-bar {
-  position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 32px;
-  z-index: 1001;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-  background: #f6f7f8;
-}
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 32px;
+    z-index: 1001;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    background: #f6f7f8;
+  }
 
-.add-task-overlay .task-bottom-bar::after {
-  content: "";
-  position: absolute;
-  left: -16px;
-  right: -16px;
-  top: 100%;
-  height: calc(32px + env(safe-area-inset-bottom, 0px));
-  background: #f6f7f8;
-  pointer-events: none;
-}
+  .add-task-overlay .task-bottom-bar::after {
+    content: "";
+    position: absolute;
+    left: -16px;
+    right: -16px;
+    top: 100%;
+    height: calc(32px + env(safe-area-inset-bottom, 0px));
+    background: #f6f7f8;
+    pointer-events: none;
+  }
 
   .add-task-overlay .form-required-note {
     position: static;
@@ -900,26 +926,5 @@ body.overlay-open {
   .add-task-overlay .clear-btn,
   .add-task-overlay .create-btn {
     font-size: 14px;
-  }
-
-  .add-task-overlay .add-task-close-desktop {
-  display: block;
-}
-
-.add-task-overlay .add-task-close-mobile {
-  display: none;
-}
-}
-
-@media (max-width: 949.98px) {
-  .add-task-overlay .add-task-close-desktop {
-    display: none;
-  }
-
-  .add-task-overlay .add-task-close-mobile {
-    display: block;
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
   }
 }
