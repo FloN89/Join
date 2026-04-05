@@ -732,7 +732,7 @@ body.overlay-open {
     min-width: 0;
     justify-content: center;
     text-align: center;
-    gap: 8px;
+    gap: 3px;
   }
 
   .add-task-overlay .selected-assignee-avatars {
