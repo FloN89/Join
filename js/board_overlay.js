@@ -18,7 +18,12 @@ async function openBoardAddTaskOverlay(status = "todo") {
   window.currentBoardAddTaskStatus = status;
 
   if (window.innerWidth <= 768) {
-    window.location.href = "../html/add_task.html";
+    const params = new URLSearchParams({
+      from: "board",
+      status,
+    });
+
+    window.location.href = `../html/add_task.html?${params.toString()}`;
     return;
   }
 
@@ -48,11 +53,6 @@ async function openBoardAddTaskOverlay(status = "todo") {
   overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("overlay-open");
 }
-
-function openAddTaskOverlay(status = "todo") {
-  return openBoardAddTaskOverlay(status);
-}
-
 /**
  * Schließt das Board-Overlay.
  */

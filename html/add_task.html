@@ -27,6 +27,16 @@
         <div class="main-section">
           <main class="main-area">
             <section class="add-task-container">
+              <button
+                type="button"
+                id="mobile-board-back-button"
+                class="mobile-board-back-button"
+                aria-label="Zurück zum Board"
+                onclick="goBackToBoard()"
+                hidden
+                 >
+                <span aria-hidden="true">←</span>
+              </button>
               <h2 class="panel-title">Add Task</h2>
 
               <form id="taskForm" class="form-grid-add" novalidate>

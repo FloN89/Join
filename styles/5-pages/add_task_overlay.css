@@ -901,4 +901,25 @@ body.overlay-open {
   .add-task-overlay .create-btn {
     font-size: 14px;
   }
+
+  .add-task-overlay .add-task-close-desktop {
+  display: block;
+}
+
+.add-task-overlay .add-task-close-mobile {
+  display: none;
+}
+}
+
+@media (max-width: 949.98px) {
+  .add-task-overlay .add-task-close-desktop {
+    display: none;
+  }
+
+  .add-task-overlay .add-task-close-mobile {
+    display: block;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
 }

@@ -582,6 +582,14 @@ input#priority-low:checked + label.low {
   }
 }
 
+.mobile-board-back-button {
+  display: none;
+}
+
+.mobile-board-back-button[hidden] {
+  display: none !important;
+}
+
 /* RESPONSIVE (zusammengeführt) */
  @media (max-width: 1020px) {
   .add-task-container {
@@ -595,8 +603,7 @@ input#priority-low:checked + label.low {
 
  }
 
-/* Tablet-Zwischenbereich: 950px bis 769px
-   bewusst OHNE Landscape Media Query */
+/* Tablet-Zwischenbereich: 950px bis 769px*/
 @media (max-width: 950px) and (min-width: 769px) {
   .main-area {
     padding: 24px;
@@ -728,19 +735,37 @@ input#priority-low:checked + label.low {
 }
 
  @media (max-width: 768px) {
-  .add-task-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    border-radius: 0;
-    padding: 0;
+ .add-task-container {
+    position: relative;
+  }
   }
 
-  .panel-title {
-    font-size: 42px;
-    font-weight: 800;
-    padding: 20px 16px 0;
-    margin: 0;
+  .mobile-board-back-button:not([hidden]) {
+    position: absolute;
+    top: 18px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: #29abe2;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(41, 171, 226, 0.35);
+    z-index: 1000;
+  }
+
+  .mobile-board-back-button:not([hidden]):hover {
+    background: #1b95cb;
+  }
+
+  panel-title {
+    padding-right: 72px;
   }
 
   .form-grid-add {
@@ -748,7 +773,7 @@ input#priority-low:checked + label.low {
     flex: 1;
     overflow-y: auto;
     padding: 16px;
-    padding-bottom: 190px; /* etwas mehr Platz für die fixe Bottom-Bar */
+    padding-bottom: 190px; 
   }
 
   .form-divider {
@@ -821,7 +846,7 @@ input#priority-low:checked + label.low {
     color: #ffffff;
     border: none;
   }
-}
+
 
 
 

@@ -173,10 +173,18 @@
               aria-label="Clear subtask"
             >
               <img
-                src="../assets/icons/close.svg"
-                class="closeSub-btn"
-                alt="Clear"
-              />
+                 src="../assets/icons/close.svg"
+                 alt="Close"
+                 class="add-task-close add-task-close-desktop"
+                 onclick="closeAddTaskOverlay()"
+               />
+
+               <img
+                 src="../assets/icons/arrow-left-line.svg"
+                 alt="Zurück zum Board"
+                 class="add-task-close add-task-close-mobile"
+                 onclick="closeAddTaskOverlay()"
+               />
             </button>
 
             <span
