@@ -161,7 +161,6 @@
 }
 
 .task-card-text {
-  padding: 40px 20px;
   text-align: center;
 }
 
@@ -323,7 +322,7 @@
     display: flex;
     margin-top: 40px;
     padding-left: 15px; 
-    padding-top: 100px;
+    padding-top: 80px;
 }
 
 .task-card-text {
@@ -414,7 +413,7 @@
   .dashboard {
     padding-left: 15px;
     padding-right: 15px;
-    margin-top: -5px;
+  
   }
 
   .metrics-header h1 {
@@ -425,9 +424,6 @@
     padding: 15px;
   }
 
-  .task-card-text {
-    padding: 30px 15px;
-  }
 }
 
 /* === Extra Small Mobile (max-width: 320px) === */
