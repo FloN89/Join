@@ -43,7 +43,7 @@
 .app-header,
 .main-area {
   max-width: 1440px;
-  margin: 0 auto;
+  margin: 20px auto;
   width: 90%;
 }
 
@@ -345,10 +345,7 @@ body.welcome-active .site-footer {
   body.page-loaded .app-logo {
     padding-left: 150px;
   }
-  .app-header {
-    padding-right: 150px;
-    padding-left: 150px;
-  }
+  
 }
 
 @media (max-width: 1024px) {
@@ -359,6 +356,8 @@ body.welcome-active .site-footer {
   body.page-loaded .app-logo {
     padding-left: 50px;
   }
+
+  
 }
 
 @media (max-width: 680px) {
@@ -407,7 +406,7 @@ body.welcome-active .site-footer {
   }
 
   .app-logo {
-    width: 65px;
+    width: 80px;
   }
 }
 
@@ -494,34 +493,7 @@ body.welcome-active .site-footer {
 }
 
 
-/* ============================================
-   Landscape Mode Deaktivierung (Mobile)
-   ============================================ */
 
-@media (max-width: 900px) and (orientation: landscape) {
-  body {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-primary);
-    color: var(--color-white);
-    font-family: sans-serif;
-    text-align: center;
-    padding: 24px;
-  }
-
-  body > * {
-    display: none !important;
-  }
-
-  body::before {
-    content: "Please rotate your device to portrait mode for the best experience.";
-    font-size: 20px;
-    font-weight: 600;
-  }
-}
 
 @media (max-width: 320px) {
 

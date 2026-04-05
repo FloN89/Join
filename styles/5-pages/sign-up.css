@@ -6,7 +6,11 @@
     position: absolute;
     top: 80px;
     left: 77px;
+    width: 101px;
+    height: auto;
+    display: block;
 }
+
 
 .join-icon:hover {
     cursor: pointer;
@@ -18,13 +22,15 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
-    max-width: var(--max-width-layout);
+    max-width: 1440px;
     padding: 40px 0 8px;
     padding-top: clamp(140px, 18vh, 220px);
     box-sizing: border-box;
 }
+
+
 
 .sign-up-box {
     width: 520px;
@@ -307,8 +313,8 @@ input[type="password"] {
 
 @media (max-width: 1000px) {
     .join-icon {
-        top: 37px;
-        left: 38px;
+        top: 32px;
+        left: 58px;
         width: 80px;
     }
 }
@@ -323,6 +329,12 @@ input[type="password"] {
     .arrow-left {
         left: 40px;
         top: 56px;
+    }
+
+    .join-icon {
+        top: 32px;
+        left: 52px;
+        width: 80px;
     }
 }
 
@@ -363,8 +375,10 @@ input[type="password"] {
         margin: 7px 0 12px 0;
     }
 
-    .join-icon {
-        width: 60px;
+     .join-icon {
+        top: 32px;
+        left: 48px;
+        width: 65px;
     }
 
     .sign-up-box {
@@ -389,6 +403,12 @@ input[type="password"] {
     .title::after {
         width: 70px;
         height: 3px;
+    }
+
+    .join-icon {
+        top: 20px;
+        left: 30px;
+        width: 50px;
     }
 }
 

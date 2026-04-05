@@ -39,12 +39,6 @@ function restrictGuestSummaryCards() {
   if (!isGuestUser()) return;
 
   document.body.classList.add("guest-session");
-
-  document.querySelectorAll(".task-card").forEach((card) => {
-    card.removeAttribute("onclick");
-    card.setAttribute("aria-disabled", "true");
-    card.classList.add("guest-disabled-card");
-  });
 }
 
 /**
