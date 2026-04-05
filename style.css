@@ -76,7 +76,7 @@ body {
   }
 
   .app-logo {
-    content: url(/assets/icons/join_white.svg);
+    content: url(../assets/icons/join_white.svg);
     width: clamp(140px, 35vw, 240px);
     top: 50%;
     left: 50%;
