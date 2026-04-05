@@ -9,23 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * Öffnet das Add-Task-Overlay im Board.
- * Auf Mobile wird auf die normale Add-Task-Seite weitergeleitet.
  *
  * @async
  * @param {string} status - Die Board-Spalte, aus der geöffnet wurde
  */
 async function openBoardAddTaskOverlay(status = "todo") {
   window.currentBoardAddTaskStatus = status;
-
-  if (window.innerWidth <= 768) {
-    const params = new URLSearchParams({
-      from: "board",
-      status,
-    });
-
-    window.location.href = `../html/add_task.html?${params.toString()}`;
-    return;
-  }
 
   const overlay = document.getElementById("add-task-overlay");
   const content = document.getElementById("add-task-content");
@@ -53,6 +42,7 @@ async function openBoardAddTaskOverlay(status = "todo") {
   overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("overlay-open");
 }
+
 /**
  * Schließt das Board-Overlay.
  */
@@ -122,7 +112,8 @@ function getTaskPath(id) {
 }
 
 /**
- * Synchronizes the body scroll lock with the active board overlays.*/
+ * Synchronizes the body scroll lock with the active board overlays.
+ */
 function syncBoardOverlayScrollLock() {
   const addTaskOverlayIsOpen = document.getElementById("add-task-overlay")?.classList.contains("active");
   const taskOverlayElement = document.getElementById("task_overlay");
@@ -152,7 +143,8 @@ function setTaskOverlayVisible() {
  * @param {Object} taskItem - Task data object
  * @param {string} id - Task ID
  * @param {string} priorityColor - Priority color
- * @returns {string} HTML for task overlay*/
+ * @returns {string} HTML for task overlay
+ */
 function buildTaskOverlayHtml(taskItem, id, priorityColor) {
   return generateTaskOverlay(
     taskItem.category,
@@ -170,7 +162,8 @@ function buildTaskOverlayHtml(taskItem, id, priorityColor) {
 /**
  * Opens task detail overlay
  * @param {string} id - Task ID
- * @param {string} priorityColor - Priority color*/
+ * @param {string} priorityColor - Priority color
+ */
 function openTaskOverlay(id, priorityColor) {
   const overlay = document.getElementById("task_overlay");
   const taskItem = task[id];
@@ -186,7 +179,8 @@ function openTaskOverlay(id, priorityColor) {
  * Toggles done state of a subtask
  * @param {Array} subtasks - Array of subtasks
  * @param {number} index - Index of subtask to toggle
- * @returns {Array} Updated subtasks array*/
+ * @returns {Array} Updated subtasks array
+ */
 function toggleSubtaskValue(subtasks, index) {
   if (!Array.isArray(subtasks) || index < 0 || index >= subtasks.length) {
     return subtasks || [];
@@ -200,7 +194,8 @@ function toggleSubtaskValue(subtasks, index) {
 
 /**
  * Updates the progress bar and counter on the small board card
- * @param {string} id - Task ID*/
+ * @param {string} id - Task ID
+ */
 function updateBoardCardProgress(id) {
   const card = document.querySelector(`.task-card[data-task-id="${id}"]`);
   if (!card || !task[id]) return;
@@ -221,7 +216,8 @@ function updateBoardCardProgress(id) {
  * Toggles subtask completion and saves to database
  * @async
  * @param {string} id - Task ID
- * @param {number} subtaskIndex - Index of subtask*/
+ * @param {number} subtaskIndex - Index of subtask
+ */
 async function toggleSubtaskCompletion(id, subtaskIndex) {
   if (!task[id]) return;
 
@@ -236,7 +232,8 @@ async function toggleSubtaskCompletion(id, subtaskIndex) {
 }
 
 /**
- * Shows edit overlay and hides details overlay*/
+ * Shows edit overlay and hides details overlay
+ */
 function showEditOverlay() {
   const editOverlay = document.getElementById("edit_task_overlay");
   const taskOverlay = document.getElementById("task_overlay");
@@ -252,7 +249,8 @@ function showEditOverlay() {
 
 /**
  * Renders edit overlay HTML content
- * @param {string} id - Task ID*/
+ * @param {string} id - Task ID
+ */
 function renderEditOverlayContent(id) {
   const editOverlay = document.getElementById("edit_task_overlay");
   const taskItem = task[id];
@@ -278,7 +276,8 @@ function setMinimumEditDateToToday() {
 
 /**
  * Initializes edit form fields with task data
- * @param {string} id - Task ID*/
+ * @param {string} id - Task ID
+ */
 async function initializeEditOverlayFields(id) {
   const taskItem = task[id];
   const editOverlay = getEditOverlayRoot();
@@ -306,7 +305,8 @@ async function initializeEditOverlayFields(id) {
 
 /**
  * Opens edit task overlay
- * @param {string} id - Task ID*/
+ * @param {string} id - Task ID
+ */
 async function openEditTaskOverlay(id) {
   showEditOverlay();
   renderEditOverlayContent(id);
@@ -316,7 +316,8 @@ async function openEditTaskOverlay(id) {
 /**
  * Gets current task from guest or regular tasks
  * @param {string} id - Task ID
- * @returns {Object|null} Task object*/
+ * @returns {Object|null} Task object
+ */
 function getCurrentTask(id) {
   if (typeof guestTasks !== "undefined" && guestTasks && guestTasks[id]) {
     return guestTasks[id];
@@ -331,7 +332,8 @@ function getCurrentTask(id) {
 
 /**
  * Reads values from edit task form
- * @returns {Object} Form values object*/
+ * @returns {Object} Form values object
+ */
 function getEditFormValues() {
   const editOverlay = getEditOverlayRoot();
 

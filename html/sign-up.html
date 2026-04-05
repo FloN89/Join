@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/join_logo_2.svg">
-    <title>Sign up</title>
+  <title>Sign up</title>
 
   <link rel="stylesheet" href="../styles/1-settings/variables.css">
   <link rel="stylesheet" href="../styles/2-base/base.css">
@@ -15,12 +15,18 @@
 </head>
 
 <body>
-  <div class="main">
-    <img src="../assets/icons/Capa 2.svg" alt="" class="join-icon">
-    <div class="sign-up-box">
-      <a href="../html/log_in.html">
+  <header class="app-header">
+    <a href="../html/log_in.html" class="app-logo-link" aria-label="Back to login">
+      <img src="../assets/icons/join_logo_1.png" alt="Join logo" class="app-logo">
+    </a>
+  </header>
+
+  <main class="signup-main">
+    <section class="sign-up-box">
+      <a href="../html/log_in.html" class="arrow-left-link" aria-label="Back to login">
         <img src="../assets/icons/arrow-left-line.svg" alt="" class="arrow-left">
       </a>
+
       <h1 class="title">Sign up</h1>
 
       <div class="input-group">
@@ -35,24 +41,45 @@
         </label>
 
         <label class="input-wrapper">
-          <input type="password" placeholder="Password" data-required="true" id="passwordInput"
+          <input
+            type="password"
+            placeholder="Password"
+            data-required="true"
+            id="passwordInput"
             oninput="changeIcon('passwordInput', 'passwordIcon'), showSignUp()"
-            onblur="validatePasswordInput()">
-          <img id="passwordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
-            onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
+            onblur="validatePasswordInput()"
+          >
+          <img
+            id="passwordIcon"
+            src="../assets/icons/lock.svg"
+            alt=""
+            class="field-icon lock-icon"
+            onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')"
+          >
         </label>
 
         <label class="input-wrapper password-input-wrapper">
-          <input type="password" placeholder="Confirm Password" data-required="true" id="confirmPasswordInput"
-            oninput="changeIcon('confirmPasswordInput', 'confirmPasswordIcon'), checkPasswordMatch(), showSignUp()">
-          <img id="confirmPasswordIcon" src="../assets/icons/lock.svg" alt="" class="field-icon lock-icon"
-            onclick="togglePasswordVisibility('confirmPasswordInput', 'confirmPasswordIcon')">
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            data-required="true"
+            id="confirmPasswordInput"
+            oninput="changeIcon('confirmPasswordInput', 'confirmPasswordIcon'), checkPasswordMatch(), showSignUp()"
+          >
+          <img
+            id="confirmPasswordIcon"
+            src="../assets/icons/lock.svg"
+            alt=""
+            class="field-icon lock-icon"
+            onclick="togglePasswordVisibility('confirmPasswordInput', 'confirmPasswordIcon')"
+          >
         </label>
+
         <small id="errorMessage" class="errorMessage"></small>
 
         <label class="privacy">
           <span class="checkboxWrapper">
-          <input type="checkbox" id="privacyCheckbox" class="privacyCheckbox" onchange="showSignUp()">
+            <input type="checkbox" id="privacyCheckbox" class="privacyCheckbox" onchange="showSignUp()">
           </span>
           <span>I accept the <a href="privacy.html">Privacy policy</a></span>
         </label>
@@ -61,18 +88,18 @@
       <div class="btn-wrap">
         <button class="signUpButton" id="signUpButton" onclick="signUp()" disabled>Sign up</button>
       </div>
-    </div>
+    </section>
+  </main>
 
-    <div class="overlaySuccessful" id="overlaySuccessful"></div>
-    <div class="successfulSignUp" id="successfulSignUp">
-      You sign up sucessfully
-    </div>
-
-    <footer class="privacy_legal">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="legal-notice.html">Legal notice</a>
-    </footer>
+  <div class="overlaySuccessful" id="overlaySuccessful"></div>
+  <div class="successfulSignUp" id="successfulSignUp">
+    You sign up sucessfully
   </div>
+
+  <footer class="site-footer">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="legal-notice.html">Legal notice</a>
+  </footer>
 
   <script src="../script.js"></script>
   <script src="../js/sign-up.js"></script>

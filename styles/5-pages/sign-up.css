@@ -2,66 +2,79 @@
     display: none;
 }
 
-.join-icon {
-    position: absolute;
-    top: 80px;
-    left: 77px;
-    width: 101px;
-    height: auto;
-    display: block;
+html,
+body {
+    height: 100%;
 }
 
-
-.join-icon:hover {
-    cursor: pointer;
-}
-
-.main {
-    position: relative;
+body {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    width: 90%;
-    margin: 0 auto;
+}
+
+/* Gleiches Header-System wie auf der Login-Seite */
+.app-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 80px 77px 10px;
     max-width: 1440px;
-    padding: 40px 0 8px;
-    padding-top: clamp(140px, 18vh, 220px);
+    margin: 20px auto 0;
+    width: 90%;
     box-sizing: border-box;
 }
 
+.app-logo-link {
+    display: inline-flex;
+    line-height: 0;
+}
 
+.app-logo {
+    position: static;
+    width: 101px;
+    height: auto;
+    transform: none;
+    transition: none;
+    display: block;
+}
+
+.signup-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 1440px;
+    margin: 20px auto 0;
+    padding: 20px 0 40px;
+    box-sizing: border-box;
+}
 
 .sign-up-box {
     width: 520px;
+    max-width: 100%;
     background: var(--color-white);
     border-radius: var(--border-radius-xl);
     padding: 36px 48px 46px;
     box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.04);
-    border: 1px solid var(--color-border);
     position: relative;
-    margin: auto 0 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
     border: none;
 }
 
-.password-input-wrapper {
-    position: relative;
-}
-
-.password-input-wrapper .field-icon {
+.arrow-left-link {
     position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 48px;
+    top: 58px;
+    display: inline-flex;
+    line-height: 0;
 }
 
 .arrow-left {
-    position: absolute;
-    left: 50px;
-    top: 70px;
     width: 21px;
     height: 21px;
     opacity: 0.95;
@@ -103,10 +116,11 @@
 
 .input-wrapper {
     position: relative;
-    padding: 8px;
+    padding: 8px 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .password-input-wrapper {
@@ -119,7 +133,7 @@
     width: 100%;
     height: 50px;
     box-sizing: border-box;
-    padding: 10px 44px 10px 16px;
+    padding: 10px 44px 10px 24px;
     border-radius: var(--border-radius-medium);
     border: 1px solid var(--color-border);
     background: var(--color-white);
@@ -139,15 +153,9 @@
     font-weight: 400;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    padding-left: 24px;
-}
-
 .field-icon {
     position: absolute;
-    right: calc(5% + 10px);
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
     width: 18px;
@@ -155,7 +163,7 @@ input[type="password"] {
 
 .lock-icon {
     width: 22px !important;
-    right: calc(5% + 7px) !important;
+    right: 14px !important;
 }
 
 .privacy {
@@ -241,27 +249,21 @@ input[type="password"] {
     filter: none;
 }
 
-.privacy_legal {
+.site-footer {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 32px;
-    margin: auto auto 8px;
-    padding: 0;
-    width: fit-content;
+    gap: 50px;
+    padding: 0 24px 40px;
 }
 
-.privacy_legal a {
+.site-footer a {
     text-decoration: none;
     color: var(--color-text-secondary);
-    font-size: 16px;
-    font-weight: 400;
-    width: 106px;
 }
 
-.privacy_legal a:hover {
+.site-footer a:hover {
     color: var(--color-primary-light);
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .errorMessage {
@@ -270,6 +272,8 @@ input[type="password"] {
     padding-left: 10px;
     display: block;
     text-align: left;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .borderRed {
@@ -311,41 +315,71 @@ input[type="password"] {
     pointer-events: auto;
 }
 
-@media (max-width: 1000px) {
-    .join-icon {
-        top: 32px;
-        left: 58px;
+@media (max-width: 680px) {
+    .app-header {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 32px 24px 40px;
+        gap: 0;
+    }
+
+    .app-logo {
         width: 80px;
     }
-}
 
-@media (max-width: 650px) {
+    .signup-main {
+        padding: 0 0 40px;
+    }
+
     .sign-up-box {
-        width: 90%;
+        width: 100%;
+        max-width: 420px;
         padding: 32px 16px 40px;
         border-radius: var(--border-radius-large);
     }
 
-    .arrow-left {
-        left: 40px;
-        top: 56px;
+    .arrow-left-link {
+        left: 24px;
+        top: 40px;
     }
 
-    .join-icon {
-        top: 32px;
-        left: 52px;
-        width: 80px;
+    .title {
+        font-size: 42px;
+        margin: 6px auto 14px;
+    }
+
+    .title::after {
+        width: 100px;
     }
 }
 
 @media (max-width: 480px) {
+    .app-header {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 32px 24px 0;
+        gap: 0;
+    }
+
+    .app-logo {
+        width: 65px;
+    }
+
+    .signup-main {
+        align-items: flex-start;
+        padding: 20px 0 32px;
+    }
+
     .sign-up-box {
-        padding: 28px;
+        padding: 28px 20px 32px;
         border-radius: var(--border-radius-large);
     }
 
     .title {
         font-size: 36px;
+        margin: 6px auto 6px;
     }
 
     .title::after {
@@ -353,63 +387,82 @@ input[type="password"] {
         height: 3px;
     }
 
-    .signUpButton {
-        width: 100%;
-        max-width: 220px;
-    }
-
-    .arrow-left {
-        left: 30px;
-        top: 25px;
+    .arrow-left-link {
+        left: 20px;
+        top: 28px;
     }
 
     .input-group {
         gap: 0;
     }
 
-    .title {
-        margin: 6px auto 6px;
-    }
-
     .btn-wrap {
         margin: 7px 0 12px 0;
     }
 
-     .join-icon {
-        top: 32px;
-        left: 48px;
-        width: 65px;
-    }
-
-    .sign-up-box {
-        margin-top: 0;
-    }
-
     .signUpButton {
         width: 180px;
+        max-width: 100%;
+    }
+
+    .site-footer {
+        padding-bottom: 24px;
+        gap: 32px;
+        font-size: 16px;
     }
 }
 
 @media (max-width: 320px) {
+    .app-header {
+        padding: 20px 16px 0;
+    }
+
+    .app-logo {
+        width: 50px;
+    }
+
+    .signup-main {
+        width: 92%;
+    }
+
     .sign-up-box {
-        padding: 5px;
+        padding: 20px 12px 24px;
         border-radius: var(--border-radius-large);
     }
 
+    .arrow-left-link {
+        left: 12px;
+        top: 24px;
+    }
+
     .title {
-        font-size: 36px;
+        font-size: 32px;
     }
 
     .title::after {
-        width: 70px;
-        height: 3px;
+        width: 60px;
     }
 
-    .join-icon {
-        top: 20px;
-        left: 30px;
-        width: 50px;
+    .input-wrapper input::placeholder {
+        font-size: 18px;
+    }
+
+    .field-icon {
+        right: 12px;
+    }
+
+    .lock-icon {
+        right: 10px !important;
+    }
+
+    .signUpButton {
+        width: 100%;
+        max-width: 160px;
+        font-size: 18px;
+    }
+
+    .site-footer {
+        font-size: 14px;
+        gap: 20px;
     }
 }
-
-
