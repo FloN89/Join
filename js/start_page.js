@@ -8,6 +8,7 @@
         logo.classList.add("to-login-position");
         // Fade wie auf Login (nur hier: "weg-faden")
         fadeLayer.classList.add("fade-out");
+        logo.classList.add("fade-out");
       }, 300);
 
       // Nach Ende der Animation -> direkt zur Login-Seite
