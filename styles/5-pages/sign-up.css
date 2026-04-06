@@ -14,9 +14,10 @@ body {
 }
 
 html {
-  scrollbar-gutter: stable;
-  overflow-y: scroll;
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
 }
+
 /* Gleiches Header-System wie auf der Login-Seite */
 .app-header {
     display: flex;
@@ -44,15 +45,15 @@ html {
 }
 
 .signup-main {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  max-width: 1440px;
-  margin: 20px auto 0;
-  padding: 20px 0 40px;
-  box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 1440px;
+    margin: 20px auto 0;
+    padding: 20px 0 40px;
+    box-sizing: border-box;
 }
 
 .sign-up-box {
@@ -278,7 +279,7 @@ html {
     text-align: left;
     width: 100%;
     box-sizing: border-box;
-    height: 12px;
+    height: 45px;
 }
 
 .borderRed {
@@ -318,6 +319,13 @@ html {
 .overlaySuccessful.show {
     opacity: 1;
     pointer-events: auto;
+}
+
+@media (max-width: 680px) {
+    .errorMessage {
+        padding-left: 24px;
+    }
+
 }
 
 @media (max-width: 680px) {
