@@ -472,6 +472,10 @@ input#priority-low:checked + label.low {
   color: var(--color-text-primary);
 }
 
+.form-required-note--mobile {
+  display: none;
+}
+
 .field-error-message {
   min-height: 16px;
   font-size: 12px;
@@ -629,6 +633,7 @@ input#priority-low:checked + label.low {
   .priority-button {
     font-size: 18px;
   }
+
 }
 
 @media (max-width: 950px) and (min-width: 769px) {
@@ -749,7 +754,7 @@ input#priority-low:checked + label.low {
 
 @media (max-width: 768px) {
   .main-area {
-    padding: 24px 16px 140px;
+    padding: 24px 16px 56px;
   }
 
   .add-task-container {
@@ -834,7 +839,7 @@ input#priority-low:checked + label.low {
     z-index: 999;
     display: flex;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: end;
     gap: 12px;
     padding: 8px 0;
     background: #f6f7f8;
@@ -848,6 +853,15 @@ input#priority-low:checked + label.low {
     line-height: 1.2;
     background: transparent;
     padding: 0;
+  }
+
+  .form-required-note--desktop {
+    display: none;
+  }
+
+  .form-required-note--mobile {
+    display: flex;
+    margin-top: 16px;
   }
 
   .task-buttons {
@@ -888,7 +902,7 @@ input#priority-low:checked + label.low {
 
 @media (max-width: 380px) {
   .main-area {
-    padding: 24px 10px 140px;
+    padding: 24px 10px 56px;
   }
 
   label {
