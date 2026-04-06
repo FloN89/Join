@@ -3,6 +3,17 @@ html {
   overflow-y: scroll;
 }
 
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .app-header {
   display: flex;
   align-items: flex-start;
@@ -43,6 +54,7 @@ html {
   display: flex;
   align-items: center;
   flex-direction: column;
+  flex: 1;
 }
 
 .app-header,
@@ -60,6 +72,7 @@ html {
   flex-direction: column;
   height: 450px;
   width: 520px;
+  max-width: 100%;
   border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-light);
   gap: 24px;
@@ -256,8 +269,8 @@ body.page-loaded .app-header {
   display: flex;
   justify-content: center;
   gap: 50px;
-  padding-top: 200px;
-  padding-bottom: 40px;
+  padding: 0 24px 40px;
+  margin-top: auto;
 }
 
 .site-footer a {
@@ -317,25 +330,8 @@ body.welcome-active .site-footer {
 }
 
 @media (min-width: 1025px) {
-  html,
-  body {
-    height: 100%;
-  }
-
-  body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
   .main-area {
-    flex: 1;
     justify-content: center;
-  }
-
-  .site-footer {
-    margin-top: auto;
-    padding-top: 40px;
   }
 }
 
@@ -363,6 +359,9 @@ body.welcome-active .site-footer {
   }
 
   
+  .main-area {
+    flex: 0 0 auto;
+  }
 }
 
 @media (max-width: 680px) {
@@ -380,6 +379,7 @@ body.welcome-active .site-footer {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    margin-top: 30px;
   }
 
   .signup-button {
@@ -387,7 +387,8 @@ body.welcome-active .site-footer {
   }
 
   .login-panel {
-    width: 80%;
+    width: 100%;
+    max-width: 420px;
     padding: 10px;
     border-radius: var(--border-radius-large);
     height: 550px;
@@ -434,6 +435,8 @@ body.welcome-active .site-footer {
 
   .main-area {
     padding: 60px 1px 0;
+    margin: 20px auto 0;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -474,14 +477,13 @@ body.welcome-active .site-footer {
   }
 
   .signup-area-mobile {
-    position: absolute;
-    bottom: -100px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 20px;
+    margin: 30px 0 0;
   }
 
   .signup-button {
@@ -490,8 +492,7 @@ body.welcome-active .site-footer {
   }
 
   .site-footer {
-    padding-top: 150px;
-    padding-bottom: 24px;
+    padding: 0 24px 24px;
     gap: 32px;
     font-size: 16px;
   }
@@ -508,10 +509,6 @@ body.welcome-active .site-footer {
 
   .app-logo {
     width: 50px;
-  }
-
-  .login-panel {
-    width: 90%;
   }
 
   .panel-title::after {
