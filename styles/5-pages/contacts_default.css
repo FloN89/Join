@@ -104,6 +104,7 @@ body {
 
 .contact-container {
   width: 332px;
+  margin-bottom: 20px;
 }
 
 .contact-list {
@@ -111,7 +112,6 @@ body {
   flex-direction: column;
   align-items: normal;
   justify-content: center;
-  padding-bottom: 20px;
 }
 
 .contact-icon-list {
@@ -444,6 +444,21 @@ header h2 {
   border-color: var(--color-primary-light);
 }
 
+.errorMessage {
+  color: var(--color-error);
+  font-size: 14px;
+  padding-left: 10px;
+  display: block;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  height: 45px;
+}
+
+.borderRed {
+  border: 1px solid var(--color-error) !important;
+}
+
 .field-icon {
   position: absolute;
   right: calc(5% + 10px);
@@ -748,6 +763,9 @@ header h2 {
 
   .contact-info {
     display: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 160px);
   }
 
   .contact-wrapper.show-detail .all-contacts {
@@ -809,9 +827,11 @@ header h2 {
   .contact-content {
     margin-top: 70px;
     padding: 28px;
+    padding-bottom: 120px;
     gap: 24px;
     transform: none;
     transition: none;
+    overflow-y: auto;
   }
 
   .contact-content-header {
@@ -1103,6 +1123,9 @@ header h2 {
 
   .contact-info {
     display: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 160px);
   }
 
   .contact-wrapper.show-detail .all-contacts {
@@ -1166,9 +1189,11 @@ header h2 {
 
   .contact-content {
     padding: 20px;
+    padding-bottom: 120px;
     gap: 20px;
     transform: none;
     transition: none;
+    overflow-y: auto;
 
   }
 

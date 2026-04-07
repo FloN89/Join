@@ -127,6 +127,8 @@ function generateModalContent(header, button1, button2, underheader, contactId, 
                             <img src="../assets/icons/call.svg" alt="" class="field-icon">
                         </label>
 
+                        <small id="contactErrorMessage" class="errorMessage"></small>
+
                         <div class="buttons">
                             <button type="button" class="cancel-btn" onclick="${cancelCall}">
                                 <span>${button1}</span>

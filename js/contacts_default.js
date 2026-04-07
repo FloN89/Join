@@ -353,6 +353,7 @@ function getValidatedContactFormData() {
     const nameInput = document.getElementById("contactNameInput");
     const mailInput = document.getElementById("contactMailInput");
     const phoneInput = document.getElementById("contactPhoneInput");
+    const errorMessage = document.getElementById("contactErrorMessage");
 
     if (!nameInput || !mailInput || !phoneInput) return null;
 
@@ -364,12 +365,100 @@ function getValidatedContactFormData() {
     const mail = mailInput.value.trim();
     const phone = phoneInput.value.trim();
 
+    if (!validateEmailInputField(mailInput, errorMessage)) {
+        return null;
+    }
+
+    if (!validatePhoneInputField(phoneInput, errorMessage)) {
+        return null;
+    }
+
     if (!name || !mail || !phone) {
         alert("Please fill in all fields.");
         return null;
     }
 
     return { name, mail, phone };
+}
+
+/**
+ * Validate phone input field
+ * @param {HTMLInputElement} phoneInput - Phone input value
+ * @param {HTMLElement} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function validatePhoneInputField(phoneInput, errorMessage) {
+    if (!phoneInput) return true;
+    const phone = phoneInput.value;
+    const errorRef = errorMessage || null;
+
+    if (phone.length === 0) return handleInvalidPhone(phoneInput, errorRef);
+    if (!isValidPhoneNumber(phone)) return handleInvalidPhone(phoneInput, errorRef);
+    clearInvalidPhone(phoneInput, errorRef);
+    return true;
+}
+
+/**
+ * Is valid phone number basic
+ * @param {string} phone - Phone value
+ * @returns {boolean} Return value
+ */
+function isValidPhoneNumber(phone) {
+    const value = normalizePhoneValue(phone);
+    if (!value) return false;
+    if (/[A-Za-z]/.test(value)) return false;
+    const digits = value.replace(/\D/g, "");
+    return digits.length >= 6 && digits.length <= 15;
+}
+
+/**
+ * Normalize phone input (remove whitespace, including non-breaking spaces)
+ * @param {string} phone - Phone value
+ * @returns {string} Return value
+ */
+function normalizePhoneValue(phone) {
+    const trimmed = (phone || "")
+        .trim()
+        .replace(/[\s\u00A0\u2000-\u200B\u202F\u205F\u3000]+/g, "");
+    return trimmed;
+}
+
+/**
+ * Handle invalid phone
+ * @param {*} phoneInput - Phoneinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function handleInvalidPhone(phoneInput, errorMessage) {
+    showInvalidPhone(phoneInput, errorMessage);
+    return false;
+}
+
+/**
+ * Show invalid phone
+ * @param {*} phoneInput - Phoneinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function showInvalidPhone(phoneInput, errorMessage) {
+    phoneInput.classList.add("borderRed");
+    if (errorMessage) {
+        errorMessage.classList.add("errorMessage");
+        errorMessage.textContent = "Please enter a valid phone number.";
+    }
+}
+
+/**
+ * Clear invalid phone
+ * @param {*} phoneInput - Phoneinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function clearInvalidPhone(phoneInput, errorMessage) {
+    phoneInput.classList.remove("borderRed");
+    if (errorMessage && errorMessage.textContent === "Please enter a valid phone number.") {
+        errorMessage.textContent = "";
+    }
 }
 
 /**
