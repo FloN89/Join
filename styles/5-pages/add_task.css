@@ -840,19 +840,21 @@ input#priority-low:checked + label.low {
     font-size: 16px;
   }
 
-  .task-bottom-bar {
-    position: fixed;
-    left: 16px;
-    right: 16px;
-    bottom: 80px;
-    z-index: 999;
-    display: flex;
-    align-items: flex-end;
-    justify-content: end;
-    gap: 12px;
-    padding: 8px 0;
-    background: #f6f7f8;
-  }
+    .task-bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 80px;
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: end;
+  gap: 12px;
+  padding: 8px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f6f7f8;
+}
 
   .form-required-note {
     position: static;
@@ -947,10 +949,6 @@ input#priority-low:checked + label.low {
   .btn {
     font-size: 12px;
     padding: 8px 14px;
-  }
-
-  .task-bottom-bar {
-    gap: 8px;
   }
 
   .form-required-note {
