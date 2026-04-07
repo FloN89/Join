@@ -1176,6 +1176,14 @@
     padding-right: 48px;
   }
 
+    .search_button {
+    width: 28px;
+    height: 28px;
+    background-position: center;
+    position: relative;
+    top: -3px;
+  }
+
   .search_input_wrapper input::placeholder {
     font-size: 14px;
   }
@@ -1285,6 +1293,13 @@
     margin: 0;
   }
 
+    .search_button {
+    width: 28px;
+    height: 28px;
+    background-position: center;
+   
+}
+
   .add_task_button {
     order: 2;
     display: flex;
@@ -1354,4 +1369,10 @@
     width: 36px;
     height: 36px;
   }
+
+  .search_button {
+    width: 28px;
+    height: 28px;
+    background-position: center;
+}
 }
