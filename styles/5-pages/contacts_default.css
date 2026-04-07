@@ -40,8 +40,8 @@ body {
   flex-direction: column;
   width: 100%;
   height: calc(100vh - var(--height-topbar));
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .contact-info-title {
