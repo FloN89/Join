@@ -1,3 +1,4 @@
+// start_page.js
 window.addEventListener("load", () => {
   const logo = document.getElementById("logo");
   const fadeLayer = document.getElementById("fadeLayer");
@@ -15,16 +16,19 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     logo.classList.add("to-login-position");
     fadeLayer.classList.add("fade-out");
-  }, 300);
+  }, 250);
 
   logo.addEventListener(
     "transitionend",
     (event) => {
       if (event.propertyName !== "width") return;
-      goToLogin();
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(goToLogin);
+      });
     },
     { once: true }
   );
 
-  setTimeout(goToLogin, 1500);
+  setTimeout(goToLogin, 1400);
 });

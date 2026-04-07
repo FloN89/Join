@@ -251,15 +251,17 @@ body {
 /* Fade-In für Hauptbereiche */
 .main-area,
 .site-footer,
-.signup-area {
+.signup-area,
+.signup-area-mobile {
   opacity: 0;
-  transition: opacity 2s ease-in-out;
+  transform: translateY(8px);
+  transition: opacity 260ms ease, transform 260ms ease;
 }
 
 .is-visible {
   opacity: 1;
+  transform: translateY(0);
 }
-
 body.page-loaded .app-header {
   opacity: 1;
   transition: opacity 0.3s ease-in;
@@ -343,22 +345,18 @@ body.welcome-active .site-footer {
 }
 
 @media (max-width: 1360px) {
-  body.page-loaded .app-logo {
-    padding-left: 150px;
+  .app-header {
+    padding: 80px 150px 10px;
   }
-  
 }
 
 @media (max-width: 1024px) {
   .app-header {
     display: flex;
     flex-direction: row;
-  }
-  body.page-loaded .app-logo {
-    padding-left: 50px;
+    padding: 80px 50px 10px;
   }
 
-  
   .main-area {
     flex: 0 0 auto;
   }
