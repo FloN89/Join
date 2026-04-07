@@ -155,11 +155,15 @@ async function loadGreeting() {
   let userId = sessionStorage.getItem("userId");
   let greetingText = document.getElementById("greeting-text");
   let greetingName = document.getElementById("greeting-name");
+  let overlayText = document.getElementById("overlay-greeting-text");
+  let overlayName = document.getElementById("overlay-greeting-name");
   let timeGreeting = getTimeBasedGreeting();
 
   if (!userId || userId === "guest") {
     greetingText.innerText = timeGreeting + "!";
     greetingName.innerText = "";
+    if (overlayText) overlayText.innerText = timeGreeting + "!";
+    if (overlayName) overlayName.innerText = "";
     return;
   }
 
@@ -167,9 +171,13 @@ async function loadGreeting() {
   if (user && user.username) {
     greetingText.innerText = timeGreeting + ",";
     greetingName.innerText = user.username;
+    if (overlayText) overlayText.innerText = timeGreeting + ",";
+    if (overlayName) overlayName.innerText = user.username;
   } else {
     greetingText.innerText = timeGreeting + "!";
     greetingName.innerText = "";
+    if (overlayText) overlayText.innerText = timeGreeting + "!";
+    if (overlayName) overlayName.innerText = "";
   }
 }
 
