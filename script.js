@@ -85,6 +85,7 @@ const COUNTRY_TLDS = {
     vn: "Vietnam",
     ph: "Philippines",
     id: "Indonesia",
+    me: "Montenegro",
 };
 
 /**
