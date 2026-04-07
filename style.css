@@ -2,6 +2,11 @@
   --join-dark: #2A3647;
 }
 
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
 html,
 body {
   margin: 0;
@@ -9,6 +14,9 @@ body {
   width: 100%;
   height: 100%;
   background: #ffffff;
+}
+
+body {
   overflow: hidden;
 }
 
@@ -34,13 +42,11 @@ body {
   height: auto;
   z-index: 1;
   opacity: 1;
-
   transition:
     top 0.8s ease-in-out,
     left 0.8s ease-in-out,
     transform 0.8s ease-in-out,
     width 0.8s ease-in-out;
-
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -51,7 +57,7 @@ body {
 
 .app-logo.to-login-position {
   top: 100px;
-  left: calc(50% - (min(90%, 1440px) / 2) + 77px);
+  left: calc((100vw - min(90vw, 1440px)) / 2 + 77px);
   transform: none;
   width: 101px;
 }
