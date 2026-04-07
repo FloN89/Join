@@ -326,32 +326,41 @@ input#priority-low:checked + label.low {
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
+
 .subtask-action-btn {
-  background: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: none;
+  border-radius: 50%;
+  background: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.closeSub-btn {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
 }
 
 .checkSub-btn {
   width: 14px;
   height: 14px;
-}
-
-.closeSub-btn {
-  width: 24px;
-  height: 24px;
+  object-fit: contain;
+  display: block;
 }
 
 .subtask-action-btn:hover {
-  transform: scale(1.1);
   background-color: #eae7e7;
-  border-radius: 100%;
+  transform: scale(1.05);
 }
 
 .subtask-action-divider {
@@ -957,4 +966,20 @@ input#priority-low:checked + label.low {
   .create-btn {
     font-size: 14px;
   }
+
+  .task-bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 80px;
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: end;
+  gap: 12px;
+  padding: 8px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f6f7f8;
+}
 }
