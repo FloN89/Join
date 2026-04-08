@@ -126,7 +126,9 @@ function handleTouchMove(touchEvent) {
   processTouchDragStart(fingerX, fingerY);
   if (!isDragging || !touchClone) return;
 
-  touchEvent.preventDefault();
+  if (touchEvent.cancelable) {
+    touchEvent.preventDefault();
+  }
   updateTouchDragPosition(fingerX, fingerY);
 }
 
