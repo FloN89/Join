@@ -361,6 +361,10 @@ function getValidatedContactFormData() {
         return null;
     }
 
+    if (!validateRequiredContactFields(nameInput, mailInput, phoneInput, errorMessage)) {
+        return null;
+    }
+
     if (!validateNameInputField(nameInput, errorMessage)) {
         return null;
     }
@@ -378,6 +382,43 @@ function getValidatedContactFormData() {
     }
 
     return { name, mail, phone };
+}
+
+/**
+ * Validate required contact fields
+ * @param {HTMLInputElement} nameInput - Name input value
+ * @param {HTMLInputElement} mailInput - Mail input value
+ * @param {HTMLInputElement} phoneInput - Phone input value
+ * @param {HTMLElement} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function validateRequiredContactFields(nameInput, mailInput, phoneInput, errorMessage) {
+    const fields = [nameInput, mailInput, phoneInput].filter(Boolean);
+    let hasError = false;
+
+    fields.forEach((field) => {
+        const value = String(field.value || "").trim();
+        if (!value) {
+            field.classList.add("borderRed");
+            hasError = true;
+        } else {
+            field.classList.remove("borderRed");
+        }
+    });
+
+    if (hasError) {
+        if (errorMessage) {
+            errorMessage.classList.add("errorMessage");
+            errorMessage.textContent = "Please fill in all fields.";
+        }
+        return false;
+    }
+
+    if (errorMessage && errorMessage.textContent === "Please fill in all fields.") {
+        errorMessage.textContent = "";
+    }
+
+    return true;
 }
 
 /**

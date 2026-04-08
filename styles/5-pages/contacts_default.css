@@ -330,7 +330,7 @@ body {
   box-shadow: var(--shadow-light);
   border: 1px solid var(--color-border);
   height: 528px;
-  width: 1120px;
+  width: min(90vw, 1120px);
   border: none;
   z-index: 1101;
   pointer-events: auto
@@ -573,6 +573,20 @@ header h2 {
 
 #action-button-container {
   display: none;
+}
+
+@media (max-width: 1024px) {
+  .create-btn {
+    padding: 0 5px;
+  }
+
+  .person {
+    padding: 0 13px;
+  }
+
+  .input-group {
+    width: 34%;
+  }
 }
 
 @media (max-width: 768px) {
