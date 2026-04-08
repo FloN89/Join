@@ -307,7 +307,25 @@ function countCompletedSubtasks(subtasks) {
  */
 function createUsersHTML(assignedTo) {
   if (!assignedTo || assignedTo.length === 0) return "";
-  return assignedTo.map(generateUserBadgeHTML).join("");
+  const maxVisible = 4;
+  const visibleUsers = assignedTo.slice(0, maxVisible);
+  const remainingCount = assignedTo.length - visibleUsers.length;
+  const badges = visibleUsers.map(generateUserBadgeHTML);
+
+  if (remainingCount > 0) {
+    badges.push(generateOverflowBadgeHTML(remainingCount));
+  }
+
+  return badges.join("");
+}
+
+/**
+ * Generates HTML for overflow badge
+ * @param {number} remainingCount - Remaining users count
+ * @returns {string} HTML string for overflow badge
+ */
+function generateOverflowBadgeHTML(remainingCount) {
+  return `<div class="user-badge user-badge-more">+${remainingCount}</div>`;
 }
 
 /**

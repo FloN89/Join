@@ -15,7 +15,7 @@ function generateTaskOverlay(category, title, description, dueDate, priority, pr
   return `
     <div class="big-card">
       <div class="overlay-header">
-        <div class="task-category ${category}">${category}</div>
+        <div class="task-category-big ${category}">${category}</div>
         <img src="../assets/icons/close.svg" alt="Close" class="close-icon" onclick="closeTaskOverlay()">
       </div>
 
