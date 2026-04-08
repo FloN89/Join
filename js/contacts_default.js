@@ -361,6 +361,10 @@ function getValidatedContactFormData() {
         return null;
     }
 
+    if (!validateNameInputField(nameInput, errorMessage)) {
+        return null;
+    }
+
     const name = nameInput.value.trim();
     const mail = mailInput.value.trim();
     const phone = phoneInput.value.trim();
@@ -373,12 +377,53 @@ function getValidatedContactFormData() {
         return null;
     }
 
-    if (!name || !mail || !phone) {
-        alert("Please fill in all fields.");
-        return null;
-    }
-
     return { name, mail, phone };
+}
+
+/**
+ * Validate name input field
+ * @param {HTMLInputElement} nameInput - Name input value
+ * @param {HTMLElement} errorMessage - Errormessage value
+ * @returns {boolean} Return value
+ */
+function validateNameInputField(nameInput, errorMessage) {
+    if (!nameInput) return true;
+    const name = nameInput.value.trim();
+    const errorRef = errorMessage || null;
+
+    if (!name) {
+        showInvalidName(nameInput, errorRef);
+        return false;
+    }
+    clearInvalidName(nameInput, errorRef);
+    return true;
+}
+
+/**
+ * Show invalid name
+ * @param {*} nameInput - Nameinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function showInvalidName(nameInput, errorMessage) {
+    nameInput.classList.add("borderRed");
+    if (errorMessage) {
+        errorMessage.classList.add("errorMessage");
+        errorMessage.textContent = "Please enter a valid name.";
+    }
+}
+
+/**
+ * Clear invalid name
+ * @param {*} nameInput - Nameinput value
+ * @param {*} errorMessage - Errormessage value
+ * @returns {void} Return value
+ */
+function clearInvalidName(nameInput, errorMessage) {
+    nameInput.classList.remove("borderRed");
+    if (errorMessage && errorMessage.textContent === "Please enter a valid name.") {
+        errorMessage.textContent = "";
+    }
 }
 
 /**
