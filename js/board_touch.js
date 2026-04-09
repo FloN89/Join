@@ -6,6 +6,7 @@ let autoScrollInterval = null;
 let touchStartX = 0;
 let touchStartY = 0;
 let isDragging = false;
+let previousBodyOverflow = "";
 
 
 /**
@@ -34,8 +35,7 @@ function handleTouchStart(touchEvent) {
  * @returns {boolean} True if drag should start
  */
 function shouldStartTouchDrag(deltaX, deltaY) {
-  if (deltaX < 10 && deltaY < 10) return false;
-  if (deltaX > deltaY) return false;
+  if (deltaX < 6 && deltaY < 6) return false;
   return true;
 }
 
@@ -47,6 +47,8 @@ function shouldStartTouchDrag(deltaX, deltaY) {
  */
 function initializeTouchDrag(fingerX, fingerY) {
   isDragging = true;
+  previousBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
   currentTouchElement.classList.add("dragging");
   touchClone = currentTouchElement.cloneNode(true);
   touchClone.classList.add("touch-clone");
@@ -126,9 +128,7 @@ function handleTouchMove(touchEvent) {
   processTouchDragStart(fingerX, fingerY);
   if (!isDragging || !touchClone) return;
 
-  if (touchEvent.cancelable) {
-    touchEvent.preventDefault();
-  }
+  if (touchEvent.cancelable) touchEvent.preventDefault();
   updateTouchDragPosition(fingerX, fingerY);
 }
 
@@ -218,6 +218,7 @@ function resetTouchDragState() {
   currentTouchElement = null;
   currentDraggedElement = null;
   isDragging = false;
+  document.body.style.overflow = previousBodyOverflow;
 }
 
 

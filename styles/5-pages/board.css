@@ -365,8 +365,8 @@
 }
 
 .user-badge {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1270,12 +1270,6 @@
   }
 
   .subtask-counter {
-    font-size: 16px;
-  }
-
-  .user-badge {
-    width: 28px;
-    height: 28px;
     font-size: 16px;
   }
 

@@ -49,6 +49,14 @@ function getTaskSortTimestamp(taskItem = {}) {
 let currentDraggedElement;
 
 /**
+ * Detects if the primary pointer is coarse (touch-first devices).
+ * @returns {boolean} True when coarse pointer is active.
+ */
+function isCoarsePointer() {
+  return window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+}
+
+/**
  * Starts dragging operation for desktop drag and drop
  * @param {DragEvent} dragEvent - The drag event
  */
@@ -241,7 +249,6 @@ function getTaskColumn(status) {
 function createCardElement(column, id) {
   let card = column.appendChild(document.createElement("div"));
   card.className = "task-card";
-  card.draggable = true;
   card.dataset.taskId = id;
   return card;
 }
@@ -251,8 +258,15 @@ function createCardElement(column, id) {
  * @param {HTMLElement} card - The card element
  */
 function attachDragAndTouchEvents(card) {
-  card.ondragstart = startDragging;
-  card.ondragend = endDragging;
+  const coarsePointer = isCoarsePointer();
+  card.draggable = !coarsePointer;
+  if (!coarsePointer) {
+    card.ondragstart = startDragging;
+    card.ondragend = endDragging;
+  } else {
+    card.ondragstart = null;
+    card.ondragend = null;
+  }
   card.addEventListener("touchstart", handleTouchStart, { passive: false });
   card.addEventListener("touchmove", handleTouchMove, { passive: false });
   card.addEventListener("touchend", handleTouchEnd, { passive: false });
