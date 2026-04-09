@@ -229,7 +229,7 @@
 
 .task-card-text .task-number {
   font-size: 48px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 /* === Greeting Overlay (Tablet / Intermediate Screens) === */
@@ -393,6 +393,8 @@
     padding-right: var(--spacing-mobile);
     gap: 10px;
     margin-top: -60px;
+    padding-bottom: var(--height-sidebar-mobile);
+    box-sizing: border-box;
   }
 
   .task-container {
@@ -469,6 +471,13 @@
     padding: 15px;
   }
 
+  .task-row {
+    gap: 10px;
+  }
+
+  .task-container {
+    gap: 12px;
+  }
 }
 
 /* === Extra Small Mobile (max-width: 320px) === */
