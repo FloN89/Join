@@ -91,7 +91,7 @@
   position: absolute;
   left: 0;
   top: calc(100% + 8px);
-  font-size: 14px;
+  font-size: 16px;
   color: #e53935;
   line-height: 1.2;
   white-space: nowrap;
@@ -313,7 +313,7 @@
 }
 
 .task-description {
-  font-size: 14px;
+  font-size: 16px;
   color: #a8a8a8;
   line-height: 1.5;
   margin-bottom: 12px;
@@ -347,7 +347,7 @@
 }
 
 .subtask-counter {
-  font-size: 12px;
+  font-size: 16px;
   color: #2a3647;
   white-space: nowrap;
 }
@@ -372,7 +372,7 @@
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 400;
   border: 2px solid white;
   position: relative;
@@ -864,7 +864,7 @@
 .edit_task_overlay .avatar {
   width: 28px;
   height: 28px;
-  font-size: 11px;
+  font-size: 16px;
   border-radius: 50%;
   color: #ffffff;
   display: flex;
@@ -909,7 +909,7 @@
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   border: 1px solid #ffffff;
 }
@@ -1199,7 +1199,7 @@
   }
 
   .search_input_wrapper input::placeholder {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .plus_sign {
@@ -1261,22 +1261,22 @@
   }
 
   .task-title {
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 6px;
   }
 
   .task-description {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .subtask-counter {
-    font-size: 11px;
+    font-size: 16px;
   }
 
   .user-badge {
     width: 28px;
     height: 28px;
-    font-size: 11px;
+    font-size: 16px;
   }
 
   .priority-icon {
@@ -1286,7 +1286,7 @@
 
   .empty-state {
     padding: 24px 12px;
-    font-size: 14px;
+    font-size: 16px;
     min-width: 100%;
   }
 }
@@ -1363,7 +1363,7 @@
   }
 
   .edit_task_overlay .priority-button {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .edit_task_overlay .save-changes {
@@ -1394,3 +1394,4 @@
     background-position: center;
 }
 }
+

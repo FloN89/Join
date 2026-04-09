@@ -428,7 +428,7 @@ header h2 {
   border-radius: var(--border-radius-medium);
   border: 1px solid var(--color-border);
   background-color: var(--color-white);
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   display: flex;
   align-items: center;
@@ -446,7 +446,7 @@ header h2 {
 
 .errorMessage {
   color: var(--color-error);
-  font-size: 14px;
+  font-size: 16px;
   padding-left: 10px;
   display: block;
   text-align: left;

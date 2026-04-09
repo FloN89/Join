@@ -301,7 +301,7 @@ body.overlay-open {
   border-radius: var(--border-radius-round);
   background-color: var(--color-primary);
   color: var(--color-white);
-  font-size: 13px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,7 +343,7 @@ body.overlay-open {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -552,7 +552,7 @@ body.overlay-open {
 }
 
 .add-task-overlay .form-hint {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--color-grey-600);
   font-style: italic;
 }
@@ -639,7 +639,7 @@ body.overlay-open {
 
 .add-task-overlay .field-error-message {
   min-height: 16px;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 16px;
   color: #ff3d00;
   margin-top: 0;
@@ -706,7 +706,7 @@ body.overlay-open {
   .add-task-overlay .form-required-note {
     flex: 1;
     min-width: 0;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.2;
   }
 
@@ -880,32 +880,32 @@ body.overlay-open {
 
 @media (max-width: 380px) {
   .add-task-overlay label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .add-task-overlay input,
   .add-task-overlay textarea {
-    font-size: 14px;
+    font-size: 16px;
     padding: 8px 10px;
   }
 
   .add-task-overlay .priority-button {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .add-task-overlay .category-option,
   .add-task-overlay .assignee-name {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .add-task-overlay .avatar {
     width: 26px;
     height: 26px;
-    font-size: 11px;
+    font-size: 16px;
   }
 
   .add-task-overlay .btn {
-    font-size: 12px;
+    font-size: 16px;
     padding: 8px 14px;
   }
 
@@ -918,7 +918,7 @@ body.overlay-open {
   }
 
   .add-task-overlay .form-required-note {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .add-task-overlay .task-buttons {
@@ -928,6 +928,6 @@ body.overlay-open {
 
   .add-task-overlay .clear-btn,
   .add-task-overlay .create-btn {
-    font-size: 14px;
+    font-size: 16px;
   }
 }

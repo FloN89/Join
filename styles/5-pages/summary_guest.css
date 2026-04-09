@@ -191,18 +191,18 @@
 }
 
 .task-date {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .task-description {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--color-text-gray);
 }
 
 /* === Card Title === */
 .card-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.4;
   color: var(--color-text-primary);

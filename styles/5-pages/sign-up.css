@@ -142,7 +142,7 @@ html {
     border-radius: var(--border-radius-medium);
     border: 1px solid var(--color-border);
     background: var(--color-white);
-    font-size: 14px;
+    font-size: 16px;
     outline: none;
     display: flex;
     align-items: center;
@@ -273,7 +273,7 @@ html {
 
 .errorMessage {
     color: var(--color-error);
-    font-size: 14px;
+    font-size: 16px;
     padding-left: 10px;
     display: block;
     text-align: left;
@@ -475,7 +475,7 @@ html {
     }
 
     .site-footer {
-        font-size: 14px;
+        font-size: 16px;
         gap: 20px;
     }
 }

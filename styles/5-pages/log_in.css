@@ -169,7 +169,7 @@ body {
 
 .error-box {
   color: var(--color-error);
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   min-height: 18px;
   line-height: 18px;
@@ -519,7 +519,7 @@ body.welcome-active .site-footer {
   }
 
   .input {
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 40px 10px 12px;
   }
 
@@ -531,7 +531,7 @@ body.welcome-active .site-footer {
     gap: 16px;
   }
   .btn {
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px;
   }
 
@@ -540,7 +540,8 @@ body.welcome-active .site-footer {
   }
 
   .site-footer {
-    font-size: 14px;
+    font-size: 16px;
     gap: 20px;
   }
 }
+

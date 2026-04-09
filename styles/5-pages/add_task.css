@@ -219,7 +219,7 @@ input#priority-low:checked + label.low {
   border-radius: var(--border-radius-round);
   background-color: var(--color-primary);
   color: var(--color-white);
-  font-size: 13px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,7 +261,7 @@ input#priority-low:checked + label.low {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -460,7 +460,7 @@ input#priority-low:checked + label.low {
 }
 
 .form-hint {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--color-grey-600);
   font-style: italic;
 }
@@ -487,7 +487,7 @@ input#priority-low:checked + label.low {
 
 .field-error-message {
   min-height: 16px;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 16px;
   color: #ff3d00;
   margin-top: 0;
@@ -679,7 +679,7 @@ input#priority-low:checked + label.low {
   .form-required-note {
     flex: 1;
     min-width: 0;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.2;
   }
 
@@ -860,7 +860,7 @@ input#priority-low:checked + label.low {
     position: static;
     flex: 1;
     min-width: 0;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.2;
     background: transparent;
     padding: 0;
@@ -918,7 +918,7 @@ input#priority-low:checked + label.low {
   }
 
   label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   input[type="text"],
@@ -927,33 +927,33 @@ input#priority-low:checked + label.low {
   .subtask-input-container input,
   .multiselect-header,
   .category-select-header {
-    font-size: 14px;
+    font-size: 16px;
     padding-left: 10px;
     padding-right: 10px;
   }
 
   .priority-button {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .category-option,
   .assignee-name {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .avatar {
     width: 26px;
     height: 26px;
-    font-size: 11px;
+    font-size: 16px;
   }
 
   .btn {
-    font-size: 12px;
+    font-size: 16px;
     padding: 8px 14px;
   }
 
   .form-required-note {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .task-buttons {
@@ -963,7 +963,7 @@ input#priority-low:checked + label.low {
 
   .clear-btn,
   .create-btn {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .task-bottom-bar {
@@ -982,3 +982,4 @@ input#priority-low:checked + label.low {
   background: #f6f7f8;
 }
 }
+
