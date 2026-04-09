@@ -83,7 +83,7 @@ body {
   font-weight: 700;
   flex-shrink: 0;
   min-height: 56px;
-  width: 332px;
+  width: 90%;
   border-radius: var(--border-radius-medium);
   background-color: var(--color-primary);
   border: 1px solid var(--color-white);
@@ -103,7 +103,7 @@ body {
 }
 
 .contact-container {
-  width: 332px;
+  width: 90%;
   margin-bottom: 20px;
 }
 
